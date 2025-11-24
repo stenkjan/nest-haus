@@ -1213,7 +1213,7 @@ export default function CheckoutStepper({
       pvanlage: item.pvanlage || undefined,
       fenster: item.fenster || undefined,
       stirnseite: item.stirnseite || undefined,
-      planungspaket: item.planungspaket || undefined,
+      planungspaket: item.planungspaket || undefined, // INCLUDE for full calculation
       fundament: item.fundament || undefined,
       kamindurchzug: item.kamindurchzug || undefined,
       // grundstueckscheck is boolean in PriceCalculator.Selections interface
@@ -1221,16 +1221,35 @@ export default function CheckoutStepper({
     });
 
     // Calculate dynamic total from configuration using PriceCalculator (same as konfigurator)
-    // IMPORTANT: Separate "Dein Nest Haus" (physical house) from "Planungspaket" (service)
+    // IMPORTANT: Calculate FULL total, then subtract planungspaket for "Dein Nest Haus" display
     let nestHausTotal = 0; // Physical house price (without planungspaket)
 
     if (configItem && configItem.nest) {
-      // Use PriceCalculator.calculateTotalPrice() for consistency with konfigurator
-      // This ensures exact same price calculation logic and avoids rounding differences
-      nestHausTotal = PriceCalculator.calculateTotalPrice(
+      // Calculate FULL total including planungspaket
+      const fullTotal = PriceCalculator.calculateTotalPrice(
         convertToSelections(configItem)
       );
-      // Note: Planungspaket is calculated separately and shown in "Dein Preis Überblick" box
+
+      // Calculate planungspaket price separately to subtract it
+      let planungspaketPrice = 0;
+      if (configItem?.planungspaket?.value && configItem.planungspaket.value !== 'basis') {
+        const pricingData = PriceCalculator.getPricingData();
+        if (pricingData && configItem.nest) {
+          const nestSize = configItem.nest.value as 'nest80' | 'nest100' | 'nest120' | 'nest140' | 'nest160';
+          if (configItem.planungspaket.value === 'plus') {
+            planungspaketPrice = pricingData.planungspaket.plus[nestSize] || 0;
+          } else if (configItem.planungspaket.value === 'pro') {
+            planungspaketPrice = pricingData.planungspaket.pro[nestSize] || 0;
+          }
+          // Normalize -1 (dash price) to 0 for calculation
+          if (planungspaketPrice === -1) {
+            planungspaketPrice = 0;
+          }
+        }
+      }
+
+      // Subtract planungspaket to get "Dein Nest Haus" price (physical house only)
+      nestHausTotal = fullTotal - planungspaketPrice;
     } else {
       // Fall back to cart total if no configuration
       nestHausTotal = getCartTotal();
@@ -1445,27 +1464,6 @@ export default function CheckoutStepper({
                   )}
                   <div className={rowWrapperClass}>
                     <div className="flex-1 min-w-0">
-                      <div className={`leading-relaxed ${rowTextClass(1)}`}>
-                        Konzept-Check
-                      </div>
-                      <div className={rowSubtitleClass}>
-                        {getRowSubtitle(1)}
-                      </div>
-                    </div>
-                    <div className={`leading-relaxed ${rowTextClass(1)}`}>
-                      <span className="inline-flex items-center gap-2">
-                        {/* Always show 3.000€ in overview box (full price, not discounted) */}
-                        {PriceUtils.formatPrice(3000)}
-                        {grundstueckscheckDone && (
-                          <span aria-hidden className="text-[#3D6CE1]">
-                            ✓
-                          </span>
-                        )}
-                      </span>
-                    </div>
-                  </div>
-                  <div className={rowWrapperClass}>
-                    <div className="flex-1 min-w-0">
                       <div className={`leading-relaxed ${rowTextClass(2)}`}>
                         Planungspaket
                       </div>
@@ -1610,7 +1608,7 @@ export default function CheckoutStepper({
                       Konzept-Check
                     </div>
                     <div className="text-xs md:text-sm text-gray-500 leading-snug mt-1">
-                      Heute zu bezahlen
+                      Entwurf- und Grundstückscheck
                     </div>
                   </div>
                   <div className="text-sm md:text-base lg:text-lg 2xl:text-xl font-normal text-gray-900 leading-relaxed">
@@ -3119,7 +3117,7 @@ export default function CheckoutStepper({
               </p>
             </div>
 
-            {/* Left/Right Layout: Teilzahlungen (left) + Heute zu bezahlen (right) */}
+            {/* Left/Right Layout: Teilzahlungen (left) + Entwurf- und Grundstückscheck (right) */}
             {!isOhneNestMode &&
               (() => {
                 // Calculate dynamic total (Dein Nest Haus price from Dein Preis Überblick)
@@ -3151,11 +3149,13 @@ export default function CheckoutStepper({
                 // Calculate planungspaket price using new pricing system (nest-size dependent)
                 const planungspaketPrice = (() => {
                   if (configItem?.planungspaket) {
-                    return getItemPrice(
+                    const price = getItemPrice(
                       "planungspaket",
                       configItem.planungspaket,
                       configItem
                     );
+                    // Normalize -1 (dash price) to 0 for calculation
+                    return price === -1 ? 0 : price;
                   }
                   // Fallback to PLANNING_PACKAGES if no stored planungspaket
                   const planValue = localSelectedPlan || "basis";
@@ -3288,7 +3288,7 @@ export default function CheckoutStepper({
                         </div>
                       </div>
 
-                      {/* Right: Heute zu bezahlen box - compact design per image */}
+                      {/* Right: Entwurf- und Grundstückscheck box - compact design per image */}
                       <div className="lg:sticky lg:top-4">
                         {/* Compact box with title/subtitle left, price right */}
                         <div className="border border-gray-300 rounded-2xl p-6 bg-white mb-6">
@@ -3430,14 +3430,14 @@ export default function CheckoutStepper({
             {/* Ohne-Nest Mode: Show simplified centered payment box */}
             {isOhneNestMode && (
               <div className="max-w-2xl mx-auto mb-12">
-                {/* Centered "Heute zu bezahlen" box */}
+                {/* Centered "Entwurf- und Grundstückscheck" box */}
                 <div className="border border-gray-300 rounded-2xl p-6 bg-white mb-6">
                   <div className="flex items-start justify-between gap-4">
                     <div className="text-left flex-1">
                       <h3
                         className={`text-lg font-medium mb-1 ${isPaymentCompleted ? "text-green-600" : "text-gray-900"}`}
                       >
-                        {isPaymentCompleted ? "Bezahlt" : "Heute zu bezahlen"}
+                        {isPaymentCompleted ? "Bezahlt" : "Entwurf- und Grundstückscheck"}
                       </h3>
                       <div className="text-sm text-gray-600">
                         {isPaymentCompleted
@@ -3940,13 +3940,13 @@ export default function CheckoutStepper({
               </div>
             </div>
 
-            {/* Moved: Heute zu bezahlen section at the end */}
+            {/* Moved: Entwurf- und Grundstückscheck section at the end */}
             <div className="flex items-start justify-between gap-4 py-3">
               <div className="text-left">
                 <h2
                   className={`h2-title mb-3 ${isPaymentCompleted ? "text-green-600" : "text-black"}`}
                 >
-                  {isPaymentCompleted ? "Bezahlt" : "Heute zu bezahlen"}
+                  {isPaymentCompleted ? "Bezahlt" : "Entwurf- und Grundstückscheck"}
                 </h2>
                 <div className="text-sm md:text-base lg:text-lg 2xl:text-xl text-gray-700 leading-snug">
                   {isPaymentCompleted && (
@@ -4201,7 +4201,7 @@ export default function CheckoutStepper({
   // Helper functions for payment
   function getPaymentAmount(): number {
     // Entwurf deposit: €1,500 (150000 cents) - Action price (50% discount from €3,000)
-    // This matches the "Heute zu bezahlen" amount displayed in the checkout
+    // This matches the "Entwurf- und Grundstückscheck" amount displayed in the checkout
     return 150000; // 1,500 EUR in cents
   }
 

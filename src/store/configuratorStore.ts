@@ -605,13 +605,14 @@ export const useConfiguratorStore = create<ConfiguratorState>()(
       // Set default preselections - DISABLED (no preselections wanted)
       setDefaultSelections: () => {
         // Set default selections as requested
+        // NOTE: All prices set to 0 (placeholder) - will be calculated dynamically by PriceCalculator
         const defaultSelections = [
           // Nest 80
           {
             category: 'nest',
             value: 'nest80',
             name: 'Nest. 80',
-            price: 155500,
+            price: 0, // Placeholder - calculated dynamically from Google Sheets
             description: '75m² Nutzfläche'
           },
           // Trapezblech (new default)
@@ -619,7 +620,7 @@ export const useConfiguratorStore = create<ConfiguratorState>()(
             category: 'gebaeudehuelle',
             value: 'trapezblech',
             name: 'Trapezblech',
-            price: -9600,
+            price: 0, // Placeholder - calculated dynamically from Google Sheets
             description: 'RAL 9005 - 3000 x 1142 mm'
           },
           // Standard (ohne_innenverkleidung) - new default baseline
@@ -627,7 +628,7 @@ export const useConfiguratorStore = create<ConfiguratorState>()(
             category: 'innenverkleidung',
             value: 'ohne_innenverkleidung',
             name: 'Standard',
-            price: 0,
+            price: 0, // Placeholder - calculated dynamically from Google Sheets
             description: 'Keine Innenverkleidung\nVerbaue deine Innenwandpanele selbst'
           },
           // Standard (ohne_belag) - default flooring
@@ -635,7 +636,7 @@ export const useConfiguratorStore = create<ConfiguratorState>()(
             category: 'fussboden',
             value: 'ohne_belag',
             name: 'Standard',
-            price: 0,
+            price: 0, // Placeholder - calculated dynamically from Google Sheets
             description: 'Verlege deinen Boden selbst'
           },
           // Light Belichtungspaket
@@ -643,7 +644,7 @@ export const useConfiguratorStore = create<ConfiguratorState>()(
             category: 'belichtungspaket',
             value: 'light',
             name: 'Light',
-            price: 0, // Will be calculated dynamically
+            price: 0, // Placeholder - calculated dynamically from Google Sheets
             description: '15% der Nestfläche\nGrundbeleuchtung'
           },
           // PVC Fenster (default)
@@ -651,7 +652,7 @@ export const useConfiguratorStore = create<ConfiguratorState>()(
             category: 'fenster',
             value: 'pvc_fenster',
             name: 'PVC Fenster',
-            price: 280,
+            price: 0, // Placeholder - calculated dynamically from Google Sheets
             description: 'RAL 9016 - Kunststoff'
           },
 
@@ -660,7 +661,7 @@ export const useConfiguratorStore = create<ConfiguratorState>()(
             category: 'bodenaufbau',
             value: 'ohne_heizung',
             name: 'Ohne Heizung',
-            price: 0,
+            price: 0, // Placeholder - calculated dynamically from Google Sheets
             description: 'Kein Heizungssystem im Boden'
           },
 
@@ -669,7 +670,7 @@ export const useConfiguratorStore = create<ConfiguratorState>()(
             category: 'planungspaket',
             value: 'basis',
             name: 'Planung Basis',
-            price: 0, // inkludiert - no additional cost
+            price: 0, // Placeholder - calculated dynamically from Google Sheets
             description: 'Einreichplanung (Raumteilung)\nFachberatung und Baubegleitung'
           }
         ];

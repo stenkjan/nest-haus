@@ -55,7 +55,7 @@ export interface ContentCardData {
     playbackRate?: number; // For video cards (1.0 = normal speed)
     buttons?: ButtonConfig[];
     aspectRatio?: "2x1" | "1x1" | "2x2"; // Optional aspect ratio for overlay-text cards - "2x1" = portrait, "1x1" = square, "2x2" = extra wide
-    imageFit?: "cover" | "contain-width"; // Optional image fit behavior: "cover" (default - fills container), "contain-width" (fits width, crops top/bottom)
+    imageFit?: "cover" | "contain-width" | "contain"; // Optional image fit behavior: "cover" (default - fills container), "contain-width" (fits width, crops top/bottom), "contain" (fits entire image, may show background)
     reverseTextOrder?: boolean; // Optional: reverse text order in overlay-text layout (title first, then description)
     headingLevel?: "h2" | "h3"; // Optional: control heading level for title in overlay-text layout (default: h3)
     externalLink?: string; // Optional: external URL to link the entire card to
@@ -1040,12 +1040,14 @@ export const WARUM_WIR_TEAM_CARDS_CONTENT: ContentCardData[] = [
     {
         id: 3,
         title: "Philipp Möstl",
-        subtitle: "Baumeister",
+        subtitle: "<span class='text-gray-400'>Baumeister</span>",
         description: "",
         image: IMAGES.team.philippMoestl,
         backgroundColor: "#121212",
         textColor: "text-white",
         aspectRatio: "2x1",
+        imagePosition: "center",
+        imageFit: "contain",
         bottomLabel: "",
         bottomText: "",
     },

@@ -95,9 +95,6 @@ export default function SummaryPanel({
     }
 
     // For quantity-based items, calculate based on quantity/squareMeters
-    if (key === "pvanlage") {
-      return (selection.quantity || 1) * (selection.price || 0);
-    }
     if (key === "fenster") {
       // Fenster price is already included in belichtungspaket calculation, so return 0
       return 0;

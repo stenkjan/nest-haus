@@ -1551,8 +1551,12 @@ export default function UnifiedContentCard({
 
   // Render team-card layout (full image background with custom team/value card layout)
   const renderTeamCardLayout = (card: ContentCardData, index: number) => {
-    // Determine image fit behavior - right-aligned for team photos
-    const imageFitClass = "object-cover object-right";
+    // Determine image fit behavior - use custom imagePosition if provided, otherwise right-aligned for team photos
+    const objectFit = card.imageFit === "contain" ? "object-contain" : "object-cover";
+    const objectPosition = card.imagePosition 
+      ? `object-${card.imagePosition}`
+      : "object-right";
+    const imageFitClass = `${objectFit} ${objectPosition}`;
 
     // Determine text color (default to white)
     const textColor = card.textColor || "text-white";
@@ -1613,10 +1617,12 @@ export default function UnifiedContentCard({
               {getCardText(card, "title")}
             </h3>
 
-            {/* Description - p-primary */}
-            <p className={`p-primary ${textColor}`}>
-              {getCardText(card, "description")}
-            </p>
+            {/* Description - p-primary (only render if not empty) */}
+            {card.description && (
+              <p className={`p-primary ${textColor}`}>
+                {getCardText(card, "description")}
+              </p>
+            )}
           </motion.div>
 
           {/* Bottom Section: Bottom Label (p-primary-small) + Bottom Text (p-tertiary) */}
