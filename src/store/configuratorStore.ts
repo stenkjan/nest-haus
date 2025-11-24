@@ -161,10 +161,10 @@ export const useConfiguratorStore = create<ConfiguratorState>()(
         // Set default preselections only for completely new sessions
         if (isNewSession) {
           get().setDefaultSelections()
+          // Calculate price immediately after setting defaults
+          // Pricing data should already be loaded by KonfiguratorClient before calling initializeSession
+          get().calculatePrice()
         }
-
-        // DON'T calculate price here - let ConfiguratorShell do it after pricing data is loaded
-        // get().calculatePrice()
       },
 
       // Update selection with intelligent view switching and price calculation
@@ -701,8 +701,7 @@ export const useConfiguratorStore = create<ConfiguratorState>()(
           hasPart3BeenActive: false // Don't enable part 3 yet
         });
 
-        // DON'T calculate price here - let ConfiguratorShell do it after pricing data is loaded
-        // get().calculatePrice();
+        // Price will be calculated by initializeSession() after this returns
       },
 
 

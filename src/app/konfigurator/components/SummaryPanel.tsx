@@ -16,7 +16,6 @@ import { PriceCalculator } from "../core/PriceCalculator"; // Re-added for dynam
 import { PriceUtils } from "../core/PriceUtils";
 import { calculateSizeDependentPrice } from "@/constants/configurator";
 import InfoBox from "./InfoBox";
-import Button from "@/components/ui/Button";
 
 interface SummaryPanelProps {
   onInfoClick?: (infoKey: string) => void;
@@ -631,17 +630,19 @@ export default function SummaryPanel({
         {/* Action Buttons */}
         <div className="mt-6 mb-6 flex justify-center">
           {isClient && (
-            <div className="flex flex-col gap-3 w-full items-center">
-              <Button
-                variant="tertiary"
+            <div className="flex flex-col gap-2 w-full items-center">
+              <button
                 onClick={() => {
                   // Navigate to warenkorb with ohne-nest flag
                   window.location.href = "/warenkorb?mode=konzept-check";
                 }}
-                className="bg-white text-[clamp(0.75rem,1.2vw,1rem)] px-[clamp(0.75rem,2vw,1.5rem)] py-[clamp(0.3rem,0.6vw,0.5rem)] min-h-[44px] touch-manipulation whitespace-nowrap"
+                className="w-full max-w-[280px] bg-white text-[#3D6CE1] border-2 border-[#3D6CE1] rounded-full font-medium text-[clamp(0.875rem,1.2vw,1rem)] px-[clamp(1.5rem,3vw,2rem)] py-[clamp(0.5rem,1vw,0.75rem)] transition-all hover:bg-[#3D6CE1] hover:text-white min-h-[48px] flex items-center justify-center touch-manipulation cursor-pointer shadow-sm hover:shadow-md"
               >
-                Konzept-Check
-              </Button>
+                Konzept-Check bestellen
+              </button>
+              <p className="text-gray-600 text-[clamp(0.75rem,1vw,0.875rem)]">
+                Ohne Konfiguration fortfahren
+              </p>
             </div>
           )}
         </div>
