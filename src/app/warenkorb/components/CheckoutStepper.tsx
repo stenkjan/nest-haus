@@ -1488,7 +1488,7 @@ export default function CheckoutStepper({
                             <span className="text-gray-600">
                               (
                               {selectedPlanValue === "basis"
-                                ? "inkludiert"
+                                ? "Standard"
                                 : PriceUtils.formatPrice(selectedPlanPrice)}
                               )
                             </span>
@@ -2007,7 +2007,7 @@ export default function CheckoutStepper({
                                     ) : detail.isIncluded ||
                                       (detail.price && detail.price === 0) ? (
                                       <div className="text-sm md:text-base lg:text-lg 2xl:text-xl text-gray-500 leading-relaxed">
-                                        inkludiert
+                                        Standard
                                       </div>
                                     ) : (
                                       <div className="text-sm md:text-base lg:text-lg 2xl:text-xl text-gray-900 leading-relaxed">
@@ -3677,7 +3677,7 @@ export default function CheckoutStepper({
                                     <div className="text-sm md:text-base lg:text-lg 2xl:text-xl font-normal leading-relaxed text-gray-900">
                                       {detail.isIncluded ||
                                       (detail.price && detail.price === 0)
-                                        ? "inkludiert"
+                                        ? "Standard"
                                         : PriceUtils.isPriceOnRequest(
                                               detail.price || 0
                                             )
@@ -3751,9 +3751,9 @@ export default function CheckoutStepper({
                                       packageType = localSelectedPlan || "";
                                     }
 
-                                    // Return price display with "inkludiert" for basis
+                                    // Return price display with "Standard" for basis
                                     return packageType === "basis"
-                                      ? "inkludiert"
+                                      ? "Standard"
                                       : packageType === "plus"
                                         ? "16.900,00€"
                                         : "21.900,00€";
@@ -3901,12 +3901,12 @@ export default function CheckoutStepper({
                                   )?.price || 0
                                 : 0);
 
-                            // Check if it's basis planungspaket (should show as inkludiert)
+                            // Check if it's basis planungspaket (should show as Standard)
                             const planValue =
                               configItem?.planungspaket?.value ||
                               localSelectedPlan;
                             if (planValue === "basis") {
-                              return "inkludiert";
+                              return "Standard";
                             } else {
                               return PriceUtils.formatPrice(planPrice);
                             }

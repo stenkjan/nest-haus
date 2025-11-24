@@ -97,7 +97,7 @@ export default function SelectionOption({
                   &nbsp;
                 </p>
                 <p className="text-[clamp(0.625rem,1.1vw,0.875rem)] text-gray-500 tracking-wide leading-[1.2]">
-                  inklusive
+                  Standard
                 </p>
                 <p className="text-[clamp(0.475rem,0.95vw,0.725rem)] tracking-wide leading-[1.2] text-gray-500">
                   &nbsp;
@@ -174,7 +174,7 @@ export default function SelectionOption({
             &nbsp;
           </p>
           <p className="text-[clamp(0.625rem,1.1vw,0.875rem)] tracking-wide leading-[1.2]">
-            inklusive
+            Standard
           </p>
           <p className="text-[clamp(0.475rem,0.95vw,0.725rem)] tracking-wide leading-[1.2] text-gray-500">
             &nbsp;
@@ -644,33 +644,20 @@ export default function SelectionOption({
         </button>
       )}
 
-      <div className={`box_selection_name flex-1 min-w-0 pr-[clamp(0.625rem,1.75vw,1.125rem)] ${(categoryId === "fussboden" && id === "ohne_belag") || (categoryId === "bodenaufbau" && id === "ohne_heizung") ? "flex flex-col justify-center" : ""}`}>
+      <div className={`box_selection_name flex-1 min-w-0 pr-[clamp(0.625rem,1.75vw,1.125rem)] ${((categoryId === "innenverkleidung" && id === "ohne_innenverkleidung") || (categoryId === "fussboden" && id === "ohne_belag") || (categoryId === "bodenaufbau" && id === "ohne_heizung")) ? "flex flex-col justify-center" : ""}`}>
         <p className={`font-medium text-[clamp(0.875rem,1.6vw,1.125rem)] tracking-wide leading-tight text-black`}>
           {name}
         </p>
         {(() => {
+          // Don't show description if it's empty
+          if (!description || description.trim() === "") {
+            return null;
+          }
+
           // Split description into lines for three-row layout
           const descriptionLines = description
             .split("\n")
             .filter((line) => line.trim());
-
-          // Special handling for "Standard" (ohne_belag) - always show description centered
-          if (categoryId === "fussboden" && id === "ohne_belag") {
-            return (
-              <p className="text-[clamp(0.5rem,1vw,0.875rem)] tracking-wide leading-relaxed text-gray-700 whitespace-nowrap overflow-hidden text-ellipsis">
-                {description}
-              </p>
-            );
-          }
-
-          // Special handling for "Ohne Heizung" (ohne_heizung) - always show description centered
-          if (categoryId === "bodenaufbau" && id === "ohne_heizung") {
-            return (
-              <p className="text-[clamp(0.5rem,1vw,0.875rem)] tracking-wide leading-relaxed text-gray-700 whitespace-nowrap overflow-hidden text-ellipsis">
-                {description}
-              </p>
-            );
-          }
 
           // For nest modules, the description already contains the proper format with newlines
           if (categoryId === "nest" && descriptionLines.length >= 2) {

@@ -147,8 +147,8 @@ export const configuratorData: CategoryData[] = [
     options: [
       {
         id: 'ohne_innenverkleidung',
-        name: 'Standard',
-        description: 'Keine Innenverkleidung\nVerbaue deine Innenwandpanele selbst',
+        name: 'Verbaue deine Innenwandpanele selbst',
+        description: '',
         price: { type: 'included', amount: 0 } // New baseline (0€)
       },
       {
@@ -181,8 +181,8 @@ export const configuratorData: CategoryData[] = [
     options: [
       {
         id: 'ohne_belag',
-        name: 'Standard',
-        description: 'Verlege deinen Boden selbst',
+        name: 'Verlege deinen Boden selbst',
+        description: '',
         price: { type: 'included', amount: 0 }
       },
       {
@@ -215,8 +215,8 @@ export const configuratorData: CategoryData[] = [
     options: [
       {
         id: 'ohne_heizung',
-        name: 'Ohne Heizung',
-        description: 'Kein Heizungssystem im Boden',
+        name: 'Verlege dein Heizsystem selbst',
+        description: '',
         price: { type: 'included', amount: 0 }
       },
       {

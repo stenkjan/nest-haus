@@ -627,17 +627,17 @@ export const useConfiguratorStore = create<ConfiguratorState>()(
           {
             category: 'innenverkleidung',
             value: 'ohne_innenverkleidung',
-            name: 'Standard',
+            name: 'Verbaue deine Innenwandpanele selbst',
             price: 0, // Placeholder - calculated dynamically from Google Sheets
-            description: 'Keine Innenverkleidung\nVerbaue deine Innenwandpanele selbst'
+            description: ''
           },
           // Standard (ohne_belag) - default flooring
           {
             category: 'fussboden',
             value: 'ohne_belag',
-            name: 'Standard',
+            name: 'Verlege deinen Boden selbst',
             price: 0, // Placeholder - calculated dynamically from Google Sheets
-            description: 'Verlege deinen Boden selbst'
+            description: ''
           },
           // Light Belichtungspaket
           {
@@ -660,9 +660,9 @@ export const useConfiguratorStore = create<ConfiguratorState>()(
           {
             category: 'bodenaufbau',
             value: 'ohne_heizung',
-            name: 'Ohne Heizung',
+            name: 'Verlege dein Heizsystem selbst',
             price: 0, // Placeholder - calculated dynamically from Google Sheets
-            description: 'Kein Heizungssystem im Boden'
+            description: ''
           },
 
           // Planung Basis (default) - now inkludiert

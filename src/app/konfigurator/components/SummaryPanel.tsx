@@ -398,7 +398,7 @@ export default function SummaryPanel({
                           </div>
                         ) : (
                           <div className="text-gray-500 text-[clamp(12px,2.5vw,14px)]">
-                            inkludiert
+                            Standard
                           </div>
                         )}
                       </div>
@@ -469,7 +469,7 @@ export default function SummaryPanel({
                           </>
                         ) : (
                           <div className="text-gray-500 text-[clamp(12px,2.5vw,14px)]">
-                            inkludiert
+                            Standard
                           </div>
                         )}
                       </div>
@@ -527,7 +527,7 @@ export default function SummaryPanel({
                           </>
                         ) : (
                           <div className="text-gray-500 text-[clamp(12px,2.5vw,14px)]">
-                            inkludiert
+                            Standard
                           </div>
                         )}
                       </div>

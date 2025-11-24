@@ -27,7 +27,7 @@ export default function CheckoutPlanungspaketeCards({
 
   // Helper function to format price consistently
   const formatPrice = (price: number): string => {
-    if (price === 0) return "inkludiert";
+    if (price === 0) return "Standard";
     return new Intl.NumberFormat("de-AT", {
       style: "currency",
       currency: "EUR",
@@ -69,7 +69,7 @@ export default function CheckoutPlanungspaketeCards({
                 {/* Text above title - Different for each package */}
                 <p className="p-primary text-nest-gray">
                   {pkg.value === "basis"
-                    ? "Inkludiert im Preis"
+                    ? "Standard im Preis"
                     : pkg.value === "plus"
                       ? "Für Aufpreis erhältlich"
                       : "Für Aufpreis erhältlich"}

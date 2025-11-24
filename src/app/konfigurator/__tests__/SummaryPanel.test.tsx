@@ -2,9 +2,9 @@
  * SummaryPanel Tests
  *
  * Tests the SummaryPanel component price display logic:
- * - Correct handling of 0 price items showing "inkludiert"
+ * - Correct handling of 0 price items showing "Standard"
  * - Proper formatting for paid items
- * - Lowercase "inkludiert" text
+ * - "Standard" text display
  */
 
 import { render, screen } from "@testing-library/react";
@@ -88,19 +88,19 @@ describe("SummaryPanel", () => {
     expect(screen.getByText("Premium Planungspaket")).toBeInTheDocument();
   });
 
-  it('should show "inkludiert" in lowercase for items with 0 price', () => {
+  it('should show "Standard" for items with 0 price', () => {
     render(<SummaryPanel />);
 
-    // Should show lowercase "inkludiert" for base materials with 0 price
-    const inkludiertElements = screen.getAllByText("inkludiert");
+    // Should show "Standard" for base materials with 0 price
+    const standardElements = screen.getAllByText("Standard");
 
-    // Should have multiple instances of "inkludiert" for 0-price items
-    expect(inkludiertElements.length).toBeGreaterThan(0);
+    // Should have multiple instances of "Standard" for 0-price items
+    expect(standardElements.length).toBeGreaterThan(0);
 
-    // Verify it's lowercase and not "Inkludiert"
-    inkludiertElements.forEach((element) => {
-      expect(element).toHaveTextContent("inkludiert");
-      expect(element).not.toHaveTextContent("Inkludiert");
+    // Verify it's "Standard" and not "inkludiert"
+    standardElements.forEach((element) => {
+      expect(element).toHaveTextContent("Standard");
+      expect(element).not.toHaveTextContent("inkludiert");
     });
   });
 
@@ -136,9 +136,9 @@ describe("SummaryPanel", () => {
     // Pro package should show the price
     expect(screen.getByText("Planung Pro")).toBeInTheDocument();
 
-    // Should have "inkludiert" text for other items (gebaeudehuelle, innenverkleidung, fussboden)
-    const inkludiertElements = screen.getAllByText("inkludiert");
-    expect(inkludiertElements.length).toBeGreaterThanOrEqual(1);
+    // Should have "Standard" text for other items (gebaeudehuelle, innenverkleidung, fussboden)
+    const standardElements = screen.getAllByText("Standard");
+    expect(standardElements.length).toBeGreaterThanOrEqual(1);
   });
 
   it("should calculate PV price correctly with quantity", () => {
@@ -181,9 +181,9 @@ describe("SummaryPanel", () => {
 
     render(<SummaryPanel />);
 
-    // Should show both "Aufpreis" and "inkludiert"
+    // Should show both "Aufpreis" and "Standard"
     expect(screen.getByText("Aufpreis")).toBeInTheDocument();
-    expect(screen.getByText("inkludiert")).toBeInTheDocument();
+    expect(screen.getByText("Standard")).toBeInTheDocument();
     expect(screen.getByText("€71.200")).toBeInTheDocument();
   });
 
@@ -206,8 +206,8 @@ describe("SummaryPanel", () => {
 
       render(<SummaryPanel />);
 
-      // Should still show "inkludiert" for undefined price
-      expect(screen.getByText("inkludiert")).toBeInTheDocument();
+      // Should still show "Standard" for undefined price
+      expect(screen.getByText("Standard")).toBeInTheDocument();
     });
 
     it("should handle fenster with square meters correctly", () => {
