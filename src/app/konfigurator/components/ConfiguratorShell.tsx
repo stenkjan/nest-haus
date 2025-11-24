@@ -1944,10 +1944,10 @@ export default function ConfiguratorShell({
           }}
           className="w-full max-w-[280px] bg-white text-[#3D6CE1] border-2 border-[#3D6CE1] rounded-full font-medium text-[clamp(0.875rem,1.2vw,1rem)] px-[clamp(1.5rem,3vw,2rem)] py-[clamp(0.5rem,1vw,0.75rem)] transition-all hover:bg-[#3D6CE1] hover:text-white min-h-[48px] flex items-center justify-center touch-manipulation cursor-pointer shadow-sm hover:shadow-md"
         >
-          Konzeptcheck beestellen
+          Konzept-Check bestellen
         </button>
         <p className="text-gray-600 text-[clamp(0.75rem,1vw,0.875rem)]">
-          *Nur den Entwurf bestellen
+          Ohne Konfiguration fortfahren
         </p>
       </div>
 

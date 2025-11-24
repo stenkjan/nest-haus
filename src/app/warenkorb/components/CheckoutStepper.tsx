@@ -3304,7 +3304,7 @@ export default function CheckoutStepper({
                               <div className="text-sm text-gray-600">
                                 {isPaymentCompleted
                                   ? "Zahlung erfolgreich abgeschlossen"
-                                  : "Heute zu bezahlen"}
+                                  : "Entwurf und Grundstückscheck"}
                               </div>
                             </div>
                             {!isPaymentCompleted ? (

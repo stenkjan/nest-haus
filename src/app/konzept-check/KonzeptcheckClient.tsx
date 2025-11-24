@@ -127,10 +127,10 @@ export default function KonzeptcheckClient() {
                 backgroundColor: "#F4F4F4",
                 buttons: [
                   {
-                    text: "Konfigurator",
+                    text: "Konzept-Check bestellen",
                     variant: "primary",
                     size: "xs",
-                    link: "/konfigurator",
+                    link: "/warenkorb?mode=entwurf",
                   },
                   {
                     text: "Beratungsgespräch",
@@ -188,6 +188,12 @@ export default function KonzeptcheckClient() {
                     variant: "primary",
                     size: "xs",
                     link: "/konfigurator",
+                  },
+                  {
+                    text: "Konzept-Check bestellen",
+                    variant: "landing-secondary-blue-white",
+                    size: "xs",
+                    link: "/warenkorb?mode=entwurf",
                   },
                 ],
               },
