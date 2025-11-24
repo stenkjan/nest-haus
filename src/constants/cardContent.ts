@@ -1040,8 +1040,8 @@ export const WARUM_WIR_TEAM_CARDS_CONTENT: ContentCardData[] = [
     {
         id: 3,
         title: "Philipp Möstl",
-        subtitle: "",
-        description: "Baumeister",
+        subtitle: "Baumeister",
+        description: "",
         image: IMAGES.team.philippMoestl,
         backgroundColor: "#121212",
         textColor: "text-white",
