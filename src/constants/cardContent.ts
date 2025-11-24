@@ -128,12 +128,12 @@ export const MATERIALIEN_CONTENT: ContentCardData[] = [
         title: "Verbundplatten - Schwarz",
         subtitle: "",
         description:
-            "Die Fundermax HPL-Platten sind eine erstklassige Lösung für moderne, langlebige Fassadengestaltungen. Gefertigt aus hochverdichteten Laminatplatten, bieten sie außergewöhnliche Witterungsbeständigkeit, UV-Stabilität und Schlagfestigkeit. Die kratzfeste, pflegeleichte Oberfläche trotzt selbst extremen klimatischen Bedingungen.",
+            "Die HPL-Platten sind eine erstklassige Lösung für moderne, langlebige Fassadengestaltungen. Gefertigt aus hochverdichteten Laminatplatten, bieten sie außergewöhnliche Witterungsbeständigkeit, UV-Stabilität und Schlagfestigkeit. Die kratzfeste, pflegeleichte Oberfläche trotzt selbst extremen klimatischen Bedingungen.",
         mobileTitle: "Verbundplatten - Schwarz",
         mobileSubtitle: "",
         mobileDescription:
             "HPL-Verbundplatten: wetterfest, UV-stabil, kratz- und schlagfest. Pflegeleicht und langlebig für moderne Fassaden.",
-        image: IMAGES.materials.fundermaxSchwarz,
+        image: IMAGES.materials.fassadenplattenSchwarz,
         backgroundColor: "#F4F4F4",
     },
     {
@@ -141,12 +141,12 @@ export const MATERIALIEN_CONTENT: ContentCardData[] = [
         title: "Verbundplatten - Weiß",
         subtitle: "",
         description:
-            "Die Fundermax HPL-Platten sind eine erstklassige Lösung für moderne, langlebige Fassadengestaltungen. Gefertigt aus hochverdichteten Laminatplatten, bieten sie außergewöhnliche Witterungsbeständigkeit, UV-Stabilität und Schlagfestigkeit. Die kratzfeste, pflegeleichte Oberfläche trotzt selbst extremen klimatischen Bedingungen.",
+            "Die HPL-Platten sind eine erstklassige Lösung für moderne, langlebige Fassadengestaltungen. Gefertigt aus hochverdichteten Laminatplatten, bieten sie außergewöhnliche Witterungsbeständigkeit, UV-Stabilität und Schlagfestigkeit. Die kratzfeste, pflegeleichte Oberfläche trotzt selbst extremen klimatischen Bedingungen.",
         mobileTitle: "Verbundplatten - Weiß",
         mobileSubtitle: "",
         mobileDescription:
             "HPL-Verbundplatten in Weiß: wetterfest, UV-stabil und kratzfest. Pflegeleicht, langlebig und ideal für klare, moderne Fassaden.",
-        image: IMAGES.materials.fundermaxWeiss,
+        image: IMAGES.materials.fassadenplattenWeiss,
         backgroundColor: "#F4F4F4",
     },
     {

@@ -88,7 +88,7 @@ async function main() {
         category: 'gebaeudehuelle',
         value: 'fassadenplatten_schwarz',
         name: 'Fassadenplatten Schwarz',
-        description: 'FUNDERMAX® 268 x 130 cm\nSustainability Award 2024',
+        description: '268 x 130 cm\nSustainability Award 2024',
         basePrice: 36400,
         sortOrder: 3,
         properties: { material: 'composite', maintenance: 'low', sustainability: 'high' }
@@ -97,7 +97,7 @@ async function main() {
         category: 'gebaeudehuelle',
         value: 'fassadenplatten_weiss',
         name: 'Fassadenplatten Weiß',
-        description: 'FUNDERMAX® 268 x 130 cm\nSustainability Award 2024',
+        description: '268 x 130 cm\nSustainability Award 2024',
         basePrice: 36400,
         sortOrder: 4,
         properties: { material: 'composite', maintenance: 'low', sustainability: 'high' }

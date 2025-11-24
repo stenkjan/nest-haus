@@ -48,12 +48,12 @@ const FACADE_OPTIONS = [
   {
     id: 'fassadenplatten_schwarz',
     name: 'Fassadenplatten Schwarz',
-    subtitle: 'FUNDERMAX®; 268 x 130 cm',
+    subtitle: '268 x 130 cm',
   },
   {
     id: 'fassadenplatten_weiss',
     name: 'Fassadenplatten Weiß',
-    subtitle: 'FUNDERMAX®; 268 x 130 cm',
+    subtitle: '268 x 130 cm',
   },
 ];
 

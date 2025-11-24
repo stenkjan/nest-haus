@@ -1,49 +1,12 @@
 import type { Metadata } from "next";
 import KontaktClient from "./KontaktClient";
+import {
+  generatePageMetadata,
+  generateBreadcrumbSchema,
+} from "@/lib/seo/generateMetadata";
 
 // Enhanced SEO metadata for the contact page
-export const metadata: Metadata = {
-  title: "Kontakt | NEST-Haus | Beratung & Terminvereinbarung",
-  description:
-    "Vereinbaren Sie einen kostenlosen Beratungstermin mit NEST-Haus. Professionelle Beratung für Ihr modulares Traumhaus. Jetzt Termin buchen!",
-  keywords:
-    "nest haus kontakt, beratungstermin, modulhaus beratung, hausbau beratung, kostenlose beratung, termin vereinbaren",
-  alternates: {
-    canonical: "https://nest-haus.at/kontakt",
-  },
-  openGraph: {
-    title: "NEST-Haus Kontakt | Kostenlose Beratung",
-    description:
-      "Vereinbaren Sie einen kostenlosen Beratungstermin mit NEST-Haus. Professionelle Beratung für Ihr modulares Traumhaus.",
-    url: "https://nest-haus.at/kontakt",
-    images: [
-      {
-        url: "/images/kontakt-beratung.jpg",
-        width: 1200,
-        height: 630,
-        alt: "NEST-Haus Beratungstermin",
-      },
-    ],
-  },
-  twitter: {
-    card: "summary_large_image",
-    title: "NEST-Haus Kontakt | Kostenlose Beratung",
-    description:
-      "Vereinbaren Sie einen kostenlosen Beratungstermin mit NEST-Haus.",
-    images: ["/images/kontakt-twitter.jpg"],
-  },
-  robots: {
-    index: true,
-    follow: true,
-    googleBot: {
-      index: true,
-      follow: true,
-      "max-video-preview": -1,
-      "max-image-preview": "large",
-      "max-snippet": -1,
-    },
-  },
-};
+export const metadata: Metadata = generatePageMetadata("kontakt");
 
 // Structured Data for Contact Page
 const contactSchema = {
@@ -110,10 +73,19 @@ const serviceSchema = {
   },
 };
 
+// Breadcrumb Schema
+const breadcrumbSchema = generateBreadcrumbSchema("kontakt");
+
 // Server Component - Can handle SEO, metadata, and structured data
 export default function ContactPage() {
   return (
     <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(breadcrumbSchema),
+        }}
+      />
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{

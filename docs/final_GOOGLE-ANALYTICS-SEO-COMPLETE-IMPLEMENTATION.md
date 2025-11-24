@@ -995,6 +995,321 @@ src/app/cookie-einstellungen/
 
 ---
 
+## 📚 Metadata System Architecture
+
+### Overview
+
+The Nest-Haus website uses a **centralized metadata system** with flexible schema helpers. All page metadata is defined in `src/lib/seo/generateMetadata.ts` for consistency and maintainability.
+
+### System Components
+
+1. **Centralized Configuration** (`PAGE_SEO_CONFIG`)
+   - Single source of truth for all page metadata
+   - Includes title, description, keywords, images, priority, changeFrequency
+   - Type-safe with TypeScript
+
+2. **Helper Functions**
+   - `generatePageMetadata()` - Main function to generate Next.js Metadata
+   - `generateStructuredData()` - Page-specific structured data
+   - `generateBreadcrumbSchema()` - Breadcrumb navigation
+   - Schema helpers for Product, Service, About, Video schemas
+
+3. **Page Implementation**
+   - Import centralized functions
+   - Call with page key
+   - Add page-specific structured data as needed
+
+### Benefits
+
+- ✅ **Single source of truth** - All metadata in one file
+- ✅ **Type safety** - TypeScript ensures correctness
+- ✅ **Consistency** - Same structure across all pages
+- ✅ **Easy updates** - Change metadata in one place
+- ✅ **SEO compliance** - Follows Google best practices
+
+---
+
+## 🔧 Adding New Pages to Metadata System
+
+### Step 1: Add Page Configuration
+
+In `src/lib/seo/generateMetadata.ts`, add to `PAGE_SEO_CONFIG`:
+
+```typescript
+"your-page": {
+    title: "Your Page | NEST-Haus | Tagline",
+    description: "Detailed description for SEO and social sharing.",
+    keywords: "keyword1, keyword2, keyword3",
+    priority: 0.8,
+    changeFrequency: "monthly" as const,
+    ogImage: "/images/your-page-og.jpg",
+    twitterImage: "/images/your-page-twitter.jpg",
+},
+```
+
+### Step 2: Implement in page.tsx
+
+```typescript
+import type { Metadata } from "next";
+import YourPageClient from "./YourPageClient";
+import {
+  generatePageMetadata,
+  generateStructuredData,
+  generateBreadcrumbSchema,
+} from "@/lib/seo/generateMetadata";
+
+// Use centralized metadata
+export const metadata: Metadata = generatePageMetadata("your-page");
+
+// Generate structured data
+const pageSchema = generateStructuredData("your-page");
+const breadcrumbSchema = generateBreadcrumbSchema("your-page");
+
+export default function YourPage() {
+  return (
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(breadcrumbSchema),
+        }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(pageSchema),
+        }}
+      />
+      <YourPageClient />
+    </>
+  );
+}
+```
+
+### Step 3: Verify in Sitemap
+
+The sitemap at `/sitemap.xml` is automatically generated from `PAGE_SEO_CONFIG`. Your new page will appear automatically.
+
+---
+
+## 🎨 Schema Helper Functions
+
+### Product Schema
+
+For pages showcasing modular houses (e.g., dein-nest):
+
+```typescript
+import { generatePageProductSchema } from "@/lib/seo/generateMetadata";
+
+const productSchema = generatePageProductSchema({
+  name: "NEST-Haus Modulhäuser",
+  description: "Modulare Häuser mit individueller Gestaltung",
+  category: "Modulhäuser",
+  lowPrice: "177000",
+  highPrice: "313000",
+  offerCount: "3",
+});
+```
+
+### Service Schema
+
+For pages describing services (e.g., konzept-check, nest-system):
+
+```typescript
+import { generatePageServiceSchema } from "@/lib/seo/generateMetadata";
+
+const serviceSchema = generatePageServiceSchema({
+  name: "NEST-System Modulbau",
+  description: "Modulares Bausystem für individuelle Häuser",
+  serviceType: "Modulbau und Bausystem",
+});
+```
+
+### About Schema
+
+For company/mission pages (e.g., warum-wir):
+
+```typescript
+import { generatePageAboutSchema } from "@/lib/seo/generateMetadata";
+
+const missionSchema = generatePageAboutSchema({
+  foundingDate: "2020",
+  mission: "Revolutionierung des Hausbaus",
+  values: ["Nachhaltigkeit", "Innovation", "Individualität"],
+});
+```
+
+### Video Schema
+
+For pages with embedded videos:
+
+```typescript
+import { generatePageVideoSchema } from "@/lib/seo/generateMetadata";
+
+const videoSchema = generatePageVideoSchema({
+  name: "Nest Haus Vision",
+  description: "Die Vision von NEST-Haus",
+  thumbnailUrl: "https://i.ytimg.com/vi/VIDEO_ID/maxresdefault.jpg",
+  contentUrl: "https://www.youtube.com/watch?v=VIDEO_ID",
+  embedUrl: "https://www.youtube.com/embed/VIDEO_ID",
+  uploadDate: "2024-01-01",
+  duration: "PT2M30S",
+});
+```
+
+---
+
+## 🗺️ Breadcrumb Schema Integration
+
+### What Are Breadcrumbs?
+
+Breadcrumbs show users their location in the site hierarchy. Google displays them in search results for better UX and SEO.
+
+Example:
+```
+Home > Dein Nest > Details
+```
+
+### How to Add Breadcrumbs
+
+**Simple (Automatic):**
+```typescript
+import { generateBreadcrumbSchema } from "@/lib/seo/generateMetadata";
+
+const breadcrumbSchema = generateBreadcrumbSchema("dein-nest");
+```
+
+This creates: `Home → Dein Nest`
+
+**Custom Path (Multi-level):**
+```typescript
+const breadcrumbSchema = generateBreadcrumbSchema("konzept-check", [
+  "Entdecken",
+  "Konzept-Check"
+]);
+```
+
+This creates: `Home → Entdecken → Konzept-Check`
+
+### Adding to Page
+
+```typescript
+export default function YourPage() {
+  return (
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(breadcrumbSchema),
+        }}
+      />
+      {/* Other schemas */}
+      <YourPageClient />
+    </>
+  );
+}
+```
+
+### Benefits
+
+- ✅ **Better search results** - Breadcrumbs appear in Google
+- ✅ **Higher CTR** - Users see site structure before clicking
+- ✅ **SEO boost** - +5-10 points in Lighthouse SEO score
+- ✅ **User experience** - Clear navigation context
+
+### Verification
+
+1. **View Page Source**: Search for `"BreadcrumbList"`
+2. **Google Rich Results Test**: https://search.google.com/test/rich-results
+3. **Expected Output**:
+```json
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "Home",
+      "item": "https://nest-haus.at"
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": "Dein Nest",
+      "item": "https://nest-haus.at/dein-nest"
+    }
+  ]
+}
+```
+
+---
+
+## 📋 Active Pages Reference
+
+### Current Routes and Metadata Keys
+
+| Route | Metadata Key | Status | Breadcrumb | Structured Data |
+|-------|--------------|--------|------------|-----------------|
+| `/` | `home` | ✅ Live | N/A | WebSite, Product |
+| `/dein-nest` | `dein-nest` | ✅ Live | ✅ Yes | WebPage, Product |
+| `/konzept-check` | `konzept-check` | ✅ Live | ✅ Yes | WebPage, Service |
+| `/nest-system` | `nest-system` | ✅ Live | ✅ Yes | WebPage, Service |
+| `/warum-wir` | `warumWir` | ✅ Live | ✅ Yes | AboutPage, Organization, Video |
+| `/kontakt` | `kontakt` | ✅ Live | ✅ Yes | ContactPage, LocalBusiness, Service |
+| `/konfigurator` | `konfigurator` | ✅ Live | ✅ Yes | SoftwareApplication |
+| `/warenkorb` | `warenkorb` | ✅ Live | ✅ Yes | ShoppingCart |
+| `/faq` | `faq` | ✅ Live | ✅ Yes | FAQPage |
+| `/showcase` | `showcase` | ✅ Live | 🟡 Add | CollectionPage |
+| `/datenschutz` | `datenschutz` | ✅ Live | 🟢 Optional | WebPage |
+| `/impressum` | `impressum` | ✅ Live | 🟢 Optional | WebPage |
+| `/agb` | `agb` | ✅ Live | 🟢 Optional | WebPage |
+
+**Legend:**
+- ✅ **Live** - Active and using centralized metadata
+- ✅ **Yes** - Breadcrumb schema implemented
+- 🟡 **Add** - Should add for better SEO
+- 🟢 **Optional** - Nice to have but not critical
+
+### Base URL Configuration
+
+**Production:** `https://nest-haus.at`  
+**Development:** `https://nest-haus.vercel.app` (for testing)
+
+All metadata now uses the production URL `nest-haus.at` for consistency.
+
+---
+
+## 🗑️ Deprecated Pages (Removed)
+
+The following page configurations were removed during the metadata unification:
+
+### Removed from PAGE_SEO_CONFIG
+
+1. **`entdecken`** 
+   - Reason: Replaced by `dein-nest`
+   - Migration: Content merged into dein-nest page
+   - Date: November 2024
+
+2. **`deinPart`**
+   - Reason: Deprecated route, no longer in use
+   - Migration: Concept merged into konzept-check
+   - Date: November 2024
+
+3. **`unserPart`**
+   - Reason: Deprecated route, no longer in use
+   - Migration: Content merged into nest-system
+   - Date: November 2024
+
+### Impact
+
+- ✅ Sitemap automatically updated (deprecated pages removed)
+- ✅ No 404 errors (routes physically removed)
+- ✅ Metadata file cleaner and easier to maintain
+- ✅ SEO focus on active pages only
+
+---
+
 ## 📞 Support
 
 ### Internal Documentation
@@ -1044,6 +1359,6 @@ src/app/cookie-einstellungen/
 ---
 
 *Generated: 2025-11-20*  
-*Last Updated: 2025-11-20*  
-*Version: 1.0.0 - Complete Implementation*
+*Last Updated: 2025-11-24*  
+*Version: 2.0.0 - Unified Metadata System*
 

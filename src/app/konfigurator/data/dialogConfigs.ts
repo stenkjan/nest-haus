@@ -76,23 +76,23 @@ export const dialogConfigs: Record<string, MaterialSliderDialogConfig> = {
       // },
       {
         id: 3,
-        title: "FUNDERMAX® HPL-Platten Schwarz",
+        title: "Fassadenplatten Schwarz",
         subtitle: "Die Außenhülle",
         description: {
-          mobile: "Schwarze Fundermax HPL-Platten vereinen zeitlose Eleganz mit technischer Perfektion. Tiefschwarze, matte Oberfläche für moderne Architektur. Witterungsbeständig, UV-stabil und kratzfest.",
-          desktop: "Die schwarzen Fundermax HPL-Platten vereinen zeitlose Eleganz mit technischer Perfektion. Die tiefschwarze, matte Oberfläche verleiht Fassaden eine kraftvolle, moderne Ausstrahlung und setzt markante architektonische Akzente. Hochverdichtetes Laminat garantiert außergewöhnliche Witterungsbeständigkeit, UV-Stabilität und Schlagfestigkeit – die kratzfeste Oberfläche behält ihre intensive Farbtiefe über Jahre hinweg."
+          mobile: "Schwarze HPL-Platten vereinen zeitlose Eleganz mit technischer Perfektion. Tiefschwarze, matte Oberfläche für moderne Architektur. Witterungsbeständig, UV-stabil und kratzfest.",
+          desktop: "Die schwarzen HPL-Platten vereinen zeitlose Eleganz mit technischer Perfektion. Die tiefschwarze, matte Oberfläche verleiht Fassaden eine kraftvolle, moderne Ausstrahlung und setzt markante architektonische Akzente. Hochverdichtetes Laminat garantiert außergewöhnliche Witterungsbeständigkeit, UV-Stabilität und Schlagfestigkeit – die kratzfeste Oberfläche behält ihre intensive Farbtiefe über Jahre hinweg."
         },
-        imagePath: IMAGES.materials.fundermaxSchwarz
+        imagePath: IMAGES.materials.fassadenplattenSchwarz
       },
       {
         id: 4,
-        title: "FUNDERMAX® HPL-Platten Weiß",
+        title: "Fassadenplatten Weiß",
         subtitle: "Die Außenhülle",
         description: {
-          mobile: "Weiße Fundermax HPL-Platten vereinen zeitlose Eleganz mit technischer Perfektion. Leuchtend weiße, glänzende Oberfläche für moderne Architektur. Witterungsbeständig, UV-stabil und kratzfest.",
-          desktop: "Die weißen Fundermax HPL-Platten vereinen zeitlose Eleganz mit technischer Perfektion. Die leuchtend weiße, glänzende Oberfläche verleiht Fassaden eine kraftvolle, moderne Ausstrahlung und setzt markante architektonische Akzente. Hochverdichtetes Laminat garantiert außergewöhnliche Witterungsbeständigkeit, UV-Stabilität und Schlagfestigkeit – die kratzfeste Oberfläche behält ihre intensive Farbtiefe über Jahre hinweg."
+          mobile: "Weiße HPL-Platten vereinen zeitlose Eleganz mit technischer Perfektion. Leuchtend weiße, glänzende Oberfläche für moderne Architektur. Witterungsbeständig, UV-stabil und kratzfest.",
+          desktop: "Die weißen HPL-Platten vereinen zeitlose Eleganz mit technischer Perfektion. Die leuchtend weiße, glänzende Oberfläche verleiht Fassaden eine kraftvolle, moderne Ausstrahlung und setzt markante architektonische Akzente. Hochverdichtetes Laminat garantiert außergewöhnliche Witterungsbeständigkeit, UV-Stabilität und Schlagfestigkeit – die kratzfeste Oberfläche behält ihre intensive Farbtiefe über Jahre hinweg."
         },
-        imagePath: IMAGES.materials.fundermaxWeiss
+        imagePath: IMAGES.materials.fassadenplattenWeiss
       },
       // {
       //   id: 5,

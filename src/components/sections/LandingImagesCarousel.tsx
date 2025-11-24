@@ -100,7 +100,7 @@ const LandingImagesCarousel: React.FC<LandingImagesCarouselProps> = ({
         alt: "NEST-Haus Bild 6",
         description: {
           title: "Nest Interior",
-          subtitle: "Schwarze Steinplatten",
+          subtitle: "Innenverkleidung Fichte, Parkett Eiche",
           sectionSlug: "gestaltung-fuer-visionen",
         },
       },

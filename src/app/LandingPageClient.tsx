@@ -65,7 +65,7 @@ const sectionsContent = [
     sectionId: "dein-nest-haus",
     imagePath: IMAGES.hero.nestHaus1,
     h1: "Dein ®Nest Haus",
-    h3: "Dein Stil. Dein Zuhause.",
+    h3: "Ich wohne wie ich will",
     modelName: "Nest 140",
     configuration: "Fassadenplatten Weiß",
     button1: "Konzept-Check",

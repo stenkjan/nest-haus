@@ -61,7 +61,7 @@ const ImageGallery: React.FC<ImageGalleryProps> = ({
     },
     {
       src: IMAGES.hero.nestHaus8,
-      alt: "NEST Haus Innenperspektive Schwarze Steinplatten",
+      alt: "NEST Haus Innenperspektive Schwarze Innenverkleidung Fichte Parkett Eiche",
     },
   ], []);
 

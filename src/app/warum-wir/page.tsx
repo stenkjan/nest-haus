@@ -1,57 +1,14 @@
 import type { Metadata } from "next";
 import WarumWirClient from "./WarumWirClient";
+import {
+  generatePageMetadata,
+  generatePageAboutSchema,
+  generatePageVideoSchema,
+  generateBreadcrumbSchema,
+} from "@/lib/seo/generateMetadata";
 
 // Enhanced SEO metadata for the warum-wir page
-export const metadata: Metadata = {
-  title: "Warum Wir | NEST-Haus | Unser Antrieb & Unsere Vision",
-  description:
-    "Erfahren Sie, warum NEST-Haus modulare Häuser baut und was uns antreibt. Unsere Vision für nachhaltiges, individuelles und zukunftsorientiertes Bauen.",
-  keywords:
-    "warum nest haus, vision modulhaus, nachhaltig bauen motivation, unternehmen vision, modulare architektur philosophie",
-  alternates: {
-    canonical: "https://nest-haus.at/warum-wir",
-  },
-  openGraph: {
-    title: "Warum Wir | NEST-Haus | Unser Antrieb & Unsere Vision",
-    description:
-      "Erfahren Sie, warum NEST-Haus modulare Häuser baut und was uns antreibt. Unsere Vision für nachhaltiges Bauen.",
-    url: "https://nest-haus.at/warum-wir",
-    images: [
-      {
-        url: "/images/warum-wir-hero.jpg",
-        width: 1200,
-        height: 630,
-        alt: "NEST-Haus Team - Warum wir modulare Häuser bauen",
-      },
-    ],
-    videos: [
-      {
-        url: "https://www.youtube.com/watch?v=Z05jRVentdc",
-        width: 1920,
-        height: 1080,
-        type: "video/mp4",
-      },
-    ],
-  },
-  twitter: {
-    card: "summary_large_image",
-    title: "Warum Wir | NEST-Haus | Unser Antrieb & Unsere Vision",
-    description:
-      "Erfahren Sie, warum NEST-Haus modulare Häuser baut und was uns antreibt. Unsere Vision für nachhaltiges Bauen.",
-    images: ["/images/warum-wir-twitter.jpg"],
-  },
-  robots: {
-    index: true,
-    follow: true,
-    googleBot: {
-      index: true,
-      follow: true,
-      "max-video-preview": -1,
-      "max-image-preview": "large",
-      "max-snippet": -1,
-    },
-  },
-};
+export const metadata: Metadata = generatePageMetadata("warumWir");
 
 // Structured Data for the Warum Wir page
 const warumWirSchema = {
@@ -72,13 +29,9 @@ const warumWirSchema = {
 };
 
 // Company Mission Schema
-const missionSchema = {
-  "@context": "https://schema.org",
-  "@type": "Organization",
-  name: "NEST-Haus",
-  description: "Modulare Häuser und nachhaltiges Bauen",
-  mission:
-    "Revolutionierung des Hausbaus durch modulare, nachhaltige und individuelle Lösungen",
+const missionSchema = generatePageAboutSchema({
+  foundingDate: "2020",
+  mission: "Revolutionierung des Hausbaus durch modulare, nachhaltige und individuelle Lösungen",
   values: [
     "Nachhaltigkeit",
     "Innovation",
@@ -86,16 +39,10 @@ const missionSchema = {
     "Qualität",
     "Transparenz",
   ],
-  areaServed: {
-    "@type": "Country",
-    name: "Austria",
-  },
-};
+});
 
 // Video Schema for YouTube embed
-const videoSchema = {
-  "@context": "https://schema.org",
-  "@type": "VideoObject",
+const videoSchema = generatePageVideoSchema({
   name: "Nest Haus Vision - Die ®Nest Vision",
   description:
     "Erfahren Sie mehr über die Vision von NEST-Haus: Modulare, nachhaltige Häuser, die mit Ihnen wachsen und sich bewegen. Ein Zuhause, das Freiraum schafft.",
@@ -103,21 +50,22 @@ const videoSchema = {
   uploadDate: "2024-01-01",
   contentUrl: "https://www.youtube.com/watch?v=Z05jRVentdc",
   embedUrl: "https://www.youtube.com/embed/Z05jRVentdc",
-  duration: "PT2M30S", // Adjust based on actual video length
-  publisher: {
-    "@type": "Organization",
-    name: "NEST-Haus",
-    logo: {
-      "@type": "ImageObject",
-      url: "https://nest-haus.at/images/nest-haus-logo.png",
-    },
-  },
-};
+  duration: "PT2M30S",
+});
+
+// Breadcrumb Schema
+const breadcrumbSchema = generateBreadcrumbSchema("warumWir");
 
 // Server Component - Can handle SEO, metadata, and structured data
 export default function WarumWirPage() {
   return (
     <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(breadcrumbSchema),
+        }}
+      />
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{

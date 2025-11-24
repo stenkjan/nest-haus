@@ -110,13 +110,13 @@ export const configuratorData: CategoryData[] = [
       {
         id: 'fassadenplatten_schwarz',
         name: 'Fassadenplatten Schwarz',
-        description: 'FUNDERMAX® 268 x 130 cm\nSustainability Award 2024',
+        description: '268 x 130 cm\nSustainability Award 2024',
         price: { type: 'upgrade', amount: 26800, monthly: 141 } // 36400 - 9600 = 26800 vs standard
       },
       {
         id: 'fassadenplatten_weiss',
         name: 'Fassadenplatten Weiß',
-        description: 'FUNDERMAX® 268 x 130 cm\nSustainability Award 2024',
+        description: '268 x 130 cm\nSustainability Award 2024',
         price: { type: 'upgrade', amount: 26800, monthly: 141 } // 36400 - 9600 = 26800 vs standard
       }
     ],
