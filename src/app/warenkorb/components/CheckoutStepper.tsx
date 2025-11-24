@@ -1264,7 +1264,7 @@ export default function CheckoutStepper({
     }
 
     const total = nestHausTotal; // "Dein Nest Haus" shows only physical house price
-    const grundstueckscheckDone = Boolean(configItem?.grundstueckscheck);
+    const _grundstueckscheckDone = Boolean(configItem?.grundstueckscheck);
     const _dueNow = GRUNDSTUECKSCHECK_PRICE; // Grundstückscheck is always due today as part of the process
     const _planungspaketDone = Boolean(configItem?.planungspaket?.value);
     const _terminDone = false; // Integrate with AppointmentBooking state if available
