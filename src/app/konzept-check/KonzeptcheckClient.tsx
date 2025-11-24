@@ -130,7 +130,7 @@ export default function KonzeptcheckClient() {
                     text: "Konzept-Check bestellen",
                     variant: "primary",
                     size: "xs",
-                    link: "/warenkorb?mode=entwurf",
+                    link: "/warenkorb?mode=konzept-check",
                   },
                   {
                     text: "Beratungsgespräch",
@@ -193,7 +193,7 @@ export default function KonzeptcheckClient() {
                     text: "Konzept-Check bestellen",
                     variant: "landing-secondary-blue-white",
                     size: "xs",
-                    link: "/warenkorb?mode=entwurf",
+                    link: "/warenkorb?mode=konzept-check",
                   },
                 ],
               },
