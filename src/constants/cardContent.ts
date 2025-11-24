@@ -1041,7 +1041,7 @@ export const WARUM_WIR_TEAM_CARDS_CONTENT: ContentCardData[] = [
         id: 3,
         title: "Philipp Möstl",
         subtitle: "<span class='text-gray-400'></span>",
-        description: "Baumeister & Production",
+        description: "Baumeister & Produktion",
         image: IMAGES.team.philippMoestl,
         backgroundColor: "#121212",
         textColor: "text-white",
