@@ -148,7 +148,7 @@ export const configuratorData: CategoryData[] = [
       {
         id: 'ohne_innenverkleidung',
         name: 'Standard',
-        description: 'Keine Innenverkleidung\nRohbau',
+        description: 'Keine Innenverkleidung\nVerbaue deine Innenwandpanele selbst',
         price: { type: 'included', amount: 0 } // New baseline (0€)
       },
       {

@@ -4,6 +4,19 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [f84bc572ea4adccae0ce68be5e7894419f5b256f] - Sat Nov 22 18:27:04 2025 +0100
+
+**Author**: stenkjan
+**Message**: `Merge b0bde76e2c34b2ee30e9c37c3f7695447f1d4692 into a153d023f1ea77afd6345567587c09f135617a93  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/konfigurator/data/configuratorData.ts
+
+
+---
+
 ## [15ce80315498150561797eace59b193db77bb8a1] - Fri Nov 21 18:00:18 2025 +0100
 
 **Author**: stenkjan
