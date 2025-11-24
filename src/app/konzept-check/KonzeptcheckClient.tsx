@@ -132,12 +132,6 @@ export default function KonzeptcheckClient() {
                     size: "xs",
                     link: "/warenkorb?mode=konzept-check",
                   },
-                  {
-                    text: "Beratungsgespräch",
-                    variant: "landing-secondary-blue",
-                    size: "xs",
-                    link: "/kontakt",
-                  },
                 ],
               },
             ]}
@@ -184,14 +178,8 @@ export default function KonzeptcheckClient() {
                 imagePosition: "center" as const,
                 buttons: [
                   {
-                    text: "Konfigurator",
-                    variant: "primary",
-                    size: "xs",
-                    link: "/konfigurator",
-                  },
-                  {
                     text: "Konzept-Check bestellen",
-                    variant: "landing-secondary-blue-white",
+                    variant: "primary",
                     size: "xs",
                     link: "/warenkorb?mode=konzept-check",
                   },
