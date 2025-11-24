@@ -425,6 +425,7 @@ export const IMAGES = {
     team: {
         markusSchmoltner: '335-nest-haus-team-markus-schmoltner',
         bernhardGrentner: '336-nest-haus-team-bernhard-grentner',
+        philippMoestl: '345-nest-haus-team-philipp-moestl',
         inesSagadin: '337-nest-haus-team-ines-sagadin',
         janSchmoltner: '338-nest-haus-team-jan-schmoltner',
         janStenk: '339-nest-haus-team-jan-stenk'

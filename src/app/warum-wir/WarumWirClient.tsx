@@ -157,7 +157,7 @@ export default function WarumWirClient() {
                 Kreativität und Erfahrung vereint
               </h2>
               <h3 className="h3-secondary font-normal text-black">
-                Wir stellen uns kurz vor
+                Wir stellen uns vor
               </h3>
             </div>
           </div>

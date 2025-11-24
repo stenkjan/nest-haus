@@ -1039,6 +1039,18 @@ export const WARUM_WIR_TEAM_CARDS_CONTENT: ContentCardData[] = [
     },
     {
         id: 3,
+        title: "Philipp Möstl",
+        subtitle: "",
+        description: "Baumeister",
+        image: IMAGES.team.philippMoestl,
+        backgroundColor: "#121212",
+        textColor: "text-white",
+        aspectRatio: "2x1",
+        bottomLabel: "",
+        bottomText: "",
+    },
+    {
+        id: 4,
         title: "Ines Sagadin",
         subtitle: "<span class='text-gray-400'></span>",
         description: "Head of Design",
@@ -1050,7 +1062,7 @@ export const WARUM_WIR_TEAM_CARDS_CONTENT: ContentCardData[] = [
         bottomText: "",
     },
     {
-        id: 4,
+        id: 5,
         title: "Jan Schmoltner",
         subtitle: "<span class='text-gray-400'></span>",
         description: "Marketing & Media",
@@ -1062,7 +1074,7 @@ export const WARUM_WIR_TEAM_CARDS_CONTENT: ContentCardData[] = [
         bottomText: "",
     },
     {
-        id: 5,
+        id: 6,
         title: "Jan Stenk",
         subtitle: "<span class='text-gray-400'></span>",
         description: "Head of Development",
