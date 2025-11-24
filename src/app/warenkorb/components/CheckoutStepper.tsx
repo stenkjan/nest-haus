@@ -1232,13 +1232,21 @@ export default function CheckoutStepper({
 
       // Calculate planungspaket price separately to subtract it
       let planungspaketPrice = 0;
-      if (configItem?.planungspaket?.value && configItem.planungspaket.value !== 'basis') {
+      if (
+        configItem?.planungspaket?.value &&
+        configItem.planungspaket.value !== "basis"
+      ) {
         const pricingData = PriceCalculator.getPricingData();
         if (pricingData && configItem.nest) {
-          const nestSize = configItem.nest.value as 'nest80' | 'nest100' | 'nest120' | 'nest140' | 'nest160';
-          if (configItem.planungspaket.value === 'plus') {
+          const nestSize = configItem.nest.value as
+            | "nest80"
+            | "nest100"
+            | "nest120"
+            | "nest140"
+            | "nest160";
+          if (configItem.planungspaket.value === "plus") {
             planungspaketPrice = pricingData.planungspaket.plus[nestSize] || 0;
-          } else if (configItem.planungspaket.value === 'pro') {
+          } else if (configItem.planungspaket.value === "pro") {
             planungspaketPrice = pricingData.planungspaket.pro[nestSize] || 0;
           }
           // Normalize -1 (dash price) to 0 for calculation
@@ -1433,7 +1441,7 @@ export default function CheckoutStepper({
                                     total,
                                     nestModel,
                                     geschossdeckeQty
-                                  )} (Preise inkl. MwSt.)`;
+                                  )} inkl. MwSt.`;
                                 })()
                               : getRowSubtitle(0)}
                         </div>
@@ -1613,7 +1621,9 @@ export default function CheckoutStepper({
                   </div>
                   <div className="text-sm md:text-base lg:text-lg 2xl:text-xl font-normal text-gray-900 leading-relaxed">
                     <div className="flex items-center gap-2 justify-end">
-                      <span className="text-gray-400 line-through">3.000 €</span>
+                      <span className="text-gray-400 line-through">
+                        3.000 €
+                      </span>
                       <span>1.500 €</span>
                     </div>
                     <div className="text-xs text-gray-500 text-right mt-1">
@@ -3143,18 +3153,29 @@ export default function CheckoutStepper({
                   };
 
                   // Calculate FULL total including planungspaket
-                  const fullTotal = PriceCalculator.calculateTotalPrice(selections);
+                  const fullTotal =
+                    PriceCalculator.calculateTotalPrice(selections);
 
                   // Calculate planungspaket price separately to subtract it
                   let planungspaketPrice = 0;
-                  if (configItem?.planungspaket?.value && configItem.planungspaket.value !== 'basis') {
+                  if (
+                    configItem?.planungspaket?.value &&
+                    configItem.planungspaket.value !== "basis"
+                  ) {
                     const pricingData = PriceCalculator.getPricingData();
                     if (pricingData && configItem.nest) {
-                      const nestSize = configItem.nest.value as 'nest80' | 'nest100' | 'nest120' | 'nest140' | 'nest160';
-                      if (configItem.planungspaket.value === 'plus') {
-                        planungspaketPrice = pricingData.planungspaket.plus[nestSize] || 0;
-                      } else if (configItem.planungspaket.value === 'pro') {
-                        planungspaketPrice = pricingData.planungspaket.pro[nestSize] || 0;
+                      const nestSize = configItem.nest.value as
+                        | "nest80"
+                        | "nest100"
+                        | "nest120"
+                        | "nest140"
+                        | "nest160";
+                      if (configItem.planungspaket.value === "plus") {
+                        planungspaketPrice =
+                          pricingData.planungspaket.plus[nestSize] || 0;
+                      } else if (configItem.planungspaket.value === "pro") {
+                        planungspaketPrice =
+                          pricingData.planungspaket.pro[nestSize] || 0;
                       }
                       // Normalize -1 (dash price) to 0 for calculation
                       if (planungspaketPrice === -1) {
@@ -3188,7 +3209,8 @@ export default function CheckoutStepper({
                 })();
 
                 // Total price for payment calculations (Nest Haus already excludes planungspaket, so just add it back)
-                const totalPrice = deinNestHausTotal + planungspaketPriceForTotal;
+                const totalPrice =
+                  deinNestHausTotal + planungspaketPriceForTotal;
 
                 const _firstPayment = 3000; // Grundstückscheck full price (shown in display above)
                 const grundstueckscheckCredit = 1500; // Actual payment (discount applied)
@@ -3458,7 +3480,9 @@ export default function CheckoutStepper({
                       <h3
                         className={`text-lg font-medium mb-1 ${isPaymentCompleted ? "text-green-600" : "text-gray-900"}`}
                       >
-                        {isPaymentCompleted ? "Bezahlt" : "Entwurf- und Grundstückscheck"}
+                        {isPaymentCompleted
+                          ? "Bezahlt"
+                          : "Entwurf- und Grundstückscheck"}
                       </h3>
                       <div className="text-sm text-gray-600">
                         {isPaymentCompleted
@@ -3967,7 +3991,9 @@ export default function CheckoutStepper({
                 <h2
                   className={`h2-title mb-3 ${isPaymentCompleted ? "text-green-600" : "text-black"}`}
                 >
-                  {isPaymentCompleted ? "Bezahlt" : "Entwurf- und Grundstückscheck"}
+                  {isPaymentCompleted
+                    ? "Bezahlt"
+                    : "Entwurf- und Grundstückscheck"}
                 </h2>
                 <div className="text-sm md:text-base lg:text-lg 2xl:text-xl text-gray-700 leading-snug">
                   {isPaymentCompleted && (

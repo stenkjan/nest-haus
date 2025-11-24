@@ -55,7 +55,7 @@ export default function CartFooter({ onReset }: CartFooterProps) {
         {/* Reset button */}
         <button
           className="bg-transparent border-none p-0 m-0 text-[#3D6CE1] font-normal focus:outline-none cursor-pointer text-[clamp(0.7rem,1.1vw,0.9rem)] hover:text-[#2855d6] transition-colors touch-manipulation"
-          style={{ minWidth: 0}}
+          style={{ minWidth: 0 }}
           onClick={handleReset}
           type="button"
         >
@@ -102,7 +102,7 @@ export default function CartFooter({ onReset }: CartFooterProps) {
                       price,
                       nestModel,
                       geschossdeckeQty
-                    )} (Preise inkl. MwSt.)`;
+                    )} inkl. MwSt.`;
                   })()
                 : ""}
             </p>
@@ -112,57 +112,71 @@ export default function CartFooter({ onReset }: CartFooterProps) {
             onClick={() => {
               // Build customization options array from configuration
               const customizationOptions: string[] = [];
-              
+
               if (configuration.nest?.name) {
-                customizationOptions.push(`Nest_${configuration.nest.name.replace(/\s+/g, '_')}`);
+                customizationOptions.push(
+                  `Nest_${configuration.nest.name.replace(/\s+/g, "_")}`
+                );
               }
               if (configuration.gebaeudehuelle?.name) {
-                customizationOptions.push(`Fassade_${configuration.gebaeudehuelle.name.replace(/\s+/g, '_')}`);
+                customizationOptions.push(
+                  `Fassade_${configuration.gebaeudehuelle.name.replace(/\s+/g, "_")}`
+                );
               }
               if (configuration.innenverkleidung?.name) {
-                customizationOptions.push(`Innen_${configuration.innenverkleidung.name.replace(/\s+/g, '_')}`);
+                customizationOptions.push(
+                  `Innen_${configuration.innenverkleidung.name.replace(/\s+/g, "_")}`
+                );
               }
               if (configuration.fussboden?.name) {
-                customizationOptions.push(`Boden_${configuration.fussboden.name.replace(/\s+/g, '_')}`);
+                customizationOptions.push(
+                  `Boden_${configuration.fussboden.name.replace(/\s+/g, "_")}`
+                );
               }
               if (configuration.belichtungspaket?.name) {
-                customizationOptions.push(`Belichtung_${configuration.belichtungspaket.name.replace(/\s+/g, '_')}`);
+                customizationOptions.push(
+                  `Belichtung_${configuration.belichtungspaket.name.replace(/\s+/g, "_")}`
+                );
               }
               if (configuration.pvanlage?.name) {
-                customizationOptions.push(`PV_${configuration.pvanlage.name.replace(/\s+/g, '_')}`);
+                customizationOptions.push(
+                  `PV_${configuration.pvanlage.name.replace(/\s+/g, "_")}`
+                );
               }
               if (configuration.planungspaket?.name) {
-                customizationOptions.push(`Planung_${configuration.planungspaket.name.replace(/\s+/g, '_')}`);
+                customizationOptions.push(
+                  `Planung_${configuration.planungspaket.name.replace(/\s+/g, "_")}`
+                );
               }
               if (configuration.kamindurchzug) {
-                customizationOptions.push('Kamindurchzug_Ja');
+                customizationOptions.push("Kamindurchzug_Ja");
               }
               if (configuration.fussbodenheizung) {
-                customizationOptions.push('Fussbodenheizung_Ja');
+                customizationOptions.push("Fussbodenheizung_Ja");
               }
               if (configuration.fundament) {
-                customizationOptions.push('Fundament_Ja');
+                customizationOptions.push("Fundament_Ja");
               }
-              
+
               // Track configuration complete event
               trackConfigurationComplete({
-                houseModel: configuration.nest?.name || 'Unknown',
+                houseModel: configuration.nest?.name || "Unknown",
                 priceEstimated: currentPrice / 100, // Convert from cents to euros
                 customizationOptions,
               });
-              
+
               // Track add to cart event (ecommerce)
               const currentDate = new Date();
-              const configId = `HOUSE-CONF-${configuration.sessionId?.substring(0, 8) || 'TEMP'}-${currentDate.getMonth() + 1}${currentDate.getFullYear()}`;
-              const itemName = `${configuration.nest?.name || 'Nest Haus'} (Konfig. ${currentDate.getMonth() + 1}/${currentDate.getFullYear()})`;
-              
+              const configId = `HOUSE-CONF-${configuration.sessionId?.substring(0, 8) || "TEMP"}-${currentDate.getMonth() + 1}${currentDate.getFullYear()}`;
+              const itemName = `${configuration.nest?.name || "Nest Haus"} (Konfig. ${currentDate.getMonth() + 1}/${currentDate.getFullYear()})`;
+
               trackAddToCart({
                 itemId: configId,
                 itemName: itemName,
                 price: currentPrice / 100, // Convert from cents to euros
                 quantity: 1,
               });
-              
+
               // Go to warenkorb with normal mode (with configuration)
               console.log(
                 "🛒 CartFooter: Going to warenkorb with configuration"

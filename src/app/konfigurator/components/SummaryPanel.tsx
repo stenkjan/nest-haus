@@ -156,19 +156,26 @@ export default function SummaryPanel({
         // First check if this option has a dash price in raw pricing data
         const pricingData = PriceCalculator.getPricingData();
         if (pricingData) {
-          const nestSize = configuration.nest.value as "nest80" | "nest100" | "nest120" | "nest140" | "nest160";
-          
+          const nestSize = configuration.nest.value as
+            | "nest80"
+            | "nest100"
+            | "nest120"
+            | "nest140"
+            | "nest160";
+
           if (key === "gebaeudehuelle") {
-            const rawPrice = pricingData.gebaeudehuelle[selection.value]?.[nestSize];
+            const rawPrice =
+              pricingData.gebaeudehuelle[selection.value]?.[nestSize];
             if (rawPrice === -1) return -1; // Return -1 for dash prices
           }
-          
+
           if (key === "fussboden") {
-            const rawPrice = pricingData.bodenbelag[selection.value]?.[nestSize];
+            const rawPrice =
+              pricingData.bodenbelag[selection.value]?.[nestSize];
             if (rawPrice === -1) return -1; // Return -1 for dash prices
           }
         }
-        
+
         // Calculate the price difference for this specific option
         const currentNestValue = configuration.nest.value;
 
@@ -248,8 +255,16 @@ export default function SummaryPanel({
       try {
         const pricingData = PriceCalculator.getPricingData();
         if (pricingData && selection.quantity) {
-          const nestSize = configuration.nest.value as "nest80" | "nest100" | "nest120" | "nest140" | "nest160";
-          const price = pricingData.pvanlage.pricesByQuantity[nestSize]?.[selection.quantity];
+          const nestSize = configuration.nest.value as
+            | "nest80"
+            | "nest100"
+            | "nest120"
+            | "nest140"
+            | "nest160";
+          const price =
+            pricingData.pvanlage.pricesByQuantity[nestSize]?.[
+              selection.quantity
+            ];
           if (price === -1) return -1; // Return -1 for dash prices
           if (price !== undefined) return price;
         }
@@ -597,7 +612,7 @@ export default function SummaryPanel({
                         price,
                         nestModel,
                         geschossdeckeQty
-                      )} (Preise inkl. MwSt.)`;
+                      )} inkl. MwSt.`;
                     })()
                   : ""}
             </p>
