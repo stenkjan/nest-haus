@@ -4,6 +4,19 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [853acdfc86b08bc76ab8c7716f13fad65bddffe4] - Tue Nov 25 15:14:20 2025 +0100
+
+**Author**: stenkjan
+**Message**: `fix: update session expiry check in ConfiguratorShell component  - Added a call to  on component mount to ensure session validity. - Adjusted useEffect dependencies to run only once, improving performance and preventing unnecessary re-renders.  These changes enhance session management and ensure the configurator operates with the latest session state.  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/konfigurator/components/ConfiguratorShell.tsx
+
+
+---
+
 ## [e56e9443b3d412dcfab66672a5582c6aa6533f6a] - Tue Nov 25 15:11:23 2025 +0100
 
 **Author**: stenkjan
