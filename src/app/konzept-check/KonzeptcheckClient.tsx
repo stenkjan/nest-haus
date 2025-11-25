@@ -132,12 +132,12 @@ export default function KonzeptcheckClient() {
                     size: "xs",
                     link: "/warenkorb?mode=konzept-check",
                   },
-                  {
-                    text: "Beratungsgespräch",
-                    variant: "landing-secondary-blue",
-                    size: "xs",
-                    link: "/kontakt",
-                  },
+                  // {
+                  //   text: "Beratungsgespräch",
+                  //   variant: "landing-secondary-blue",
+                  //   size: "xs",
+                  //   link: "/kontakt",
+                  // },
                 ],
               },
             ]}

@@ -79,7 +79,6 @@ export default function ConfiguratorShell({
         console.error("❌ Failed to initialize pricing data:", error);
         setPricingDataError(error.message || "Failed to load pricing data");
       });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []); // Empty deps - only run once on mount
 
   const {
