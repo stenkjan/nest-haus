@@ -64,6 +64,11 @@ interface ConfiguratorState {
   currentPrice: number
   priceBreakdown: PriceBreakdown | null
 
+  // Session interaction tracking (NEW - for price reset behavior)
+  hasUserInteracted: boolean
+  sessionStartTime: number
+  lastActivityTime: number
+
   // Preview panel progression state (matches old configurator logic)
   hasPart2BeenActive: boolean
   hasPart3BeenActive: boolean
@@ -87,6 +92,11 @@ interface ConfiguratorState {
   finalizeSession: () => void
   setDefaultSelections: () => void
 
+  // Session tracking (NEW)
+  markUserInteraction: () => void
+  checkSessionExpiry: () => void
+  resetSession: () => void
+
   // Part activation
   activatePart2: () => void
   activatePart3: () => void
@@ -105,6 +115,9 @@ interface ConfiguratorState {
   getConfigurationForCart: () => Configuration | null
   isConfigurationComplete: () => boolean
 }
+
+// Session timeout configuration
+const SESSION_TIMEOUT = 30 * 60 * 1000; // 30 minutes
 
 export const useConfiguratorStore = create<ConfiguratorState>()(
   persist(
@@ -133,8 +146,14 @@ export const useConfiguratorStore = create<ConfiguratorState>()(
         timestamp: 0
       },
 
-      currentPrice: 0, // Will be calculated on initialization
+      currentPrice: 0, // Start at 0€ for new sessions
       priceBreakdown: null,
+      
+      // Session interaction tracking (NEW)
+      hasUserInteracted: false, // No interaction initially
+      sessionStartTime: Date.now(),
+      lastActivityTime: Date.now(),
+      
       hasPart2BeenActive: false,
       hasPart3BeenActive: false,
       shouldSwitchToView: null,
@@ -150,6 +169,9 @@ export const useConfiguratorStore = create<ConfiguratorState>()(
           return;
         }
 
+        // NEW: Check if session should be reset
+        get().checkSessionExpiry()
+
         // Check if this is a completely new session (no sessionId and no selections)
         const isNewSession = !state.sessionId && !state.configuration.nest;
 
@@ -161,15 +183,22 @@ export const useConfiguratorStore = create<ConfiguratorState>()(
         // Set default preselections only for completely new sessions
         if (isNewSession) {
           get().setDefaultSelections()
-          // Calculate price immediately after setting defaults
-          // Pricing data should already be loaded by KonfiguratorClient before calling initializeSession
-          get().calculatePrice()
+          // DON'T calculate price yet - wait for user interaction
+          // Price will remain 0€ until user clicks something
         }
       },
 
       // Update selection with intelligent view switching and price calculation
       updateSelection: (item: ConfigurationItem) => {
         const state = get()
+
+        // NEW: Mark user interaction on first selection
+        if (!state.hasUserInteracted) {
+          get().markUserInteraction()
+        } else {
+          // Update activity time
+          set({ lastActivityTime: Date.now() })
+        }
 
         // Generate sessionId only if not already set
         let sessionId = state.sessionId
@@ -416,6 +445,13 @@ export const useConfiguratorStore = create<ConfiguratorState>()(
       updateCheckboxOption: (category: 'kamindurchzug' | 'fussbodenheizung' | 'fundament', isChecked: boolean) => {
         const state = get()
 
+        // NEW: Mark user interaction
+        if (!state.hasUserInteracted) {
+          get().markUserInteraction()
+        } else {
+          set({ lastActivityTime: Date.now() })
+        }
+
         const updatedConfig: Configuration = {
           ...state.configuration,
           timestamp: Date.now()
@@ -461,6 +497,20 @@ export const useConfiguratorStore = create<ConfiguratorState>()(
       calculatePrice: () => {
         const state = get()
 
+        // NEW: If user hasn't interacted yet, keep price at 0€
+        if (!state.hasUserInteracted) {
+          set({
+            currentPrice: 0,
+            priceBreakdown: null,
+            configuration: {
+              ...state.configuration,
+              totalPrice: 0,
+              timestamp: Date.now()
+            }
+          })
+          return
+        }
+
         // Build selections object for price calculation
         const selections = {
           nest: state.configuration.nest || undefined,
@@ -491,6 +541,75 @@ export const useConfiguratorStore = create<ConfiguratorState>()(
             timestamp: Date.now()
           }
         })
+      },
+
+      // NEW: Mark that user has interacted with the configurator
+      markUserInteraction: () => {
+        const state = get()
+        
+        if (!state.hasUserInteracted) {
+          console.log('🎯 First user interaction detected - enabling price calculation')
+          set({
+            hasUserInteracted: true,
+            lastActivityTime: Date.now()
+          })
+          
+          // Recalculate price now that user has interacted
+          get().calculatePrice()
+        } else {
+          // Update activity time
+          set({ lastActivityTime: Date.now() })
+        }
+      },
+
+      // NEW: Check if session should be reset due to expiry or browser close
+      checkSessionExpiry: () => {
+        if (process.env.NODE_ENV === 'test') {
+          return // Skip in test environment
+        }
+
+        const now = Date.now()
+        const state = get()
+        
+        // Check if session expired due to inactivity
+        if (now - state.lastActivityTime > SESSION_TIMEOUT) {
+          console.log('⏰ Session expired due to inactivity - resetting')
+          get().resetSession()
+          return
+        }
+        
+        // Check if browser was closed (sessionStorage cleared)
+        if (typeof window !== 'undefined') {
+          const sessionActive = sessionStorage.getItem('nest-haus-session-active')
+          if (!sessionActive) {
+            console.log('🔄 Browser was closed - resetting session')
+            get().resetSession()
+            sessionStorage.setItem('nest-haus-session-active', 'true')
+          }
+        }
+      },
+
+      // NEW: Reset session to new state (keep visual preselections, zero price)
+      resetSession: () => {
+        console.log('🔄 Resetting session to new state')
+        
+        const newSessionId = process.env.NODE_ENV === 'test' ? null : `client_${Date.now()}_${Math.random().toString(36).substring(2)}`
+        
+        set({
+          sessionId: newSessionId,
+          hasUserInteracted: false, // Reset interaction flag
+          sessionStartTime: Date.now(),
+          lastActivityTime: Date.now(),
+          currentPrice: 0, // Start at 0€
+          priceBreakdown: null,
+          hasPart2BeenActive: false,
+          hasPart3BeenActive: false,
+          shouldSwitchToView: null,
+          lastSelectionCategory: null
+        })
+        
+        // Set default selections (visually) but don't calculate price yet
+        get().setDefaultSelections()
       },
 
       // Save configuration (optional API call, fail-safe)
@@ -841,6 +960,9 @@ export const useConfiguratorStore = create<ConfiguratorState>()(
         configuration: state.configuration,
         currentPrice: state.currentPrice,
         priceBreakdown: state.priceBreakdown,
+        hasUserInteracted: state.hasUserInteracted, // NEW
+        sessionStartTime: state.sessionStartTime, // NEW
+        lastActivityTime: state.lastActivityTime, // NEW
         hasPart2BeenActive: state.hasPart2BeenActive,
         hasPart3BeenActive: state.hasPart3BeenActive,
         shouldSwitchToView: state.shouldSwitchToView,

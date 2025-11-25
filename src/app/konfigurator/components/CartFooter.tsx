@@ -110,6 +110,15 @@ export default function CartFooter({ onReset }: CartFooterProps) {
           {/* Zum Warenkorb button */}
           <button
             onClick={() => {
+              // NEW: If price is 0€, redirect to konzept-check (no interaction yet)
+              if (currentPrice === 0) {
+                console.log(
+                  "🛒 CartFooter: No interaction yet - redirecting to konzept-check"
+                );
+                window.location.href = "/warenkorb#konzept-check";
+                return;
+              }
+
               // Build customization options array from configuration
               const customizationOptions: string[] = [];
 
@@ -187,7 +196,7 @@ export default function CartFooter({ onReset }: CartFooterProps) {
             }}
             className="bg-[#3D6CE1] text-white rounded-full font-medium text-[clamp(0.75rem,1.2vw,1rem)] px-[clamp(0.75rem,2vw,1.5rem)] py-[clamp(0.3rem,0.6vw,0.5rem)] transition-all hover:bg-[#2855d6] min-h-[44px] flex items-center justify-center touch-manipulation cursor-pointer"
           >
-            Zum Warenkorb
+            {currentPrice === 0 ? "Konzept-Check starten" : "Zum Warenkorb"}
           </button>
         </div>
       </div>

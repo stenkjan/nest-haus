@@ -61,18 +61,24 @@ export default function ConfiguratorShell({
 
   // Initialize pricing data from database on mount
   useEffect(() => {
+    // NEW: Check if session should be reset
+    checkSessionExpiry();
+    
     PriceCalculator.initializePricingData()
       .then(() => {
         setIsPricingDataLoaded(true);
-        // Recalculate prices now that data is available
+        // NEW: Only recalculate prices if user has already interacted
+        // For new sessions, price stays at 0€ until first interaction
         const store = useConfiguratorStore.getState();
-        store.calculatePrice();
+        if (store.hasUserInteracted) {
+          store.calculatePrice();
+        }
       })
       .catch((error) => {
         console.error("❌ Failed to initialize pricing data:", error);
         setPricingDataError(error.message || "Failed to load pricing data");
       });
-  }, []);
+  }, [checkSessionExpiry]);
 
   const {
     updateSelection,
@@ -81,6 +87,8 @@ export default function ConfiguratorShell({
     configuration,
     currentPrice,
     finalizeSession,
+    hasUserInteracted: _hasUserInteracted, // Extracted for potential future use
+    checkSessionExpiry, // NEW: Check session expiry
   } = useConfiguratorStore();
 
   // Local state for quantities and special selections
