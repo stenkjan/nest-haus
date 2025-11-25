@@ -62,6 +62,7 @@ export default function ConfiguratorShell({
   // Initialize pricing data from database on mount
   useEffect(() => {
     // NEW: Check if session should be reset
+    const { checkSessionExpiry } = useConfiguratorStore.getState();
     checkSessionExpiry();
     
     PriceCalculator.initializePricingData()
@@ -78,7 +79,8 @@ export default function ConfiguratorShell({
         console.error("❌ Failed to initialize pricing data:", error);
         setPricingDataError(error.message || "Failed to load pricing data");
       });
-  }, [checkSessionExpiry]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []); // Empty deps - only run once on mount
 
   const {
     updateSelection,
@@ -87,8 +89,6 @@ export default function ConfiguratorShell({
     configuration,
     currentPrice,
     finalizeSession,
-    hasUserInteracted: _hasUserInteracted, // Extracted for potential future use
-    checkSessionExpiry, // NEW: Check session expiry
   } = useConfiguratorStore();
 
   // Local state for quantities and special selections
