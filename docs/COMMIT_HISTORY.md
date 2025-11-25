@@ -4,6 +4,20 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [d43dfe7fdc83078d7bab6a98921b8d96384a105e] - Tue Nov 25 15:02:56 2025 +0100
+
+**Author**: stenkjan
+**Message**: `. configuratorStore.ts - Session State Tracking Added new state properties: hasUserInteracted: boolean - Tracks if user made any selection sessionStartTime: number - Timestamp when session started lastActivityTime: number - Timestamp of last interaction SESSION_TIMEOUT = 30 minutes - Configurable timeout period Added new methods: markUserInteraction() - Called on first user click, triggers price calculation checkSessionExpiry() - Checks browser close/reopen and inactivity timeout resetSession() - Resets to new session state (keeps preselections, zeros price) Modified existing methods: calculatePrice() - Returns 0€ if hasUserInteracted is false updateSelection() - Calls markUserInteraction() on first click updateCheckboxOption() - Also marks user interaction initializeSession() - Calls checkSessionExpiry() and doesn't calculate price for new sessions 2. ConfiguratorShell.tsx - Session Initialization Updated mount logic: Calls checkSessionExpiry() on mount to  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/konfigurator/components/CartFooter.tsx
+- src/app/konfigurator/components/ConfiguratorShell.tsx
+
+
+---
+
 ## [5f3a53f4b2be5b2f26159700385ba160330a99c4] - Tue Nov 25 14:27:39 2025 +0100
 
 **Author**: stenkjan
