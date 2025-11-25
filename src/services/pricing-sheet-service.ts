@@ -4,6 +4,22 @@
  * Parses pricing data from Google Sheets "Preistabelle Verkauf" tab
  * Single sheet with all sections, column E contains section headers and option names
  * Prices in columns F-N (Nest 80-160)
+ * 
+ * NOTE: Columns G, I, K, M are HIDDEN in Google Sheets (between visible columns F, H, J, L, N)
+ * Row numbers referenced are 1-indexed as displayed in Google Sheets (e.g., E10 = row 10 in sheets = index 9 in code)
+ * 
+ * GOOGLE SHEETS STRUCTURE:
+ * E7:  Geschossdecke (name in E7, price in D7)
+ * E10: Nest (section title)
+ * E16: Gebäudehülle (section title) - E17: Trapezblech (0€), E18: Holzlattung Lärche Natur
+ * E22: Innenverkleidung (section title)
+ * E28: PV-Anlage (section title)
+ * E49: Bodenbelag (section title)
+ * E56: Bodenaufbau (section title)
+ * E63: Belichtungspaket (section title)
+ * E69: Fenster & Türen (section title)
+ * E81: Optionen (section title)
+ * E86: Die Planungspakete (section title)
  */
 
 import { google } from 'googleapis';
@@ -12,6 +28,7 @@ import { google } from 'googleapis';
 const PRICE_ON_REQUEST = -1;
 
 // Column mapping: F=5, G=6, H=7, I=8, J=9, K=10, L=11, M=12, N=13
+// NOTE: Columns G, I, K, M are HIDDEN in Google Sheets
 const NEST_COLUMNS = {
   nest80: 5,  // F
   nest100: 7, // H
@@ -196,12 +213,14 @@ class PricingSheetService {
   private parseNestPrices(rows: unknown[][]): PricingData['nest'] {
     const nestData: Partial<PricingData['nest']> = {};
 
-    // Row 10: Module names (F10, H10, J10, L10, N10)
-    // Row 11: Prices (F11, H11, J11, L11, N11)
-    // Row 12: Square meters (F12, H12, J12, L12, N12)
+    // GOOGLE SHEETS STRUCTURE (1-indexed as displayed in sheets):
+    // E10: Section title "Nest"
+    // Row 10 (index 9): Module names in F10, H10, J10, L10, N10
+    // Row 11 (index 10): Prices in F11, H11, J11, L11, N11
+    // Row 12 (index 11): Square meters in F12, H12, J12, L12, N12
 
-    const row11 = rows[10] || []; // Row 11
-    const row12 = rows[11] || []; // Row 12
+    const row11 = rows[10] || []; // Row 11 (0-indexed: 10)
+    const row12 = rows[11] || []; // Row 12 (0-indexed: 11)
 
     NEST_VALUES.forEach((nestSize) => {
       const colIndex = NEST_COLUMNS[nestSize];
@@ -220,6 +239,10 @@ class PricingSheetService {
   }
 
   private parseGeschossdecke(rows: unknown[][]): PricingData['geschossdecke'] {
+    // GOOGLE SHEETS STRUCTURE (1-indexed as displayed in sheets):
+    // E7: Section name "Geschossdecke"
+    // D7: Base price per unit
+    // F7-N7: Max quantities per nest size
     const row7 = rows[6] || []; // Row 7 (0-indexed: 6)
 
     const basePrice = this.parseNumber(row7[3], true); // D7 is a price in thousands
@@ -239,20 +262,27 @@ class PricingSheetService {
   }
 
   private parseGebaeudehuelle(rows: unknown[][]): PricingData['gebaeudehuelle'] {
-    // Rows 17-20 (0-indexed: 16-19), Column E has option names
+    // GOOGLE SHEETS STRUCTURE (1-indexed as displayed in sheets):
+    // E16: Section title "Gebäudehülle"
+    // E17: Trapezblech (0€ across all nest sizes in F17-N17) - SWITCHED TO ROW 17!
+    // E18: Holzlattung Lärche Natur - SWITCHED TO ROW 18!
+    // E19: Platte Black (Fassadenplatten Schwarz)
+    // E20: Platte White (Fassadenplatten Weiß)
     // Columns F-N have prices for each nest size
     
     const gebaeudehuelleData: PricingData['gebaeudehuelle'] = {};
     
-    // Option mapping: lärche → holzlattung, trapezblech → trapezblech, 
-    // platte black → fassadenplatten_schwarz, platte white → fassadenplatten_weiss
+    // CRITICAL: Trapezblech and Holzlattung SWITCHED rows in Google Sheets
+    // NEW STRUCTURE: Trapezblech is now row 17 (0€), Holzlattung is row 18
     const optionMapping: Record<string, string> = {
-      'lärche': 'holzlattung',
-      'trapezblech': 'trapezblech',
-      'platte black': 'fassadenplatten_schwarz',
-      'platte white': 'fassadenplatten_weiss',
+      'trapezblech': 'trapezblech',  // NOW ROW 17 (was row 18)
+      'holzlattung lärche natur': 'holzlattung',  // NOW ROW 18 (was row 17)
+      'lärche': 'holzlattung',  // Fallback for abbreviated name
+      'platte black': 'fassadenplatten_schwarz',  // ROW 19
+      'platte white': 'fassadenplatten_weiss',   // ROW 20
     };
 
+    // Parse rows 17-20 (0-indexed: 16-19)
     for (let rowIndex = 16; rowIndex <= 19; rowIndex++) {
       const row = rows[rowIndex] || [];
       const optionName = String(row[4] || '').toLowerCase().trim(); // Column E (index 4)
@@ -272,21 +302,23 @@ class PricingSheetService {
   }
 
   private parseInnenverkleidung(rows: unknown[][]): PricingData['innenverkleidung'] {
-    // Rows 23-26 (0-indexed: 22-25), Column E has option names
-    // Row 23: ohne innenverkleidung (new baseline, 0€ for all sizes)
-    // Row 24: fichte
-    // Row 25: lärche  
-    // Row 26: eiche
+    // GOOGLE SHEETS STRUCTURE (1-indexed as displayed in sheets):
+    // E22: Section title "Innenverkleidung"
+    // E23: Ohne Innenverkleidung (baseline, 0€ for all sizes)
+    // E24: Fichte
+    // E25: Lärche
+    // E26: Eiche
     const innenverkleidungData: PricingData['innenverkleidung'] = {};
 
     const optionMapping: Record<string, string> = {
       'ohne innenverkleidung': 'ohne_innenverkleidung',
-      'eiche': 'steirische_eiche',
       'fichte': 'fichte',
-      'laerche': 'laerche',  // ASCII version
       'lärche': 'laerche',   // UTF-8 version from Google Sheets (ä = umlaut)
+      'laerche': 'laerche',  // ASCII version fallback
+      'eiche': 'steirische_eiche',
     };
 
+    // Parse rows 23-26 (0-indexed: 22-25)
     for (let rowIndex = 22; rowIndex <= 25; rowIndex++) {
       const row = rows[rowIndex] || [];
       const optionName = String(row[4] || '').toLowerCase().trim();
@@ -306,7 +338,10 @@ class PricingSheetService {
   }
 
   private parsePvAnlage(rows: unknown[][]): PricingData['pvanlage'] {
-    // Rows 29-44 (0-indexed: 28-43) contain prices by quantity
+    // GOOGLE SHEETS STRUCTURE (1-indexed as displayed in sheets):
+    // E28: Section title "PV-Anlage"
+    // E29-E44: "1 Module", "2 Module", ... "16 Module" (quantity labels)
+    // F29-N44: Prices for each quantity × nest size combination
     // Each row represents a different quantity (1-16 modules)
     // Columns F-N represent different Nest sizes
     
@@ -318,7 +353,7 @@ class PricingSheetService {
       nest160: {},
     };
 
-    // Parse rows 29-44 (quantities 1-16)
+    // Parse rows 29-44 (0-indexed: 28-43) for quantities 1-16
     for (let i = 0; i < 16; i++) {
       const rowIndex = 28 + i; // Start at row 29 (0-indexed: 28)
       if (rowIndex >= rows.length) break;
@@ -350,32 +385,21 @@ class PricingSheetService {
 
 
   private parseBodenbelag(rows: unknown[][]): PricingData['bodenbelag'] {
-    // Find rows with bodenbelag options (around row 50-53)
-    // Column E has option names
+    // GOOGLE SHEETS STRUCTURE (1-indexed as displayed in sheets):
+    // E49: Section title "Bodenbelag"
+    // E50-E53: Option names (bauherr, eiche, kalkstein, dunkler stein)
+    // F50-N53: Prices for each option × nest size
     const bodenbelagData: PricingData['bodenbelag'] = {};
 
     const optionMapping: Record<string, string> = {
-      'bauherr': 'ohne_belag', // standard
+      'bauherr': 'ohne_belag', // standard baseline
       'eiche': 'parkett',
       'kalkstein': 'kalkstein_kanafar',
       'dunkler stein': 'schiefer_massiv',
     };
 
-    // Scan rows to find bodenbelag section (look for "bodenbelag" in column E)
-    let startRow = -1;
-    for (let i = 0; i < rows.length; i++) {
-      const cellE = String(rows[i]?.[4] || '').toLowerCase();
-      if (cellE.includes('bodenbelag') || cellE.includes('boden')) {
-        startRow = i + 1; // Next rows contain options
-        break;
-      }
-    }
-
-    if (startRow === -1) {
-      return bodenbelagData;
-    }
-
-    // Parse next 4 rows (assuming 4 options)
+    // Parse rows 50-53 (0-indexed: 49-52)
+    const startRow = 49; // Row 50 in sheets (0-indexed: 49)
     for (let rowIndex = startRow; rowIndex < startRow + 4 && rowIndex < rows.length; rowIndex++) {
       const row = rows[rowIndex] || [];
       const optionName = String(row[4] || '').toLowerCase().trim();
@@ -395,29 +419,26 @@ class PricingSheetService {
   }
 
   private parseBodenaufbau(rows: unknown[][]): PricingData['bodenaufbau'] {
-    // Find rows with heizung/bodenaufbau options (around row 60-62)
+    // GOOGLE SHEETS STRUCTURE (1-indexed as displayed in sheets):
+    // E56: Section title "Bodenaufbau"
+    // E57: Ohne Heizung (baseline, 0€)
+    // E58: Elektrische Fußbodenheizung (FULL SPELLING, not "FBH")
+    // E59: Wassergeführte Fußbodenheizung (FULL SPELLING, not "FBH")
+    // F57-N59: Prices for each option × nest size
     const bodenaufbauData: PricingData['bodenaufbau'] = {};
 
+    // CRITICAL: Google Sheets now uses FULL SPELLINGS, not abbreviations
     const optionMapping: Record<string, string> = {
       'ohne heizung': 'ohne_heizung',
-      'elektrische fbh': 'elektrische_fussbodenheizung',
-      'wassergeführte fbh': 'wassergefuehrte_fussbodenheizung',
-      'wassergef. fbh': 'wassergefuehrte_fussbodenheizung', // Handle abbreviated version from sheet
+      'elektrische fußbodenheizung': 'elektrische_fussbodenheizung',  // FULL NAME NOW
+      'elektrische fbh': 'elektrische_fussbodenheizung',  // Backwards compatibility
+      'wassergeführte fußbodenheizung': 'wassergefuehrte_fussbodenheizung',  // FULL NAME NOW
+      'wassergeführte fbh': 'wassergefuehrte_fussbodenheizung',  // Backwards compatibility
+      'wassergef. fbh': 'wassergefuehrte_fussbodenheizung', // Backwards compatibility
     };
 
-    let startRow = -1;
-    for (let i = 0; i < rows.length; i++) {
-      const cellE = String(rows[i]?.[4] || '').toLowerCase();
-      if (cellE.includes('heizung') || cellE.includes('bodenaufbau')) {
-        startRow = i + 1;
-        break;
-      }
-    }
-
-    if (startRow === -1) {
-      return bodenaufbauData;
-    }
-
+    // Parse rows 57-59 (0-indexed: 56-58)
+    const startRow = 56; // Row 57 in sheets (0-indexed: 56)
     for (let rowIndex = startRow; rowIndex < startRow + 3 && rowIndex < rows.length; rowIndex++) {
       const row = rows[rowIndex] || [];
       const optionName = String(row[4] || '').toLowerCase().trim();
@@ -437,21 +458,13 @@ class PricingSheetService {
   }
 
   private parseBelichtungspaket(rows: unknown[][]): PricingData['belichtungspaket'] {
-    // Find belichtungspaket section (around row 65-67)
+    // GOOGLE SHEETS STRUCTURE (1-indexed as displayed in sheets):
+    // E63: Section title "Belichtungspaket"
+    // E64: Light
+    // E65: Medium
+    // E66: Bright
+    // F64-N66: REFERENCE prices (actual prices come from Fenster & Türen F70-N78)
     const belichtungspaketData: PricingData['belichtungspaket'] = {};
-
-    let startRow = -1;
-    for (let i = 0; i < rows.length; i++) {
-      const cellE = String(rows[i]?.[4] || '').toLowerCase();
-      if (cellE.includes('belichtung')) {
-        startRow = i + 1;
-        break;
-      }
-    }
-
-    if (startRow === -1) {
-      return belichtungspaketData;
-    }
 
     const optionMapping: Record<string, string> = {
       'light': 'light',
@@ -459,6 +472,8 @@ class PricingSheetService {
       'bright': 'bright',
     };
 
+    // Parse rows 64-66 (0-indexed: 63-65)
+    const startRow = 63; // Row 64 in sheets (0-indexed: 63)
     for (let rowIndex = startRow; rowIndex < startRow + 3 && rowIndex < rows.length; rowIndex++) {
       const row = rows[rowIndex] || [];
       const optionName = String(row[4] || '').toLowerCase().trim();
@@ -478,8 +493,13 @@ class PricingSheetService {
   }
 
   private parseFenster(rows: unknown[][]): PricingData['fenster'] {
-    // Rows 70-78 contain TOTAL combination prices (belichtungspaket × fenster × nest size)
-    // Actual spreadsheet order: Holz (70-72), Holz-Alu (73-75), Kunststoff (76-78)
+    // GOOGLE SHEETS STRUCTURE (1-indexed as displayed in sheets):
+    // E69: Section title "Fenster & Türen"
+    // E70-E78: Fenster combinations (9 rows: 3 materials × 3 belichtung levels)
+    //   E70-E72: Holz + light/medium/bright
+    //   E73-E75: Holz-Alu + light/medium/bright
+    //   E76-E78: Kunststoff + light/medium/bright
+    // F70-N78: TOTAL combination prices (belichtungspaket × fenster × nest size)
     // Store total prices directly (price/m² calculated when needed for display)
     
     const fensterData: PricingData['fenster'] = {
@@ -525,25 +545,22 @@ class PricingSheetService {
   }
 
   private parseOptionen(rows: unknown[][]): PricingData['optionen'] {
-    // Kaminschachtvorbereitung: fixed price (find in rows ~80-83)
-    // Fundament: F83-M83 (nest-size dependent)
+    // GOOGLE SHEETS STRUCTURE (1-indexed as displayed in sheets):
+    // E81: Section title "Optionen"
+    // E82: Kaminschachtvorbereitung
+    // E83: Fundament
+    // F82-N82: Kaminschacht prices (fixed price, same across sizes)
+    // F83-N83: Fundament prices (nest-size dependent)
     
-    let kaminschachtPrice = 2000; // Default fallback
-    const fundamentPrices: Partial<PricingData['optionen']['fundament']> = {};
-
-    // Find kaminschacht price
-    for (let i = 79; i < 84 && i < rows.length; i++) {
-      const cellE = String(rows[i]?.[4] || '').toLowerCase();
-      if (cellE.includes('kamin') || cellE.includes('kaminschacht')) {
-        // Kaminschacht is genuinely 887€ (not in thousands format like other prices)
-        // So parse as regular number, NOT as thousands format
-        kaminschachtPrice = this.parseNumber(rows[i]?.[5] || rows[i]?.[6] || 2000, false); // false = NOT a thousands-format price
-        break;
-      }
-    }
-
-    // Parse fundament prices from row 83 (0-indexed: 82)
+    // Parse Kaminschacht from row 82 (0-indexed: 81)
+    const row82 = rows[81] || [];
+    // Kaminschacht is genuinely 887€ (not in thousands format like other prices)
+    // So parse as regular number, NOT as thousands format
+    const kaminschachtPrice = this.parseNumber(row82[5] || 2000, false); // F82, false = NOT a thousands-format price
+    
+    // Parse Fundament prices from row 83 (0-indexed: 82)
     const row83 = rows[82] || [];
+    const fundamentPrices: Partial<PricingData['optionen']['fundament']> = {};
     fundamentPrices.nest80 = this.parseNumber(row83[5], true); // F83 in thousands
     fundamentPrices.nest100 = this.parseNumber(row83[7], true); // H83
     fundamentPrices.nest120 = this.parseNumber(row83[9], true); // J83
@@ -556,14 +573,17 @@ class PricingSheetService {
     };
   }
   private parsePlanungspakete(rows: unknown[][]): PricingData['planungspaket'] {
-    // Rows 88-90 (0-indexed: 87-89)
-    // Basis (row 88) = 0
-    // Plus (row 89) = 9600
-    // Pro (row 90) = 12700
-    // Price is same across all nest sizes (columns F-N)
+    // GOOGLE SHEETS STRUCTURE (1-indexed as displayed in sheets):
+    // E86: Section title "Die Planungspakete"
+    // E87: Basis (always 0€)
+    // E88: Plus
+    // E89: Pro
+    // F87-N89: Prices (same across all nest sizes for each package)
+    // NOTE: THESE ARE THE ONLY PRICES THAT CHANGED IN THIS OVERHAUL
     
-    const plusPrice = this.parseNumber(rows[88]?.[5], true) || 9600; // F89 (0-indexed: row 88, col 5)
-    const proPrice = this.parseNumber(rows[89]?.[5], true) || 12700; // F90 (0-indexed: row 89, col 5)
+    // Parse rows 88-89 (0-indexed: 87-88) for Plus and Pro
+    const plusPrice = this.parseNumber(rows[87]?.[5], true) || 9600; // F88 (0-indexed: row 87, col 5)
+    const proPrice = this.parseNumber(rows[88]?.[5], true) || 12700; // F89 (0-indexed: row 88, col 5)
     
     return {
       plus: {
