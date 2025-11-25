@@ -61,10 +61,10 @@ export default function ConfiguratorShell({
 
   // Initialize pricing data from database on mount
   useEffect(() => {
-    // NEW: Check if session should be reset
+    // NEW: Check if session should be reset on mount
     const { checkSessionExpiry } = useConfiguratorStore.getState();
     checkSessionExpiry();
-    
+
     PriceCalculator.initializePricingData()
       .then(() => {
         setIsPricingDataLoaded(true);
@@ -80,6 +80,19 @@ export default function ConfiguratorShell({
         setPricingDataError(error.message || "Failed to load pricing data");
       });
   }, []); // Empty deps - only run once on mount
+
+  // NEW: Periodically check for session expiry (every 1 minute)
+  useEffect(() => {
+    const SESSION_CHECK_INTERVAL = 60 * 1000; // 1 minute
+
+    const intervalId = setInterval(() => {
+      const { checkSessionExpiry } = useConfiguratorStore.getState();
+      checkSessionExpiry();
+    }, SESSION_CHECK_INTERVAL);
+
+    // Cleanup interval on unmount
+    return () => clearInterval(intervalId);
+  }, []);
 
   const {
     updateSelection,
