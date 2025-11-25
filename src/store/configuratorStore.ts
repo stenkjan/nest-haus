@@ -162,8 +162,6 @@ export const useConfiguratorStore = create<ConfiguratorState>()(
 
       // Initialize session CLIENT-SIDE ONLY (no API dependency)
       initializeSession: () => {
-        const state = get()
-
         // Skip auto-reset in test environment to allow explicit testing
         if (process.env.NODE_ENV === 'test') {
           return;
@@ -171,6 +169,9 @@ export const useConfiguratorStore = create<ConfiguratorState>()(
 
         // NEW: Check if session should be reset
         get().checkSessionExpiry()
+
+        // BUG FIX: Re-fetch state AFTER checkSessionExpiry() to get updated state
+        const state = get()
 
         // Check if this is a completely new session (no sessionId and no selections)
         const isNewSession = !state.sessionId && !state.configuration.nest;
@@ -578,14 +579,21 @@ export const useConfiguratorStore = create<ConfiguratorState>()(
           return
         }
         
-        // Check if browser was closed (sessionStorage cleared)
+        // BUG FIX: Check if browser was closed (sessionStorage cleared)
+        // Only treat as "browser close" if we have persisted data (not first visit)
         if (typeof window !== 'undefined') {
           const sessionActive = sessionStorage.getItem('nest-haus-session-active')
-          if (!sessionActive) {
+          const hasPersistedData = state.sessionId || state.hasUserInteracted
+          
+          // Only reset if sessionStorage is empty BUT we have persisted data
+          // (meaning user had a session before, but browser was closed)
+          if (!sessionActive && hasPersistedData) {
             console.log('🔄 Browser was closed - resetting session')
             get().resetSession()
-            sessionStorage.setItem('nest-haus-session-active', 'true')
           }
+          
+          // Always set the flag for next time
+          sessionStorage.setItem('nest-haus-session-active', 'true')
         }
       },
 
@@ -971,10 +979,16 @@ export const useConfiguratorStore = create<ConfiguratorState>()(
       // Add onRehydrateStorage to ensure price calculation after rehydration
       onRehydrateStorage: () => (state) => {
         if (state && process.env.NODE_ENV !== 'test') {
-          // NO preselections - just recalculate price after rehydration
+          // BUG FIX: state is the plain persisted object, not the store
+          // We need to use the store instance to call methods
           setTimeout(() => {
-            // Always recalculate price after rehydration to ensure consistency
-            state.calculatePrice()
+            // Get the store instance and recalculate if user has already interacted
+            const storeInstance = useConfiguratorStore.getState()
+            
+            // Only recalculate if user has interacted in previous session
+            if (storeInstance.hasUserInteracted) {
+              storeInstance.calculatePrice()
+            }
           }, 150) // Longer delay to ensure proper hydration
         }
       }
