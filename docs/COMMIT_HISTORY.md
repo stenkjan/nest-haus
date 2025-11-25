@@ -4,6 +4,23 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [5f3a53f4b2be5b2f26159700385ba160330a99c4] - Tue Nov 25 14:27:39 2025 +0100
+
+**Author**: stenkjan
+**Message**: `docs: update pricing overhaul summary and configurator data for new pricing structure  Changes: - Revised pricing overhaul summary to reflect updated prices for "Planung Plus" and "Planung Pro" as of November 25, 2025. - Adjusted  to incorporate new pricing amounts: Plus = 4900€ (was 9600€) and Pro = 9600€ (was 12700€). - Updated parser logic in  to ensure accurate data handling in line with the new pricing structure.  These updates ensure the configurator reflects the latest pricing changes and maintains consistency with the Google Sheets configuration.  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/konfigurator/data/configuratorData.ts
+
+
+#### 📚 Documentation Changes
+- docs/final_KONFIGURATOR_PRICING_OVERHAUL_SUMMARY.md
+
+
+---
+
 ## [ce57fdf5d510f8d863639089cf97943ad0606cd8] - Tue Nov 25 11:48:33 2025 +0100
 
 **Author**: stenkjan
