@@ -306,13 +306,13 @@ export const configuratorData: CategoryData[] = [
         id: 'plus',
         name: 'Planung Plus',
         description: 'Inkl. Planungspaket Basis\nPlus HKLS-Planung (Gebäudetechnik)',
-        price: { type: 'upgrade', amount: 9600, monthly: 56 } // Updated Nov 2025
+        price: { type: 'upgrade', amount: 4900, monthly: 26 } // Updated Nov 25, 2025 - NEW: 4900€
       },
       {
         id: 'pro',
         name: 'Planung Pro',
         description: 'Inkl. Planungspaket Plus\nPlus Interiorkonzept (Möblierungsvorschlag)',
-        price: { type: 'upgrade', amount: 12700, monthly: 74 } // Updated Nov 2025
+        price: { type: 'upgrade', amount: 9600, monthly: 50 } // Updated Nov 25, 2025 - NEW: 9600€
       }
     ]
   }

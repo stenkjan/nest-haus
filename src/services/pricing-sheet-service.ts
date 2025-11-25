@@ -139,7 +139,7 @@ class PricingSheetService {
 
   private getCredentials() {
     const keyFile = process.env.GOOGLE_SERVICE_ACCOUNT_KEY_FILE;
-    
+
     if (keyFile && keyFile.endsWith('.json')) {
       try {
         // eslint-disable-next-line @typescript-eslint/no-require-imports
@@ -147,7 +147,7 @@ class PricingSheetService {
         // eslint-disable-next-line @typescript-eslint/no-require-imports
         const fs = require('fs');
         const keyFilePath = path.resolve(process.cwd(), keyFile);
-        
+
         if (fs.existsSync(keyFilePath)) {
           const keyFileContent = fs.readFileSync(keyFilePath, 'utf8');
           return JSON.parse(keyFileContent);
@@ -246,7 +246,7 @@ class PricingSheetService {
     const row7 = rows[6] || []; // Row 7 (0-indexed: 6)
 
     const basePrice = this.parseNumber(row7[3], true); // D7 is a price in thousands
-    
+
     const maxAmounts: Partial<PricingData['geschossdecke']['maxAmounts']> = {};
     // Fixed column mapping: F=5, H=7, J=9, L=11, N=13 (same as nest sizes)
     maxAmounts.nest80 = this.parseNumber(row7[5]); // F7 is a quantity, not a price
@@ -269,9 +269,9 @@ class PricingSheetService {
     // E19: Platte Black (Fassadenplatten Schwarz)
     // E20: Platte White (Fassadenplatten Weiß)
     // Columns F-N have prices for each nest size
-    
+
     const gebaeudehuelleData: PricingData['gebaeudehuelle'] = {};
-    
+
     // CRITICAL: Trapezblech and Holzlattung SWITCHED rows in Google Sheets
     // NEW STRUCTURE: Trapezblech is now row 17 (0€), Holzlattung is row 18
     const optionMapping: Record<string, string> = {
@@ -286,7 +286,7 @@ class PricingSheetService {
     for (let rowIndex = 16; rowIndex <= 19; rowIndex++) {
       const row = rows[rowIndex] || [];
       const optionName = String(row[4] || '').toLowerCase().trim(); // Column E (index 4)
-      
+
       if (!optionName) continue;
 
       const mappedKey = optionMapping[optionName] || optionName;
@@ -322,7 +322,7 @@ class PricingSheetService {
     for (let rowIndex = 22; rowIndex <= 25; rowIndex++) {
       const row = rows[rowIndex] || [];
       const optionName = String(row[4] || '').toLowerCase().trim();
-      
+
       if (!optionName) continue;
 
       const mappedKey = optionMapping[optionName] || optionName;
@@ -344,7 +344,7 @@ class PricingSheetService {
     // F29-N44: Prices for each quantity × nest size combination
     // Each row represents a different quantity (1-16 modules)
     // Columns F-N represent different Nest sizes
-    
+
     const pricesByQuantity: PricingData['pvanlage']['pricesByQuantity'] = {
       nest80: {},
       nest100: {},
@@ -357,10 +357,10 @@ class PricingSheetService {
     for (let i = 0; i < 16; i++) {
       const rowIndex = 28 + i; // Start at row 29 (0-indexed: 28)
       if (rowIndex >= rows.length) break;
-      
+
       const row = rows[rowIndex] || [];
       const quantity = i + 1; // Quantity 1-16
-      
+
       NEST_VALUES.forEach((nestSize) => {
         const colIndex = NEST_COLUMNS[nestSize];
         const price = this.parseNumber(row[colIndex], true); // Prices in thousands
@@ -403,7 +403,7 @@ class PricingSheetService {
     for (let rowIndex = startRow; rowIndex < startRow + 4 && rowIndex < rows.length; rowIndex++) {
       const row = rows[rowIndex] || [];
       const optionName = String(row[4] || '').toLowerCase().trim();
-      
+
       if (!optionName) continue;
 
       const mappedKey = optionMapping[optionName] || optionName;
@@ -442,7 +442,7 @@ class PricingSheetService {
     for (let rowIndex = startRow; rowIndex < startRow + 3 && rowIndex < rows.length; rowIndex++) {
       const row = rows[rowIndex] || [];
       const optionName = String(row[4] || '').toLowerCase().trim();
-      
+
       if (!optionName) continue;
 
       const mappedKey = optionMapping[optionName] || optionName;
@@ -477,7 +477,7 @@ class PricingSheetService {
     for (let rowIndex = startRow; rowIndex < startRow + 3 && rowIndex < rows.length; rowIndex++) {
       const row = rows[rowIndex] || [];
       const optionName = String(row[4] || '').toLowerCase().trim();
-      
+
       if (!optionName) continue;
 
       const mappedKey = optionMapping[optionName] || optionName;
@@ -501,7 +501,7 @@ class PricingSheetService {
     //   E76-E78: Kunststoff + light/medium/bright
     // F70-N78: TOTAL combination prices (belichtungspaket × fenster × nest size)
     // Store total prices directly (price/m² calculated when needed for display)
-    
+
     const fensterData: PricingData['fenster'] = {
       totalPrices: {},
     };
@@ -513,7 +513,7 @@ class PricingSheetService {
     // Parse rows 70-78 (0-indexed: 69-77)
     // Structure: each fenster option has 3 rows (one per belichtungspaket option)
     let rowIndex = 69; // Start at row 70 (0-indexed: 69)
-    
+
     fensterOptions.forEach((fensterOption) => {
       fensterData.totalPrices[fensterOption] = {} as {
         [key in NestSize]: { [belichtung: string]: number };
@@ -523,7 +523,7 @@ class PricingSheetService {
         if (rowIndex >= rows.length) return;
 
         const row = rows[rowIndex] || [];
-        
+
         NEST_VALUES.forEach((nestSize) => {
           const colIndex = NEST_COLUMNS[nestSize];
           const totalPrice = this.parseNumber(row[colIndex], true); // Total price in thousands from F70-N78
@@ -531,7 +531,7 @@ class PricingSheetService {
           if (!fensterData.totalPrices[fensterOption][nestSize]) {
             fensterData.totalPrices[fensterOption][nestSize] = {} as { [belichtung: string]: number };
           }
-          
+
           // Store total price (price/m² calculated when needed)
           fensterData.totalPrices[fensterOption][nestSize][belichtungOption] = totalPrice;
         });
@@ -551,13 +551,13 @@ class PricingSheetService {
     // E83: Fundament
     // F82-N82: Kaminschacht prices (fixed price, same across sizes)
     // F83-N83: Fundament prices (nest-size dependent)
-    
+
     // Parse Kaminschacht from row 82 (0-indexed: 81)
     const row82 = rows[81] || [];
     // Kaminschacht is genuinely 887€ (not in thousands format like other prices)
     // So parse as regular number, NOT as thousands format
     const kaminschachtPrice = this.parseNumber(row82[5] || 2000, false); // F82, false = NOT a thousands-format price
-    
+
     // Parse Fundament prices from row 83 (0-indexed: 82)
     const row83 = rows[82] || [];
     const fundamentPrices: Partial<PricingData['optionen']['fundament']> = {};
@@ -580,11 +580,12 @@ class PricingSheetService {
     // E89: Pro
     // F87-N89: Prices (same across all nest sizes for each package)
     // NOTE: THESE ARE THE ONLY PRICES THAT CHANGED IN THIS OVERHAUL
-    
+    // NEW PRICES (Nov 25, 2025): Plus = 4900€, Pro = 9600€
+
     // Parse rows 88-89 (0-indexed: 87-88) for Plus and Pro
-    const plusPrice = this.parseNumber(rows[87]?.[5], true) || 9600; // F88 (0-indexed: row 87, col 5)
-    const proPrice = this.parseNumber(rows[88]?.[5], true) || 12700; // F89 (0-indexed: row 88, col 5)
-    
+    const plusPrice = this.parseNumber(rows[87]?.[5], true) || 4900; // F88 (0-indexed: row 87, col 5) - NEW: 4900€
+    const proPrice = this.parseNumber(rows[88]?.[5], true) || 9600; // F89 (0-indexed: row 88, col 5) - NEW: 9600€
+
     return {
       plus: {
         nest80: plusPrice,
@@ -605,7 +606,7 @@ class PricingSheetService {
 
   async loadPricingData(forceRefresh = false): Promise<PricingData> {
     const now = Date.now();
-    
+
     if (!forceRefresh && this.cache && (now - this.cacheTimestamp) < this.CACHE_TTL) {
       return this.cache;
     }
@@ -628,7 +629,7 @@ class PricingSheetService {
 
     this.cache = pricingData;
     this.cacheTimestamp = now;
-    
+
     return pricingData;
   }
 

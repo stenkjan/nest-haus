@@ -35,9 +35,11 @@ Implemented a comprehensive pricing overhaul for the Nest-Haus Konfigurator, tra
 - **Belichtungspaket**: E63 (section title), E64-E66 (option names), F64-N66 (reference prices)
 - **Fenster & Türen**: E69 (section title), E70-E78 (combination names), F70-N78 (9 combinations: 3 fenster types × 3 light levels)
 - **Optionen**: E81 (section title), E82 (Kaminschacht name), E83 (Fundament name), F82-N82/F83-N83 (prices)
-- **Planungspakete**: E86 (section title), E87-E89 (option names), F87-N89 (fixed prices: 0, 9600, 12700)
+- **Planungspakete**: E86 (section title), E87-E89 (option names), F87-N89 (fixed prices: 0, 4900, 9600)
+  - **PRICE UPDATE (Nov 25, 2025)**: Plus = 4900€ (was 9600€), Pro = 9600€ (was 12700€)
 
 **IMPORTANT NOTES:**
+
 - Row numbers are 1-indexed as displayed in Google Sheets (E10 = row 10 in sheets = index 9 in code)
 - Columns G, I, K, M are **HIDDEN** in Google Sheets (between visible columns F, H, J, L, N)
 - Section titles in column E, option names below titles, prices in columns F-N
@@ -389,6 +391,7 @@ POST /api/admin/sync-pricing?password=YOUR_PASSWORD
 - Example: Fassadenplatten = upgrade prices for Nest 80
 
 **CRITICAL CHANGE (November 25, 2025):**
+
 - Trapezblech and Holzlattung **SWITCHED ROWS** in Google Sheets
 - OLD: Lärche was row 17, Trapezblech was row 18
 - NEW: Trapezblech is row 17 (0€), Holzlattung is row 18
@@ -573,6 +576,7 @@ curl "https://nest-haus.vercel.app/api/pricing/data"
 - Fundament (E83: name)
 
 **GOOGLE SHEETS STRUCTURE UPDATE (November 25, 2025):**
+
 - All section titles now in column E at specified rows
 - Option names directly below section titles in column E
 - Prices in columns F-N (columns G, I, K, M are hidden in sheets)
@@ -2275,27 +2279,29 @@ This overhaul restructured the Google Sheets parser to match the actual sheet st
 
 **Section Locations:**
 
-| Section | Title Location | Option Names | Price Range |
-|---------|---------------|--------------|-------------|
-| Geschossdecke | E7 (name only) | - | D7 (price), F7-N7 (max qty) |
-| Nest | E10 | F10/H10/J10/L10/N10 | F11-N11 (prices), F12-N12 (m²) |
-| Gebäudehülle | E16 | E17-E20 | F17-N20 |
-| Innenverkleidung | E22 | E23-E26 | F23-N26 |
-| PV-Anlage | E28 | E29-E44 ("1 Module"..."16 Module") | F29-N44 |
-| Bodenbelag | E49 | E50-E53 | F50-N53 |
-| Bodenaufbau | E56 | E57-E59 | F57-N59 |
-| Belichtungspaket | E63 | E64-E66 | F64-N66 (reference) |
-| Fenster & Türen | E69 | E70-E78 | F70-N78 (totals) |
-| Optionen | E81 | E82-E83 | F82-N82, F83-N83 |
-| Die Planungspakete | E86 | E87-E89 | F87-N89 |
+| Section            | Title Location | Option Names                       | Price Range                    |
+| ------------------ | -------------- | ---------------------------------- | ------------------------------ |
+| Geschossdecke      | E7 (name only) | -                                  | D7 (price), F7-N7 (max qty)    |
+| Nest               | E10            | F10/H10/J10/L10/N10                | F11-N11 (prices), F12-N12 (m²) |
+| Gebäudehülle       | E16            | E17-E20                            | F17-N20                        |
+| Innenverkleidung   | E22            | E23-E26                            | F23-N26                        |
+| PV-Anlage          | E28            | E29-E44 ("1 Module"..."16 Module") | F29-N44                        |
+| Bodenbelag         | E49            | E50-E53                            | F50-N53                        |
+| Bodenaufbau        | E56            | E57-E59                            | F57-N59                        |
+| Belichtungspaket   | E63            | E64-E66                            | F64-N66 (reference)            |
+| Fenster & Türen    | E69            | E70-E78                            | F70-N78 (totals)               |
+| Optionen           | E81            | E82-E83                            | F82-N82, F83-N83               |
+| Die Planungspakete | E86            | E87-E89                            | F87-N89                        |
 
 ### **CRITICAL: Gebäudehülle Row Swap**
 
 **OLD STRUCTURE (before Nov 25, 2025):**
+
 - Row 17 (E17): Lärche
 - Row 18 (E18): Trapezblech
 
 **NEW STRUCTURE (Nov 25, 2025):**
+
 - **Row 17 (E17, F17-N17): Trapezblech (0€)** ← MOVED HERE
 - **Row 18 (E18, F18-N18): Holzlattung Lärche Natur** ← MOVED HERE
 - Row 19: Fassadenplatten Schwarz
@@ -2306,6 +2312,7 @@ This overhaul restructured the Google Sheets parser to match the actual sheet st
 ### **Bodenaufbau Name Change**
 
 **Google Sheets now uses FULL SPELLINGS:**
+
 - E58: "Elektrische Fußbodenheizung" (not "Elektrische FBH")
 - E59: "Wassergeführte Fußbodenheizung" (not "Wassergeführte FBH" or "Wassergef. FBH")
 
@@ -2314,6 +2321,7 @@ This overhaul restructured the Google Sheets parser to match the actual sheet st
 ### **Updated Parser Logic**
 
 All `parse*()` methods in `pricing-sheet-service.ts` now:
+
 - Use **fixed row indices** instead of searching for section titles
 - Read **section titles from column E** for future display
 - Read **option names from column E** below section titles
@@ -2329,11 +2337,13 @@ All `parse*()` methods in `pricing-sheet-service.ts` now:
 ### **Next Steps After This Update**
 
 1. **Sync pricing data** from Google Sheets:
+
    ```bash
    curl -X POST "http://localhost:3000/api/admin/sync-pricing?password=PASSWORD"
    ```
 
 2. **Verify trapezblech** at row 17 with 0€ prices:
+
    ```bash
    curl "http://localhost:3000/api/pricing/data" | jq '.data.gebaeudehuelle.trapezblech'
    ```
