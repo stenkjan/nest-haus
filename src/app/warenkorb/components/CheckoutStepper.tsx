@@ -27,7 +27,10 @@ import { ImageManager } from "@/app/konfigurator/core/ImageManager";
 import { HybridBlobImage } from "@/components/images";
 import { useCartStore } from "@/store/cartStore";
 import type { ViewType } from "@/app/konfigurator/types/configurator.types";
-import { CHECKOUT_STEPS } from "@/app/warenkorb/steps";
+import {
+  CHECKOUT_STEPS_NORMAL,
+  CHECKOUT_STEPS_KONZEPT,
+} from "@/app/warenkorb/steps";
 import { Button } from "@/components/ui";
 // Overlay components for warenkorb preview
 import PvModuleOverlay from "@/app/konfigurator/components/PvModuleOverlay";
@@ -261,32 +264,44 @@ export default function CheckoutStepper({
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  const steps = CHECKOUT_STEPS;
+  const steps = isOhneNestMode ? CHECKOUT_STEPS_KONZEPT : CHECKOUT_STEPS_NORMAL;
 
-  // URL hash mapping for checkout steps - wrapped in useMemo to prevent re-creation
-  const stepToHash = useMemo(
-    () =>
-      ({
-        0: "übersicht",
-        1: "entwurf",
-        2: "terminvereinbarung",
-        3: "planungspakete",
-        4: "abschluss",
-      }) as const,
-    []
-  );
+  // URL hash mapping for checkout steps - dynamic based on mode
+  const stepToHash = useMemo(() => {
+    if (isOhneNestMode) {
+      return {
+        0: "konzept-check",
+        1: "abschluss",
+      } as const;
+    }
 
-  const hashToStep = useMemo(
-    () =>
-      ({
-        übersicht: 0,
-        entwurf: 1,
-        terminvereinbarung: 2,
-        planungspakete: 3,
-        abschluss: 4,
-      }) as const,
-    []
-  );
+    return {
+      0: "übersicht",
+      1: "konzept-check", // Changed from "entwurf"
+      2: "terminvereinbarung",
+      3: "planungspakete",
+      4: "abschluss",
+    } as const;
+  }, [isOhneNestMode]);
+
+  const hashToStep = useMemo(() => {
+    if (isOhneNestMode) {
+      return {
+        "konzept-check": 0,
+        entwurf: 0, // Backward compatibility
+        abschluss: 1,
+      } as const;
+    }
+
+    return {
+      übersicht: 0,
+      "konzept-check": 1,
+      entwurf: 1, // Backward compatibility
+      terminvereinbarung: 2,
+      planungspakete: 3,
+      abschluss: 4,
+    } as const;
+  }, [isOhneNestMode]);
 
   // Initialize step from URL hash on component mount
   useEffect(() => {
@@ -1321,8 +1336,8 @@ export default function CheckoutStepper({
         {!hideProgress && <div className="mb-6">{renderProgress()}</div>}
         <div className="flex flex-col md:flex-row md:items-center md:justify-start gap-12 md:gap-6">
           <div className="w-full md:w-1/2 text-left md:px-16 lg:px-24 order-2 md:order-1 mt-5">
-            {/* Delivery Date Component for Step 4 */}
-            {stepIndex === 4 && (
+            {/* Delivery Date Component for Step 4 - ONLY in normal mode */}
+            {!isOhneNestMode && stepIndex === 4 && (
               <div className="mb-8 text-center md:text-left">
                 <div className="text-sm md:text-base lg:text-lg 2xl:text-xl text-gray-500 leading-relaxed text-center md:text-left mb-1">
                   Dein Liefertermin
@@ -1394,8 +1409,8 @@ export default function CheckoutStepper({
               </div>
             )}
 
-            {/* Additional p-primary-small text for step 4 */}
-            {stepIndex === 4 && (
+            {/* Additional p-primary-small text for step 4 - ONLY in normal mode */}
+            {!isOhneNestMode && stepIndex === 4 && (
               <div className="p-primary-small text-center md:text-left mt-12">
                 <p>
                   <span className="text-black font-bold">
@@ -2210,131 +2225,304 @@ export default function CheckoutStepper({
           </div>
         )}
 
-        {stepIndex === 1 && (
-          <div className="space-y-4 pt-16 md:pt-32">
-            {/* Dein Grundstück - Unser Check Section - FIRST */}
-            <div id="entwurf-formular" className="mb-16">
-              <div className="text-center mb-12 md:mb-16">
-                <h1 className="h1-secondary text-black mb-2 md:mb-3">
-                  Konzept-Check
-                </h1>
-                <h3 className="h3-secondary text-black mb-2">
-                  Wir überprüfen für dich wie dein Nest-Haus auf ein Grundstück
-                  deiner Wahl passt
-                </h3>
-              </div>
-              <div className="flex flex-col md:flex-row md:items-center md:justify-start gap-6">
-                <div className="w-full md:w-1/2 text-center md:text-left md:px-16 lg:px-24">
-                  <p className="p-secondary mb-4 md:mt-12">
-                    <span className="text-nest-gray">Bevor dein </span>
-                    <span className="text-black font-medium">
-                      Traum vom Nest-Haus
-                    </span>
-                    <span className="text-nest-gray">
-                      {" "}
-                      Realität wird, prüfen wir, ob dein{" "}
-                    </span>
-                    <span className="text-black font-medium">Grundstück</span>
-                    <span className="text-nest-gray">
-                      {" "}
-                      alle rechtlichen und{" "}
-                    </span>
-                    <span className="text-black font-medium">
-                      baulichen Anforderungen
-                    </span>
-                    <span className="text-nest-gray"> erfüllt. Für </span>
-                    <span className="text-black font-medium">€ 3.000</span>
-                    <span className="text-nest-gray">
-                      {" "}
-                      übernehmen wir diese Überprüfung und entwickeln gemeinsam
-                      mit dir ein individuelles{" "}
-                    </span>
-                    <span className="text-black font-medium">
-                      Entwurfskonzept
-                    </span>
-                    <span className="text-nest-gray"> deines Nest-Hauses.</span>
-                  </p>
-                  <p className="p-secondary mb-6">
-                    <span className="text-nest-gray">
-                      Dabei verbinden wir deine{" "}
-                    </span>
-                    <span className="text-black font-medium">Wünsche</span>
-                    <span className="text-nest-gray"> mit den gegebenen </span>
-                    <span className="text-black font-medium">
-                      Rahmenbedingungen
-                    </span>
-                    <span className="text-nest-gray">
-                      {" "}
-                      und schaffen so die ideale Grundlage für dein{" "}
-                    </span>
-                    <span className="text-black font-medium">
-                      zukünftiges Zuhause
-                    </span>
-                    <span className="text-nest-gray">.</span>
-                  </p>
-                </div>
+        {stepIndex === (isOhneNestMode ? 0 : 1) && (
+          <div className="space-y-4 pt-16 md:pt-16">
+            {isOhneNestMode ? (
+              // KONZEPT-CHECK MODE: Simplified flow with appointment booking first
+              <>
+                {/* Appointment Booking Section - ABOVE Grundstücks-Check title */}
+                <div className="mb-12 md:mb-16">
+                  <div className="text-center mb-12 md:mb-16">
+                    <h2 className="h2-title text-black mb-2 md:mb-3">
+                      Vereinbare jetzt deinen Termin
+                    </h2>
+                    <h3 className="h3-secondary text-black mb-2">
+                      Wir helfen gerne
+                    </h3>
+                  </div>
 
-                <div className="w-full md:w-1/2">
-                  <div className="w-full max-w-[520px] ml-auto mt-1 md:mt-2">
-                    <GrundstueckCheckForm
-                      backgroundColor="white"
-                      maxWidth={false}
-                      padding="sm"
-                      excludePersonalData={true}
-                    />
+                  {/* Left text + right calendar layout (from Terminvereinbarung step 2) */}
+                  <div className="flex flex-col md:flex-row md:items-start md:justify-start gap-8">
+                    <div className="w-full md:w-1/2 text-center md:text-left md:px-16 lg:px-24 md:pt-12 md:mt-12">
+                      <p className="p-secondary mb-4 md:mb-6 md:pt-6 hidden md:block">
+                        <span className="text-nest-gray">
+                          Der Kauf deines Hauses ist ein großer Schritt –
+                          und{" "}
+                        </span>
+                        <span className="text-black font-medium">
+                          wir sind da, um dir dabei zu helfen.
+                        </span>
+                        <span className="text-nest-gray">
+                          {" "}
+                          Für mehr Sicherheit und Klarheit{" "}
+                        </span>
+                        <span className="text-black font-medium">
+                          stehen wir dir jederzeit persönlich zur Seite.
+                        </span>
+                        <span className="text-nest-gray">
+                          {" "}
+                          Ruf uns an, um dein{" "}
+                        </span>
+                        <span className="text-black font-medium">
+                          Beratungsgespräch
+                        </span>
+                        <span className="text-nest-gray">
+                          {" "}
+                          zu vereinbaren, oder buche deinen{" "}
+                        </span>
+                        <span className="text-black font-medium">
+                          Termin ganz einfach online.
+                        </span>
+                        <span className="text-nest-gray">
+                          {" "}
+                          Dein Weg zu deinem Traumhaus beginnt mit einem
+                          Gespräch.
+                        </span>
+                      </p>
+                    </div>
+
+                    <div className="w-full md:w-1/2">
+                      <AppointmentBooking showLeftSide={false} />
+                    </div>
                   </div>
                 </div>
-              </div>
-            </div>
 
-            {/* Process Steps - Step by Step nach Hause - SECOND */}
-            <div className="text-center mb-12 md:mb-16">
-              <h1 className="h1-primary text-black mb-2 md:mb-3">
-                Step by Step nach Hause
-              </h1>
-              <h3 className="h3-secondary text-black mb-8">
-                Deine Vorstellungen formen jeden Schritt am Weg zum neuen
-                Zuhause
-              </h3>
-            </div>
+                {/* Grundstücks-Check Title and Form */}
+                <div id="entwurf-formular" className="mb-16">
+                  <div className="text-center mb-12 md:mb-16">
+                    <h1 className="h1-secondary text-black mb-2 md:mb-3">
+                      Grundstücks-Check
+                    </h1>
+                    <h3 className="h3-secondary text-black mb-2">
+                      Der erste Schritt zu deinem Traumhaus
+                    </h3>
+                  </div>
+                  <div className="flex flex-col md:flex-row md:items-center md:justify-start gap-6">
+                    <div className="w-full md:w-1/2 text-center md:text-left md:px-16 lg:px-24">
+                      <p className="p-secondary mb-4 md:mt-12">
+                        <span className="text-nest-gray">Bevor dein </span>
+                        <span className="text-black font-medium">
+                          Traum vom Nest-Haus
+                        </span>
+                        <span className="text-nest-gray">
+                          {" "}
+                          Realität wird, prüfen wir, ob dein{" "}
+                        </span>
+                        <span className="text-black font-medium">
+                          Grundstück
+                        </span>
+                        <span className="text-nest-gray">
+                          {" "}
+                          alle rechtlichen und{" "}
+                        </span>
+                        <span className="text-black font-medium">
+                          baulichen Anforderungen
+                        </span>
+                        <span className="text-nest-gray"> erfüllt. Für </span>
+                        <span className="text-black font-medium">€ 3.000</span>
+                        <span className="text-nest-gray">
+                          {" "}
+                          übernehmen wir diese Überprüfung und entwickeln
+                          gemeinsam mit dir ein individuelles{" "}
+                        </span>
+                        <span className="text-black font-medium">
+                          Entwurfskonzept
+                        </span>
+                        <span className="text-nest-gray">
+                          {" "}
+                          deines Nest-Hauses.
+                        </span>
+                      </p>
+                      <p className="p-secondary mb-6">
+                        <span className="text-nest-gray">
+                          Dabei verbinden wir deine{" "}
+                        </span>
+                        <span className="text-black font-medium">Wünsche</span>
+                        <span className="text-nest-gray">
+                          {" "}
+                          mit den gegebenen{" "}
+                        </span>
+                        <span className="text-black font-medium">
+                          Rahmenbedingungen
+                        </span>
+                        <span className="text-nest-gray">
+                          {" "}
+                          und schaffen so die ideale Grundlage für dein{" "}
+                        </span>
+                        <span className="text-black font-medium">
+                          zukünftiges Zuhause
+                        </span>
+                        <span className="text-nest-gray">.</span>
+                      </p>
+                    </div>
 
-            <UnifiedContentCard
-              category="ablaufSteps"
-              layout="process-detail"
-              style="standard"
-              variant="responsive"
-              maxWidth={true}
-              showInstructions={false}
-              backgroundColor="white"
-            />
+                    <div className="w-full md:w-1/2">
+                      <div className="w-full max-w-[520px] ml-auto mt-1 md:mt-2">
+                        <GrundstueckCheckForm
+                          backgroundColor="white"
+                          maxWidth={false}
+                          padding="sm"
+                          excludePersonalData={true}
+                        />
+                      </div>
+                    </div>
+                  </div>
+                </div>
 
-            <div className="flex justify-center mt-16 md:mt-20">
-              <Button
-                variant="landing-secondary-blue"
-                size="xs"
-                className="whitespace-nowrap"
-                onClick={goPrev}
-                disabled={stepIndex <= 0}
-              >
-                Vorheriger Schritt
-              </Button>
-              <span className="inline-block w-3" />
-              <Button
-                variant="primary"
-                size="xs"
-                className="whitespace-nowrap"
-                onClick={() => {
-                  ensureGrundstueckscheckIncluded();
-                  goNext();
-                  // Ensure scroll happens on mobile with a small delay
-                  setTimeout(() => {
-                    window.scrollTo({ top: 0, behavior: "smooth" });
-                  }, 100);
-                }}
-              >
-                Nächster Schritt
-              </Button>
-            </div>
+                {/* Navigation buttons - Only Next button in konzept mode */}
+                <div className="flex justify-center mt-16 md:mt-20">
+                  <Button
+                    variant="primary"
+                    size="xs"
+                    className="whitespace-nowrap"
+                    onClick={() => {
+                      ensureGrundstueckscheckIncluded();
+                      goNext();
+                      setTimeout(() => {
+                        window.scrollTo({ top: 0, behavior: "smooth" });
+                      }, 100);
+                    }}
+                  >
+                    Nächster Schritt
+                  </Button>
+                </div>
+              </>
+            ) : (
+              // NORMAL MODE: Existing step 1 content (Konzept-Check with process steps)
+              <>
+                {/* Dein Grundstück - Unser Check Section - FIRST */}
+                <div id="entwurf-formular" className="mb-16">
+                  <div className="text-center mb-12 md:mb-16">
+                    <h1 className="h1-secondary text-black mb-2 md:mb-3">
+                      Konzept-Check
+                    </h1>
+                    <h3 className="h3-secondary text-black mb-2">
+                      Wir überprüfen für dich wie dein Nest-Haus auf ein
+                      Grundstück deiner Wahl passt
+                    </h3>
+                  </div>
+                  <div className="flex flex-col md:flex-row md:items-center md:justify-start gap-6">
+                    <div className="w-full md:w-1/2 text-center md:text-left md:px-16 lg:px-24">
+                      <p className="p-secondary mb-4 md:mt-12">
+                        <span className="text-nest-gray">Bevor dein </span>
+                        <span className="text-black font-medium">
+                          Traum vom Nest-Haus
+                        </span>
+                        <span className="text-nest-gray">
+                          {" "}
+                          Realität wird, prüfen wir, ob dein{" "}
+                        </span>
+                        <span className="text-black font-medium">
+                          Grundstück
+                        </span>
+                        <span className="text-nest-gray">
+                          {" "}
+                          alle rechtlichen und{" "}
+                        </span>
+                        <span className="text-black font-medium">
+                          baulichen Anforderungen
+                        </span>
+                        <span className="text-nest-gray"> erfüllt. Für </span>
+                        <span className="text-black font-medium">€ 3.000</span>
+                        <span className="text-nest-gray">
+                          {" "}
+                          übernehmen wir diese Überprüfung und entwickeln
+                          gemeinsam mit dir ein individuelles{" "}
+                        </span>
+                        <span className="text-black font-medium">
+                          Entwurfskonzept
+                        </span>
+                        <span className="text-nest-gray">
+                          {" "}
+                          deines Nest-Hauses.
+                        </span>
+                      </p>
+                      <p className="p-secondary mb-6">
+                        <span className="text-nest-gray">
+                          Dabei verbinden wir deine{" "}
+                        </span>
+                        <span className="text-black font-medium">Wünsche</span>
+                        <span className="text-nest-gray">
+                          {" "}
+                          mit den gegebenen{" "}
+                        </span>
+                        <span className="text-black font-medium">
+                          Rahmenbedingungen
+                        </span>
+                        <span className="text-nest-gray">
+                          {" "}
+                          und schaffen so die ideale Grundlage für dein{" "}
+                        </span>
+                        <span className="text-black font-medium">
+                          zukünftiges Zuhause
+                        </span>
+                        <span className="text-nest-gray">.</span>
+                      </p>
+                    </div>
+
+                    <div className="w-full md:w-1/2">
+                      <div className="w-full max-w-[520px] ml-auto mt-1 md:mt-2">
+                        <GrundstueckCheckForm
+                          backgroundColor="white"
+                          maxWidth={false}
+                          padding="sm"
+                          excludePersonalData={true}
+                        />
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Process Steps - Step by Step nach Hause - SECOND */}
+                <div className="text-center mb-12 md:mb-16">
+                  <h1 className="h1-primary text-black mb-2 md:mb-3">
+                    Step by Step nach Hause
+                  </h1>
+                  <h3 className="h3-secondary text-black mb-8">
+                    Deine Vorstellungen formen jeden Schritt am Weg zum neuen
+                    Zuhause
+                  </h3>
+                </div>
+
+                <UnifiedContentCard
+                  category="ablaufSteps"
+                  layout="process-detail"
+                  style="standard"
+                  variant="responsive"
+                  maxWidth={true}
+                  showInstructions={false}
+                  backgroundColor="white"
+                />
+
+                <div className="flex justify-center mt-16 md:mt-20">
+                  <Button
+                    variant="landing-secondary-blue"
+                    size="xs"
+                    className="whitespace-nowrap"
+                    onClick={goPrev}
+                    disabled={stepIndex <= 0}
+                  >
+                    Vorheriger Schritt
+                  </Button>
+                  <span className="inline-block w-3" />
+                  <Button
+                    variant="primary"
+                    size="xs"
+                    className="whitespace-nowrap"
+                    onClick={() => {
+                      ensureGrundstueckscheckIncluded();
+                      goNext();
+                      // Ensure scroll happens on mobile with a small delay
+                      setTimeout(() => {
+                        window.scrollTo({ top: 0, behavior: "smooth" });
+                      }, 100);
+                    }}
+                  >
+                    Nächster Schritt
+                  </Button>
+                </div>
+              </>
+            )}
           </div>
         )}
 
@@ -2545,7 +2733,7 @@ export default function CheckoutStepper({
           </div>
         )}
 
-        {stepIndex === 4 && (
+        {stepIndex === (isOhneNestMode ? 1 : 4) && (
           <div className="space-y-6 pt-16 md:pt-16">
             {/* Ohne-Nest Mode: Show "Konfiguration hinzufügen" section */}
             {isOhneNestMode && (

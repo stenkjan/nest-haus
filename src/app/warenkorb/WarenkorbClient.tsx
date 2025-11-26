@@ -51,30 +51,46 @@ export default function WarenkorbClient() {
       });
   }, []);
 
-  // URL hash mapping for checkout steps - wrapped in useMemo to prevent re-creation
-  const stepToHash = useMemo(
-    () =>
-      ({
-        0: "übersicht",
-        1: "entwurf",
-        2: "terminvereinbarung",
-        3: "planungspakete",
-        4: "abschluss",
-      }) as const,
-    []
-  );
+  // URL hash mapping for checkout steps - dynamic based on mode
+  const stepToHash = useMemo(() => {
+    const isOhneNest = getIsOhneNestMode();
 
-  const hashToStep = useMemo(
-    () =>
-      ({
-        übersicht: 0,
-        entwurf: 1,
-        terminvereinbarung: 2,
-        planungspakete: 3,
-        abschluss: 4,
-      }) as const,
-    []
-  );
+    if (isOhneNest) {
+      return {
+        0: "konzept-check",
+        1: "abschluss",
+      } as const;
+    }
+
+    return {
+      0: "übersicht",
+      1: "konzept-check", // Changed from "entwurf"
+      2: "terminvereinbarung",
+      3: "planungspakete",
+      4: "abschluss",
+    } as const;
+  }, [getIsOhneNestMode]);
+
+  const hashToStep = useMemo(() => {
+    const isOhneNest = getIsOhneNestMode();
+
+    if (isOhneNest) {
+      return {
+        "konzept-check": 0,
+        entwurf: 0, // Backward compatibility - redirect old hash to konzept-check
+        abschluss: 1,
+      } as const;
+    }
+
+    return {
+      übersicht: 0,
+      "konzept-check": 1,
+      entwurf: 1, // Backward compatibility
+      terminvereinbarung: 2,
+      planungspakete: 3,
+      abschluss: 4,
+    } as const;
+  }, [getIsOhneNestMode]);
 
   // Step state to reflect progress at top of page - initialize from URL hash
   const [stepIndex, setStepIndex] = useState<number>(() => {
@@ -234,7 +250,7 @@ export default function WarenkorbClient() {
         window.history.replaceState({}, "", newUrl.toString());
       } else {
         // Check if this is a new session with no configuration selected
-        // If no nest has been selected and configurator hasn't been opened, treat as ohne-nest mode
+        // ONLY if no explicit hash or mode parameter was provided
         const hasNestSelected = configuration?.nest != null;
         const hasAnyConfiguration =
           hasNestSelected ||
@@ -245,7 +261,7 @@ export default function WarenkorbClient() {
 
         if (!hasAnyConfiguration) {
           console.log(
-            "🏠 No configuration found, automatically enabling ohne-nest mode (entwurf)"
+            "🏠 No configuration found, automatically enabling ohne-nest mode"
           );
           setOhneNestMode(true);
 
