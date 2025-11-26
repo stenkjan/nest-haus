@@ -865,7 +865,7 @@ export const ENTWURF_VIDEO_CARDS_CONTENT: ContentCardData[] = [
                 text: "Konzept-Check",
                 variant: "primary",
                 size: "xs",
-                link: "/konfigurator",
+                link: "/warenkorb?mode=konzept-check",
             },
             {
                 text: "Warum mit Nest?",

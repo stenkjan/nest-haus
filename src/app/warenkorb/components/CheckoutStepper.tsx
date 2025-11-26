@@ -3318,12 +3318,14 @@ export default function CheckoutStepper({
             {/* So gehts danach weiter Section */}
             <div className="text-center mb-12 pt-4 md:mb-8">
               <h2 className="h2-title text-black mb-2">
-                {isPaymentCompleted ? "Vielen Dank" : "So geht's danach weiter"}
+                {isPaymentCompleted ? "Vielen Dank" : isOhneNestMode ? "Dein Überblick" : "So geht's danach weiter"}
               </h2>
               <p className="p-secondary text-black">
                 {isPaymentCompleted
                   ? "Deine Zahlung wurde bearbeitet"
-                  : "Dein Preis im Überblick"}
+                  : isOhneNestMode
+                    ? "Konzeptcheck"
+                    : "Dein Preis im Überblick"}
               </p>
             </div>
 
@@ -3895,9 +3897,10 @@ export default function CheckoutStepper({
                         <div className="border border-gray-300 rounded-2xl md:min-w-[260px] w-full overflow-hidden">
                           <div>
                             {/* Grundstückscheck row - removed "Entwurf" since it's shown below */}
-                            {/* Planungspaket row - show if exists in cart OR if locally selected */}
-                            {(configItem?.planungspaket ||
-                              localSelectedPlan) && (
+                            {/* Planungspaket row - show if exists in cart OR if locally selected, but hide in konzept-check mode */}
+                            {!isOhneNestMode &&
+                              (configItem?.planungspaket ||
+                                localSelectedPlan) && (
                               <div className="flex items-center justify-between gap-4 py-3 md:py-4 px-6 md:px-7">
                                 <div className="flex-1 min-w-0">
                                   <div className="text-sm md:text-base lg:text-lg 2xl:text-xl font-normal leading-relaxed text-gray-900">
@@ -4056,8 +4059,9 @@ export default function CheckoutStepper({
                       </div>
                     </div>
 
-                    {/* Planungspaket row */}
-                    {(configItem?.planungspaket || localSelectedPlan) && (
+                    {/* Planungspaket row - hide in konzept-check mode */}
+                    {!isOhneNestMode &&
+                      (configItem?.planungspaket || localSelectedPlan) && (
                       <div className="flex items-center justify-between gap-4 py-3 md:py-4 px-6 md:px-7 border-t border-gray-200">
                         <div className="flex-1 min-w-0">
                           <div className="text-sm md:text-base lg:text-lg 2xl:text-xl font-normal leading-relaxed text-gray-900">
