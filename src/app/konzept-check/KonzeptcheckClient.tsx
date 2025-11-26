@@ -115,6 +115,7 @@ export default function KonzeptcheckClient() {
 
           <UnifiedContentCard
             {...TALL_CARD_PROPS}
+            imagePadding="standard"
             noPadding={true}
             customData={[
               {
