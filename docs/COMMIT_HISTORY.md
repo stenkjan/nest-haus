@@ -4,6 +4,20 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [157cdf54ef3cf19e96f25d0bc3caf297c4fe1df2] - Wed Nov 26 14:50:18 2025 +0100
+
+**Author**: stenkjan
+**Message**: `refactor: enhance CheckoutStepper and GrundstueckCheckForm components for ohne-nest mode handling  - Updated the CheckoutStepper component to conditionally render pricing information based on the ohne-nest mode, improving clarity for users. - Refactored the GrundstueckCheckForm component to include form validation logic, ensuring required fields are checked before submission, enhancing user experience and data integrity.  These changes contribute to a more intuitive and efficient user interface by accurately reflecting the current mode and validating user input.  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/warenkorb/components/CheckoutStepper.tsx
+- src/components/sections/GrundstueckCheckForm.tsx
+
+
+---
+
 ## [287209484c757272d3f63881ac55c276b1ea5f03] - Wed Nov 26 14:15:59 2025 +0100
 
 **Author**: stenkjan
