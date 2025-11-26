@@ -988,7 +988,7 @@ export default function CheckoutStepper({
 
   const renderProgress = () => {
     return (
-      <div className="w-full mb-6">
+      <div className={`mb-6 ${isOhneNestMode ? 'w-1/2 mx-auto' : 'w-full'}`}>
         {/* Desktop/Tablet */}
         <div className="relative hidden md:block">
           {/* Connecting Line - Only between dots, not extending to edges */}
@@ -1349,7 +1349,7 @@ export default function CheckoutStepper({
                 </div>
               </div>
             )}
-            {stepIndex === 0 ? (
+            {stepIndex === 0 && !isOhneNestMode ? (
               <div className="p-secondary text-center md:text-left">
                 <p>
                   <span className="text-nest-gray">
@@ -1383,7 +1383,7 @@ export default function CheckoutStepper({
                   <span className="text-black font-medium">neues Zuhause.</span>
                 </p>
               </div>
-            ) : (
+            ) : stepIndex !== 0 && !isOhneNestMode ? (
               <div className="p-secondary whitespace-pre-line text-center md:text-left">
                 {c.description.split("\n").map((paragraph, index) => (
                   <p key={index} className={index > 0 ? "mt-6" : ""}>
@@ -1409,7 +1409,7 @@ export default function CheckoutStepper({
                   </p>
                 ))}
               </div>
-            )}
+            ) : null}
 
             {/* Additional p-primary-small text for step 4 - ONLY in normal mode */}
             {!isOhneNestMode && stepIndex === 4 && (
