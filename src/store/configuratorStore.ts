@@ -687,6 +687,7 @@ export const useConfiguratorStore = create<ConfiguratorState>()(
 
       // Reset configuration - NO preselections
       resetConfiguration: () => {
+        console.log('🔄 Resetting configuration (Neu konfigurieren clicked)')
 
         // Only generate sessionId if not in test environment
         const sessionId = process.env.NODE_ENV === 'test' ? null : `client_${Date.now()}_${Math.random().toString(36).substring(2)}`
@@ -715,18 +716,26 @@ export const useConfiguratorStore = create<ConfiguratorState>()(
           sessionId,
           configuration: defaultConfiguration,
 
-          currentPrice: 0, // No initial price since basis is inkludiert
+          currentPrice: 0, // Reset to 0€ for new session
           priceBreakdown: null,
+          hasUserInteracted: false, // NEW: Reset interaction flag
+          sessionStartTime: Date.now(), // NEW: Reset session start time
+          lastActivityTime: Date.now(), // NEW: Reset last activity time
           hasPart2BeenActive: false,
           hasPart3BeenActive: false,
           shouldSwitchToView: null,
           lastSelectionCategory: null
         })
 
-        // Set default selections after reset
+        // NEW: Reset sessionStorage flag to mark fresh session
+        if (typeof window !== 'undefined') {
+          sessionStorage.setItem('nest-haus-session-active', 'true')
+        }
+
+        // Set default selections after reset (visual only)
         get().setDefaultSelections()
-        // Calculate price with defaults
-        get().calculatePrice()
+        // NEW: Don't calculate price - wait for user interaction
+        // Price stays at 0€ until first click
       },
 
       // Set default preselections - DISABLED (no preselections wanted)

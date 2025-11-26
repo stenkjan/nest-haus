@@ -104,7 +104,7 @@ export default function KonzeptcheckClient() {
           </div>
         </section>
 
-        {/* Grundrissplan Card - No Padding (TALL CARD) */}
+        {/* Grundrissplan Card - With Padding (TALL CARD) */}
         <section id="konzept-check" className="w-full py-8 md:py-16 bg-white">
           <SectionHeader
             title="Der Grundstücks-Check"
