@@ -177,113 +177,51 @@ export default function WarenkorbClient() {
           });
       }
 
-      // NEW: Check hash for konzept-check (from 0€ configurator button)
-      const hash = window.location.hash.slice(1); // Remove #
-      const isKonzeptCheckHash = hash === "konzept-check" || hash === "entwurf";
-
-      // Only set ohne-nest mode if there's no configuration in cart
-      // If there's a configuration, konzept-check is just step 1 in normal mode
+      // Check mode parameter - ONLY mode=configuration triggers normal warenkorb
+      const hash = window.location.hash.slice(1);
       const hasConfigInCart = items.some(item => "nest" in item && item.nest);
 
-      if (
-        (mode === "ohne-nest" ||
-        mode === "konzept-check" ||
-        isKonzeptCheckHash) &&
-        !hasConfigInCart
-      ) {
-        console.log(
-          "🏠 URL has ohne-nest/konzept-check mode or hash (no config in cart), setting to TRUE"
-        );
-        setOhneNestMode(true);
+      console.log("��� Warenkorb mode detection:", { mode, hash, hasConfigInCart });
 
-        // Update the session to mark it as ohne-nest mode
-        const sessionId = configuration?.sessionId;
-        if (sessionId) {
-          console.log("📝 Updating session to ohne-nest mode:", sessionId);
-          fetch("/api/sessions/update-ohne-nest-mode", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({
-              sessionId,
-              isOhneNestMode: true,
-            }),
-          }).catch((error) => {
-            console.warn("⚠️ Failed to update ohne-nest mode:", error);
-          });
-        }
-
-        // Remove the mode parameter from URL to clean it up
-        const newUrl = new URL(window.location.href);
-        newUrl.searchParams.delete("mode");
-        window.history.replaceState({}, "", newUrl.toString());
-      } else if (mode === "configuration" || hasConfigInCart) {
-        // Explicitly using configuration mode (from "Zum Warenkorb" button)
-        // OR if there's a configuration in cart (even without explicit mode param)
-        console.log(
-          "🏠 URL has configuration mode or config in cart, setting ohne-nest to FALSE"
-        );
+      if (mode === "configuration") {
+        // ONLY this explicit parameter triggers normal warenkorb mode (5 steps)
+        console.log("��� mode=configuration → NORMAL MODE");
         setOhneNestMode(false);
 
-        // Update the session to mark it as normal mode
         const sessionId = configuration?.sessionId;
         if (sessionId) {
-          console.log("📝 Updating session to configuration mode:", sessionId);
           fetch("/api/sessions/update-ohne-nest-mode", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({
-              sessionId,
-              isOhneNestMode: false,
-            }),
-          }).catch((error) => {
-            console.warn("⚠️ Failed to update configuration mode:", error);
-          });
+            body: JSON.stringify({ sessionId, isOhneNestMode: false }),
+          }).catch((error) => console.warn("⚠️ Failed to update mode:", error));
         }
 
-        // Remove the mode parameter from URL to clean it up
         const newUrl = new URL(window.location.href);
         newUrl.searchParams.delete("mode");
         window.history.replaceState({}, "", newUrl.toString());
       } else {
-        // Check if this is a new session with no configuration selected
-        // ONLY if no explicit hash or mode parameter was provided
-        const hasNestSelected = configuration?.nest != null;
-        const hasAnyConfiguration =
-          hasNestSelected ||
-          configuration?.gebaeudehuelle != null ||
-          configuration?.innenverkleidung != null ||
-          configuration?.fussboden != null ||
-          configuration?.belichtungspaket != null;
+        // DEFAULT: Everything else is konzept-check mode (2 steps)
+        console.log("��� DEFAULT → KONZEPT-CHECK MODE");
+        setOhneNestMode(true);
 
-        if (!hasAnyConfiguration) {
-          console.log(
-            "🏠 No configuration found, automatically enabling ohne-nest mode"
-          );
-          setOhneNestMode(true);
+        const sessionId = configuration?.sessionId;
+        if (sessionId && (mode === "konzept-check" || mode === "ohne-nest")) {
+          fetch("/api/sessions/update-ohne-nest-mode", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ sessionId, isOhneNestMode: true }),
+          }).catch((error) => console.warn("⚠️ Failed to update mode:", error));
+        }
 
-          // Update the session to mark it as ohne-nest mode
-          const sessionId = configuration?.sessionId;
-          if (sessionId) {
-            console.log("📝 Updating session to ohne-nest mode:", sessionId);
-            fetch("/api/sessions/update-ohne-nest-mode", {
-              method: "POST",
-              headers: { "Content-Type": "application/json" },
-              body: JSON.stringify({
-                sessionId,
-                isOhneNestMode: true,
-              }),
-            }).catch((error) => {
-              console.warn("⚠️ Failed to update ohne-nest mode:", error);
-            });
-          }
-        } else {
-          // User has a configuration, this is normal warenkorb mode
-          console.log("🏠 Configuration found, using normal warenkorb mode");
-          setOhneNestMode(false);
+        if (mode) {
+          const newUrl = new URL(window.location.href);
+          newUrl.searchParams.delete("mode");
+          window.history.replaceState({}, "", newUrl.toString());
         }
       }
 
-      // Set default hash if none exists
+            // Set default hash if none exists
       if (!window.location.hash) {
         window.history.replaceState(null, "", "#übersicht");
       } else {
