@@ -614,17 +614,43 @@ export function GrundstueckCheckForm({
           />
 
           <div className="flex justify-center">
-            <button
-              onClick={handleZahlenUndPruefen}
-              disabled={isSubmitting || isSaved}
-              className="rounded-full transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-offset-2 inline-flex items-center justify-center font-normal whitespace-nowrap bg-[#3D6CE1] border border-[#3D6CE1] text-white hover:bg-[#3D6CE1] focus:ring-[#3D6CE1] shadow-sm box-border px-6 py-1.5 text-sm xl:text-base 2xl:text-lg w-auto disabled:opacity-50 disabled:cursor-not-allowed"
-            >
-              {isSubmitting
-                ? "Wird gespeichert..."
-                : isSaved
-                  ? "✓ Gespeichert"
-                  : "Speichern"}
-            </button>
+            {(() => {
+              const isFormValid = (() => {
+                // Required fields: address, city, postalCode
+                if (!formData.address.trim() || !formData.city.trim() || !formData.postalCode.trim()) {
+                  return false;
+                }
+                
+                // If personal data section is shown, also require name and email
+                if (!excludePersonalData) {
+                  if (!formData.name.trim() || !formData.email.trim()) {
+                    return false;
+                  }
+                  
+                  // Basic email validation
+                  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                  if (!emailRegex.test(formData.email)) {
+                    return false;
+                  }
+                }
+                
+                return true;
+              })();
+
+              return (
+                <button
+                  onClick={handleZahlenUndPruefen}
+                  disabled={isSubmitting || isSaved || !isFormValid}
+                  className="rounded-full transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-offset-2 inline-flex items-center justify-center font-normal whitespace-nowrap bg-[#3D6CE1] border border-[#3D6CE1] text-white hover:bg-[#3D6CE1] focus:ring-[#3D6CE1] shadow-sm box-border px-6 py-1.5 text-sm xl:text-base 2xl:text-lg w-auto disabled:opacity-50 disabled:cursor-not-allowed"
+                >
+                  {isSubmitting
+                    ? "Wird gespeichert..."
+                    : isSaved
+                      ? "✓ Gespeichert"
+                      : "Speichern"}
+                </button>
+              );
+            })()}
           </div>
         </form>
       </div>
@@ -862,19 +888,45 @@ export function GrundstueckCheckForm({
                   />
 
                   <div className="flex justify-center">
-                    <Button
-                      onClick={handleZahlenUndPruefen}
-                      variant="landing-primary"
-                      size="xs"
-                      className="w-auto"
-                      disabled={isSubmitting || isSaved}
-                    >
-                      {isSubmitting
-                        ? "Wird gespeichert..."
-                        : isSaved
-                          ? "✓ Gespeichert"
-                          : "Speichern"}
-                    </Button>
+                    {(() => {
+                      const isFormValid = (() => {
+                        // Required fields: address, city, postalCode
+                        if (!formData.address.trim() || !formData.city.trim() || !formData.postalCode.trim()) {
+                          return false;
+                        }
+                        
+                        // If personal data section is shown, also require name and email
+                        if (!excludePersonalData) {
+                          if (!formData.name.trim() || !formData.email.trim()) {
+                            return false;
+                          }
+                          
+                          // Basic email validation
+                          const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                          if (!emailRegex.test(formData.email)) {
+                            return false;
+                          }
+                        }
+                        
+                        return true;
+                      })();
+
+                      return (
+                        <Button
+                          onClick={handleZahlenUndPruefen}
+                          variant="landing-primary"
+                          size="xs"
+                          className="w-auto"
+                          disabled={isSubmitting || isSaved || !isFormValid}
+                        >
+                          {isSubmitting
+                            ? "Wird gespeichert..."
+                            : isSaved
+                              ? "✓ Gespeichert"
+                              : "Speichern"}
+                        </Button>
+                      );
+                    })()}
                   </div>
                 </form>
               </div>
@@ -1052,19 +1104,45 @@ export function GrundstueckCheckForm({
                 placeholder="Zusatzinformationen - optional"
               />
 
-              <Button
-                onClick={handleZahlenUndPruefen}
-                variant="primary"
-                size="xs"
-                className="w-full"
-                disabled={isSubmitting || isSaved}
-              >
-                {isSubmitting
-                  ? "Wird gespeichert..."
-                  : isSaved
-                    ? "✓ Gespeichert"
-                    : "Speichern"}
-              </Button>
+              {(() => {
+                const isFormValid = (() => {
+                  // Required fields: address, city, postalCode
+                  if (!formData.address.trim() || !formData.city.trim() || !formData.postalCode.trim()) {
+                    return false;
+                  }
+                  
+                  // If personal data section is shown, also require name and email
+                  if (!excludePersonalData) {
+                    if (!formData.name.trim() || !formData.email.trim()) {
+                      return false;
+                    }
+                    
+                    // Basic email validation
+                    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                    if (!emailRegex.test(formData.email)) {
+                      return false;
+                    }
+                  }
+                  
+                  return true;
+                })();
+
+                return (
+                  <Button
+                    onClick={handleZahlenUndPruefen}
+                    variant="primary"
+                    size="xs"
+                    className="w-full"
+                    disabled={isSubmitting || isSaved || !isFormValid}
+                  >
+                    {isSubmitting
+                      ? "Wird gespeichert..."
+                      : isSaved
+                        ? "✓ Gespeichert"
+                        : "Speichern"}
+                  </Button>
+                );
+              })()}
             </form>
           </div>
 

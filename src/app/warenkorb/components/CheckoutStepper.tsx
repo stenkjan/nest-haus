@@ -1433,8 +1433,16 @@ export default function CheckoutStepper({
           <div className="w-full md:w-1/2 order-1 md:order-2">
             <div className="w-full max-w-[520px] ml-auto mt-1 md:mt-2">
               <h2 className="h2-title mb-3">
-                <span className="text-black">Dein Preis</span>
-                <span className="text-nest-gray"> Überblick</span>
+                {isOhneNestMode ? (
+                  <>
+                    <span className="text-black">Dein Überblick</span>
+                  </>
+                ) : (
+                  <>
+                    <span className="text-black">Dein Preis</span>
+                    <span className="text-nest-gray"> Überblick</span>
+                  </>
+                )}
               </h2>
               <div className="border border-gray-300 rounded-2xl md:min-w-[260px] w-full overflow-hidden">
                 <div>
@@ -1487,11 +1495,12 @@ export default function CheckoutStepper({
                       </div>
                     </div>
                   )}
-                  <div className={rowWrapperClass}>
-                    <div className="flex-1 min-w-0">
-                      <div className={`leading-relaxed ${rowTextClass(2)}`}>
-                        Planungspaket
-                      </div>
+                  {!isOhneNestMode && (
+                    <div className={rowWrapperClass}>
+                      <div className="flex-1 min-w-0">
+                        <div className={`leading-relaxed ${rowTextClass(2)}`}>
+                          Planungspaket
+                        </div>
                       <div className={rowSubtitleClass}>
                         {getRowSubtitle(2)}
                       </div>
@@ -1517,6 +1526,7 @@ export default function CheckoutStepper({
                       </span>
                     </div>
                   </div>
+                  )}
                   <div className={rowWrapperClass}>
                     <div className="flex-1 min-w-0">
                       <div className={`leading-relaxed ${rowTextClass(3)}`}>
@@ -2194,36 +2204,38 @@ export default function CheckoutStepper({
               )}
             </div>
 
-            <div className="flex justify-center mt-16 md:mt-20">
-              <Button
-                variant="landing-secondary-blue"
-                size="xs"
-                className="whitespace-nowrap"
-                onClick={() => {
-                  // Clear cart and reset configurator completely for fresh start
-                  items.forEach((item) => {
-                    removeFromCart(item.id);
-                  });
+            {!isOhneNestMode && (
+              <div className="flex justify-center mt-16 md:mt-20">
+                <Button
+                  variant="landing-secondary-blue"
+                  size="xs"
+                  className="whitespace-nowrap"
+                  onClick={() => {
+                    // Clear cart and reset configurator completely for fresh start
+                    items.forEach((item) => {
+                      removeFromCart(item.id);
+                    });
 
-                  const { resetConfiguration } =
-                    useConfiguratorStore.getState();
-                  resetConfiguration();
+                    const { resetConfiguration } =
+                      useConfiguratorStore.getState();
+                    resetConfiguration();
 
-                  window.location.href = "/konfigurator";
-                }}
-              >
-                Neu konfigurieren
-              </Button>
-              <span className="inline-block w-3" />
-              <Button
-                variant="primary"
-                size="xs"
-                className="whitespace-nowrap"
-                onClick={goNext}
-              >
-                Nächster Schritt
-              </Button>
-            </div>
+                    window.location.href = "/konfigurator";
+                  }}
+                >
+                  Neu konfigurieren
+                </Button>
+                <span className="inline-block w-3" />
+                <Button
+                  variant="primary"
+                  size="xs"
+                  className="whitespace-nowrap"
+                  onClick={goNext}
+                >
+                  Nächster Schritt
+                </Button>
+              </div>
+            )}
           </div>
         )}
 
