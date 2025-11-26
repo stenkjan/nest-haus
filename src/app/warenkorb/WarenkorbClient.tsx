@@ -51,11 +51,12 @@ export default function WarenkorbClient() {
       });
   }, []);
 
+  // Get the actual boolean value for proper memoization dependency
+  const isOhneNestMode = getIsOhneNestMode();
+
   // URL hash mapping for checkout steps - dynamic based on mode
   const stepToHash = useMemo(() => {
-    const isOhneNest = getIsOhneNestMode();
-
-    if (isOhneNest) {
+    if (isOhneNestMode) {
       return {
         0: "konzept-check",
         1: "abschluss",
@@ -69,12 +70,10 @@ export default function WarenkorbClient() {
       3: "planungspakete",
       4: "abschluss",
     } as const;
-  }, [getIsOhneNestMode]);
+  }, [isOhneNestMode]);
 
   const hashToStep = useMemo(() => {
-    const isOhneNest = getIsOhneNestMode();
-
-    if (isOhneNest) {
+    if (isOhneNestMode) {
       return {
         "konzept-check": 0,
         entwurf: 0, // Backward compatibility - redirect old hash to konzept-check
@@ -90,19 +89,10 @@ export default function WarenkorbClient() {
       planungspakete: 3,
       abschluss: 4,
     } as const;
-  }, [getIsOhneNestMode]);
+  }, [isOhneNestMode]);
 
-  // Step state to reflect progress at top of page - initialize from URL hash
-  const [stepIndex, setStepIndex] = useState<number>(() => {
-    if (typeof window !== "undefined") {
-      const hash = window.location.hash.slice(1); // Remove #
-      const stepFromHash = hashToStep[hash as keyof typeof hashToStep];
-      if (stepFromHash !== undefined) {
-        return stepFromHash;
-      }
-    }
-    return 0;
-  });
+  // Step state - initialize to 0, will be set correctly after mode is determined
+  const [stepIndex, setStepIndex] = useState<number>(0);
 
   // State for payment redirect handling
   const [paymentRedirectStatus, setPaymentRedirectStatus] = useState<{
@@ -290,6 +280,13 @@ export default function WarenkorbClient() {
       // Set default hash if none exists
       if (!window.location.hash) {
         window.history.replaceState(null, "", "#übersicht");
+      } else {
+        // Initialize stepIndex from hash AFTER mode is determined
+        const hash = window.location.hash.slice(1);
+        const stepFromHash = hashToStep[hash as keyof typeof hashToStep];
+        if (stepFromHash !== undefined) {
+          setStepIndex(stepFromHash);
+        }
       }
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
