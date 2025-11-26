@@ -4,6 +4,19 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [39de2181957ab952165b3435c1092cd8e9d5485e] - Wed Nov 26 13:55:48 2025 +0100
+
+**Author**: stenkjan
+**Message**: `refactor: optimize WarenkorbClient component for improved ohne-nest mode handling  - Refined the logic for determining ohne-nest mode based on cart configurations, enhancing accuracy in mode selection. - Improved console logging for better debugging and clarity regarding mode changes.  These updates enhance the user experience by ensuring the correct mode is consistently applied based on the cart's state.  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/warenkorb/WarenkorbClient_fix.txt
+
+
+---
+
 ## [6b8e1c0408c6ba0941f4791e57c3c460dc224be1] - Wed Nov 26 13:44:40 2025 +0100
 
 **Author**: stenkjan
