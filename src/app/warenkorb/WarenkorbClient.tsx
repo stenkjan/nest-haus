@@ -181,13 +181,18 @@ export default function WarenkorbClient() {
       const hash = window.location.hash.slice(1); // Remove #
       const isKonzeptCheckHash = hash === "konzept-check" || hash === "entwurf";
 
+      // Only set ohne-nest mode if there's no configuration in cart
+      // If there's a configuration, konzept-check is just step 1 in normal mode
+      const hasConfigInCart = items.some(item => "nest" in item && item.nest);
+
       if (
-        mode === "ohne-nest" ||
+        (mode === "ohne-nest" ||
         mode === "konzept-check" ||
-        isKonzeptCheckHash
+        isKonzeptCheckHash) &&
+        !hasConfigInCart
       ) {
         console.log(
-          "🏠 URL has ohne-nest/konzept-check mode or hash, setting to TRUE"
+          "🏠 URL has ohne-nest/konzept-check mode or hash (no config in cart), setting to TRUE"
         );
         setOhneNestMode(true);
 
@@ -211,10 +216,11 @@ export default function WarenkorbClient() {
         const newUrl = new URL(window.location.href);
         newUrl.searchParams.delete("mode");
         window.history.replaceState({}, "", newUrl.toString());
-      } else if (mode === "configuration") {
+      } else if (mode === "configuration" || hasConfigInCart) {
         // Explicitly using configuration mode (from "Zum Warenkorb" button)
+        // OR if there's a configuration in cart (even without explicit mode param)
         console.log(
-          "🏠 URL has configuration mode, setting ohne-nest to FALSE"
+          "🏠 URL has configuration mode or config in cart, setting ohne-nest to FALSE"
         );
         setOhneNestMode(false);
 
