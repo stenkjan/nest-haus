@@ -4,6 +4,19 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [13d40678344f38de1d8589a6467f39545eed9b66] - Wed Nov 26 13:30:26 2025 +0100
+
+**Author**: stenkjan
+**Message**: `refactor: enhance CheckoutStepper component for konzept-check mode  - Updated conditional rendering logic to display appropriate headings and messages based on  state, improving user guidance during the checkout process. - Adjusted links in card content to direct users to the correct path for konzept-check mode, ensuring a seamless navigation experience.  These changes refine the user interface and enhance the overall usability of the CheckoutStepper component.  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/warenkorb/components/CheckoutStepper.tsx
+
+
+---
+
 ## [dfdd55c3e34bf746cb731abb856a6923001e6794] - Wed Nov 26 12:45:20 2025 +0100
 
 **Author**: stenkjan
