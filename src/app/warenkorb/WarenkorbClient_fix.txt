@@ -1,0 +1,81 @@
+// REPLACEMENT FOR LINES 180-246 in WarenkorbClient.tsx
+
+      // Check hash and mode for konzept-check (from 0€ configurator button)
+      const hash = window.location.hash.slice(1); // Remove #
+      const isKonzeptCheckHash = hash === "konzept-check" || hash === "entwurf";
+
+      // Check if there's a REAL configuration in cart (nest module selected)
+      const hasConfigInCart = items.some(item => "nest" in item && item.nest);
+
+      console.log("🔍 Warenkorb mode detection:", {
+        mode,
+        hash,
+        hasConfigInCart,
+        itemsCount: items.length
+      });
+
+      // PRIORITY 1: Explicit mode=ohne-nest or mode=konzept-check ALWAYS wins
+      if (mode === "ohne-nest" || mode === "konzept-check") {
+        console.log("🏠 Explicit ohne-nest/konzept-check mode from URL param");
+        setOhneNestMode(true);
+
+        // Update the session to mark it as ohne-nest mode
+        const sessionId = configuration?.sessionId;
+        if (sessionId) {
+          console.log("📝 Updating session to ohne-nest mode:", sessionId);
+          fetch("/api/sessions/update-ohne-nest-mode", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              sessionId,
+              isOhneNestMode: true,
+            }),
+          }).catch((error) => {
+            console.warn("⚠️ Failed to update ohne-nest mode:", error);
+          });
+        }
+
+        // Remove the mode parameter from URL to clean it up
+        const newUrl = new URL(window.location.href);
+        newUrl.searchParams.delete("mode");
+        window.history.replaceState({}, "", newUrl.toString());
+      }
+      // PRIORITY 2: Explicit mode=configuration ALWAYS wins
+      else if (mode === "configuration") {
+        console.log("🏠 Explicit configuration mode from URL param");
+        setOhneNestMode(false);
+
+        // Update the session to mark it as normal mode
+        const sessionId = configuration?.sessionId;
+        if (sessionId) {
+          console.log("📝 Updating session to configuration mode:", sessionId);
+          fetch("/api/sessions/update-ohne-nest-mode", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              sessionId,
+              isOhneNestMode: false,
+            }),
+          }).catch((error) => {
+            console.warn("⚠️ Failed to update configuration mode:", error);
+          });
+        }
+
+        // Remove the mode parameter from URL to clean it up
+        const newUrl = new URL(window.location.href);
+        newUrl.searchParams.delete("mode");
+        window.history.replaceState({}, "", newUrl.toString());
+      }
+      // PRIORITY 3: Hash #konzept-check without explicit mode param - only if NO config in cart
+      else if (isKonzeptCheckHash && !hasConfigInCart) {
+        console.log("🏠 Konzept-check hash with no config in cart");
+        setOhneNestMode(true);
+      }
+      // PRIORITY 4: Has config in cart - use normal mode
+      else if (hasConfigInCart) {
+        console.log("🏠 Configuration found in cart, using normal mode");
+        setOhneNestMode(false);
+      }
+      // PRIORITY 5: No explicit indicators - check configuration store
+      else {
+
