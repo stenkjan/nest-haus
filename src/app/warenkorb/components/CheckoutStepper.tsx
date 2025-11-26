@@ -2235,9 +2235,9 @@ export default function CheckoutStepper({
                 {/* Appointment Booking Section - ABOVE Grundstücks-Check */}
                 <div className="mb-12 md:mb-16">
                   <div className="text-center mb-12 md:mb-16">
-                    <h1 className="h1-secondary text-black mb-2 md:mb-3">
+                    <h2 className="h1-secondary text-black mb-2 md:mb-3">
                       Vereinbare jetzt deinen Termin
-                    </h1>
+                    </h2>
                     <h3 className="h3-secondary text-black mb-2">
                       Wir helfen gerne
                     </h3>
@@ -2292,9 +2292,9 @@ export default function CheckoutStepper({
                 {/* Grundstücks-Check Title and Form */}
                 <div id="entwurf-formular" className="mb-16">
                   <div className="text-center mb-12 md:mb-16">
-                    <h1 className="h1-secondary text-black mb-2 md:mb-3">
+                    <h2 className="h1-secondary text-black mb-2 md:mb-3">
                       Grundstücks-Check
-                    </h1>
+                    </h2>
                     <h3 className="h3-secondary text-black mb-2">
                       Der erste Schritt zu deinem Traumhaus
                     </h3>
@@ -2405,9 +2405,9 @@ export default function CheckoutStepper({
                 {/* Dein Grundstück - Unser Check Section - FIRST */}
                 <div id="entwurf-formular" className="mb-16">
                   <div className="text-center mb-12 md:mb-16">
-                    <h1 className="h1-secondary text-black mb-2 md:mb-3">
+                    <h2 className="h1-secondary text-black mb-2 md:mb-3">
                       Konzept-Check
-                    </h1>
+                    </h2>
                     <h3 className="h3-secondary text-black mb-2">
                       Wir überprüfen für dich wie dein Nest-Haus auf ein
                       Grundstück deiner Wahl passt
@@ -2487,9 +2487,9 @@ export default function CheckoutStepper({
 
                 {/* Process Steps - Step by Step nach Hause - SECOND */}
                 <div className="text-center mb-12 md:mb-16">
-                  <h1 className="h1-primary text-black mb-2 md:mb-3">
+                  <h2 className="h1-primary text-black mb-2 md:mb-3">
                     Step by Step nach Hause
-                  </h1>
+                  </h2>
                   <h3 className="h3-secondary text-black mb-8">
                     Deine Vorstellungen formen jeden Schritt am Weg zum neuen
                     Zuhause
