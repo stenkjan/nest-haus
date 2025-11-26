@@ -1014,7 +1014,9 @@ export default function CheckoutStepper({
               }}
             />
           )}
-          <div className="grid grid-cols-5 gap-0">
+          <div
+            className={`grid ${isOhneNestMode ? "grid-cols-2" : "grid-cols-5"} gap-0`}
+          >
             {steps.map((label, idx) => {
               const isDone = idx < stepIndex;
               const isCurrent = idx === stepIndex;
@@ -2230,12 +2232,12 @@ export default function CheckoutStepper({
             {isOhneNestMode ? (
               // KONZEPT-CHECK MODE: Simplified flow with appointment booking first
               <>
-                {/* Appointment Booking Section - ABOVE Grundstücks-Check title */}
+                {/* Appointment Booking Section - ABOVE Grundstücks-Check */}
                 <div className="mb-12 md:mb-16">
                   <div className="text-center mb-12 md:mb-16">
-                    <h2 className="h2-title text-black mb-2 md:mb-3">
+                    <h1 className="h1-secondary text-black mb-2 md:mb-3">
                       Vereinbare jetzt deinen Termin
-                    </h2>
+                    </h1>
                     <h3 className="h3-secondary text-black mb-2">
                       Wir helfen gerne
                     </h3>
@@ -2369,8 +2371,18 @@ export default function CheckoutStepper({
                   </div>
                 </div>
 
-                {/* Navigation buttons - Only Next button in konzept mode */}
-                <div className="flex justify-center mt-16 md:mt-20">
+                {/* Navigation buttons at the END - Both buttons for konzept mode */}
+                <div className="flex justify-center gap-3 mt-16 md:mt-20">
+                  <Button
+                    variant="landing-secondary-blue"
+                    size="xs"
+                    className="whitespace-nowrap"
+                    onClick={() => {
+                      window.location.href = "/konfigurator";
+                    }}
+                  >
+                    Neu konfigurieren
+                  </Button>
                   <Button
                     variant="primary"
                     size="xs"
