@@ -4,6 +4,23 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [dfdd55c3e34bf746cb731abb856a6923001e6794] - Wed Nov 26 12:45:20 2025 +0100
+
+**Author**: stenkjan
+**Message**: `refactor: streamline konzept-check mode UI in CheckoutStepper component  - Adjusted the progress bar width to 50% and centered it for the konzept-check mode, enhancing visual clarity and user experience. - Removed redundant text sections specific to konzept-check mode to simplify the interface. - Verified that pricing overview boxes and buttons are correctly conditionally rendered based on the mode, ensuring a clean and focused checkout process.  These changes improve the overall usability and aesthetic of the konzept-check mode, aligning with the simplified 2-step flow.  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/warenkorb/components/CheckoutStepper.tsx
+
+
+#### 📚 Documentation Changes
+- docs/final_KONFIGURATOR_PRICING_OVERHAUL_SUMMARY.md
+
+
+---
+
 ## [5ba34a4bd8a6fff95ba5044abee36d7103fb784c] - Wed Nov 26 11:32:51 2025 +0100
 
 **Author**: stenkjan
