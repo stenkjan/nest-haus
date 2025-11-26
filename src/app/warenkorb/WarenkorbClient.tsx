@@ -6,7 +6,10 @@ import { useCartStore } from "../../store/cartStore";
 import { useConfiguratorStore } from "../../store/configuratorStore";
 import { PriceCalculator } from "../konfigurator/core/PriceCalculator";
 import { PriceUtils } from "../konfigurator/core/PriceUtils";
-import { GRUNDSTUECKSCHECK_PRICE, PLANNING_PACKAGES } from "@/constants/configurator";
+import {
+  GRUNDSTUECKSCHECK_PRICE,
+  PLANNING_PACKAGES,
+} from "@/constants/configurator";
 import type { CartItem, ConfigurationCartItem } from "../../store/cartStore";
 import CheckoutStepper from "./components/CheckoutStepper";
 import PaymentSuccessTracker from "@/components/analytics/PaymentSuccessTracker";
@@ -119,18 +122,21 @@ export default function WarenkorbClient() {
           .then((data) => {
             if (data.success && data.status === "succeeded") {
               console.log("✅ Payment redirect verified as successful");
-              
+
               // Trigger email sending for redirect-based payments
-              fetch('/api/payments/send-confirmation-emails', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
+              fetch("/api/payments/send-confirmation-emails", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({
                   paymentIntentId: data.paymentIntentId,
                 }),
               }).catch((err) => {
-                console.warn('⚠️ Email sending failed (webhook will handle):', err);
+                console.warn(
+                  "⚠️ Email sending failed (webhook will handle):",
+                  err
+                );
               });
-              
+
               setPaymentRedirectStatus({
                 show: true,
                 success: true,
@@ -165,8 +171,18 @@ export default function WarenkorbClient() {
           });
       }
 
-      if (mode === "ohne-nest" || mode === "konzept-check") {
-        console.log("🏠 URL has ohne-nest/konzept-check mode, setting to TRUE");
+      // NEW: Check hash for konzept-check (from 0€ configurator button)
+      const hash = window.location.hash.slice(1); // Remove #
+      const isKonzeptCheckHash = hash === "konzept-check" || hash === "entwurf";
+
+      if (
+        mode === "ohne-nest" ||
+        mode === "konzept-check" ||
+        isKonzeptCheckHash
+      ) {
+        console.log(
+          "🏠 URL has ohne-nest/konzept-check mode or hash, setting to TRUE"
+        );
         setOhneNestMode(true);
 
         // Update the session to mark it as ohne-nest mode
@@ -191,7 +207,9 @@ export default function WarenkorbClient() {
         window.history.replaceState({}, "", newUrl.toString());
       } else if (mode === "configuration") {
         // Explicitly using configuration mode (from "Zum Warenkorb" button)
-        console.log("🏠 URL has configuration mode, setting ohne-nest to FALSE");
+        console.log(
+          "🏠 URL has configuration mode, setting ohne-nest to FALSE"
+        );
         setOhneNestMode(false);
 
         // Update the session to mark it as normal mode
@@ -218,7 +236,8 @@ export default function WarenkorbClient() {
         // Check if this is a new session with no configuration selected
         // If no nest has been selected and configurator hasn't been opened, treat as ohne-nest mode
         const hasNestSelected = configuration?.nest != null;
-        const hasAnyConfiguration = hasNestSelected || 
+        const hasAnyConfiguration =
+          hasNestSelected ||
           configuration?.gebaeudehuelle != null ||
           configuration?.innenverkleidung != null ||
           configuration?.fussboden != null ||
@@ -247,9 +266,7 @@ export default function WarenkorbClient() {
           }
         } else {
           // User has a configuration, this is normal warenkorb mode
-          console.log(
-            "🏠 Configuration found, using normal warenkorb mode"
-          );
+          console.log("🏠 Configuration found, using normal warenkorb mode");
           setOhneNestMode(false);
         }
       }
@@ -505,10 +522,10 @@ export default function WarenkorbClient() {
   // Get next higher planungspaket for upgrade suggestions
   const getNextPlanungspaket = (currentPackage?: string) => {
     // Use PLANNING_PACKAGES from constants to ensure consistency
-    const packageHierarchy = PLANNING_PACKAGES.map(pkg => ({
+    const packageHierarchy = PLANNING_PACKAGES.map((pkg) => ({
       id: pkg.value,
       name: `Planung ${pkg.name}`,
-      price: pkg.price
+      price: pkg.price,
     }));
 
     if (!currentPackage) {
@@ -741,7 +758,7 @@ export default function WarenkorbClient() {
     >
       {/* Track payment success for GA4 purchase event */}
       <PaymentSuccessTracker />
-      
+
       <div className="w-full">
         {items.length === 0 ? (
           /* Empty Cart */
