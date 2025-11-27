@@ -85,6 +85,7 @@ export default function CheckoutStepper({
   const [internalStepIndex, setInternalStepIndex] = useState<number>(0);
   const [_hasScrolledToBottom, setHasScrolledToBottom] =
     useState<boolean>(false);
+  const [showAppointmentReminder, setShowAppointmentReminder] = useState<boolean>(false);
   const isControlled =
     typeof controlledStepIndex === "number" &&
     typeof onStepChange === "function";
@@ -185,6 +186,25 @@ export default function CheckoutStepper({
       }
     }
   }, [paymentRedirectStatus, onPaymentRedirectHandled]);
+
+  // Check for appointment reminder when navigating to terminvereinbarung
+  useEffect(() => {
+    // Only check if we're in normal mode (not konzept-check)
+    if (isOhneNestMode) return;
+
+    // Check if current step is terminvereinbarung (step index 2 in normal mode)
+    const currentStepName = steps[stepIndex];
+    if (currentStepName === "Terminvereinbarung") {
+      // Check if user has an appointment
+      const hasAppointment = getAppointmentSummary(sessionId);
+      const hasAppointmentFromOther = appointmentDetails && !isAppointmentFromCurrentSession();
+      
+      if (!hasAppointment && !hasAppointmentFromOther) {
+        // Show reminder popup
+        setShowAppointmentReminder(true);
+      }
+    }
+  }, [stepIndex, steps, isOhneNestMode, appointmentDetails, sessionId, getAppointmentSummary, isAppointmentFromCurrentSession]);
 
   useEffect(() => {
     // Sync with configurator's planungspaket when it changes, otherwise use cart item
@@ -3737,9 +3757,9 @@ export default function CheckoutStepper({
                           Entwurf und Grundstückscheck.
                         </div>
 
-                        {/* Jetzt bezahlen button - centered below text */}
+                        {/* Jetzt bezahlen button - centered below text - HIDDEN ON MOBILE */}
                         {!isPaymentCompleted && (
-                          <div className="flex justify-center">
+                          <div className="hidden md:flex justify-center">
                             <Button
                               variant="landing-primary"
                               size="xs"
@@ -4529,6 +4549,30 @@ export default function CheckoutStepper({
           enableBuiltInLightbox={false}
         />
       </Dialog>
+
+      {/* Appointment Reminder Popup */}
+      {showAppointmentReminder && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+          <div className="bg-white rounded-3xl shadow-2xl max-w-md w-full p-8 md:p-10">
+            <div className="text-center">
+              <h3 className="text-xl md:text-2xl font-semibold text-gray-900 mb-4">
+                Termin erforderlich
+              </h3>
+              <p className="text-base md:text-lg text-gray-700 mb-6 leading-relaxed">
+                Bitte vereinbaren Sie einen Termin mit uns um Ihre Bestellung abzuschließen
+              </p>
+              <Button
+                variant="primary"
+                size="xs"
+                onClick={() => setShowAppointmentReminder(false)}
+                className="w-full sm:w-auto px-8"
+              >
+                Okay
+              </Button>
+            </div>
+          </div>
+        </div>
+      )}
     </section>
   );
 
