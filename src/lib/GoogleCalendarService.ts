@@ -380,11 +380,17 @@ export class GoogleCalendarService {
         endDateTime: string;
         attendeeEmail?: string;
         attendeeName?: string;
+        inquiryId?: string;  // Optional inquiry ID for UID consistency with ICS
     }): Promise<{ success: boolean; eventId?: string; error?: string }> {
         try {
             console.log('📅 Creating Google Calendar event...');
 
             const calendar = await this.getCalendarClient();
+
+            // Generate event UID consistent with ICS file if inquiryId provided
+            const iCalUID = appointmentData.inquiryId 
+                ? `inquiry-${appointmentData.inquiryId}@nest-haus.at`
+                : undefined;
 
             const event = {
                 summary: appointmentData.summary,
@@ -401,7 +407,7 @@ export class GoogleCalendarService {
                 attendees: appointmentData.attendeeEmail ? [{
                     email: appointmentData.attendeeEmail,
                     displayName: appointmentData.attendeeName || '',
-                    responseStatus: 'needsAction',
+                    responseStatus: 'accepted',  // Set to accepted since user confirmed via RSVP
                 }] : [],
                 reminders: {
                     useDefault: false,
@@ -410,6 +416,7 @@ export class GoogleCalendarService {
                         { method: 'popup', minutes: 60 }, // 1 hour before
                     ],
                 },
+                ...(iCalUID && { iCalUID }),  // Add UID if provided for consistency with ICS
             };
 
             const response = await calendar.events.insert({
@@ -419,6 +426,9 @@ export class GoogleCalendarService {
             });
 
             console.log('✅ Google Calendar event created:', response.data.id);
+            if (iCalUID) {
+                console.log(`✅ Event UID set to: ${iCalUID}`);
+            }
 
             return {
                 success: true,

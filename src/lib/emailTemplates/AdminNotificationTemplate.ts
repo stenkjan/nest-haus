@@ -173,6 +173,10 @@ export function generateAdminNotificationEmail(data: AdminNotificationData): {
         <div style="font-size: 16px; font-weight: 600; margin-bottom: 8px;">⏰ Gewünschter Termin:</div>
         <div style="font-size: 18px; font-weight: 600; color: #1f2937;">${formattedDate}</div>
         <div style="font-size: 14px; color: #6b7280; margin-top: 4px;">Zeitzone: Europe/Vienna</div>
+        <div style="margin-top: 12px; padding-top: 12px; border-top: 1px solid #fbbf24;">
+          <div style="font-size: 14px; color: #d97706;">⏳ <strong>Läuft ab in:</strong> 24 Stunden</div>
+          <div style="font-size: 13px; color: #78716c; margin-top: 4px;">📎 Kalendereinladung (.ics) im Anhang</div>
+        </div>
       </div>
       ` : ''}
       
@@ -222,10 +226,10 @@ export function generateAdminNotificationEmail(data: AdminNotificationData): {
         <div class="section-title">📋 Nächste Schritte</div>
         <ol style="margin: 16px 0; padding-left: 20px; color: #4b5563;">
           ${isAppointment ? `
-          <li>Verfügbarkeit in Google Calendar prüfen</li>
-          <li>Termin per E-Mail an Kunden bestätigen</li>
-          <li>Kalendereinladung an ${data.email} senden</li>
-          <li>Anfrage im Admin-Panel als "CONTACTED" markieren</li>
+          <li>Kalendereinladung (.ics) im Anhang zu eigenem Kalender hinzufügen</li>
+          <li>Kunde wird per E-Mail informiert, wenn Termin in Google Calendar bestätigt wird</li>
+          <li>Bei Bedarf Kunde direkt kontaktieren: ${data.email}</li>
+          <li>Anfrage im Admin-Panel verwalten</li>
           ` : `
           <li>Kunde per ${data.preferredContact} kontaktieren</li>
           <li>Beratungsgespräch vereinbaren</li>
@@ -268,6 +272,8 @@ NEST-Haus - ${isAppointment ? 'Neue Terminanfrage' : 'Neue Kontaktanfrage'}
 ${isAppointment ? `
 ⏰ Gewünschter Termin: ${formattedDate}
 Zeitzone: Europe/Vienna
+⏳ Läuft ab in: 24 Stunden
+📎 Kalendereinladung (.ics) im Anhang
 ` : ''}
 
 👤 KUNDENDATEN
@@ -287,10 +293,10 @@ Geschätzter Gesamtpreis: ${new Intl.NumberFormat('de-AT', { style: 'currency', 
 
 📋 NÄCHSTE SCHRITTE:
 ${isAppointment ? `
-1. Verfügbarkeit in Google Calendar prüfen
-2. Termin per E-Mail an Kunden bestätigen
-3. Kalendereinladung an ${data.email} senden
-4. Anfrage im Admin-Panel als "CONTACTED" markieren
+1. Kalendereinladung (.ics) im Anhang zu eigenem Kalender hinzufügen
+2. Kunde wird per E-Mail informiert, wenn Termin in Google Calendar bestätigt wird
+3. Bei Bedarf Kunde direkt kontaktieren: ${data.email}
+4. Anfrage im Admin-Panel verwalten
 ` : `
 1. Kunde per ${data.preferredContact} kontaktieren
 2. Beratungsgespräch vereinbaren

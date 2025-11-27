@@ -1,5 +1,10 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
+import { EmailService } from '@/lib/EmailService';
+import { generateAppointmentReminderEmail } from '@/lib/emailTemplates/AppointmentReminderTemplate';
+import { Resend } from 'resend';
+
+const resend = new Resend(process.env.RESEND_API_KEY);
 
 /**
  * Cron job to expire PENDING appointments after 24 hours
@@ -29,8 +34,74 @@ export async function GET(request: NextRequest) {
         console.log('🕐 Running appointment expiration cron job...');
 
         const now = new Date();
+        const oneHourFromNow = new Date(now.getTime() + 60 * 60 * 1000); // 1 hour ahead
 
-        // Find all PENDING appointments that have expired
+        // Step 1: Send 1-hour reminders for appointments about to expire
+        const upcomingExpirations = await prisma.customerInquiry.findMany({
+            where: {
+                appointmentStatus: 'PENDING',
+                appointmentExpiresAt: {
+                    gt: now, // Not yet expired
+                    lt: oneHourFromNow, // But will expire within 1 hour
+                },
+            },
+            select: {
+                id: true,
+                name: true,
+                email: true,
+                appointmentDateTime: true,
+                appointmentExpiresAt: true,
+                adminNotes: true,
+            },
+        });
+
+        console.log(`📧 Found ${upcomingExpirations.length} appointments expiring within 1 hour`);
+
+        // Send reminder emails
+        let remindersSent = 0;
+        for (const appointment of upcomingExpirations) {
+            // Check if reminder already sent (look for marker in adminNotes)
+            if (appointment.adminNotes?.includes('1-Stunden-Erinnerung gesendet')) {
+                console.log(`⏭️ Skipping reminder for ${appointment.email} - already sent`);
+                continue;
+            }
+
+            try {
+                const { subject, html, text } = generateAppointmentReminderEmail({
+                    name: appointment.name || 'Kunde',
+                    email: appointment.email,
+                    appointmentDateTime: appointment.appointmentDateTime?.toISOString() || '',
+                    expiresAt: appointment.appointmentExpiresAt?.toISOString() || '',
+                    inquiryId: appointment.id,
+                });
+
+                // Send reminder to customer
+                await resend.emails.send({
+                    from: `NEST-Haus Team <${process.env.RESEND_FROM_EMAIL || 'mail@nest-haus.at'}>`,
+                    to: appointment.email,
+                    subject,
+                    html,
+                    text,
+                });
+
+                // Mark reminder as sent in admin notes
+                await prisma.customerInquiry.update({
+                    where: { id: appointment.id },
+                    data: {
+                        adminNotes: `${appointment.adminNotes || ''}\n1-Stunden-Erinnerung gesendet am ${now.toLocaleString('de-DE')}`,
+                    },
+                });
+
+                console.log(`✅ Reminder sent to ${appointment.email}`);
+                remindersSent++;
+            } catch (error) {
+                console.error(`❌ Failed to send reminder to ${appointment.email}:`, error);
+            }
+        }
+
+        console.log(`✅ Sent ${remindersSent} reminder emails`);
+
+        // Step 2: Find all PENDING appointments that have expired
         const expiredAppointments = await prisma.customerInquiry.findMany({
             where: {
                 appointmentStatus: 'PENDING',
@@ -80,8 +151,9 @@ export async function GET(request: NextRequest) {
 
         return NextResponse.json({
             success: true,
-            message: `${updateResult.count} appointments expired and time slots released`,
+            message: `${updateResult.count} appointments expired and time slots released. ${remindersSent} reminders sent.`,
             expired: updateResult.count,
+            remindersSent,
             appointments: expiredAppointments.map(apt => ({
                 id: apt.id,
                 name: apt.name,

@@ -5,6 +5,7 @@ import { generatePaymentConfirmationEmail } from './emailTemplates/PaymentConfir
 import { generateAdminPaymentNotificationEmail } from './emailTemplates/AdminPaymentNotificationTemplate';
 import { generateAdminAppointmentNotification } from './emailTemplates/AdminAppointmentNotificationTemplate';
 import { generateSecureToken } from './utils/tokenGenerator';
+import { generateICS, generateICSFilename } from './utils/icsGenerator';
 import { prisma } from './prisma';
 
 // Initialize Resend with API key
@@ -89,7 +90,17 @@ export class EmailService {
         inquiryId: data.inquiryId,
       });
 
-      const result = await resend.emails.send({
+      // Prepare email data
+      const emailData: {
+        from: string;
+        replyTo: string;
+        to: string;
+        bcc: string;
+        subject: string;
+        html: string;
+        text: string;
+        attachments?: Array<{ filename: string; content: string }>;
+      } = {
         from: `${this.FROM_NAME} <${this.FROM_EMAIL}>`,
         replyTo: this.REPLY_TO_EMAIL,
         to: data.email,
@@ -97,7 +108,31 @@ export class EmailService {
         subject,
         html,
         text,
-      });
+      };
+
+      // Add ICS attachment for appointments
+      if (data.requestType === 'appointment' && data.appointmentDateTime) {
+        const icsContent = generateICS({
+          inquiryId: data.inquiryId,
+          customerName: data.name,
+          customerEmail: data.email,
+          appointmentDateTime: new Date(data.appointmentDateTime),
+          durationMinutes: 60,
+          location: 'NEST-Haus Office, Karmeliterplatz 8, 8010 Graz, Austria',
+          description: data.message,
+          organizerEmail: this.ADMIN_EMAIL,
+          organizerName: this.FROM_NAME,
+        });
+
+        emailData.attachments = [{
+          filename: generateICSFilename(data.inquiryId),
+          content: icsContent,
+        }];
+
+        console.log(`📎 ICS attachment added: ${generateICSFilename(data.inquiryId)}`);
+      }
+
+      const result = await resend.emails.send(emailData);
 
       console.log('✅ Customer email sent successfully:', result.data?.id);
       return true;
@@ -1232,10 +1267,33 @@ Automatische Benachrichtigung vom NEST-Haus System`;
       // Generate secure confirmation token
       const confirmToken = generateSecureToken();
 
-      // Generate email with ICS attachment
-      const emailContent = generateAdminAppointmentNotification({
-        ...data,
-        confirmToken,
+      // Generate admin notification email
+      const { subject, html, text } = generateAdminNotificationEmail({
+        inquiryId: data.inquiryId,
+        name: data.name,
+        email: data.email,
+        phone: data.phone,
+        message: data.message,
+        requestType: 'appointment',
+        preferredContact: 'EMAIL',
+        appointmentDateTime: data.appointmentDateTime,
+        configurationData: data.configurationData,
+        sessionId: data.sessionId,
+        clientIP: data.clientIP,
+        userAgent: data.userAgent,
+      });
+
+      // Generate ICS attachment
+      const icsContent = generateICS({
+        inquiryId: data.inquiryId,
+        customerName: data.name,
+        customerEmail: data.email,
+        appointmentDateTime: new Date(data.appointmentDateTime),
+        durationMinutes: 60,
+        location: 'NEST-Haus Office, Karmeliterplatz 8, 8010 Graz, Austria',
+        description: data.message,
+        organizerEmail: this.ADMIN_EMAIL,
+        organizerName: this.FROM_NAME,
       });
 
       // Send email via Resend with attachment
@@ -1243,15 +1301,13 @@ Automatische Benachrichtigung vom NEST-Haus System`;
         from: `${this.FROM_NAME} <${this.FROM_EMAIL}>`,
         to: [this.ADMIN_EMAIL],
         replyTo: this.REPLY_TO_EMAIL,
-        subject: emailContent.subject,
-        html: emailContent.html,
-        text: emailContent.text,
-        attachments: [
-          {
-            filename: emailContent.icsAttachment.filename,
-            content: emailContent.icsAttachment.content,
-          },
-        ],
+        subject,
+        html,
+        text,
+        attachments: [{
+          filename: generateICSFilename(data.inquiryId),
+          content: icsContent,
+        }],
       });
 
       if (result.error) {
@@ -1260,6 +1316,7 @@ Automatische Benachrichtigung vom NEST-Haus System`;
       }
 
       console.log('✅ Admin appointment notification sent:', result.data?.id);
+      console.log(`📎 ICS attachment added: ${generateICSFilename(data.inquiryId)}`);
 
       // Store confirmToken in database for verification
       await prisma.customerInquiry.update({

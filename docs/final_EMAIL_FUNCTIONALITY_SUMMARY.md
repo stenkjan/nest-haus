@@ -3,8 +3,8 @@
 ## Complete Guide to Email System, Calendar Integration & Configuration
 
 **Project**: Nest-Haus Configurator  
-**Last Updated**: November 15, 2025  
-**Status**: ✅ nest-haus.com Root Domain Configuration Active
+**Last Updated**: November 27, 2025  
+**Status**: ✅ nest-haus.com Root Domain Configuration Active with ICS RSVP System
 
 ---
 
@@ -19,7 +19,8 @@
 7. [Environment Variables](#environment-variables)
 8. [Email Types & Templates](#email-types--templates)
 9. [Appointment System](#appointment-system)
-10. [Reply Tracking & Email Saving](#reply-tracking--email-saving)
+10. [ICS Calendar RSVP System](#ics-calendar-rsvp-system)
+11. [Reply Tracking & Email Saving](#reply-tracking--email-saving)
 11. [Database Storage](#database-storage)
 12. [Testing & Verification](#testing--verification)
 13. [Troubleshooting](#troubleshooting)
@@ -657,6 +658,224 @@ CRON_SECRET=your-secure-cron-secret-here
    - Location: "NEST-Haus Office" or specified location
    - Duration: 60 minutes
    - Reminders: 24 hours before (email), 1 hour before (popup)
+
+---
+
+## ICS Calendar RSVP System
+
+### Overview
+
+The appointment system uses ICS (iCalendar) file attachments for seamless calendar integration and automatic RSVP tracking. When a customer books an appointment, they receive a calendar invite (.ics file) that can be added directly to their calendar application.
+
+### ICS File Generation
+
+**Utility**: `src/lib/utils/icsGenerator.ts`
+
+**RFC 5545 Compliance**: Full iCalendar format support
+
+**Key Properties**:
+```
+METHOD:REQUEST          - Calendar invitation request
+STATUS:TENTATIVE        - Appointment is pending confirmation
+ORGANIZER:mail@nest-haus.at  - Admin calendar email
+ATTENDEE:customer@email.com   - Customer email with RSVP=TRUE
+DTSTART:20251127T140000Z      - Start time (UTC)
+DTEND:20251127T150000Z        - End time (UTC, 60min duration)
+LOCATION:NEST-Haus Office
+VALARM:-PT23H           - 24-hour expiration reminder
+VALARM:-PT1H            - 1-hour before appointment reminder
+UID:inquiry-{inquiryId}@nest-haus.at  - Unique event identifier
+```
+
+### Email Integration
+
+**Customer Confirmation Email**:
+- Includes `.ics` file attachment (`nest-haus-termin-{inquiryId}.ics`)
+- Clean, minimal appointment section design
+- Clear 24-hour expiration notice
+- Instructions: "Bitte bestätigen Sie Ihren Termin durch Hinzufügen zum Kalender"
+- Explains tentative status until calendar acceptance
+
+**Admin Notification Email**:
+- Includes same `.ics` file attachment
+- Shows 24-hour expiration countdown
+- Direct link to admin panel inquiry page
+- No accept/decline buttons (handled manually)
+- ICS attachment notice prominently displayed
+
+### Appointment Lifecycle with ICS
+
+```
+1. USER BOOKS APPOINTMENT
+   ↓
+   Inquiry created (PENDING status)
+   appointmentExpiresAt set (+24 hours)
+   
+2. EMAILS SENT WITH ICS ATTACHMENT
+   ↓
+   Customer receives: Confirmation + ICS file
+   Admin receives: Notification + ICS file
+   
+3. USER OPENS ICS FILE
+   ↓
+   Calendar app opens (Gmail, Outlook, Apple Calendar)
+   User clicks "Yes" / "Accept" / "Add to Calendar"
+   
+4. CALENDAR APP SENDS RSVP
+   ↓
+   System detects calendar acceptance (via RSVP endpoint)
+   Status updated: PENDING → CONFIRMED
+   appointmentExpiresAt cleared (no longer expires)
+   
+5. GOOGLE CALENDAR EVENT CREATED
+   ↓
+   Event added to mail@nest-haus.at calendar
+   Calendar invitation sent to customer
+   Admin can see event in calendar view
+   
+6. IF NO RSVP WITHIN 24 HOURS
+   ↓
+   Cron job runs hourly
+   1-hour reminder sent before expiration
+   After 24h: Status changed to EXPIRED
+   Time slot released for rebooking
+```
+
+### RSVP API Endpoint
+
+**Route**: `/api/appointments/rsvp`
+
+**Method**: POST
+
+**Parameters**:
+```typescript
+{
+  inquiryId: string;
+  action: 'accept' | 'decline';
+  token: string;  // Security token for validation
+}
+```
+
+**On Accept**:
+1. Validate inquiry exists and is PENDING
+2. Update status: PENDING → CONFIRMED
+3. Create Google Calendar event via `GoogleCalendarService.createEvent()`
+4. Clear `appointmentExpiresAt` (no longer expires)
+5. Send confirmation email to customer and admin
+6. Return success response
+
+**On Decline**:
+1. Update status: PENDING → CANCELLED
+2. Release time slot immediately
+3. Notify admin of cancellation
+4. Return success response
+
+### Security Features
+
+- **Secure Tokens**: Each inquiry gets unique confirmation token
+- **Validation**: Check inquiry ownership and status before updating
+- **Rate Limiting**: Prevent RSVP abuse
+- **Audit Logging**: All appointment status changes logged
+- **Token Expiration**: Tokens expire after 48 hours
+
+### Calendar App Compatibility
+
+**Tested Platforms**:
+- ✅ Gmail Calendar (Web & Mobile)
+- ✅ Outlook Calendar (Web & Desktop)
+- ✅ Apple Calendar (macOS & iOS)
+- ✅ Google Calendar App (Android)
+- ✅ Thunderbird Lightning
+
+**ICS File Behavior**:
+- Double-click opens default calendar app
+- "Add to Calendar" button in email clients
+- RSVP response automatically triggers confirmation
+- Works offline (file can be added later)
+
+### 24-Hour Expiration System
+
+**Cron Job**: `/api/cron/expire-appointments` (runs every hour)
+
+**1-Hour Before Expiration**:
+```
+Time Check: appointmentExpiresAt - 1 hour
+↓
+Send reminder email to customer
+Send reminder to admin
+↓
+Email includes:
+- "Ihr Termin läuft in 1 Stunde ab"
+- Direct link to add ICS to calendar
+- CTA button: "Jetzt bestätigen"
+```
+
+**After 24 Hours (No RSVP)**:
+```
+Time Check: appointmentExpiresAt < now
+↓
+Update status: PENDING → EXPIRED
+Release time slot for rebooking
+Log expiration event
+↓
+Admin notified via dashboard
+Customer does NOT receive expiration notice
+(Avoids negative UX)
+```
+
+### Admin Panel Integration
+
+**Calendar View**:
+- Google Calendar iframe embedded in admin panel
+- Source: `https://calendar.google.com/calendar/embed?src={CALENDAR_ID}&ctz=Europe/Vienna`
+- Toggle between inquiry list and calendar view
+
+**Appointment Status Colors**:
+- 🟡 PENDING: Yellow (awaiting RSVP)
+- 🟢 CONFIRMED: Green (RSVP accepted, calendar event created)
+- 🔴 EXPIRED: Red (24 hours passed, no RSVP)
+- ⚫ CANCELLED: Gray (manually cancelled)
+
+**Inquiry Details**:
+- Countdown timer for PENDING appointments (hours:minutes remaining)
+- Link to corresponding Google Calendar event (if CONFIRMED)
+- Appointment history timeline (requested → status changes)
+- ICS file download option for admin
+
+### Email Template Design Philosophy
+
+**Customer Email - Simplified**:
+- ❌ Removed bulky glass morphism cards
+- ✅ Clean, minimal appointment section
+- ✅ Focus on ICS attachment call-to-action
+- ✅ Clear expiration notice without alarm
+- ✅ Professional, calm tone
+
+**Admin Email - Informational**:
+- ❌ Removed accept/decline action buttons
+- ✅ Clean appointment details display
+- ✅ Prominent ICS attachment notice
+- ✅ Direct link to admin panel
+- ✅ No unnecessary UI chrome
+
+### Troubleshooting
+
+**ICS File Not Opening**:
+- Check file MIME type: `text/calendar`
+- Verify .ics file extension
+- Ensure RFC 5545 compliance (use validator)
+
+**RSVP Not Triggering**:
+- Check confirmation token validity
+- Verify inquiry is PENDING status
+- Check API endpoint logs for errors
+- Ensure Google Calendar service is authenticated
+
+**Calendar Event Not Creating**:
+- Verify `GOOGLE_CALENDAR_ID` environment variable
+- Check service account permissions
+- Review Google Calendar API quotas
+- Check `service-account-key.json` file exists
 
 ---
 

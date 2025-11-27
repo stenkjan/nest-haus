@@ -225,7 +225,13 @@ export function generateCustomerConfirmationEmail(data: CustomerConfirmationData
           </div>
         </div>
         <p style="margin-top: 16px; font-size: 15px; color: #666;">
-          Wir überprüfen die Verfügbarkeit und bestätigen Ihren Termin innerhalb von 24 Stunden per E-Mail.
+          ⏰ <strong>Wichtig:</strong> Bitte bestätigen Sie Ihren Termin innerhalb von 24 Stunden durch Hinzufügen zum Kalender.
+        </p>
+        <p style="margin-top: 12px; font-size: 14px; color: #999;">
+          📎 Sie finden eine Kalendereinladung (.ics-Datei) im Anhang dieser E-Mail. Öffnen Sie die Datei, um den Termin in Ihrem Kalender zu speichern.
+        </p>
+        <p style="margin-top: 12px; font-size: 14px; color: #e67e22;">
+          ⚠️ Der Termin ist vorläufig und wird automatisch storniert, wenn er nicht innerhalb von 24 Stunden bestätigt wird.
         </p>
       </div>
       ` : ''}
@@ -327,7 +333,11 @@ Ihr gewünschter Termin:
 ${formattedDate}
 Zeitzone: Europe/Vienna (CET/CEST)
 
-Wir überprüfen die Verfügbarkeit und bestätigen Ihren Termin innerhalb von 24 Stunden per E-Mail.`
+⏰ WICHTIG: Bitte bestätigen Sie Ihren Termin innerhalb von 24 Stunden durch Hinzufügen zum Kalender.
+
+📎 Sie finden eine Kalendereinladung (.ics-Datei) im Anhang dieser E-Mail. Öffnen Sie die Datei, um den Termin in Ihrem Kalender zu speichern.
+
+⚠️ Der Termin ist vorläufig und wird automatisch storniert, wenn er nicht innerhalb von 24 Stunden bestätigt wird.`
       : `Vielen Dank für Ihre Kontaktanfrage. Wir haben Ihre Nachricht erhalten und melden uns in Kürze bei Ihnen.`
     }
 
