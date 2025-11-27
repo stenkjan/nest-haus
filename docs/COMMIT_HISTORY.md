@@ -4,6 +4,20 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [7e8faa1b8ce6f0aee2309811e9bffa7766df9e80] - Thu Nov 27 11:49:57 2025 +0100
+
+**Author**: stenkjan
+**Message**: `refactor: improve button state handling in GrundstueckCheckForm component  - Enhanced the button behavior in the GrundstueckCheckForm component to conditionally apply styles and disable pointer events based on the submission state and form validity. - Updated validation logic to ensure required fields are checked before submission, improving user experience and data integrity.  These changes contribute to a more intuitive interface by clearly communicating the button's state and ensuring proper form validation.  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/components/sections/AppointmentBooking.tsx
+- src/components/sections/GrundstueckCheckForm.tsx
+
+
+---
+
 ## [2619bc69d12a213cda2c4798086dc6532d2c0062] - Wed Nov 26 14:53:30 2025 +0100
 
 **Author**: stenkjan
