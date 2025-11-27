@@ -12,7 +12,6 @@ import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 import Link from "next/link";
 import { Suspense } from "react";
-import { CalendarView } from "./CalendarView";
 import { UserJourney } from "./UserJourney";
 import { SessionSummaryBadge } from "./SessionSummaryBadge";
 

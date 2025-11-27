@@ -35,7 +35,7 @@ interface UserJourneyProps {
  * Displays complete user journey from session start to inquiry creation
  * Shows all interactions, configuration changes, and timeline
  */
-export function UserJourney({ sessionId, inquiryId }: UserJourneyProps) {
+export function UserJourney({ sessionId, inquiryId: _inquiryId }: UserJourneyProps) {
   const [sessionData, setSessionData] = useState<UserSessionData | null>(null);
   const [interactions, setInteractions] = useState<InteractionEventData[]>([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -185,7 +185,8 @@ export function UserJourney({ sessionId, inquiryId }: UserJourneyProps) {
               <div>
                 <span className="text-gray-500">Standort:</span>
                 <span className="ml-2 text-gray-900">
-                  {sessionData.city}, {sessionData.country}
+                  {sessionData.city}
+                  {sessionData.country ? `, ${sessionData.country}` : ""}
                 </span>
               </div>
             )}

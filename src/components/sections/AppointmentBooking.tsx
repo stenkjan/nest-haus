@@ -108,10 +108,10 @@ const AppointmentBooking = ({
     if (selectedTimeIndex > 0) {
       const currentTimeSlots = getCurrentTimeSlots();
       const previousSlot = currentTimeSlots[selectedTimeIndex];
-      setSelectedTimeIndex((prev) => Math.max(prev - 1, 0));
-      const newSlot = currentTimeSlots[Math.max(selectedTimeIndex - 1, 0)];
+      const newIndex = Math.max(selectedTimeIndex - 1, 0);
+      const newSlot = currentTimeSlots[newIndex];
 
-      // Track time slot selection
+      // Track time slot selection BEFORE state update
       if (sessionId && newSlot) {
         const timeStr =
           typeof newSlot === "string"
@@ -131,12 +131,14 @@ const AppointmentBooking = ({
               : undefined;
         trackTimeSlotSelection(sessionId, timeStr, true, previousTimeStr);
       }
-    }
 
-    const currentTimeSlots = getCurrentTimeSlots();
-    console.log(
-      `🕐 Time navigation: ${selectedTimeIndex}/${currentTimeSlots.length} slots`
-    );
+      // Update state after tracking
+      setSelectedTimeIndex(newIndex);
+
+      console.log(
+        `🕐 Time navigation: ${newIndex}/${currentTimeSlots.length} slots`
+      );
+    }
   };
 
   // Get current time slots (either from calendar API or fallback)
@@ -179,12 +181,38 @@ const AppointmentBooking = ({
     const maxIndex = currentTimeSlots.length - 1;
 
     if (selectedTimeIndex < maxIndex) {
-      setSelectedTimeIndex((prev) => Math.min(prev + 1, maxIndex));
-    }
+      const currentSlot = currentTimeSlots[selectedTimeIndex];
+      const newIndex = Math.min(selectedTimeIndex + 1, maxIndex);
+      const newSlot = currentTimeSlots[newIndex];
 
-    console.log(
-      `🕐 Time navigation: ${selectedTimeIndex + 1}/${currentTimeSlots.length} slots`
-    );
+      // Track time slot selection BEFORE state update
+      if (sessionId && newSlot) {
+        const timeStr =
+          typeof newSlot === "string"
+            ? newSlot
+            : new Date(newSlot.start).toLocaleTimeString("de-DE", {
+                hour: "2-digit",
+                minute: "2-digit",
+              });
+        const previousTimeStr =
+          typeof currentSlot === "string"
+            ? currentSlot
+            : currentSlot?.start
+              ? new Date(currentSlot.start).toLocaleTimeString("de-DE", {
+                  hour: "2-digit",
+                  minute: "2-digit",
+                })
+              : undefined;
+        trackTimeSlotSelection(sessionId, timeStr, false, previousTimeStr);
+      }
+
+      // Update state after tracking
+      setSelectedTimeIndex(newIndex);
+
+      console.log(
+        `🕐 Time navigation: ${newIndex}/${currentTimeSlots.length} slots`
+      );
+    }
   };
 
   // Fetch available time slots when date changes
