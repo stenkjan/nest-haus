@@ -12,6 +12,9 @@ import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 import Link from "next/link";
 import { Suspense } from "react";
+import { CalendarView } from "./CalendarView";
+import { UserJourney } from "./UserJourney";
+import { SessionSummaryBadge } from "./SessionSummaryBadge";
 
 interface CustomerInquiry {
   id: string;
@@ -19,6 +22,7 @@ interface CustomerInquiry {
   name: string | null;
   phone: string | null;
   message: string | null;
+  sessionId: string | null;
   status:
     | "NEW"
     | "CONTACTED"
@@ -90,6 +94,10 @@ async function fetchCustomerInquiries(
 
     const data = await response.json();
     console.log("✅ Customer inquiries fetched successfully");
+    console.log(
+      `📊 Fetched ${data.inquiries?.length || 0} inquiries (Total: ${data.pagination?.totalCount || 0})`
+    );
+    console.log("📋 Sample inquiry data:", data.inquiries?.[0]);
     return data;
   } catch (error) {
     console.error("❌ Failed to fetch customer inquiries:", error);
@@ -238,12 +246,15 @@ function InquiryCard({ inquiry }: { inquiry: CustomerInquiry }) {
                 timeStyle: "short",
               })}
             </p>
-            {inquiry.appointmentExpiresAt && inquiry.appointmentStatus === "PENDING" && (
-              <p className="text-xs text-blue-600">
-                ⏰ Hold expires:{" "}
-                {new Date(inquiry.appointmentExpiresAt).toLocaleString("de-DE")}
-              </p>
-            )}
+            {inquiry.appointmentExpiresAt &&
+              inquiry.appointmentStatus === "PENDING" && (
+                <p className="text-xs text-blue-600">
+                  ⏰ Hold expires:{" "}
+                  {new Date(inquiry.appointmentExpiresAt).toLocaleString(
+                    "de-DE"
+                  )}
+                </p>
+              )}
           </div>
         </div>
       )}
@@ -288,9 +299,21 @@ function InquiryCard({ inquiry }: { inquiry: CustomerInquiry }) {
         </div>
       )}
 
+      {/* User Journey and Session Data */}
+      {inquiry.sessionId && (
+        <div className="mb-4">
+          <UserJourney sessionId={inquiry.sessionId} inquiryId={inquiry.id} />
+        </div>
+      )}
+
       {/* Footer */}
       <div className="flex justify-between items-center pt-4 border-t border-gray-200">
-        <div className="text-xs text-gray-500">ID: {inquiry.id}</div>
+        <div className="flex items-center gap-2">
+          <div className="text-xs text-gray-500">ID: {inquiry.id}</div>
+          {inquiry.sessionId && (
+            <SessionSummaryBadge sessionId={inquiry.sessionId} compact />
+          )}
+        </div>
         <div className="flex space-x-2">
           <button className="bg-blue-600 text-white px-3 py-1 rounded text-sm hover:bg-blue-700 transition-colors">
             View Details
@@ -317,7 +340,9 @@ function InquiriesSummary({ inquiries }: { inquiries: CustomerInquiry[] }) {
     .filter((i) => i.totalPrice)
     .reduce((sum, i) => sum + (i.totalPrice || 0), 0);
 
-  const appointmentCount = inquiries.filter((i) => i.requestType === "appointment").length;
+  const appointmentCount = inquiries.filter(
+    (i) => i.requestType === "appointment"
+  ).length;
 
   return (
     <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-7 gap-4 mb-6">

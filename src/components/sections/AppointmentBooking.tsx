@@ -6,6 +6,12 @@ import { TerminVereinbarenContent } from "./TerminVereinbarenContent";
 import { useCartStore } from "@/store/cartStore";
 import { useConfiguratorStore } from "@/store/configuratorStore";
 import { trackAppointmentBooking } from "@/lib/ga4-tracking";
+import {
+  trackAppointmentFormView,
+  trackDateSelection,
+  trackTimeSlotSelection,
+  trackAppointmentSubmission,
+} from "@/lib/analytics/appointmentTracking";
 
 /**
  * Text Preset: Description Text Small
@@ -58,6 +64,16 @@ const AppointmentBooking = ({
     Array<{ start: string; end: string; available: boolean }>
   >([]);
   const [isLoadingSlots, setIsLoadingSlots] = useState(false);
+  const [formViewTracked, setFormViewTracked] = useState(false); // Track form view only once
+
+  // Track form view on mount
+  useEffect(() => {
+    if (sessionId && !formViewTracked) {
+      trackAppointmentFormView(sessionId);
+      setFormViewTracked(true);
+      console.log("📊 Tracked appointment form view");
+    }
+  }, [sessionId, formViewTracked]);
 
   // Static time slots as fallback - Business hours: 8-12 and 13-19
   const fallbackTimeSlots = [
@@ -90,7 +106,31 @@ const AppointmentBooking = ({
   // Time slots navigation
   const prevTime = () => {
     if (selectedTimeIndex > 0) {
+      const currentTimeSlots = getCurrentTimeSlots();
+      const previousSlot = currentTimeSlots[selectedTimeIndex];
       setSelectedTimeIndex((prev) => Math.max(prev - 1, 0));
+      const newSlot = currentTimeSlots[Math.max(selectedTimeIndex - 1, 0)];
+
+      // Track time slot selection
+      if (sessionId && newSlot) {
+        const timeStr =
+          typeof newSlot === "string"
+            ? newSlot
+            : new Date(newSlot.start).toLocaleTimeString("de-DE", {
+                hour: "2-digit",
+                minute: "2-digit",
+              });
+        const previousTimeStr =
+          typeof previousSlot === "string"
+            ? previousSlot
+            : previousSlot?.start
+              ? new Date(previousSlot.start).toLocaleTimeString("de-DE", {
+                  hour: "2-digit",
+                  minute: "2-digit",
+                })
+              : undefined;
+        trackTimeSlotSelection(sessionId, timeStr, true, previousTimeStr);
+      }
     }
 
     const currentTimeSlots = getCurrentTimeSlots();
@@ -273,6 +313,23 @@ const AppointmentBooking = ({
       if (response.ok && result.success) {
         console.log("✅ Appointment request sent successfully");
 
+        // Track appointment submission in user tracking system
+        if (sessionId) {
+          await trackAppointmentSubmission(sessionId, {
+            date: selectedDate,
+            timeSlot: selectedSlot?.start
+              ? new Date(selectedSlot.start).toLocaleTimeString("de-DE", {
+                  hour: "2-digit",
+                  minute: "2-digit",
+                })
+              : fallbackTimeSlots[selectedTimeIndex],
+            appointmentType: formData.appointmentType,
+            customerEmail: formData.email,
+            customerName: fullName || formData.name,
+            inquiryId: result.inquiryId,
+          });
+        }
+
         // Save appointment to cart store for reference
         const appointmentDetails = {
           date: selectedDate,
@@ -298,7 +355,7 @@ const AppointmentBooking = ({
 
         // Track appointment booking in Google Analytics 4
         trackAppointmentBooking({
-          date: selectedDate.toISOString().split('T')[0], // Convert Date to YYYY-MM-DD string
+          date: selectedDate.toISOString().split("T")[0], // Convert Date to YYYY-MM-DD string
           time: appointmentDetails.time,
           appointmentType: formData.appointmentType,
           timeSlotAvailable: result.timeSlotAvailable,
@@ -391,7 +448,16 @@ const AppointmentBooking = ({
             }
             ${isAvailable && !isSelected ? "text-gray-700" : ""}
           `}
-          onClick={() => isAvailable && setSelectedDate(date)}
+          onClick={() => {
+            if (isAvailable) {
+              const previousDate = selectedDate;
+              setSelectedDate(date);
+              // Track date selection
+              if (sessionId) {
+                trackDateSelection(sessionId, date, previousDate || undefined);
+              }
+            }
+          }}
         >
           {day}
         </div>
@@ -652,11 +718,13 @@ const AppointmentBooking = ({
                 type="submit"
                 disabled={isSubmitting || !selectedDate}
                 className={`bg-blue-600 hover:bg-blue-700 text-white font-normal rounded-full transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 inline-flex items-center justify-center shadow-sm w-36 sm:w-40 lg:w-44 xl:w-48 px-2 py-1.5 text-sm xl:text-base 2xl:text-xl ${
-                  isSubmitting || !selectedDate
-                    ? 'opacity-50'
-                    : ''
+                  isSubmitting || !selectedDate ? "opacity-50" : ""
                 }`}
-                style={(isSubmitting || !selectedDate) ? { pointerEvents: "none" } : undefined}
+                style={
+                  isSubmitting || !selectedDate
+                    ? { pointerEvents: "none" }
+                    : undefined
+                }
               >
                 {isSubmitting ? "Wird gesendet..." : "Jetzt Anfragen"}
               </button>
@@ -929,12 +997,10 @@ const AppointmentBooking = ({
                     type="submit"
                     disabled={isSubmitting || !selectedDate}
                     className={`bg-blue-600 hover:bg-blue-700 text-white font-normal rounded-full transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 inline-flex items-center justify-center shadow-sm w-36 sm:w-40 lg:w-44 xl:w-48 px-2 py-1.5 text-sm xl:text-base 2xl:text-xl ${
-                      isSubmitting || !selectedDate
-                        ? 'opacity-50'
-                        : ''
+                      isSubmitting || !selectedDate ? "opacity-50" : ""
                     }`}
                     style={
-                      (isSubmitting || !selectedDate)
+                      isSubmitting || !selectedDate
                         ? { pointerEvents: "none" }
                         : undefined
                     }
