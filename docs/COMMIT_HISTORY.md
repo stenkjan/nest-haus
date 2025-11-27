@@ -4,6 +4,19 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [620e3fe6e281f0b601be380a27f3d17a8fce96c2] - Thu Nov 27 13:24:26 2025 +0100
+
+**Author**: stenkjan
+**Message**: `refactor: improve layout responsiveness in CheckoutStepper component  - Changed the  class to  for better handling of text overflow in the left section. - Adjusted text sizes for price display to ensure consistency across different screen sizes.  These updates enhance the visual layout and responsiveness of the CheckoutStepper, contributing to a smoother user experience during the checkout process.  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/warenkorb/components/CheckoutStepper.tsx
+
+
+---
+
 ## [c9485d0f55e8d11ed5e4668f16cba5d1d5f2c9b3] - Thu Nov 27 13:03:42 2025 +0100
 
 **Author**: stenkjan
