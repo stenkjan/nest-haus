@@ -192,7 +192,6 @@ export function UserJourney({ sessionId, inquiryId: _inquiryId }: UserJourneyPro
             )}
           </div>
 
-          {/* Interactions Timeline */}
           {interactions.length > 0 && (
             <div className="mt-4">
               <h5 className="text-sm font-semibold text-gray-900 mb-2">
