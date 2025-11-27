@@ -4,6 +4,15 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [899cc25b0423df66f1ee680ba272d82144eae558] - Thu Nov 27 14:56:52 2025 +0100
+
+**Author**: stenkjan
+**Message**: `refactor: remove AdminAppointmentNotificationTemplate.ts  - Deleted the AdminAppointmentNotificationTemplate.ts file, which contained the email template for admin appointment notifications. This change helps streamline the codebase by removing unused components.  `
+
+### Changes Analysis
+
+---
+
 ## [0912cb210a89a6f096c16e5eda03ee795de00951] - Thu Nov 27 14:51:51 2025 +0100
 
 **Author**: stenkjan
