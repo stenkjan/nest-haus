@@ -653,7 +653,7 @@ const AppointmentBooking = ({
                 disabled={isSubmitting || !selectedDate}
                 className={`bg-blue-600 hover:bg-blue-700 text-white font-normal rounded-full transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 inline-flex items-center justify-center shadow-sm w-36 sm:w-40 lg:w-44 xl:w-48 px-2 py-1.5 text-sm xl:text-base 2xl:text-xl ${
                   isSubmitting || !selectedDate
-                    ? 'opacity-50 cursor-not-allowed'
+                    ? 'opacity-50'
                     : ''
                 }`}
                 style={(isSubmitting || !selectedDate) ? { pointerEvents: "none" } : undefined}
@@ -930,7 +930,7 @@ const AppointmentBooking = ({
                     disabled={isSubmitting || !selectedDate}
                     className={`bg-blue-600 hover:bg-blue-700 text-white font-normal rounded-full transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 inline-flex items-center justify-center shadow-sm w-36 sm:w-40 lg:w-44 xl:w-48 px-2 py-1.5 text-sm xl:text-base 2xl:text-xl ${
                       isSubmitting || !selectedDate
-                        ? 'opacity-50 bg-blue-600 cursor-not-allowed'
+                        ? 'opacity-50'
                         : ''
                     }`}
                     style={
