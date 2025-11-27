@@ -1047,110 +1047,161 @@ export default function CheckoutStepper({
 
         {/* Mobile: Compact Dots with current step title */}
         <div className="md:hidden">
-          {/* Top row with circles and labels */}
-          <div className="relative mb-1">
-            {/* Top row connecting line - between 3 dots */}
-            <div
-              className="absolute top-2.5 h-0.5 bg-gray-200"
-              style={{
-                left: `${100 / 3 / 2}%`, // 16.67%
-                right: `${100 / 3 / 2}%`, // 16.67%
-              }}
-            />
-            {/* Top row progress line */}
-            <div
-              className="absolute top-2.5 h-0.5 bg-[#3D6CE1] transition-all duration-300"
-              style={{
-                left: `${100 / 3 / 2}%`,
-                width:
-                  Math.min(stepIndex, 2) === 0
-                    ? "0%"
-                    : `${(Math.min(stepIndex, 2) / 2) * (100 - 100 / 3)}%`,
-              }}
-            />
-            <div className="grid grid-cols-3 gap-2">
-              {steps.slice(0, 3).map((label, i) => {
-                const idx = i;
-                const isDone = idx < stepIndex;
-                const isCurrent = idx === stepIndex;
-                const circleClass = isDone
-                  ? "bg-[#3D6CE1] border-[#3D6CE1]"
-                  : isCurrent
-                    ? "bg-white border-[#3D6CE1]"
-                    : "bg-white border-gray-300";
-                const dotInner = isDone ? (
-                  <span className="w-2 h-2 bg-white rounded-full" />
-                ) : null;
-                return (
-                  <div
-                    key={`mrow1-${idx}`}
-                    className="flex flex-col items-center"
-                  >
-                    <div
-                      className={`relative z-10 w-5 h-5 rounded-full border-2 flex items-center justify-center ${circleClass}`}
-                    >
-                      {dotInner}
+          {isOhneNestMode ? (
+            // KONZEPT-CHECK MODE: Single row with 2 steps
+            <div className="relative mb-1">
+              {/* Connecting line between 2 dots */}
+              <div
+                className="absolute top-2.5 h-0.5 bg-gray-200"
+                style={{
+                  left: `${100 / 2 / 2}%`,
+                  right: `${100 / 2 / 2}%`,
+                }}
+              />
+              {/* Progress line */}
+              <div
+                className="absolute top-2.5 h-0.5 bg-[#3D6CE1] transition-all duration-300"
+                style={{
+                  left: `${100 / 2 / 2}%`,
+                  width: stepIndex === 0 ? "0%" : "50%",
+                }}
+              />
+              <div className="grid grid-cols-2 gap-4">
+                {steps.map((label, idx) => {
+                  const isDone = idx < stepIndex;
+                  const isCurrent = idx === stepIndex;
+                  const circleClass = isDone
+                    ? "bg-[#3D6CE1] border-[#3D6CE1]"
+                    : isCurrent
+                      ? "bg-white border-[#3D6CE1]"
+                      : "bg-white border-gray-300";
+                  const dotInner = isDone ? (
+                    <span className="w-2 h-2 bg-white rounded-full" />
+                  ) : null;
+                  return (
+                    <div key={idx} className="flex flex-col items-center">
+                      <div
+                        className={`relative z-10 w-5 h-5 rounded-full border-2 flex items-center justify-center ${circleClass}`}
+                      >
+                        {dotInner}
+                      </div>
+                      <div className="mt-1 text-xs text-center text-gray-700 leading-tight break-words px-1">
+                        {label}
+                      </div>
                     </div>
-                    <div className="mt-1 text-[11px] text-center text-gray-700 leading-tight break-words px-1">
-                      {label}
-                    </div>
-                  </div>
-                );
-              })}
+                  );
+                })}
+              </div>
             </div>
-          </div>
-          {/* Bottom row with circles and labels */}
-          <div className="relative mt-2">
-            {/* Bottom row connecting line - between 2 dots */}
-            <div
-              className="absolute top-2.5 h-0.5 bg-gray-200"
-              style={{
-                left: `${100 / 2 / 2}%`, // 25%
-                right: `${100 / 2 / 2}%`, // 25%
-              }}
-            />
-            {/* Bottom row progress line */}
-            <div
-              className="absolute top-2.5 h-0.5 bg-[#3D6CE1] transition-all duration-300"
-              style={{
-                left: `${100 / 2 / 2}%`,
-                width:
-                  Math.min(stepIndex - 3, 1) <= 0
-                    ? "0%"
-                    : `${(Math.min(stepIndex - 3, 1) / 1) * (100 - 100 / 2)}%`,
-              }}
-            />
-            <div className="grid grid-cols-2 gap-2">
-              {steps.slice(3).map((label, i) => {
-                const idx = i + 3;
-                const isDone = idx < stepIndex;
-                const isCurrent = idx === stepIndex;
-                const circleClass = isDone
-                  ? "bg-[#3D6CE1] border-[#3D6CE1]"
-                  : isCurrent
-                    ? "bg-white border-[#3D6CE1]"
-                    : "bg-white border-gray-300";
-                const dotInner = isDone ? (
-                  <span className="w-2 h-2 bg-white rounded-full" />
-                ) : null;
-                return (
-                  <div
-                    key={`mrow2-${idx}`}
-                    className="flex flex-col items-center"
-                  >
-                    <div
-                      className={`relative z-10 w-5 h-5 rounded-full border-2 flex items-center justify-center ${circleClass}`}
-                    >
-                      {dotInner}
-                    </div>
-                    <div className="mt-1 text-[11px] text-center text-gray-700 leading-tight break-words px-1">
-                      {label}
-                    </div>
-                  </div>
-                );
-              })}
-            </div>
-          </div>
+          ) : (
+            // NORMAL MODE: Keep existing 3+2 row layout
+            <>
+              {/* Top row with circles and labels */}
+              <div className="relative mb-1">
+                {/* Top row connecting line - between 3 dots */}
+                <div
+                  className="absolute top-2.5 h-0.5 bg-gray-200"
+                  style={{
+                    left: `${100 / 3 / 2}%`, // 16.67%
+                    right: `${100 / 3 / 2}%`, // 16.67%
+                  }}
+                />
+                {/* Top row progress line */}
+                <div
+                  className="absolute top-2.5 h-0.5 bg-[#3D6CE1] transition-all duration-300"
+                  style={{
+                    left: `${100 / 3 / 2}%`,
+                    width:
+                      Math.min(stepIndex, 2) === 0
+                        ? "0%"
+                        : `${(Math.min(stepIndex, 2) / 2) * (100 - 100 / 3)}%`,
+                  }}
+                />
+                <div className="grid grid-cols-3 gap-2">
+                  {steps.slice(0, 3).map((label, i) => {
+                    const idx = i;
+                    const isDone = idx < stepIndex;
+                    const isCurrent = idx === stepIndex;
+                    const circleClass = isDone
+                      ? "bg-[#3D6CE1] border-[#3D6CE1]"
+                      : isCurrent
+                        ? "bg-white border-[#3D6CE1]"
+                        : "bg-white border-gray-300";
+                    const dotInner = isDone ? (
+                      <span className="w-2 h-2 bg-white rounded-full" />
+                    ) : null;
+                    return (
+                      <div
+                        key={`mrow1-${idx}`}
+                        className="flex flex-col items-center"
+                      >
+                        <div
+                          className={`relative z-10 w-5 h-5 rounded-full border-2 flex items-center justify-center ${circleClass}`}
+                        >
+                          {dotInner}
+                        </div>
+                        <div className="mt-1 text-[11px] text-center text-gray-700 leading-tight break-words px-1">
+                          {label}
+                        </div>
+                      </div>
+                    );
+                  })}
+                </div>
+              </div>
+              {/* Bottom row with circles and labels */}
+              <div className="relative mt-2">
+                {/* Bottom row connecting line - between 2 dots */}
+                <div
+                  className="absolute top-2.5 h-0.5 bg-gray-200"
+                  style={{
+                    left: `${100 / 2 / 2}%`, // 25%
+                    right: `${100 / 2 / 2}%`, // 25%
+                  }}
+                />
+                {/* Bottom row progress line */}
+                <div
+                  className="absolute top-2.5 h-0.5 bg-[#3D6CE1] transition-all duration-300"
+                  style={{
+                    left: `${100 / 2 / 2}%`,
+                    width:
+                      Math.min(stepIndex - 3, 1) <= 0
+                        ? "0%"
+                        : `${(Math.min(stepIndex - 3, 1) / 1) * (100 - 100 / 2)}%`,
+                  }}
+                />
+                <div className="grid grid-cols-2 gap-2">
+                  {steps.slice(3).map((label, i) => {
+                    const idx = i + 3;
+                    const isDone = idx < stepIndex;
+                    const isCurrent = idx === stepIndex;
+                    const circleClass = isDone
+                      ? "bg-[#3D6CE1] border-[#3D6CE1]"
+                      : isCurrent
+                        ? "bg-white border-[#3D6CE1]"
+                        : "bg-white border-gray-300";
+                    const dotInner = isDone ? (
+                      <span className="w-2 h-2 bg-white rounded-full" />
+                    ) : null;
+                    return (
+                      <div
+                        key={`mrow2-${idx}`}
+                        className="flex flex-col items-center"
+                      >
+                        <div
+                          className={`relative z-10 w-5 h-5 rounded-full border-2 flex items-center justify-center ${circleClass}`}
+                        >
+                          {dotInner}
+                        </div>
+                        <div className="mt-1 text-[11px] text-center text-gray-700 leading-tight break-words px-1">
+                          {label}
+                        </div>
+                      </div>
+                    );
+                  })}
+                </div>
+              </div>
+            </>
+          )}
         </div>
       </div>
     );
@@ -1595,7 +1646,25 @@ export default function CheckoutStepper({
                             </div>
                           );
                         } else {
-                          return "—";
+                          // No appointment - show "Jetzt vereinbaren" button
+                          return (
+                            <button
+                              onClick={() => {
+                                // Scroll to appointment section or trigger appointment modal
+                                if (isOhneNestMode) {
+                                  // In konzept-check mode, scroll to appointment within same step
+                                  const appointmentSection = document.querySelector('[data-section="appointment-booking"]');
+                                  appointmentSection?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                                } else {
+                                  // In normal mode, navigate to appointment step
+                                  window.location.hash = "terminvereinbarung";
+                                }
+                              }}
+                              className="text-blue-600 p-primary hover:underline cursor-pointer"
+                            >
+                              Jetzt vereinbaren
+                            </button>
+                          );
                         }
                       })()}
                     </div>
@@ -2295,7 +2364,7 @@ export default function CheckoutStepper({
                       </p>
                     </div>
 
-                    <div className="w-full md:w-1/2">
+                    <div className="w-full md:w-1/2" data-section="appointment-booking">
                       <AppointmentBooking showLeftSide={false} />
                     </div>
                   </div>
@@ -2693,7 +2762,7 @@ export default function CheckoutStepper({
                 </p>
               </div>
 
-              <div className="w-full md:w-1/2">
+              <div className="w-full md:w-1/2" data-section="appointment-booking">
                 <AppointmentBooking showLeftSide={false} />
               </div>
             </div>
@@ -3103,8 +3172,9 @@ export default function CheckoutStepper({
               </div>
             )}
 
-            {/* Bewerber Data Section - 4 boxes in 2x2 grid with column headers */}
-            <div className="max-w-6xl mx-auto mt-16 mb-12">
+            {/* Bewerber Data Section - 4 boxes in 2x2 grid with column headers - ONLY IN NORMAL MODE */}
+            {!isOhneNestMode && (
+              <div className="max-w-6xl mx-auto mt-16 mb-12">
               {/* Section Headers */}
               <div className="hidden md:grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
                 <div>
@@ -3326,6 +3396,7 @@ export default function CheckoutStepper({
                 </div>
               </div>
             </div>
+            )}
 
             {/* So gehts danach weiter Section */}
             <div className="text-center mb-12 pt-4 md:mb-8">
@@ -3567,10 +3638,10 @@ export default function CheckoutStepper({
                             {!isPaymentCompleted ? (
                               <div className="text-right">
                                 <div className="flex items-center gap-2 justify-end mt-2">
-                                  <span className="text-gray-400 line-through text-xl">
+                                  <span className="text-gray-400 line-through text-base md:text-xl lg:text-2xl">
                                     3.000 €
                                   </span>
-                                  <div className="text-3xl font-bold text-gray-900">
+                                  <div className="text-xl md:text-2xl lg:text-3xl font-bold text-gray-900">
                                     1.500 €
                                   </div>
                                 </div>
@@ -3708,10 +3779,10 @@ export default function CheckoutStepper({
                       {!isPaymentCompleted && (
                         <div>
                           <div className="flex items-center gap-2 justify-end mt-2">
-                            <span className="text-gray-400 line-through text-2xl">
+                            <span className="text-gray-400 line-through text-base md:text-xl lg:text-2xl">
                               3.000 €
                             </span>
-                            <div className="text-3xl font-bold text-gray-900">
+                            <div className="text-xl md:text-2xl lg:text-3xl font-bold text-gray-900">
                               1.500 €
                             </div>
                           </div>
