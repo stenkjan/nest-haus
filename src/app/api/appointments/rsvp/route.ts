@@ -137,13 +137,13 @@ export async function POST(request: NextRequest) {
       endDateTime.setMinutes(endDateTime.getMinutes() + 60); // 60 minutes duration
 
       const calendarResult = await GoogleCalendarService.createEvent({
-        summary: `NEST-Haus Beratungstermin - ${inquiry.name}`,
-        description: `Beratungstermin mit ${inquiry.name}\n\nE-Mail: ${inquiry.email}\n${inquiry.phone ? `Telefon: ${inquiry.phone}\n` : ''}${inquiry.message ? `\nNachricht:\n${inquiry.message}` : ''}\n\nAnfrage-ID: ${inquiry.id}`,
+        summary: `NEST-Haus Beratungstermin - ${inquiry.name || 'Kunde'}`,
+        description: `Beratungstermin mit ${inquiry.name || 'Kunde'}\n\nE-Mail: ${inquiry.email}\n${inquiry.phone ? `Telefon: ${inquiry.phone}\n` : ''}${inquiry.message ? `\nNachricht:\n${inquiry.message}` : ''}\n\nAnfrage-ID: ${inquiry.id}`,
         location: 'NEST-Haus Office, Karmeliterplatz 8, 8010 Graz, Austria',
         startDateTime: inquiry.appointmentDateTime.toISOString(),
         endDateTime: endDateTime.toISOString(),
         attendeeEmail: inquiry.email,
-        attendeeName: inquiry.name,
+        attendeeName: inquiry.name || undefined,  // Convert null to undefined for type compatibility
         inquiryId: inquiry.id,  // Pass inquiryId for UID consistency with ICS
       });
 
