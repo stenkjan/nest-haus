@@ -659,15 +659,15 @@ export const FULL_IMAGE_CARDS_CONTENT: ContentCardData[] = [
 export const VIDEO_BACKGROUND_CARDS_CONTENT: ContentCardData[] = [
     {
         id: 1,
-        title: "Dein Konzept-Check",
+        title: "Entwurf und Grundstückscheck",
         subtitle: "",
-        description: "Konzept-Check und Grundstückscheck",
+        description: "Dein Konzept-Check",
         video: IMAGES.videos.videoCard01,
         backgroundColor: "#F4F4F4",
         aspectRatio: "2x1", // Tall portrait format
         buttons: [
             {
-                text: "Konzept-Check",
+                text: "Dein Konzept-Check",
                 variant: "primary",
                 size: "xs",
                 link: "/konzept-check",
@@ -676,7 +676,7 @@ export const VIDEO_BACKGROUND_CARDS_CONTENT: ContentCardData[] = [
     },
     {
         id: 2,
-        title: "Keine Entscheidung für's Leben",
+        title: "Keine Lebensentscheidung. Bleib flexibel.",
         subtitle: "",
         description: "Warum Nest?",
         video: IMAGES.videos.videoCard02,
@@ -693,9 +693,9 @@ export const VIDEO_BACKGROUND_CARDS_CONTENT: ContentCardData[] = [
     },
     {
         id: 3,
-        title: "Nachhaltigkeit durch neuen Markt",
+        title: "Schaffen neue Möglichkeiten",
         subtitle: "",
-        description: "So funktioniert die Zukunft",
+        description: "Neue Technologien",
         video: IMAGES.videos.videoCard03,
         backgroundColor: "#F4F4F4",
         aspectRatio: "2x1", // Tall portrait format

@@ -124,8 +124,8 @@ export default function DeinNestClient() {
               {/* Header at Top */}
               <div className="flex justify-center">
                 <SectionHeader
-                  title="Qualität oder Bestpreis?"
-                  subtitle="Nest verbindet beides in einem System"
+                  title="Take it easy"
+                  subtitle="Bauen muss nicht kompliziert sein"
                   titleClassName="text-white"
                   subtitleClassName="text-white"
                 />
@@ -195,7 +195,7 @@ export default function DeinNestClient() {
               className="h2-title text-center"
               dangerouslySetInnerHTML={{
                 __html:
-                  "<span class='text-nest-gray'>Wir vereinen </span><span class='text-black font-medium'>industrielle Präzision</span><span class='text-nest-gray'> mit </span><span class='text-black font-medium'>architektonischem Design.</span><span class='text-nest-gray'> Dein Zuhause entsteht dabei aus seriell gefertigten </span><span class='text-black font-medium'>Modulen</span><span class='text-nest-gray'>, die du mit </span><span class='text-black font-medium'>deinen Ideen</span><span class='text-nest-gray'> füllst.</span><br/><br/><span class='text-nest-gray'>Atmosphäre, individuell und ganz nach deinen Vorstellungen.</span><br/><span class='text-black font-medium'>Weil nur du weißt, wie du wohnen willst.</span>",
+                  "<span class='text-nest-gray'>Wir vereinen </span><span class='text-black font-medium'>architektonisches Design</span><span class='text-nest-gray'> mit </span><span class='text-black font-medium'>industrieller Präzision.</span><span class='text-nest-gray'> Qualität wird dabei neu definiert. </span> <br/><br/><span class='text-nest-gray'> Und innen... </span> <br/><br/><span class='text-nest-gray'>deine Atmosphäre, deine Vorstellungen.</span><br/><span class='text-black font-medium'>Weil nur du weißt, wie du richtig wohnst.</span>",
               }}
             />
           </div>
@@ -265,7 +265,7 @@ export default function DeinNestClient() {
         >
           <SectionHeader
             title="Konfiguriere dein ®Nest Haus"
-            subtitle="Durch serielle Fertigung zu transparenten Bestpreisen"
+            subtitle="Dein Stil. Dein Zuhause."
             mobileTitle="Konfiguriere dein<br/>®Nest Haus"
             wrapperMargin="mb-8 md:mb-12"
           />
@@ -283,7 +283,7 @@ export default function DeinNestClient() {
                 title: "Gestalten heißt Verstehen",
                 subtitle: "",
                 description:
-                  "<span class='text-nest-gray'>Planen, vergleichen, verstehen. Im Nest Konfigurator gestaltest du </span><span class='text-black font-medium'>dein Zuhause Schritt für Schritt</span><span class='text-nest-gray'> und siehst den Preis dabei stets in Echtzeit. Ganz </span><span class='text-black font-medium'>ohne versteckte Kosten.</span>\n\n<span class='text-nest-gray'> Entdecke unsere </span><span class='text-black font-medium'>vielfältigen Möglichkeiten.</span><span class='text-nest-gray'> Gleichzeitig liefert deine Konfiguration eine Grundlage für deinen persönlichen Vorentwurf.</span>",
+                  "<span class='text-nest-gray'>Im Nest Konfigurator gestaltest du </span><span class='text-black font-medium'>dein Zuhause Schritt für Schritt</span><span class='text-nest-gray'> und behältst den Preis stets im Überblick.</span><br/><br/><span class='text-nest-gray'>Entdecke unsere </span><span class='text-black font-medium'>vielfältigen Möglichkeiten</span><span class='text-nest-gray'> und konfiguriere deine Basis für dein individuelles </span><span class='text-black font-medium'>Nest-Haus</span><span class='text-nest-gray'>.</span>",
                 video: IMAGES.variantvideo.twelve,
                 backgroundColor: "#F4F4F4",
                 playbackRate: 0.5,
@@ -313,7 +313,7 @@ export default function DeinNestClient() {
                 Warum Nest Sinn macht?
               </h2>
               <h3 className="h3-secondary font-normal text-black">
-                Weil kluge Entscheidungen einfach sind.
+                Weil bauen nicht immer kompliziert sein muss.
               </h3>
             </div>
           </div>
@@ -335,7 +335,7 @@ export default function DeinNestClient() {
         <section id="transport" className="w-full py-12 md:py-16 bg-white">
           <SectionHeader
             title="Dein Zuhause zieht um"
-            subtitle="Früher war Wohnen Stillstand. heute ist es Nest."
+            subtitle="Take it easy."
             mobileTitle="Dein Zuhause zieht um"
             wrapperMargin="mb-8 md:mb-12"
           />
@@ -353,8 +353,7 @@ export default function DeinNestClient() {
                 title: "Architektur für ein bewegtes Leben",
                 subtitle: "",
                 description:
-                  "<span class='text-black font-medium'>Aufbauen. Mitnehmen. Weitergeben.</span>\n<span class='text-nest-gray'>Ganz wie du willst. Früher war ein Haus eine Entscheidung fürs Leben. Heute darf </span><span class='text-black font-medium'>Wohnen beweglich</span><span class='text-nest-gray'> sein. Dank unserer mit </span><span class='text-black font-medium'>Präzision</span><span class='text-nest-gray'> gefertigten Module bleibt </span><span class='text-black font-medium'>Nest stets transportierbar.</span><span class='text-nest-gray'> Dein Haus ist nicht mehr an einen Ort gebunden, sondern kann </span><span class='text-black font-medium'>bewegt, weiterverkauft</span><span class='text-nest-gray'> und an einem neuen Platz </span><span class='text-black font-medium'>wieder aufgestellt</span><span class='text-nest-gray'> werden. Ein Zuhause, das mitdenkt und mitgeht.</span>",
-                video: IMAGES.videos.nestHausTransport,
+                  "<span class='text-black font-medium'>Aufbauen. Mitnehmen. Weitergeben.</span><br/><br/><span class='text-black font-medium'>Das einzige Haus der Welt, dass sich an die Lebenszyklen seiner Bewohner anpasst.</span><br/><br/><span class='text-nest-gray'>Nicht umgekehrt.</span>",
                 backgroundColor: "#F4F4F4",
                 buttons: [
                   {
