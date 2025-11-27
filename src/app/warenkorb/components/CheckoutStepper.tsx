@@ -3781,7 +3781,7 @@ export default function CheckoutStepper({
                 {/* Centered "Entwurf- und Grundstückscheck" box */}
                 <div className="border border-gray-300 rounded-2xl p-6 bg-white mb-6">
                   <div className="flex items-start justify-between gap-4">
-                    <div className="text-left flex-1">
+                    <div className="text-left min-w-0">
                       <h3
                         className={`text-lg font-medium mb-1 ${isPaymentCompleted ? "text-green-600" : "text-gray-900"}`}
                       >
@@ -3795,14 +3795,14 @@ export default function CheckoutStepper({
                           : "Starte dein Bauvorhaben"}
                       </div>
                     </div>
-                    <div className="text-right flex-shrink-0">
+                    <div className="text-right">
                       {!isPaymentCompleted && (
                         <div>
-                          <div className="flex items-center gap-2 justify-end mt-2 whitespace-nowrap">
-                            <span className="text-gray-400 line-through text-base md:text-xl lg:text-2xl">
+                          <div className="flex items-center gap-1 md:gap-2 justify-end mt-2 whitespace-nowrap">
+                            <span className="text-gray-400 line-through text-sm md:text-base lg:text-xl xl:text-2xl">
                               3.000 €
                             </span>
-                            <div className="text-xl md:text-2xl lg:text-3xl font-bold text-gray-900">
+                            <div className="text-lg md:text-xl lg:text-2xl xl:text-3xl font-bold text-gray-900">
                               1.500 €
                             </div>
                           </div>
