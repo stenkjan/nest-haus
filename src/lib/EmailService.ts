@@ -3,7 +3,6 @@ import { generateCustomerConfirmationEmail } from './emailTemplates/CustomerConf
 import { generateAdminNotificationEmail } from './emailTemplates/AdminNotificationTemplate';
 import { generatePaymentConfirmationEmail } from './emailTemplates/PaymentConfirmationTemplate';
 import { generateAdminPaymentNotificationEmail } from './emailTemplates/AdminPaymentNotificationTemplate';
-import { generateAdminAppointmentNotification } from './emailTemplates/AdminAppointmentNotificationTemplate';
 import { generateSecureToken } from './utils/tokenGenerator';
 import { generateICS, generateICSFilename } from './utils/icsGenerator';
 import { prisma } from './prisma';

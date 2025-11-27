@@ -74,7 +74,7 @@ export function CalendarView({ calendarId }: CalendarViewProps) {
             />
           </svg>
           <p className="mt-4 text-sm">
-            Klicken Sie auf "Kalender anzeigen", um die Terminübersicht zu öffnen
+            Klicken Sie auf &quot;Kalender anzeigen&quot;, um die Terminübersicht zu öffnen
           </p>
         </div>
       )}

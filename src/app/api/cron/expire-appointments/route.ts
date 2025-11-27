@@ -1,6 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
-import { EmailService } from '@/lib/EmailService';
 import { generateAppointmentReminderEmail } from '@/lib/emailTemplates/AppointmentReminderTemplate';
 import { Resend } from 'resend';
 
@@ -23,7 +22,7 @@ export async function GET(request: NextRequest) {
         // Verify cron secret (optional but recommended)
         const authHeader = request.headers.get('authorization');
         const cronSecret = process.env.CRON_SECRET;
-        
+
         if (cronSecret && authHeader !== `Bearer ${cronSecret}`) {
             return NextResponse.json(
                 { error: 'Unauthorized' },
@@ -171,7 +170,7 @@ export async function GET(request: NextRequest) {
     } catch (error) {
         console.error('❌ Cron job failed:', error);
         return NextResponse.json(
-            { 
+            {
                 error: 'Internal server error',
                 details: error instanceof Error ? error.message : 'Unknown error'
             },

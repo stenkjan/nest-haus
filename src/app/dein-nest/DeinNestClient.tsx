@@ -353,7 +353,7 @@ export default function DeinNestClient() {
                 title: "Architektur für ein bewegtes Leben",
                 subtitle: "",
                 description:
-                  "<span class='text-black font-medium'>Aufbauen. Mitnehmen. Weitergeben.</span><br/><br/><span class='text-black font-medium'>Das einzige Haus der Welt, dass sich an die Lebenszyklen seiner Bewohner anpasst.</span><br/><br/><span class='text-nest-gray'>Nicht umgekehrt.</span>",
+                  "<span class='text-black font-medium'>Aufbauen. Mitnehmen. Weitergeben.</span><br/><br/><span class='text-black font-medium'>Das einzige Haus der Welt, dass sich an die Lebenszyklen seiner Bewohner anpasst.</span><br/><br/><span class='text-black font-normal'>Nicht umgekehrt.</span>",
                 backgroundColor: "#F4F4F4",
                 buttons: [
                   {

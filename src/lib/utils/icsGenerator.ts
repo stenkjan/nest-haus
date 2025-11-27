@@ -27,7 +27,7 @@ function formatICSDate(date: Date): string {
   const hours = String(date.getUTCHours()).padStart(2, '0');
   const minutes = String(date.getUTCMinutes()).padStart(2, '0');
   const seconds = String(date.getUTCSeconds()).padStart(2, '0');
-  
+
   return `${year}${month}${day}T${hours}${minutes}${seconds}Z`;
 }
 
@@ -38,14 +38,14 @@ function formatICSDate(date: Date): string {
 function formatLocalDate(date: Date): string {
   // Convert to Vienna timezone
   const viennaDate = new Date(date.toLocaleString('en-US', { timeZone: 'Europe/Vienna' }));
-  
+
   const year = viennaDate.getFullYear();
   const month = String(viennaDate.getMonth() + 1).padStart(2, '0');
   const day = String(viennaDate.getDate()).padStart(2, '0');
   const hours = String(viennaDate.getHours()).padStart(2, '0');
   const minutes = String(viennaDate.getMinutes()).padStart(2, '0');
   const seconds = String(viennaDate.getSeconds()).padStart(2, '0');
-  
+
   return `${year}${month}${day}T${hours}${minutes}${seconds}`;
 }
 
@@ -67,19 +67,19 @@ function foldLine(line: string): string {
   if (line.length <= 75) {
     return line;
   }
-  
+
   const lines: string[] = [];
-  let currentLine = line.substring(0, 75);
+  const currentLine = line.substring(0, 75);
   let remaining = line.substring(75);
-  
+
   lines.push(currentLine);
-  
+
   while (remaining.length > 0) {
     const chunk = remaining.substring(0, 74); // 74 because we add a space
     lines.push(' ' + chunk); // Continuation lines start with space
     remaining = remaining.substring(74);
   }
-  
+
   return lines.join('\r\n');
 }
 
@@ -101,26 +101,26 @@ export function generateICS(data: ICSEventData): string {
 
   // Calculate end time
   const endDateTime = new Date(appointmentDateTime.getTime() + durationMinutes * 60 * 1000);
-  
+
   // Current timestamp for DTSTAMP
   const now = new Date();
-  
+
   // Generate unique UID
   const uid = `inquiry-${inquiryId}@nest-haus.at`;
-  
+
   // Format dates
   const dtStart = formatLocalDate(appointmentDateTime);
   const dtEnd = formatLocalDate(endDateTime);
   const dtStamp = formatICSDate(now);
-  
+
   // Build description
-  const fullDescription = description || 
+  const fullDescription = description ||
     `Beratungstermin bei NEST-Haus\n\n` +
     `Kunde: ${customerName}\n` +
     `E-Mail: ${customerEmail}\n` +
     `Anfrage-ID: ${inquiryId}\n\n` +
     `Bitte bestätigen Sie den Termin innerhalb von 24 Stunden.`;
-  
+
   // Build ICS content
   const icsLines: string[] = [
     'BEGIN:VCALENDAR',
