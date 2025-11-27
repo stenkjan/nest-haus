@@ -263,19 +263,23 @@ The system now provides complete visibility into:
 ### Build Errors Fixed (Nov 27, 2025)
 1. **unused 'inquiryId' parameter** in `UserJourney.tsx` → Prefixed with underscore (`_inquiryId`)
 2. **unused 'CalendarView' import** in `page.tsx` → Removed unused import
+3. **TypeScript error: Type 'unknown' not assignable to ReactNode** in `UserJourney.tsx`
+   - **Issue**: `JSON.stringify()` can return `undefined`, which can't be rendered as JSX
+   - **Fix**: Added fallback `|| "Keine Daten"` to ensure string is always rendered
+   - **Impact**: Configuration data preview now has proper type safety
 
 ### Logic Bugs Fixed (Nov 27, 2025)
-3. **Bug: Incorrect time slot tracking in `prevTime()`** (`AppointmentBooking.tsx`)
+4. **Bug: Incorrect time slot tracking in `prevTime()`** (`AppointmentBooking.tsx`)
    - **Issue**: `setSelectedTimeIndex` was called before tracking, causing closure to capture old value
    - **Fix**: Calculate new index first, track with correct value, then update state
    - **Impact**: Time slot navigation tracking now records accurate slot positions
 
-4. **Bug: Enhanced time slot tracking in `nextTime()`** (`AppointmentBooking.tsx`)
+5. **Bug: Enhanced time slot tracking in `nextTime()`** (`AppointmentBooking.tsx`)
    - **Issue**: `nextTime()` had no tracking implementation
    - **Fix**: Added complete tracking logic matching `prevTime()` pattern
    - **Impact**: Forward time slot navigation is now fully tracked
 
-5. **Bug: Potential "undefined" display in location** (`UserJourney.tsx`)
+6. **Bug: Potential "undefined" display in location** (`UserJourney.tsx`)
    - **Issue**: Code checked `city` but unconditionally rendered `country`, showing "City, undefined" if country was missing
    - **Fix**: Added conditional rendering for country with ternary operator
    - **Impact**: Location displays gracefully when country data is missing

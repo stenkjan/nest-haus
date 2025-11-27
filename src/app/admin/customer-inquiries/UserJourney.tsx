@@ -255,7 +255,7 @@ export function UserJourney({ sessionId, inquiryId: _inquiryId }: UserJourneyPro
                 🏠 Konfigurationsdaten
               </h5>
               <pre className="text-xs bg-gray-50 p-3 rounded overflow-x-auto">
-                {JSON.stringify(sessionData.configurationData, null, 2)}
+                {JSON.stringify(sessionData.configurationData, null, 2) || "Keine Daten"}
               </pre>
             </div>
           )}
