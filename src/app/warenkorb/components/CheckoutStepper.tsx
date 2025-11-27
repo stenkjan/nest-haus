@@ -192,9 +192,9 @@ export default function CheckoutStepper({
     // Only check if we're in normal mode (not konzept-check)
     if (isOhneNestMode) return;
 
-    // Check if current step is terminvereinbarung (step index 2 in normal mode)
-    const currentStepName = steps[stepIndex];
-    if (currentStepName === "Terminvereinbarung") {
+    // In normal mode, terminvereinbarung is step index 2
+    // We check if user just navigated to this step
+    if (stepIndex === 2) {
       // Check if user has an appointment
       const hasAppointment = getAppointmentSummary(sessionId);
       const hasAppointmentFromOther = appointmentDetails && !isAppointmentFromCurrentSession();
@@ -204,7 +204,7 @@ export default function CheckoutStepper({
         setShowAppointmentReminder(true);
       }
     }
-  }, [stepIndex, steps, isOhneNestMode, appointmentDetails, sessionId, getAppointmentSummary, isAppointmentFromCurrentSession]);
+  }, [stepIndex, isOhneNestMode, appointmentDetails, sessionId, getAppointmentSummary, isAppointmentFromCurrentSession]);
 
   useEffect(() => {
     // Sync with configurator's planungspaket when it changes, otherwise use cart item
