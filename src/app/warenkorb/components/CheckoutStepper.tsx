@@ -3795,10 +3795,10 @@ export default function CheckoutStepper({
                           : "Starte dein Bauvorhaben"}
                       </div>
                     </div>
-                    <div className="text-right">
+                    <div className="text-right flex-shrink-0">
                       {!isPaymentCompleted && (
                         <div>
-                          <div className="flex items-center gap-2 justify-end mt-2">
+                          <div className="flex items-center gap-2 justify-end mt-2 whitespace-nowrap">
                             <span className="text-gray-400 line-through text-base md:text-xl lg:text-2xl">
                               3.000 €
                             </span>
