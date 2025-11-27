@@ -76,7 +76,7 @@ export async function GET(request: NextRequest) {
                 });
 
                 // Send reminder to customer
-                await resend.emails.send({
+                const result = await resend.emails.send({
                     from: `NEST-Haus Team <${process.env.RESEND_FROM_EMAIL || 'mail@nest-haus.at'}>`,
                     to: appointment.email,
                     subject,
@@ -84,15 +84,21 @@ export async function GET(request: NextRequest) {
                     text,
                 });
 
-                // Mark reminder as sent in admin notes
+                // Check for Resend API errors
+                if (result.error) {
+                    console.error(`❌ Failed to send reminder to ${appointment.email}:`, result.error);
+                    continue; // Skip marking as sent if email failed
+                }
+
+                // Mark reminder as sent in admin notes only if email was successful
                 await prisma.customerInquiry.update({
                     where: { id: appointment.id },
                     data: {
-                        adminNotes: `${appointment.adminNotes || ''}\n1-Stunden-Erinnerung gesendet am ${now.toLocaleString('de-DE')}`,
+                        adminNotes: `${appointment.adminNotes || ''}\n1-Stunden-Erinnerung gesendet am ${now.toLocaleString('de-DE')} (Email ID: ${result.data?.id || 'unknown'})`,
                     },
                 });
 
-                console.log(`✅ Reminder sent to ${appointment.email}`);
+                console.log(`✅ Reminder sent to ${appointment.email} (ID: ${result.data?.id})`);
                 remindersSent++;
             } catch (error) {
                 console.error(`❌ Failed to send reminder to ${appointment.email}:`, error);
