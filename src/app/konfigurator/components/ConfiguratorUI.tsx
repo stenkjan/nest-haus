@@ -18,7 +18,7 @@ type ConfiguratorLogic = ReturnType<typeof useConfiguratorLogic>;
 
 interface ConfiguratorUIProps {
   logic: ConfiguratorLogic;
-  rightPanelRef?: React.RefObject<HTMLDivElement>;
+  rightPanelRef?: React.RefObject<HTMLDivElement | null>;
 }
 
 export default function ConfiguratorUI({ logic, rightPanelRef }: ConfiguratorUIProps) {

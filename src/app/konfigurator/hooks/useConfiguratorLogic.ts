@@ -1,9 +1,10 @@
-import { useState, useEffect, useCallback, RefObject } from "react";
+import { useState, useEffect, useCallback, RefObject, useRef } from "react";
 import { useConfiguratorStore, type ConfigurationItem } from "@/store/configuratorStore";
 import { ImageManager } from "../core/ImageManager";
 import { PriceCalculator } from "../core/PriceCalculator";
 import { configuratorData } from "../data/configuratorData";
 import { calculateSizeDependentPrice } from "@/constants/configurator";
+import { PriceUtils } from "../core/PriceUtils";
 
 export function useConfiguratorLogic(_rightPanelRef?: RefObject<HTMLDivElement>) {
   // Track pricing data loading state
@@ -25,6 +26,12 @@ export function useConfiguratorLogic(_rightPanelRef?: RefObject<HTMLDivElement>)
   const [isPvOverlayVisible, setIsPvOverlayVisible] = useState<boolean>(true);
   const [isGeschossdeckeOverlayVisible, setIsGeschossdeckeOverlayVisible] = useState<boolean>(false);
   const [isBelichtungspaketOverlayVisible, setIsBelichtungspaketOverlayVisible] = useState<boolean>(false);
+
+  // Use Ref to track overlay state for callbacks without triggering re-creation
+  const isPvOverlayVisibleRef = useRef(isPvOverlayVisible);
+  useEffect(() => {
+    isPvOverlayVisibleRef.current = isPvOverlayVisible;
+  }, [isPvOverlayVisible]);
 
   // Dialog state
   const [isCalendarDialogOpen, setIsCalendarDialogOpen] = useState(false);
@@ -132,9 +139,10 @@ export function useConfiguratorLogic(_rightPanelRef?: RefObject<HTMLDivElement>)
         }
       }
 
+      // Use ref for stable access to current state
       if (
         categoryId !== "pvanlage" &&
-        isPvOverlayVisible &&
+        isPvOverlayVisibleRef.current &&
         categoryId !== "nest" &&
         categoryId !== "belichtungspaket" &&
         categoryId !== "gebaeudehuelle" &&
@@ -200,7 +208,7 @@ export function useConfiguratorLogic(_rightPanelRef?: RefObject<HTMLDivElement>)
       pvQuantity,
       geschossdeckeQuantity,
       setIsPvOverlayVisible,
-      isPvOverlayVisible,
+      // isPvOverlayVisible removed as dependency, using ref instead
     ]
   );
 
@@ -380,6 +388,7 @@ export function useConfiguratorLogic(_rightPanelRef?: RefObject<HTMLDivElement>)
               value: optionId,
               name: option?.name || "",
               price: option?.price?.amount || 0,
+              description: option.description,
             },
             {
               category: "nest",
@@ -481,7 +490,7 @@ export function useConfiguratorLogic(_rightPanelRef?: RefObject<HTMLDivElement>)
             if (relativePrice === 0 || absolutePrice === -1) {
               return { type: "included" as const };
             } else {
-              return { type: "upgrade" as const, amount: relativePrice };
+              return { type: "upgrade" as const, amount: relativePrice, monthly: PriceCalculator.calculateMonthlyPaymentAmount(relativePrice) };
             }
           }
 
@@ -490,10 +499,11 @@ export function useConfiguratorLogic(_rightPanelRef?: RefObject<HTMLDivElement>)
           const selectedRelative = normalizedSelected - normalizedBaseline;
           const priceDiff = relativePrice - selectedRelative;
 
-          if (priceDiff === 0) return { type: "upgrade" as const, amount: 0 };
+          if (priceDiff === 0) return { type: "upgrade" as const, amount: 0, monthly: 0 };
           return {
             type: priceDiff > 0 ? ("upgrade" as const) : ("discount" as const),
             amount: Math.abs(priceDiff),
+            monthly: PriceCalculator.calculateMonthlyPaymentAmount(Math.abs(priceDiff)),
           };
         }
       }
@@ -515,7 +525,7 @@ export function useConfiguratorLogic(_rightPanelRef?: RefObject<HTMLDivElement>)
           if (relativePrice === 0 || optionPrice === -1) {
             return { type: "included" as const };
           }
-          return { type: "upgrade" as const, amount: relativePrice };
+          return { type: "upgrade" as const, amount: relativePrice, monthly: PriceCalculator.calculateMonthlyPaymentAmount(relativePrice) };
         }
 
         const selectedPrice = pricingData.gebaeudehuelle[currentSelection.value]?.[currentNestValue] || 0;
@@ -523,10 +533,11 @@ export function useConfiguratorLogic(_rightPanelRef?: RefObject<HTMLDivElement>)
         const selectedRelative = normalizedSelected - normalizedTrapez;
         const priceDiff = relativePrice - selectedRelative;
 
-        if (priceDiff === 0) return { type: "upgrade" as const, amount: 0 };
+        if (priceDiff === 0) return { type: "upgrade" as const, amount: 0, monthly: 0 };
         return {
           type: priceDiff > 0 ? ("upgrade" as const) : ("discount" as const),
           amount: Math.abs(priceDiff),
+          monthly: PriceCalculator.calculateMonthlyPaymentAmount(Math.abs(priceDiff)),
         };
       }
 
@@ -545,7 +556,7 @@ export function useConfiguratorLogic(_rightPanelRef?: RefObject<HTMLDivElement>)
         const relativePrice = normalizedOption - normalizedOhne;
 
         if (relativePrice === 0) return { type: "included" as const };
-        if (!currentSelection) return { type: "upgrade" as const, amount: relativePrice };
+        if (!currentSelection) return { type: "upgrade" as const, amount: relativePrice, monthly: PriceCalculator.calculateMonthlyPaymentAmount(relativePrice) };
 
         const rawSelectedPrice = pricingData.bodenbelag[currentSelection.value]?.[currentNestValue];
         const selectedPrice = rawSelectedPrice ?? 0;
@@ -555,6 +566,7 @@ export function useConfiguratorLogic(_rightPanelRef?: RefObject<HTMLDivElement>)
           return {
             type: relativePrice > 0 ? ("upgrade" as const) : ("discount" as const),
             amount: Math.abs(relativePrice),
+            monthly: PriceCalculator.calculateMonthlyPaymentAmount(Math.abs(relativePrice)),
           };
         }
 
@@ -562,10 +574,11 @@ export function useConfiguratorLogic(_rightPanelRef?: RefObject<HTMLDivElement>)
         const selectedRelative = normalizedSelected - normalizedOhne;
         const priceDiff = relativePrice - selectedRelative;
 
-        if (priceDiff === 0) return { type: "upgrade" as const, amount: 0 };
+        if (priceDiff === 0) return { type: "upgrade" as const, amount: 0, monthly: 0 };
         return {
           type: priceDiff > 0 ? ("upgrade" as const) : ("discount" as const),
           amount: Math.abs(priceDiff),
+          monthly: PriceCalculator.calculateMonthlyPaymentAmount(Math.abs(priceDiff)),
         };
       }
 
@@ -581,7 +594,7 @@ export function useConfiguratorLogic(_rightPanelRef?: RefObject<HTMLDivElement>)
         if (dynamicPrice === 0 && currentSelection?.value === "basis") return { type: "included" as const };
         if (!currentSelection) {
           if (dynamicPrice === 0) return { type: "included" as const };
-          return { type: "base" as const, amount: dynamicPrice };
+          return { type: "base" as const, amount: dynamicPrice, monthly: PriceCalculator.calculateMonthlyPaymentAmount(dynamicPrice) };
         }
 
         let selectedPrice = 0;
@@ -589,20 +602,81 @@ export function useConfiguratorLogic(_rightPanelRef?: RefObject<HTMLDivElement>)
         else if (currentSelection.value === "pro") selectedPrice = pricingData.planungspaket.pro[currentNestValue];
 
         const priceDiff = dynamicPrice - selectedPrice;
-        if (priceDiff === 0) return { type: "upgrade" as const, amount: 0 };
+        if (priceDiff === 0) return { type: "upgrade" as const, amount: 0, monthly: 0 };
         return {
           type: priceDiff > 0 ? ("upgrade" as const) : ("discount" as const),
           amount: Math.abs(priceDiff),
+          monthly: PriceCalculator.calculateMonthlyPaymentAmount(Math.abs(priceDiff)),
         };
       }
 
-      // Fallback for other relative categories
-      if (["gebaeudehuelle", "innenverkleidung", "fussboden", "belichtungspaket", "fenster", "planungspaket", "bodenaufbau", "geschossdecke"].includes(categoryId)) {
+      // Calculate Option Price using specialized helper for correct value
+      const getOptionPriceValue = (): number => {
+          if (!configuration?.nest) return option.price.amount || 0;
+          
+          if (categoryId === "belichtungspaket") {
+              const selectionOption = {
+                  category: categoryId,
+                  value: optionId,
+                  name: "",
+                  price: 0,
+              };
+              return PriceCalculator.calculateBelichtungspaketPrice(
+                  selectionOption,
+                  configuration.nest,
+                  configuration.fenster || undefined
+              );
+          }
+
+          if (categoryId === "bodenaufbau") {
+             return PriceCalculator.calculateBodenaufbauPrice(
+                 {
+                     category: categoryId,
+                     value: optionId,
+                     name: option.name || "",
+                     price: option.price.amount || 0,
+                 },
+                 {
+                     category: "nest",
+                     value: configuration.nest.value,
+                     name: configuration.nest.name,
+                     price: configuration.nest.price || 0,
+                 }
+             );
+          }
+
+          if (categoryId === "fenster") {
+             if (option.price.amount && configuration.belichtungspaket) {
+                  let totalArea = 0;
+                  const nestSizeMap: Record<string, number> = {
+                      nest80: 80, nest100: 100, nest120: 120, nest140: 140, nest160: 160,
+                  };
+                  const size = nestSizeMap[configuration.nest.value] || 80;
+                  const percentageMap: Record<string, number> = {
+                      light: 0.15, medium: 0.22, bright: 0.28,
+                  };
+                  const percentage = percentageMap[configuration.belichtungspaket.value] || 0.12;
+                  totalArea += Math.ceil(size * percentage);
+                  return totalArea * option.price.amount;
+             }
+          }
+          
+          if (categoryId === "geschossdecke" && pricingData) {
+             return pricingData.geschossdecke.basePrice;
+          }
+
+          return option.price.amount || 0;
+      };
+
+      // Helper for handling complex relative pricing logic
+      if (["belichtungspaket", "fenster", "bodenaufbau", "geschossdecke"].includes(categoryId)) {
         const currentSelection = configuration[categoryId as keyof typeof configuration] as ConfigurationItem | undefined;
         
+        // Special check for bodenaufbau availability
         if (categoryId === "bodenaufbau" && pricingData) {
-          const nestSize = configuration.nest?.value || "nest80";
+          const nestSize = configuration?.nest?.value || "nest80";
           let bodenaufbauKey = optionId;
+          // Map potential key mismatches if needed (kept from original logic)
           if (bodenaufbauKey === "wassergefuehrte_fussbodenheizung") {
              if (pricingData.bodenaufbau["wassergefuehrte_fussbodenheizung"]) bodenaufbauKey = "wassergefuehrte_fussbodenheizung";
              else if (pricingData.bodenaufbau["wassergef. fbh"]) bodenaufbauKey = "wassergef. fbh";
@@ -616,31 +690,28 @@ export function useConfiguratorLogic(_rightPanelRef?: RefObject<HTMLDivElement>)
         }
 
         if (currentSelection) {
-          // ... (Logic for generic relative pricing, simplified for brevity in this hook creation as it duplicates the massive block in original file)
-          // I will copy the generic logic block here to ensure correctness
-          const currentPrice = currentSelection.price || 0;
-          const optionPrice = option.price.amount || 0;
-          
-          // This part is complex, so I am trusting the original logic and copying the key parts for generic relative calculation
-          // If needed, I'll refine this in the ConfiguratorUI component or separate helper
-          
-          // Construct generic relative price difference
-          if (categoryId === "planungspaket") { // Redundant but safe
-             const priceDifference = optionPrice - currentPrice;
-             if (priceDifference === 0) return { type: "selected" as const };
-             else if (priceDifference > 0) return { type: "upgrade" as const, amount: priceDifference, monthly: option.price.monthly };
-             else return { type: "discount" as const, amount: Math.abs(priceDifference), monthly: option.price.monthly };
+          if (currentSelection.value === optionId) {
+            return { type: "selected" as const };
           }
           
-          // Default fallback for others
-          const priceDifference = optionPrice - currentPrice;
-           if (priceDifference === 0) return { type: "selected" as const };
-           else if (priceDifference > 0) return { type: "upgrade" as const, amount: priceDifference };
-           else return { type: "discount" as const, amount: Math.abs(priceDifference) };
+          const currentPriceVal = currentSelection.price || 0;
+          const optionPriceVal = getOptionPriceValue();
+          
+          const priceDifference = optionPriceVal - currentPriceVal;
+          
+          if (priceDifference === 0) return { type: "selected" as const };
+          else if (priceDifference > 0) return { type: "upgrade" as const, amount: priceDifference, monthly: PriceCalculator.calculateMonthlyPaymentAmount(priceDifference) };
+          else return { type: "discount" as const, amount: Math.abs(priceDifference), monthly: PriceCalculator.calculateMonthlyPaymentAmount(Math.abs(priceDifference)) };
         }
         
-        // No selection fallback
-        return option.price; 
+        // No selection - return base price calculated
+        const calculatedPrice = getOptionPriceValue();
+        if (calculatedPrice === 0) return { type: "included" as const };
+        return { 
+            type: "upgrade" as const, // Default to upgrade/standard if no selection
+            amount: calculatedPrice,
+            monthly: PriceCalculator.calculateMonthlyPaymentAmount(calculatedPrice)
+        }; 
       }
 
       return option.price;
@@ -752,4 +823,3 @@ export function useConfiguratorLogic(_rightPanelRef?: RefObject<HTMLDivElement>)
     getMaxGeschossdecken,
   };
 }
-

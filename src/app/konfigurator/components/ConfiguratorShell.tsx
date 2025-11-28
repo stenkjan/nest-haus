@@ -8,7 +8,7 @@ import ConfiguratorUI from "./ConfiguratorUI";
 export default function ConfiguratorShell({
   onPriceChange,
   rightPanelRef,
-}: ConfiguratorProps & { rightPanelRef?: React.RefObject<HTMLDivElement> }) {
+}: ConfiguratorProps & { rightPanelRef?: React.RefObject<HTMLDivElement | null> }) {
   const logic = useConfiguratorLogic(rightPanelRef);
 
   // Notify parent components of price changes

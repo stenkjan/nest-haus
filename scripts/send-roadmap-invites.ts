@@ -17,7 +17,7 @@ async function sendRoadmapInvites() {
   const now = new Date();
   // Start next Monday
   const startNextMonday = new Date(now);
-  startNextMonday.setDate(now.getDate() + (8 - now.getDay())); 
+  startNextMonday.setDate(now.getDate() + (((1 + 7 - now.getDay()) % 7) || 7));
   startNextMonday.setHours(9, 0, 0, 0);
 
   const phases = [
