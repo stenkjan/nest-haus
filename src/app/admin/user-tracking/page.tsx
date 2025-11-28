@@ -24,6 +24,8 @@ import GeoLocationMap from "./components/GeoLocationMap";
 // Conversion tracking components
 import ConversionFunnelWidget from "./components/ConversionFunnelWidget";
 import KonzeptcheckDashboard from "./components/KonzeptcheckDashboard";
+// Google Analytics insights
+import GoogleAnalyticsInsights from "@/components/admin/GoogleAnalyticsInsights";
 
 // Types matching the API response
 interface UserTrackingData {
@@ -447,6 +449,11 @@ async function UserTrackingDashboard() {
       {/* Geographic Location Map */}
       <div className="mb-8">
         <GeoLocationMap />
+      </div>
+
+      {/* Google Analytics Insights */}
+      <div className="mb-8">
+        <GoogleAnalyticsInsights />
       </div>
 
       {/* Conversion Tracking */}

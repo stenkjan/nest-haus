@@ -40,13 +40,15 @@ This document consolidates the **complete implementation** of Google Analytics 4
 - ✅ **Cookie Consent System** respecting user privacy
 - ✅ **Enhanced Structured Data** (Organization, WebSite, Product, FAQ schemas)
 - ✅ **SEO Optimization** with proper meta tags and JSON-LD
+- ✅ **GA4 Data API Integration** with admin dashboard insights
+- ✅ **GoogleAnalyticsInsights Component** showing demographics in admin panel
 
 ### What's Missing (Optional Setup)
 
 - ⏳ Google Search Console verification (needs manual verification code)
-- ⏳ GA4 Data API backend integration (needs Google Cloud service account)
 - ⏳ Custom dimensions and conversion goals in GA4 admin
 - ⏳ Advanced tracking (scroll depth, time on page, CTA clicks)
+- ⏳ Mark events as conversions in GA4 dashboard
 
 ---
 
@@ -59,6 +61,7 @@ This document consolidates the **complete implementation** of Google Analytics 4
 **File:** `src/components/analytics/GoogleAnalyticsProvider.tsx`
 
 **Features:**
+
 - ✅ GDPR-compliant Consent Mode v2
 - ✅ Cookie consent integration
 - ✅ Only loads when user accepts analytics cookies
@@ -66,14 +69,15 @@ This document consolidates the **complete implementation** of Google Analytics 4
 - ✅ Listens to cookie preference updates
 
 **How it works:**
+
 ```typescript
 // Automatically configured in GoogleAnalyticsProvider.tsx
-window.gtag('consent', 'default', {
-  'ad_storage': 'denied',
-  'ad_user_data': 'denied',
-  'ad_personalization': 'denied',
-  'analytics_storage': 'denied',  // Updated when user accepts
-})
+window.gtag("consent", "default", {
+  ad_storage: "denied",
+  ad_user_data: "denied",
+  ad_personalization: "denied",
+  analytics_storage: "denied", // Updated when user accepts
+});
 ```
 
 #### 2. Event Tracking Library (100% Complete)
@@ -81,6 +85,7 @@ window.gtag('consent', 'default', {
 **File:** `src/lib/ga4-tracking.ts`
 
 **Features:**
+
 - ✅ Dual-push system (dataLayer + gtag)
 - ✅ GTM-compatible
 - ✅ Type-safe event functions
@@ -89,14 +94,15 @@ window.gtag('consent', 'default', {
 
 #### 3. Active Event Implementations (4 Main Events)
 
-| Event | File | Status | Purpose |
-|-------|------|--------|---------|
-| `generate_lead` | `AppointmentBooking.tsx` (line ~300) | ✅ Active | Appointment bookings |
-| `add_to_cart` | `CartFooter.tsx` (line ~182) | ✅ Active | Configuration added to cart |
-| `purchase` | `PaymentSuccessTracker.tsx` (line ~110) | ✅ Active | Konzept-Check payment |
-| `config_complete` | `CartFooter.tsx` (line ~182) | ✅ Active | Configuration completed |
+| Event             | File                                    | Status    | Purpose                     |
+| ----------------- | --------------------------------------- | --------- | --------------------------- |
+| `generate_lead`   | `AppointmentBooking.tsx` (line ~300)    | ✅ Active | Appointment bookings        |
+| `add_to_cart`     | `CartFooter.tsx` (line ~182)            | ✅ Active | Configuration added to cart |
+| `purchase`        | `PaymentSuccessTracker.tsx` (line ~110) | ✅ Active | Konzept-Check payment       |
+| `config_complete` | `CartFooter.tsx` (line ~182)            | ✅ Active | Configuration completed     |
 
 **Additional events available** (not yet used):
+
 - `grundstueck_check_submit` - Property check form
 - `trackContactFormSubmit` - Contact form submissions
 - `trackPageView` - Manual page view tracking
@@ -105,6 +111,7 @@ window.gtag('consent', 'default', {
 #### 4. SEO & Structured Data (95% Complete)
 
 **Implemented:**
+
 - ✅ Organization schema (local business)
 - ✅ WebSite schema with search action
 - ✅ Product schema for modular houses
@@ -114,12 +121,14 @@ window.gtag('consent', 'default', {
 - ✅ Proper meta tags (robots, googlebot, etc.)
 
 **Missing:**
+
 - ⏳ Google Search Console verification code (needs manual setup)
 - ⏳ Breadcrumb schemas on all pages (helper exists, needs implementation)
 
 #### 5. Cookie Consent & GDPR (100% Complete)
 
 **Features:**
+
 - ✅ Cookie banner with granular consent
 - ✅ GA4 cookies properly disclosed
 - ✅ Consent Mode v2 implementation
@@ -135,16 +144,19 @@ window.gtag('consent', 'default', {
 **Status:** Code exists, needs Google Cloud setup
 
 **What's implemented:**
+
 - ✅ Server-side GA4 client (`src/lib/google-analytics.ts`)
 - ✅ API routes: `/api/admin/google-analytics/*`
 - ✅ Functions for: overview metrics, geo data, realtime, traffic sources
 
 **What's missing:**
+
 - ❌ Google Cloud service account credentials
 - ❌ `GA4_PROPERTY_ID` environment variable
 - ❌ Service account added to GA4 with "Viewer" role
 
 **Why you need this:**
+
 - View GA4 demographics **inside your admin dashboard**
 - Combine GA4 data with custom analytics
 - Server-side data fetching (secure)
@@ -154,6 +166,7 @@ window.gtag('consent', 'default', {
 #### 2. GA4 Configuration in Admin Panel
 
 **Missing setup steps:**
+
 - Mark events as conversions
 - Create custom dimensions
 - Set up conversion funnels
@@ -173,6 +186,7 @@ You have **4 main events** actively tracking. Here's what you can do with each:
 **Triggered when:** User successfully books a consultation appointment
 
 **Event data sent:**
+
 ```javascript
 {
   event: 'generate_lead',
@@ -186,6 +200,7 @@ You have **4 main events** actively tracking. Here's what you can do with each:
 ```
 
 **What you can do in GA4:**
+
 - ✅ Track conversion rates for appointment bookings
 - ✅ See which traffic sources generate most appointments
 - ✅ Analyze time patterns (when do people book most)
@@ -193,6 +208,7 @@ You have **4 main events** actively tracking. Here's what you can do with each:
 - ✅ Create remarketing audiences for non-bookers
 
 **Recommended GA4 setup:**
+
 ```
 GA4 → Configure → Events → Find "generate_lead" → Mark as conversion ✓
 ```
@@ -204,6 +220,7 @@ GA4 → Configure → Events → Find "generate_lead" → Mark as conversion ✓
 **Triggered when:** User clicks "Zum Warenkorb" after configuring their Nest Haus
 
 **Event data sent:**
+
 ```javascript
 {
   event: 'add_to_cart',
@@ -221,6 +238,7 @@ GA4 → Configure → Events → Find "generate_lead" → Mark as conversion ✓
 ```
 
 **What you can do in GA4:**
+
 - ✅ Track ecommerce funnel: view → configure → add to cart
 - ✅ Calculate cart abandonment rate
 - ✅ See which configurations are most popular
@@ -228,6 +246,7 @@ GA4 → Configure → Events → Find "generate_lead" → Mark as conversion ✓
 - ✅ Use in GA4 Ecommerce reports
 
 **Recommended GA4 setup:**
+
 ```
 GA4 → Reports → Monetization → Ecommerce purchases
 - View items added to cart
@@ -242,6 +261,7 @@ GA4 → Reports → Monetization → Ecommerce purchases
 **Triggered when:** User completes Stripe payment for Konzept-Check
 
 **Event data sent:**
+
 ```javascript
 {
   event: 'purchase',
@@ -260,6 +280,7 @@ GA4 → Reports → Monetization → Ecommerce purchases
 ```
 
 **How it works:**
+
 1. User completes Stripe payment
 2. Stripe webhook updates database with purchase flag
 3. `PaymentSuccessTracker` component detects flag
@@ -267,6 +288,7 @@ GA4 → Reports → Monetization → Ecommerce purchases
 5. Uses localStorage to prevent duplicate tracking
 
 **What you can do in GA4:**
+
 - ✅ Track actual revenue from Konzept-Check sales
 - ✅ Measure ROAS (Return on Ad Spend) if running ads
 - ✅ Analyze customer LTV (Lifetime Value)
@@ -274,6 +296,7 @@ GA4 → Reports → Monetization → Ecommerce purchases
 - ✅ Set up Google Ads conversion tracking
 
 **Recommended GA4 setup:**
+
 ```
 GA4 → Configure → Events → Find "purchase" → Mark as conversion ✓
 GA4 → Admin → Conversions → Set as primary conversion
@@ -286,6 +309,7 @@ GA4 → Admin → Conversions → Set as primary conversion
 **Triggered when:** User completes configurator (same trigger as add_to_cart)
 
 **Event data sent:**
+
 ```javascript
 {
   event: 'config_complete',
@@ -296,6 +320,7 @@ GA4 → Admin → Conversions → Set as primary conversion
 ```
 
 **What you can do in GA4:**
+
 - ✅ Track which house models are most popular
 - ✅ Analyze price range preferences
 - ✅ See customization option patterns
@@ -303,6 +328,7 @@ GA4 → Admin → Conversions → Set as primary conversion
 - ✅ Use for remarketing audiences
 
 **Recommended GA4 setup:**
+
 ```
 GA4 → Configure → Custom Definitions → Create custom dimension
 - Dimension name: "house_model"
@@ -340,12 +366,12 @@ User-scoped dimensions:
 1. configurator_completed
    - Scope: User
    - Event parameter: config_complete
-   
+
 2. price_range
    - Scope: User
    - Event parameter: price_estimated
    - Create segments: <75k, 75k-100k, 100k-150k, >150k
-   
+
 3. preferred_nest_type
    - Scope: User
    - Event parameter: house_model
@@ -355,7 +381,7 @@ Event-scoped dimensions:
    - Scope: Event
    - Event parameter: form_id
    - Filters generate_lead by form type
-   
+
 5. house_model
    - Scope: Event
    - Event parameter: house_model
@@ -656,12 +682,12 @@ All events use a **dual-push system**:
 ```typescript
 // 1. Push to dataLayer (for GTM compatibility)
 window.dataLayer.push({
-  event: 'event_name',
-  ...params
+  event: "event_name",
+  ...params,
 });
 
 // 2. Send to gtag (direct GA4 tracking)
-window.gtag('event', 'event_name', params);
+window.gtag("event", "event_name", params);
 ```
 
 ### Available Tracking Functions
@@ -669,18 +695,20 @@ window.gtag('event', 'event_name', params);
 **File:** `src/lib/ga4-tracking.ts`
 
 #### Appointment Booking
+
 ```typescript
-import { trackAppointmentBooking } from '@/lib/ga4-tracking';
+import { trackAppointmentBooking } from "@/lib/ga4-tracking";
 
 trackAppointmentBooking({
-  date: '2025-11-27',
-  time: '14:00',
-  appointmentType: 'personal',
-  timeSlotAvailable: true
+  date: "2025-11-27",
+  time: "14:00",
+  appointmentType: "personal",
+  timeSlotAvailable: true,
 });
 ```
 
 #### Configuration & Cart
+
 ```typescript
 import { trackConfigurationComplete, trackAddToCart } from '@/lib/ga4-tracking';
 
@@ -701,52 +729,55 @@ trackAddToCart({
 ```
 
 #### Purchase
+
 ```typescript
-import { trackPurchase } from '@/lib/ga4-tracking';
+import { trackPurchase } from "@/lib/ga4-tracking";
 
 trackPurchase({
-  transactionId: 'T-2025-abc123',
-  value: 3000.00,  // In euros
-  itemId: 'KONZEPT-CHECK-001',
-  itemName: 'Konzeptcheck (Kauf)',
-  price: 3000.00,
-  quantity: 1
+  transactionId: "T-2025-abc123",
+  value: 3000.0, // In euros
+  itemId: "KONZEPT-CHECK-001",
+  itemName: "Konzeptcheck (Kauf)",
+  price: 3000.0,
+  quantity: 1,
 });
 ```
 
 #### Contact Forms
+
 ```typescript
-import { 
-  trackContactFormSubmit, 
-  trackGrundstueckCheckSubmit 
-} from '@/lib/ga4-tracking';
+import {
+  trackContactFormSubmit,
+  trackGrundstueckCheckSubmit,
+} from "@/lib/ga4-tracking";
 
 // General contact form
 trackContactFormSubmit({
-  requestType: 'contact',
-  preferredContact: 'email'
+  requestType: "contact",
+  preferredContact: "email",
 });
 
 // Property check form
 trackGrundstueckCheckSubmit({
-  location: 'checkout',
+  location: "checkout",
   hasPropertyNumber: true,
-  hasCadastralCommunity: true
+  hasCadastralCommunity: true,
 });
 ```
 
 #### Engagement Tracking
+
 ```typescript
-import { trackPageView, trackClick } from '@/lib/ga4-tracking';
+import { trackPageView, trackClick } from "@/lib/ga4-tracking";
 
 // Manual page views (for SPA)
-trackPageView('/konfigurator/step-2', 'Konfigurator - Step 2');
+trackPageView("/konfigurator/step-2", "Konfigurator - Step 2");
 
 // Button clicks
 trackClick({
-  elementId: 'cta-konfigurator-start',
-  elementText: 'Jetzt konfigurieren',
-  destination: '/konfigurator'
+  elementId: "cta-konfigurator-start",
+  elementText: "Jetzt konfigurieren",
+  destination: "/konfigurator",
 });
 ```
 
@@ -781,6 +812,7 @@ import { trackClick } from '@/lib/ga4-tracking';
 ```
 
 **Where to add:**
+
 - Landing page hero CTA
 - "Terminbuchung" buttons
 - "Zum Warenkorb" button
@@ -812,7 +844,7 @@ export default function YourPageClient() {
       const scrollPercent = Math.round(
         (window.scrollY / (document.body.scrollHeight - window.innerHeight)) * 100
       );
-      
+
       ['25', '50', '75', '100'].forEach(threshold => {
         const thresholdNum = parseInt(threshold);
         if (scrollPercent >= thresholdNum && !scrollTracked[threshold]) {
@@ -821,7 +853,7 @@ export default function YourPageClient() {
         }
       });
     };
-    
+
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, [scrollTracked]);
@@ -846,15 +878,15 @@ import { trackCustomEvent } from '@/lib/ga4-tracking';
 export default function YourPageClient() {
   useEffect(() => {
     const startTime = Date.now();
-    
+
     return () => {
       const duration = Math.floor((Date.now() - startTime) / 1000);
       if (duration > 30) {  // Only track if > 30 seconds
         trackCustomEvent('page_engagement', {
           page: window.location.pathname,
           duration_seconds: duration,
-          duration_category: duration < 60 ? '<1min' : 
-                            duration < 300 ? '1-5min' : 
+          duration_category: duration < 60 ? '<1min' :
+                            duration < 300 ? '1-5min' :
                             duration < 600 ? '5-10min' : '>10min'
         });
       }
@@ -941,6 +973,7 @@ NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION=ABC123...
 **Status:** Helper function exists, needs implementation
 
 **Current pages without breadcrumbs:**
+
 - `/showcase`
 - `/datenschutz`
 - `/impressum`
@@ -976,6 +1009,7 @@ export default function YourPage() {
 #### 3. Add FAQ Schema to Key Pages (45 minutes)
 
 **Pages that should have FAQ schema:**
+
 - `/dein-nest`
 - `/nest-system`
 - `/konzept-check`
@@ -987,25 +1021,25 @@ export default function YourPage() {
 const faqSchema = {
   "@context": "https://schema.org",
   "@type": "FAQPage",
-  "mainEntity": [
+  mainEntity: [
     {
       "@type": "Question",
-      "name": "Was kostet ein Nest-Haus?",
-      "acceptedAnswer": {
+      name: "Was kostet ein Nest-Haus?",
+      acceptedAnswer: {
         "@type": "Answer",
-        "text": "Die Preise beginnen bei €177.000 für das 1-Modul und reichen bis €313.000 für das 3-Module Haus."
-      }
+        text: "Die Preise beginnen bei €177.000 für das 1-Modul und reichen bis €313.000 für das 3-Module Haus.",
+      },
     },
     {
       "@type": "Question",
-      "name": "Wie lange dauert der Bau?",
-      "acceptedAnswer": {
+      name: "Wie lange dauert der Bau?",
+      acceptedAnswer: {
         "@type": "Answer",
-        "text": "Vom ersten Kontakt bis zur Übergabe vergehen in der Regel 6-8 Monate."
-      }
-    }
+        text: "Vom ersten Kontakt bis zur Übergabe vergehen in der Regel 6-8 Monate.",
+      },
+    },
     // Add 3-5 common questions per page
-  ]
+  ],
 };
 ```
 
@@ -1020,6 +1054,7 @@ const faqSchema = {
 **Current status:** Basic navigation links
 
 **Add contextual links:**
+
 - Link "Konfigurator" mentions to `/konfigurator`
 - Link "Konzept-Check" mentions to `/konzept-check`
 - Add "Verwandte Seiten" sections at page bottoms
@@ -1030,7 +1065,7 @@ const faqSchema = {
 ```tsx
 // In page content
 <p>
-  Unser <Link href="/konfigurator">interaktiver Konfigurator</Link> 
+  Unser <Link href="/konfigurator">interaktiver Konfigurator</Link>
   ermöglicht es Ihnen, Ihr Traumhaus zu gestalten.
 </p>
 ```
@@ -1049,8 +1084,8 @@ const faqSchema = {
 // In each page's metadata
 export const metadata: Metadata = {
   alternates: {
-    canonical: 'https://nest-haus.at/your-page'
-  }
+    canonical: "https://nest-haus.at/your-page",
+  },
 };
 ```
 
@@ -1068,23 +1103,23 @@ export const metadata: Metadata = {
 const articleSchema = {
   "@context": "https://schema.org",
   "@type": "Article",
-  "headline": "Die Zukunft des modularen Wohnens",
-  "datePublished": "2025-11-27",
-  "dateModified": "2025-11-27",
-  "author": {
+  headline: "Die Zukunft des modularen Wohnens",
+  datePublished: "2025-11-27",
+  dateModified: "2025-11-27",
+  author: {
     "@type": "Organization",
-    "name": "NEST-Haus"
+    name: "NEST-Haus",
   },
-  "publisher": {
+  publisher: {
     "@type": "Organization",
-    "name": "NEST-Haus",
-    "logo": {
+    name: "NEST-Haus",
+    logo: {
       "@type": "ImageObject",
-      "url": "https://nest-haus.at/logo.png"
-    }
+      url: "https://nest-haus.at/logo.png",
+    },
   },
-  "image": "https://nest-haus.at/blog-image.jpg",
-  "articleBody": "..."
+  image: "https://nest-haus.at/blog-image.jpg",
+  articleBody: "...",
 };
 ```
 
@@ -1102,11 +1137,11 @@ const articleSchema = {
 export const metadata: Metadata = {
   alternates: {
     languages: {
-      'de-AT': 'https://nest-haus.at/page',
-      'de-DE': 'https://nest-haus.de/page',
-      'de-CH': 'https://nest-haus.ch/page',
-    }
-  }
+      "de-AT": "https://nest-haus.at/page",
+      "de-DE": "https://nest-haus.de/page",
+      "de-CH": "https://nest-haus.ch/page",
+    },
+  },
 };
 ```
 
@@ -1118,24 +1153,24 @@ export const metadata: Metadata = {
 const reviewSchema = {
   "@context": "https://schema.org",
   "@type": "Product",
-  "name": "NEST-Haus Modulhäuser",
-  "aggregateRating": {
+  name: "NEST-Haus Modulhäuser",
+  aggregateRating: {
     "@type": "AggregateRating",
-    "ratingValue": "4.8",
-    "reviewCount": "24"
+    ratingValue: "4.8",
+    reviewCount: "24",
   },
-  "review": [
+  review: [
     {
       "@type": "Review",
-      "author": {"@type": "Person", "name": "Max Mustermann"},
-      "datePublished": "2025-11-20",
-      "reviewRating": {
+      author: { "@type": "Person", name: "Max Mustermann" },
+      datePublished: "2025-11-20",
+      reviewRating: {
         "@type": "Rating",
-        "ratingValue": "5"
+        ratingValue: "5",
       },
-      "reviewBody": "Tolle Erfahrung mit NEST-Haus..."
-    }
-  ]
+      reviewBody: "Tolle Erfahrung mit NEST-Haus...",
+    },
+  ],
 };
 ```
 
@@ -1148,6 +1183,7 @@ const reviewSchema = {
 Your cookie banner includes proper GA4 disclosure:
 
 #### Analytics Cookies
+
 ```
 - _ga (Google Analytics) - 2 years
 - _ga_* (Session tracking) - 2 years
@@ -1157,6 +1193,7 @@ Your cookie banner includes proper GA4 disclosure:
 ```
 
 #### Marketing Cookies
+
 ```
 - _gcl_* (Google Ads conversion) - 90 days
 - campaign-tracking (Custom) - 30 days
@@ -1181,21 +1218,21 @@ Your cookie banner includes proper GA4 disclosure:
 
 ```typescript
 // Automatically configured
-window.gtag('consent', 'default', {
-  'ad_storage': 'denied',           // Default: denied
-  'ad_user_data': 'denied',
-  'ad_personalization': 'denied',
-  'analytics_storage': 'denied',
-  'functionality_storage': 'denied',
-  'personalization_storage': 'denied',
-})
+window.gtag("consent", "default", {
+  ad_storage: "denied", // Default: denied
+  ad_user_data: "denied",
+  ad_personalization: "denied",
+  analytics_storage: "denied",
+  functionality_storage: "denied",
+  personalization_storage: "denied",
+});
 
 // Updated when user accepts
-window.gtag('consent', 'update', {
-  'analytics_storage': 'granted',   // When analytics accepted
-  'ad_storage': 'granted',          // When marketing accepted
+window.gtag("consent", "update", {
+  analytics_storage: "granted", // When analytics accepted
+  ad_storage: "granted", // When marketing accepted
   // ...
-})
+});
 ```
 
 ### GDPR Compliance Checklist
@@ -1216,11 +1253,12 @@ window.gtag('consent', 'update', {
 
 ### GoogleAnalyticsInsights Component
 
-**Location:** `/admin/user-tracking` (ready to add)
+**Location:** `/admin/user-tracking` ✅ **ACTIVE**
 
 **Features:**
+
 - 👥 Age group distribution
-- ⚥ Gender breakdown  
+- ⚥ Gender breakdown
 - 💡 Top interests categories
 - 📊 Visual bar charts
 - 🔄 Auto-refresh data
@@ -1228,30 +1266,46 @@ window.gtag('consent', 'update', {
 ### Integration Code
 
 ```tsx
-// In src/app/admin/user-tracking/page.tsx
+// ✅ IMPLEMENTED in src/app/admin/user-tracking/page.tsx
 
-import GoogleAnalyticsInsights from '@/components/admin/GoogleAnalyticsInsights'
+import GoogleAnalyticsInsights from "@/components/admin/GoogleAnalyticsInsights";
 
-// Add after SessionsTimelineChart:
-<GoogleAnalyticsInsights className="mb-8" />
+// Added after GeoLocationMap component:
+<div className="mb-8">
+  <GoogleAnalyticsInsights />
+</div>;
 ```
 
 ### API Endpoints
 
-**Status:** Ready but needs GA4 Data API setup
+**Status:** ✅ FULLY OPERATIONAL (Local & Production)
 
-| Endpoint | Purpose | Status |
-|----------|---------|--------|
-| `/api/admin/google-analytics/overview` | Users, sessions, pageviews | ⏳ Needs credentials |
-| `/api/admin/google-analytics/geo` | Countries and cities | ⏳ Needs credentials |
-| `/api/admin/google-analytics/realtime` | Current active users | ⏳ Needs credentials |
-| `/api/admin/google-analytics/traffic-sources` | Referrers and mediums | ⏳ Needs credentials |
-| `/api/admin/google-analytics/pages` | Most visited pages | ⏳ Needs credentials |
+| Endpoint                                      | Purpose                    | Status         |
+| --------------------------------------------- | -------------------------- | -------------- |
+| `/api/admin/google-analytics/overview`        | Users, sessions, pageviews | ✅ Operational |
+| `/api/admin/google-analytics/geo`             | Countries and cities       | ✅ Operational |
+| `/api/admin/google-analytics/realtime`        | Current active users       | ✅ Operational |
+| `/api/admin/google-analytics/traffic-sources` | Referrers and mediums      | ✅ Operational |
+| `/api/admin/google-analytics/pages`           | Most visited pages         | ✅ Operational |
 
-**To activate:**
-1. Follow "Phase 3: GA4 Data API Setup" above
-2. Add service account credentials
-3. Endpoints will automatically work
+**Production Deployment Status:**
+
+- ✅ Local development: Working with `GOOGLE_ANALYTICS_CREDENTIALS` file
+- ✅ Production (Vercel): Working with `GOOGLE_ANALYTICS_CREDENTIALS_BASE64` environment variable
+- ✅ Service account configured with "Viewer" role in GA4
+- ✅ GoogleAnalyticsInsights component active in admin dashboard
+
+**Configuration:**
+
+```bash
+# Local (.env.local)
+GA4_PROPERTY_ID="513884995"
+GOOGLE_APPLICATION_CREDENTIALS="./service-account-key.json"
+
+# Vercel (Environment Variables)
+GA4_PROPERTY_ID="513884995"
+GOOGLE_ANALYTICS_CREDENTIALS_BASE64="<base64-encoded-service-account-json>"
+```
 
 ---
 
@@ -1327,12 +1381,14 @@ Monitor:
 ### Issue: No data in GA4
 
 **Possible causes:**
+
 1. ❌ Measurement ID not set in .env.local
 2. ❌ Analytics cookies not accepted
 3. ❌ Ad blocker enabled
 4. ❌ GA4 tag not loading (check Network tab)
 
 **Solution:**
+
 ```bash
 # 1. Check environment variable
 echo $NEXT_PUBLIC_GA_MEASUREMENT_ID
@@ -1353,11 +1409,13 @@ echo $NEXT_PUBLIC_GA_MEASUREMENT_ID
 ### Issue: Demographics not showing
 
 **Possible causes:**
+
 1. ❌ Google signals not enabled
 2. ❌ Insufficient data (need 50+ users)
 3. ❌ Demographics thresholds not met
 
 **Solution:**
+
 ```
 1. GA4 → Admin → Data Settings → Data Collection
 2. Enable "Google signals data collection"
@@ -1370,6 +1428,7 @@ echo $NEXT_PUBLIC_GA_MEASUREMENT_ID
 ### Issue: Events not tracking
 
 **Possible causes:**
+
 1. ❌ GA4 not loaded when event fired
 2. ❌ Analytics cookies rejected
 3. ❌ Incorrect event syntax
@@ -1377,6 +1436,7 @@ echo $NEXT_PUBLIC_GA_MEASUREMENT_ID
 **Solution:**
 
 Check browser console for these messages:
+
 ```
 ✅ "📊 DataLayer Event:" - Event pushed to dataLayer
 ✅ "📈 GA4 Event (gtag):" - Event sent to GA4
@@ -1384,6 +1444,7 @@ Check browser console for these messages:
 ```
 
 **Fix:**
+
 ```typescript
 // Add safety check before tracking
 if (typeof window !== 'undefined' && window.gtag) {
@@ -1398,11 +1459,13 @@ if (typeof window !== 'undefined' && window.gtag) {
 ### Issue: Search Console verification failed
 
 **Possible causes:**
+
 1. ❌ Wrong verification code
 2. ❌ Code not in production
 3. ❌ Cache issues
 
 **Solution:**
+
 ```bash
 # 1. Verify deployment
 curl -I https://www.nest-haus.at
@@ -1416,6 +1479,66 @@ npm run build
 # Wait 5 minutes
 # Try verification again
 ```
+
+---
+
+### Issue: GA4 Data API "Failed to parse GOOGLE_ANALYTICS_CREDENTIALS_BASE64"
+
+**Error message:**
+
+```
+"Failed to parse GOOGLE_ANALYTICS_CREDENTIALS_BASE64: Unterminated string in JSON at position 107"
+```
+
+**Cause:** The base64 string in Vercel environment variables is malformed, truncated, or has line breaks.
+
+**Solution:**
+
+1. **Generate correct base64 string:**
+
+```bash
+# On Windows (Git Bash):
+base64 -w 0 service-account-key.json
+
+# On Windows (PowerShell):
+[Convert]::ToBase64String([IO.File]::ReadAllBytes("service-account-key.json"))
+
+# On macOS/Linux:
+base64 -w 0 service-account-key.json
+```
+
+2. **Update Vercel environment variable:**
+   - Go to Vercel → Project Settings → Environment Variables
+   - Find: `GOOGLE_ANALYTICS_CREDENTIALS_BASE64`
+   - Click "Edit"
+   - Paste the **complete** base64 string (should be ~2000+ characters)
+   - Make sure "Sensitive" is checked
+   - Save
+
+3. **Verify the string is complete:**
+   - Should start with: `eyJ0eXBlIjoic2VydmljZV9hY2NvdW50Ii...`
+   - Should be one continuous line with no spaces or line breaks
+   - Should end with a valid base64 character (alphanumeric or `=`)
+
+4. **Redeploy:**
+
+```bash
+vercel --prod
+```
+
+5. **Test the API:**
+
+```bash
+# Should return: {"success":true,"configured":true}
+curl https://your-domain.vercel.app/api/admin/google-analytics/overview
+```
+
+**Common mistakes:**
+
+- ❌ Copying only part of the base64 string
+- ❌ Including line breaks in the environment variable
+- ❌ Using wrong encoding (must be UTF-8)
+- ❌ Not clicking "Save" after editing in Vercel
 
 ---
 
@@ -1445,12 +1568,15 @@ function getAnalyticsClient(): BetaAnalyticsDataClient {
     // ...
   } catch (error) {
     // Clear error messages explaining what's wrong
-    throw new Error('Failed to initialize Google Analytics client: ' + error.message);
+    throw new Error(
+      "Failed to initialize Google Analytics client: " + error.message
+    );
   }
 }
 ```
 
 **Benefits:**
+
 - ✅ No startup crashes
 - ✅ Clear error messages
 - ✅ No silent fallbacks
@@ -1486,6 +1612,7 @@ if (!row) {
 ```
 
 **Benefits:**
+
 - ✅ Consistent API (all endpoints return 200 for empty data)
 - ✅ Better UX (shows "0 users" instead of error)
 - ✅ No retry loops
@@ -1557,9 +1684,11 @@ Reports & Demographics Data
 ### Integration with Existing Systems
 
 #### Custom Analytics (Primary)
+
 **Location:** `/admin/user-tracking`
 
 **What it tracks:**
+
 - Individual user sessions
 - Configuration selections
 - Cart behavior
@@ -1568,6 +1697,7 @@ Reports & Demographics Data
 - IP-based geolocation
 
 **GA4 complements with:**
+
 - Demographics (age, gender)
 - Interests categories
 - Traffic source attribution
@@ -1575,9 +1705,11 @@ Reports & Demographics Data
 - Cross-device tracking
 
 #### Stripe Payment System
+
 **Integration point:** Webhook → Database → `PaymentSuccessTracker`
 
 **Flow:**
+
 1. User completes Stripe payment
 2. Stripe webhook calls `/api/payments/webhook`
 3. Webhook updates database with `purchaseTracked: true` flag
@@ -1586,9 +1718,11 @@ Reports & Demographics Data
 6. Uses localStorage to prevent duplicates
 
 #### Cookie Consent System
+
 **Integration:** `GoogleAnalyticsProvider` listens to consent changes
 
 **Flow:**
+
 1. User changes cookie preferences
 2. Event dispatched: `cookiePreferencesUpdated`
 3. `GoogleAnalyticsProvider` receives event
@@ -1600,6 +1734,7 @@ Reports & Demographics Data
 ### Hybrid Analytics Strategy
 
 **Use Custom Analytics For:**
+
 - ✅ Real-time user tracking
 - ✅ Configuration selections
 - ✅ Cart abandonment specific to your flow
@@ -1608,6 +1743,7 @@ Reports & Demographics Data
 - ✅ IP-based security monitoring
 
 **Use Google Analytics 4 For:**
+
 - ✅ Demographics (age, gender)
 - ✅ Interests categories
 - ✅ Standard traffic source attribution
@@ -1664,8 +1800,8 @@ console.log(window.gtag)  # Should return function
 // Submit an appointment form
 // Look for these messages:
 
-"📊 DataLayer Event: {event: 'generate_lead', ...}"
-"📈 GA4 Event (gtag): generate_lead {...}"
+"📊 DataLayer Event: {event: 'generate_lead', ...}";
+"📈 GA4 Event (gtag): generate_lead {...}";
 
 // Check Network tab
 // Should see POST to: google-analytics.com/g/collect
@@ -1678,24 +1814,24 @@ console.log(window.gtag)  # Should return function
 // Run these in browser console to debug:
 
 // 1. Check if gtag is loaded
-typeof window.gtag  // Should be "function"
+typeof window.gtag; // Should be "function"
 
 // 2. Check dataLayer
-console.log(window.dataLayer)  // Should be array with events
+console.log(window.dataLayer); // Should be array with events
 
 // 3. Check consent state
 // Open GA4 Real-time report
 // Should see yourself as active user
 
 // 4. Check cookies
-document.cookie  // Should include _ga, _ga_*, _gid if accepted
+document.cookie; // Should include _ga, _ga_*, _gid if accepted
 
 // 5. Manually trigger test event
 trackAppointmentBooking({
-  date: '2025-12-01',
-  time: '10:00',
-  appointmentType: 'test',
-  timeSlotAvailable: true
+  date: "2025-12-01",
+  time: "10:00",
+  appointmentType: "test",
+  timeSlotAvailable: true,
 });
 // Check console for log messages
 ```
@@ -1732,19 +1868,20 @@ trackAppointmentBooking({
 
 ### Costs: €0/month
 
-| Service | Tier | Cost | What You Get |
-|---------|------|------|--------------|
-| **Google Analytics 4** | Free | €0 | Unlimited events, demographics, all reports |
-| **Google Search Console** | Free | €0 | All features, unlimited properties |
-| **Vercel Speed Insights** | Free | €0 | Core Web Vitals, RUM, performance |
-| **Your Custom Analytics** | Self-hosted | €0 | All features, unlimited storage |
-| **NeonDB (database)** | Free tier | €0 | 0.5GB storage, sufficient for analytics |
-| **Upstash Redis** | Free tier | €0 | 10,000 commands/day |
-| **TOTAL** | | **€0** | Enterprise-grade analytics stack |
+| Service                   | Tier        | Cost   | What You Get                                |
+| ------------------------- | ----------- | ------ | ------------------------------------------- |
+| **Google Analytics 4**    | Free        | €0     | Unlimited events, demographics, all reports |
+| **Google Search Console** | Free        | €0     | All features, unlimited properties          |
+| **Vercel Speed Insights** | Free        | €0     | Core Web Vitals, RUM, performance           |
+| **Your Custom Analytics** | Self-hosted | €0     | All features, unlimited storage             |
+| **NeonDB (database)**     | Free tier   | €0     | 0.5GB storage, sufficient for analytics     |
+| **Upstash Redis**         | Free tier   | €0     | 10,000 commands/day                         |
+| **TOTAL**                 |             | **€0** | Enterprise-grade analytics stack            |
 
 ### When Would You Pay?
 
 **Never, unless:**
+
 - NeonDB > 0.5GB (upgrade: €19/month) - Very unlikely
 - GA4 > 10M events/month (upgrade: $50,000/year) - Not applicable
 - Need BigQuery export (paid feature) - Not needed
@@ -1755,6 +1892,7 @@ trackAppointmentBooking({
 ## 📋 Maintenance & Monitoring
 
 ### Weekly Tasks
+
 - [ ] Check GA4 Real-time report for anomalies
 - [ ] Review Search Console "Performance" report
 - [ ] Check for crawl errors in Search Console
@@ -1762,6 +1900,7 @@ trackAppointmentBooking({
 - [ ] Review conversion rates
 
 ### Monthly Tasks
+
 - [ ] Review demographics trends in GA4
 - [ ] Analyze conversion funnel drop-offs
 - [ ] Check Core Web Vitals scores
@@ -1770,6 +1909,7 @@ trackAppointmentBooking({
 - [ ] Check for 404 errors in Search Console
 
 ### Quarterly Tasks
+
 - [ ] Review GA4 audience segments
 - [ ] Update interest targeting for ads (if running)
 - [ ] Analyze seasonal trends
@@ -1783,6 +1923,7 @@ trackAppointmentBooking({
 ## 📊 Expected Results Timeline
 
 ### Within 24 Hours
+
 - ✅ Real-time data in GA4
 - ✅ Page views tracked
 - ✅ User count
@@ -1790,18 +1931,21 @@ trackAppointmentBooking({
 - ✅ Device categories
 
 ### Within 48-72 Hours
+
 - ✅ Demographics data appears
 - ✅ Interests data appears
 - ✅ Audience segmentation available
 - ✅ Search Console data linked
 
 ### Within 1-2 Weeks
+
 - ✅ Reliable trend data
 - ✅ Conversion tracking stable
 - ✅ Audience insights actionable
 - ✅ Geographic heatmaps populated
 
 ### Within 1 Month
+
 - ✅ Full demographics breakdown
 - ✅ Accurate conversion attribution
 - ✅ Cohort analysis available
@@ -1896,6 +2040,7 @@ docs/
 ## ✅ Implementation Checklist
 
 ### Setup Phase (✅ Complete)
+
 - [x] Install @next/third-parties package
 - [x] Create GoogleAnalyticsProvider component
 - [x] Add GA4 to layout.tsx
@@ -1908,6 +2053,7 @@ docs/
 - [x] Update environment variables template
 
 ### Configuration Phase (⏳ User Action Required)
+
 - [ ] Create GA4 property in analytics.google.com
 - [ ] Copy Measurement ID to .env.local
 - [ ] Enable Google signals in GA4
@@ -1919,6 +2065,7 @@ docs/
 - [ ] Submit sitemap to Search Console
 
 ### Testing Phase (⏳ After Configuration)
+
 - [ ] Test cookie consent flow
 - [ ] Verify GA4 tag loads correctly
 - [ ] Check GA4 Real-time reports
@@ -1928,6 +2075,7 @@ docs/
 - [ ] Monitor for 48 hours for demographics
 
 ### Optimization Phase (🟢 Optional)
+
 - [ ] Review demographics data
 - [ ] Set up custom dimensions
 - [ ] Create audience segments
@@ -1977,11 +2125,13 @@ docs/
 ## 📞 Support & Resources
 
 ### Internal Documentation
+
 - Custom Analytics: `docs/final_ADMIN_DASHBOARD_IMPLEMENTATION_COMPLETE.md`
 - Analytics Requirements: `docs/ANALYTICS-REQUIREMENTS-COMPARISON.md`
 - Project Rules: `.cursor/rules/*.mdc`
 
 ### External Resources
+
 - Google Analytics Support: https://support.google.com/analytics
 - Search Console Support: https://support.google.com/webmasters
 - GA4 Community: https://support.google.com/analytics/community
@@ -2008,6 +2158,7 @@ docs/
 ## 🏆 What You've Achieved
 
 ### Before This Implementation:
+
 - ✅ Excellent custom analytics
 - ❌ No demographics data
 - ❌ No Google Search Console
@@ -2015,6 +2166,7 @@ docs/
 - ❌ No ecommerce tracking
 
 ### After This Implementation:
+
 - ✅ Excellent custom analytics (unchanged)
 - ✅ **Demographics data from GA4**
 - ✅ **Google Search Console ready**
@@ -2027,6 +2179,7 @@ docs/
 - ✅ **Professional event tracking**
 
 ### Your Analytics Stack is Now:
+
 - **More comprehensive** than most enterprise solutions
 - **Privacy-first** with GDPR compliance
 - **Cost-effective** at €0/month
@@ -2039,23 +2192,27 @@ docs/
 ## 🎯 Next Action Items
 
 ### Immediate (Do Today)
+
 1. Verify GA4 Measurement ID is in .env.local
 2. Mark events as conversions in GA4
 3. Check GA4 Real-time report to confirm tracking
 
 ### This Week
+
 4. Create custom dimensions
 5. Set up conversion funnel
 6. Add Google Search Console verification
 7. Submit sitemap
 
 ### This Month
+
 8. Implement quick wins (CTA clicks, scroll depth)
 9. Add breadcrumb schemas
 10. Add FAQ schemas
 11. Create audience segments
 
 ### Ongoing
+
 12. Monitor weekly reports
 13. Optimize based on data
 14. Refine conversion funnel
@@ -2071,7 +2228,7 @@ docs/
 
 ---
 
-*Generated: 2025-11-20*  
-*Last Updated: 2025-11-27*  
-*Version: 3.0.0 - Consolidated & Complete*  
-*Status: ✅ FULLY OPERATIONAL & DOCUMENTED*
+_Generated: 2025-11-20_  
+_Last Updated: 2025-11-27_  
+_Version: 3.0.0 - Consolidated & Complete_  
+_Status: ✅ FULLY OPERATIONAL & DOCUMENTED_
