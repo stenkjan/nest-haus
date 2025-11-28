@@ -4,6 +4,33 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [852564c1fb8997a25864f42e84c232ff874f6a60] - Thu Nov 27 16:18:18 2025 +0100
+
+**Author**: stenkjan
+**Message**: `Merge f01a21ddb52b2dceb85365cf15756a64fea3deb6 into 591dca95a0e7ca7e51cae0b83a2ad3efa3eaf799  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/admin/customer-inquiries/UserJourney.tsx
+- src/app/api/sessions/get-journey/route.ts
+
+
+---
+
+## [16c2ea34cb0a228d6f30c04274c71c5d48315fdf] - Thu Nov 27 15:50:42 2025 +0100
+
+**Author**: stenkjan
+**Message**: `Merge branch 'main' of https://github.com/stenkjan/nest-haus  `
+
+### Changes Analysis
+
+#### 📚 Documentation Changes
+- docs/COMMIT_HISTORY.md
+
+
+---
+
 ## [721715f23dc2604b0d8bcffb4d39217f70dfafff] - Thu Nov 27 15:47:13 2025 +0100
 
 **Author**: stenkjan

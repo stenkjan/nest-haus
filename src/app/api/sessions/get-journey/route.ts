@@ -26,12 +26,11 @@ export async function GET(request: NextRequest) {
         sessionId: true,
         startTime: true,
         endTime: true,
-        deviceType: true,
         city: true,
         country: true,
         status: true,
         configurationData: true,
-        lastActivityAt: true,
+        lastActivity: true,
       },
     });
 
@@ -54,6 +53,7 @@ export async function GET(request: NextRequest) {
         previousValue: true,
         timestamp: true,
         timeSpent: true,
+        deviceType: true,
         additionalData: true,
       },
       orderBy: { timestamp: "asc" },
@@ -62,11 +62,15 @@ export async function GET(request: NextRequest) {
     // Calculate total interactions
     const totalInteractions = interactions.length;
 
+    // Extract device type from first interaction (if available)
+    const deviceType = interactions[0]?.deviceType || undefined;
+
     return NextResponse.json({
       success: true,
       session: {
         ...session,
         totalInteractions,
+        deviceType,
       },
       interactions,
     });

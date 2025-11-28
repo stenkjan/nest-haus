@@ -120,6 +120,8 @@ export function UserJourney({ sessionId, inquiryId: _inquiryId }: UserJourneyPro
       )
     : 0;
 
+  const hasInteractions = interactions.length > 0;
+
   return (
     <div className="bg-white rounded-lg border border-gray-200 overflow-hidden">
       <div className="px-4 py-3 bg-gray-50 border-b border-gray-200 flex items-center justify-between">
@@ -131,12 +133,12 @@ export function UserJourney({ sessionId, inquiryId: _inquiryId }: UserJourneyPro
             <span className="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
               {sessionData.totalInteractions} Interaktionen
             </span>
-            {sessionDuration > 0 && (
+            {sessionDuration > 0 ? (
               <span className="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-purple-100 text-purple-800">
                 {sessionDuration}min Session
               </span>
-            )}
-            {sessionData.status && (
+            ) : null}
+            {sessionData.status ? (
               <span
                 className={`inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium ${
                   sessionData.status === "COMPLETED"
@@ -146,7 +148,7 @@ export function UserJourney({ sessionId, inquiryId: _inquiryId }: UserJourneyPro
               >
                 {sessionData.status}
               </span>
-            )}
+            ) : null}
           </div>
         </div>
         <button
@@ -157,7 +159,7 @@ export function UserJourney({ sessionId, inquiryId: _inquiryId }: UserJourneyPro
         </button>
       </div>
 
-      {isExpanded && (
+      {isExpanded ? (
         <div className="p-4 space-y-4">
           {/* Session Overview */}
           <div className="grid grid-cols-2 gap-3 text-sm">
@@ -173,15 +175,15 @@ export function UserJourney({ sessionId, inquiryId: _inquiryId }: UserJourneyPro
                 {new Date(sessionData.startTime).toLocaleString("de-DE")}
               </span>
             </div>
-            {sessionData.deviceType && (
+            {sessionData.deviceType ? (
               <div>
                 <span className="text-gray-500">Gerät:</span>
                 <span className="ml-2 text-gray-900">
                   {sessionData.deviceType}
                 </span>
               </div>
-            )}
-            {sessionData.city && (
+            ) : null}
+            {sessionData.city ? (
               <div>
                 <span className="text-gray-500">Standort:</span>
                 <span className="ml-2 text-gray-900">
@@ -189,11 +191,10 @@ export function UserJourney({ sessionId, inquiryId: _inquiryId }: UserJourneyPro
                   {sessionData.country ? `, ${sessionData.country}` : ""}
                 </span>
               </div>
-            )}
+            ) : null}
           </div>
 
-          {/* Interactions Timeline */}
-          {interactions.length > 0 && (
+          {hasInteractions ? (
             <div className="mt-4">
               <h5 className="text-sm font-semibold text-gray-900 mb-2">
                 📊 Interaktionsverlauf ({interactions.length})
@@ -221,35 +222,35 @@ export function UserJourney({ sessionId, inquiryId: _inquiryId }: UserJourneyPro
                       <span className="text-gray-700">
                         {interaction.category}
                       </span>
-                      {interaction.elementId && (
+                      {interaction.elementId ? (
                         <span className="text-gray-500 ml-1">
                           ({interaction.elementId})
                         </span>
-                      )}
-                      {interaction.selectionValue && (
+                      ) : null}
+                      {interaction.selectionValue ? (
                         <div className="text-blue-600 mt-0.5">
                           {interaction.selectionValue}
                         </div>
-                      )}
+                      ) : null}
                     </div>
-                    {interaction.timeSpent && interaction.timeSpent > 0 && (
+                    {interaction.timeSpent && interaction.timeSpent > 0 ? (
                       <span className="text-gray-400 text-xs shrink-0">
                         {Math.floor(Number(interaction.timeSpent) / 1000)}s
                       </span>
-                    )}
+                    ) : null}
                   </div>
                 ))}
-                {interactions.length > 20 && (
+                {interactions.length > 20 ? (
                   <p className="text-xs text-gray-500 text-center py-2">
                     ... und {interactions.length - 20} weitere Interaktionen
                   </p>
-                )}
+                ) : null}
               </div>
             </div>
-          )}
+          ) : null}
 
           {/* Configuration Data Preview */}
-          {sessionData.configurationData && (
+          {sessionData.configurationData ? (
             <div className="mt-4 pt-4 border-t border-gray-200">
               <h5 className="text-sm font-semibold text-gray-900 mb-2">
                 🏠 Konfigurationsdaten
@@ -258,9 +259,9 @@ export function UserJourney({ sessionId, inquiryId: _inquiryId }: UserJourneyPro
                 {JSON.stringify(sessionData.configurationData, null, 2) || "Keine Daten"}
               </pre>
             </div>
-          )}
+          ) : null}
         </div>
-      )}
+      ) : null}
     </div>
   );
 }
