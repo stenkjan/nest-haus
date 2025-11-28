@@ -4,6 +4,19 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [0f97d998294294a5f6029d4a00461b5dbb98efb5] - Fri Nov 28 10:50:33 2025 +0100
+
+**Author**: stenkjan
+**Message**: `Merge branch 'main' of https://github.com/stenkjan/nest-haus  `
+
+### Changes Analysis
+
+#### 📚 Documentation Changes
+- docs/COMMIT_HISTORY.md
+
+
+---
+
 ## [c39eb51a04023d0c51b2b7cc83fdfdc580cc6673] - Fri Nov 28 10:31:14 2025 +0100
 
 **Author**: stenkjan
