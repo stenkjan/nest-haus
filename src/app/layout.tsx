@@ -17,6 +17,7 @@ import SecurityProvider from "@/components/security/SecurityProvider";
 // TEMPORARILY DISABLED - troubleshooting module resolution
 // import WebVitals from "@/components/analytics/WebVitals";
 import GoogleAnalyticsProvider from "@/components/analytics/GoogleAnalyticsProvider";
+import GoogleAdSense from "@/components/analytics/GoogleAdSense";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -196,6 +197,9 @@ export default function RootLayout({
           <SpeedInsights />
           {GA_MEASUREMENT_ID && (
             <GoogleAnalyticsProvider gaId={GA_MEASUREMENT_ID} />
+          )}
+          {process.env.NEXT_PUBLIC_ADSENSE_PUBLISHER_ID && (
+            <GoogleAdSense publisherId={process.env.NEXT_PUBLIC_ADSENSE_PUBLISHER_ID} />
           )}
           {/* <WebVitals /> */}
         </CookieConsentProvider>
