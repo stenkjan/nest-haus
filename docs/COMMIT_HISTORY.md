@@ -4,6 +4,23 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [472c43ab67c0f70fa3c774e63d5e33b867c96ed0] - Fri Nov 28 14:04:03 2025 +0100
+
+**Author**: stenkjan
+**Message**: `Merge b88edde5156c0a4fc9dd02e4ca953a4152396f11 into a79a17ac3322d915454cfe5d6c1874b9b41dd3cd  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/konfigurator/__tests__/SummaryPanel.test.tsx
+
+
+#### 📚 Documentation Changes
+- PLANUNGSPAKET_PRICE_FIX_SUMMARY.md
+
+
+---
+
 ## [5328c15e80725b85796430a26001f51cbbdadb42] - Fri Nov 28 14:00:08 2025 +0100
 
 **Author**: stenkjan
