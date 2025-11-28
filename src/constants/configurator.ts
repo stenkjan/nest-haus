@@ -279,15 +279,15 @@ export const PLANNING_PACKAGES = [
     value: 'plus',
     name: 'Plus',
     description: 'Inkl. Planungspaket Basis\nPlus HKLS-Planung (Gebäudetechnik)',
-    price: 9600, // Updated from 16900 (Nov 2025)
-    monthly: 56 // Updated monthly based on 9600€ at 240 months
+    price: 4900, // Updated from 9600 (Nov 2025)
+    monthly: 26 // Updated monthly based on 4900€ at 240 months (~20.42€/month)
   },
   {
     value: 'pro',
     name: 'Pro',
     description: 'Inkl. Planungspaket Plus\nPlus Interiorkonzept (Möblierungsvorschlag)',
-    price: 12700, // Updated from 21900 (Nov 2025)
-    monthly: 74 // Updated monthly based on 12700€ at 240 months
+    price: 9600, // Updated from 12700 (Nov 2025)
+    monthly: 50 // Updated monthly based on 9600€ at 240 months (40€/month)
   }
 ] as const;
 

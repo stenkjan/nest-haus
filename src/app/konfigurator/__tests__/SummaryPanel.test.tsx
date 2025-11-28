@@ -53,10 +53,10 @@ const mockConfiguratorStore = {
     },
     planungspaket: {
       category: "planungspaket",
-      value: "pro",
-      name: "Planung Pro",
-      price: 21900, // Updated to new pricing
-    },
+    value: "pro",
+    name: "Planung Pro",
+    price: 9600, // Updated to new pricing (Nov 2025)
+  },
     totalPrice: 175100,
     timestamp: Date.now(),
   },
