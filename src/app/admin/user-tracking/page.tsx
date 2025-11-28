@@ -445,7 +445,7 @@ async function UserTrackingDashboard() {
         <TrafficSourcesWidget />
       </div>
 
-      {/* Google Analytics Insights - Geographic & Demographics Data */}
+      {/* Google Analytics Insights - Geographic (Countries/Cities) & Demographics Data */}
       <div className="mb-8">
         <GoogleAnalyticsInsights />
       </div>
