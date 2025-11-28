@@ -350,6 +350,7 @@ export async function GET(request: NextRequest) {
       take: limit,
       select: {
         id: true,
+        sessionId: true, // ⭐ ADDED: Include sessionId for user journey tracking
         email: true,
         name: true,
         phone: true,

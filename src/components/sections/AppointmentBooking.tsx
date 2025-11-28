@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { Button } from "@/components/ui";
 import { TerminVereinbarenContent } from "./TerminVereinbarenContent";
 import { useCartStore } from "@/store/cartStore";
@@ -65,6 +65,7 @@ const AppointmentBooking = ({
   >([]);
   const [isLoadingSlots, setIsLoadingSlots] = useState(false);
   const [formViewTracked, setFormViewTracked] = useState(false); // Track form view only once
+  const successMessageRef = useRef<HTMLDivElement>(null); // Ref for scrolling to success message
 
   // Track form view on mount
   useEffect(() => {
@@ -74,6 +75,19 @@ const AppointmentBooking = ({
       console.log("📊 Tracked appointment form view");
     }
   }, [sessionId, formViewTracked]);
+
+  // Scroll to success message when it appears
+  useEffect(() => {
+    if (submitSuccess && successMessageRef.current) {
+      // Small delay to ensure DOM is updated
+      setTimeout(() => {
+        successMessageRef.current?.scrollIntoView({
+          behavior: "smooth",
+          block: "center", // Center the element in the viewport
+        });
+      }, 100);
+    }
+  }, [submitSuccess]);
 
   // Static time slots as fallback - Business hours: 8-12 and 13-19
   const fallbackTimeSlots = [
@@ -497,7 +511,10 @@ const AppointmentBooking = ({
 
   if (submitSuccess) {
     return (
-      <div className="max-w-l mx-auto bg-white text-black px-8 md:px-12 lg:px-16 xl:px-18 2xl:px-20 py-10 md:py-14 xl:py-18 2xl:py-20 rounded-[35px] text-left shadow-lg flex items-center justify-center min-h-[330px] md:min-h-[400px] mt-18">
+      <div 
+        ref={successMessageRef}
+        className="max-w-l mx-auto bg-white text-black px-8 md:px-12 lg:px-16 xl:px-18 2xl:px-20 py-10 md:py-14 xl:py-18 2xl:py-20 rounded-[35px] text-left shadow-[0_4px_20px_rgba(0,0,0,0.1)] flex items-center justify-center min-h-[330px] md:min-h-[400px] mt-18"
+      >
         <div className="w-full">
           <h3 className="text-base md:text-lg lg:text-lg xl:text-xl 2xl:text-2xl font-semibold mb-4 text-black">
             Terminanfrage erfolgreich gesendet!

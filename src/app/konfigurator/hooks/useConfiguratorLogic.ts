@@ -5,7 +5,7 @@ import { PriceCalculator } from "../core/PriceCalculator";
 import { configuratorData } from "../data/configuratorData";
 import { calculateSizeDependentPrice } from "@/constants/configurator";
 
-export function useConfiguratorLogic(_rightPanelRef?: RefObject<HTMLDivElement>) {
+export function useConfiguratorLogic(_rightPanelRef?: RefObject<HTMLDivElement | null>) {
   // Track pricing data loading state
   const [isPricingDataLoaded, setIsPricingDataLoaded] = useState(false);
   const [pricingDataError, setPricingDataError] = useState<string | null>(null);

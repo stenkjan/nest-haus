@@ -76,15 +76,18 @@ async function fetchCustomerInquiries(
       params.append("status", status);
     }
 
-    const response = await fetch(
-      `${process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : "http://localhost:3000"}/api/contact?${params}`,
-      {
-        cache: "no-store",
-        headers: {
-          Accept: "application/json",
-        },
-      }
-    );
+    // Build base URL - prioritize NEXT_PUBLIC_SITE_URL, fallback to localhost
+    const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000";
+    const apiUrl = `${baseUrl}/api/contact?${params}`;
+
+    console.log(`📡 Fetching from: ${apiUrl}`);
+
+    const response = await fetch(apiUrl, {
+      cache: "no-store",
+      headers: {
+        Accept: "application/json",
+      },
+    });
 
     if (!response.ok) {
       throw new Error(
