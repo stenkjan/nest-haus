@@ -4,6 +4,25 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [332b37cf82174c067642c9ff9bbeb35e00cb7666] - Fri Nov 28 13:16:24 2025 +0100
+
+**Author**: stenkjan
+**Message**: `refactor: improve configurator logic and price calculation  - Updated  to correctly calculate the start date for next Monday. - Modified  and  components to allow  to accept  values for better type safety. - Enhanced  hook by utilizing  for stable access to overlay visibility state, improving performance and reducing unnecessary re-renders. - Refined price calculation logic to include monthly payment amounts for upgrades and discounts, ensuring accurate pricing information is returned.  These changes enhance the configurator's functionality, maintainability, and user experience.  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/konfigurator/components/ConfiguratorShell.tsx
+- src/app/konfigurator/components/ConfiguratorUI.tsx
+- src/app/konfigurator/hooks/useConfiguratorLogic.ts
+
+
+#### ⚙️ Backend Changes
+- scripts/send-roadmap-invites.ts
+
+
+---
+
 ## [2be16f474cd7a47a172f20cdad2fd96fae52bf93] - Fri Nov 28 13:04:53 2025 +0100
 
 **Author**: stenkjan
