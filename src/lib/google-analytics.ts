@@ -10,7 +10,7 @@ import { BetaAnalyticsDataClient } from '@google-analytics/data';
 // This is called lazily to avoid crashes at module load time
 let analyticsDataClient: BetaAnalyticsDataClient | null = null;
 
-function getAnalyticsClient(): BetaAnalyticsDataClient {
+export function getAnalyticsClient(): BetaAnalyticsDataClient {
   // Return cached client if already initialized
   if (analyticsDataClient) {
     return analyticsDataClient;
@@ -21,35 +21,34 @@ function getAnalyticsClient(): BetaAnalyticsDataClient {
     if (process.env.GOOGLE_ANALYTICS_CREDENTIALS_BASE64) {
       try {
         const credentialsJson = Buffer.from(
-          process.env.GOOGLE_ANALYTICS_CREDENTIALS_BASE64, 
+          process.env.GOOGLE_ANALYTICS_CREDENTIALS_BASE64,
           'base64'
         ).toString('utf-8');
-        
+
         const credentials = JSON.parse(credentialsJson);
-        
+
         analyticsDataClient = new BetaAnalyticsDataClient({
           credentials,
         });
-        
+
         return analyticsDataClient;
       } catch (error) {
         throw new Error(
-          `Failed to parse GOOGLE_ANALYTICS_CREDENTIALS_BASE64: ${
-            error instanceof Error ? error.message : 'Invalid base64 or JSON format'
+          `Failed to parse GOOGLE_ANALYTICS_CREDENTIALS_BASE64: ${error instanceof Error ? error.message : 'Invalid base64 or JSON format'
           }`
         );
       }
     }
-    
+
     // Check if credentials file path is provided
     if (process.env.GOOGLE_APPLICATION_CREDENTIALS) {
       analyticsDataClient = new BetaAnalyticsDataClient({
         keyFilename: process.env.GOOGLE_APPLICATION_CREDENTIALS,
       });
-      
+
       return analyticsDataClient;
     }
-    
+
     // No credentials configured - throw clear error
     throw new Error(
       'Google Analytics credentials not configured. Please set either ' +
@@ -69,11 +68,11 @@ function getAnalyticsClient(): BetaAnalyticsDataClient {
  */
 export function getPropertyId(): string {
   const propertyId = process.env.GA4_PROPERTY_ID;
-  
+
   if (!propertyId) {
     throw new Error('GA4_PROPERTY_ID environment variable is not set');
   }
-  
+
   return `properties/${propertyId}`;
 }
 
@@ -83,8 +82,8 @@ export function getPropertyId(): string {
 export function isGAConfigured(): boolean {
   return !!(
     process.env.GA4_PROPERTY_ID &&
-    (process.env.GOOGLE_APPLICATION_CREDENTIALS || 
-     process.env.GOOGLE_ANALYTICS_CREDENTIALS_BASE64)
+    (process.env.GOOGLE_APPLICATION_CREDENTIALS ||
+      process.env.GOOGLE_ANALYTICS_CREDENTIALS_BASE64)
   );
 }
 
@@ -93,7 +92,7 @@ export function isGAConfigured(): boolean {
  */
 export async function getOverviewMetrics(dateRange: '7d' | '30d' | '90d' = '30d') {
   const client = getAnalyticsClient();
-  
+
   const [response] = await client.runReport({
     property: getPropertyId(),
     dateRanges: [
@@ -140,7 +139,7 @@ export async function getOverviewMetrics(dateRange: '7d' | '30d' | '90d' = '30d'
  */
 export async function getGeographicData(dateRange: '7d' | '30d' | '90d' = '30d') {
   const client = getAnalyticsClient();
-  
+
   // Get country data
   const [countryResponse] = await client.runReport({
     property: getPropertyId(),
@@ -224,7 +223,7 @@ export async function getGeographicData(dateRange: '7d' | '30d' | '90d' = '30d')
  */
 export async function getRealtimeUsers() {
   const client = getAnalyticsClient();
-  
+
   const [response] = await client.runRealtimeReport({
     property: getPropertyId(),
     metrics: [
@@ -241,7 +240,7 @@ export async function getRealtimeUsers() {
  */
 export async function getTrafficSources(dateRange: '7d' | '30d' | '90d' = '30d') {
   const client = getAnalyticsClient();
-  
+
   const [response] = await client.runReport({
     property: getPropertyId(),
     dateRanges: [
@@ -282,7 +281,7 @@ export async function getTrafficSources(dateRange: '7d' | '30d' | '90d' = '30d')
  */
 export async function getTopPages(dateRange: '7d' | '30d' | '90d' = '30d') {
   const client = getAnalyticsClient();
-  
+
   const [response] = await client.runReport({
     property: getPropertyId(),
     dateRanges: [

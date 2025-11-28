@@ -14,6 +14,7 @@ import Link from "next/link";
 import { Suspense } from "react";
 import { UserJourney } from "./UserJourney";
 import { SessionSummaryBadge } from "./SessionSummaryBadge";
+import InquiryAnalytics from "./components/InquiryAnalytics";
 
 interface CustomerInquiry {
   id: string;
@@ -423,6 +424,7 @@ async function InquiriesDashboard() {
       </div>
 
       {/* Summary Stats */}
+      <InquiryAnalytics />
       <InquiriesSummary inquiries={inquiriesData.inquiries} />
 
       {/* Filter Controls */}

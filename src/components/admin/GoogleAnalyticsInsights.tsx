@@ -43,7 +43,7 @@ export default function GoogleAnalyticsInsights({ className = '' }: GoogleAnalyt
       
       // Fetch both demographics and geographic data in parallel
       const [demographicsRes, geoRes] = await Promise.all([
-        fetch('/api/admin/analytics/ga4-demographics'),
+        fetch('/api/admin/google-analytics/demographics'),
         fetch('/api/admin/google-analytics/geo?range=30d')
       ])
       

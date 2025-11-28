@@ -5,7 +5,7 @@ interface AnalyticsEvent {
     category: string
     label?: string
     value?: number
-    [key: string]: any
+    [key: string]: unknown
 }
 
 export function useAnalytics() {
