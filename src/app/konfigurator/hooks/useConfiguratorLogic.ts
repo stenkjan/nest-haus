@@ -387,7 +387,7 @@ export function useConfiguratorLogic(_rightPanelRef?: RefObject<HTMLDivElement |
               value: optionId,
               name: option?.name || "",
               price: option?.price?.amount || 0,
-              description: option.description,
+              description: option?.description || "",
             },
             {
               category: "nest",
