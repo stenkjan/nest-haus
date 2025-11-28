@@ -605,7 +605,7 @@ export const PLANUNGSPAKETE_CONTENT: PlanungspaketCardData[] = [
         mobileDescription:
             "Inkl.\n\nPlanungspaket Basis,\n\nHaustechnikplanung\n\nDetailplanungen,\n\nAusführungsplanung Innenausbau",
         image: IMAGES.hero.nestHaus1,
-        price: "€9.600,00", // Updated Nov 2025
+        price: "€4.900,00", // Updated Nov 2025 - NEW: 4900€
         backgroundColor: "#F4F4F4",
         grayWord: "Plus",
         extendedDescription:
@@ -624,7 +624,7 @@ export const PLANUNGSPAKETE_CONTENT: PlanungspaketCardData[] = [
         mobileDescription:
             "Inkl.\n\nPlanungspaket Plus,\n\nBeleuchtungskonzept, Möblierungsplanung,\n\nFarb- und Materialkonzept",
         image: IMAGES.hero.nestHaus4,
-        price: "€12.700,00", // Updated Nov 2025
+        price: "€9.600,00", // Updated Nov 2025 - NEW: 9600€
         backgroundColor: "#F4F4F4",
         grayWord: "Pro",
         extendedDescription:
