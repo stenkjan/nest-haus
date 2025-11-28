@@ -23,6 +23,7 @@ interface SelectionOption {
   value: string
   name: string
   price: number
+  description?: string
   quantity?: number
   squareMeters?: number
 }
