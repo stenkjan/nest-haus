@@ -35,7 +35,10 @@ interface UserJourneyProps {
  * Displays complete user journey from session start to inquiry creation
  * Shows all interactions, configuration changes, and timeline
  */
-export function UserJourney({ sessionId, inquiryId: _inquiryId }: UserJourneyProps) {
+export function UserJourney({
+  sessionId,
+  inquiryId: _inquiryId,
+}: UserJourneyProps) {
   const [sessionData, setSessionData] = useState<UserSessionData | null>(null);
   const [interactions, setInteractions] = useState<InteractionEventData[]>([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -77,10 +80,26 @@ export function UserJourney({ sessionId, inquiryId: _inquiryId }: UserJourneyPro
     fetchSessionData();
   }, [sessionId]);
 
+  // Check if this is a fallback session (created during contact submission without configurator)
+  const isFallbackSession = sessionId?.startsWith("contact_");
+
   if (!sessionId) {
     return (
       <div className="bg-gray-50 rounded-lg p-4 text-sm text-gray-500">
         ℹ️ Keine Session-Daten verfügbar (Anfrage ohne Konfigurator erstellt)
+      </div>
+    );
+  }
+
+  // If it's a fallback session and no data was found, show info message instead of error
+  if (isFallbackSession && error) {
+    return (
+      <div className="bg-blue-50 rounded-lg p-4 text-sm text-blue-700">
+        ℹ️ Direkte Terminanfrage (ohne Konfigurator-Session)
+        <p className="text-xs mt-1 text-blue-600">
+          Dieser Kunde hat direkt einen Termin gebucht, ohne den Konfigurator zu
+          verwenden.
+        </p>
       </div>
     );
   }
@@ -256,7 +275,8 @@ export function UserJourney({ sessionId, inquiryId: _inquiryId }: UserJourneyPro
                 🏠 Konfigurationsdaten
               </h5>
               <pre className="text-xs bg-gray-50 p-3 rounded overflow-x-auto">
-                {JSON.stringify(sessionData.configurationData, null, 2) || "Keine Daten"}
+                {JSON.stringify(sessionData.configurationData, null, 2) ||
+                  "Keine Daten"}
               </pre>
             </div>
           ) : null}

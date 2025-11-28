@@ -303,7 +303,7 @@ function InquiryCard({ inquiry }: { inquiry: CustomerInquiry }) {
       )}
 
       {/* User Journey and Session Data */}
-      {inquiry.sessionId && (
+      {inquiry.sessionId && !inquiry.sessionId.startsWith("contact_") && (
         <div className="mb-4">
           <UserJourney sessionId={inquiry.sessionId} inquiryId={inquiry.id} />
         </div>
@@ -313,7 +313,7 @@ function InquiryCard({ inquiry }: { inquiry: CustomerInquiry }) {
       <div className="flex justify-between items-center pt-4 border-t border-gray-200">
         <div className="flex items-center gap-2">
           <div className="text-xs text-gray-500">ID: {inquiry.id}</div>
-          {inquiry.sessionId && (
+          {inquiry.sessionId && !inquiry.sessionId.startsWith("contact_") && (
             <SessionSummaryBadge sessionId={inquiry.sessionId} compact />
           )}
         </div>
