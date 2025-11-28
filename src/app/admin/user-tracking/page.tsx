@@ -20,7 +20,6 @@ import ConfigurationSelectionAnalytics from "./components/ConfigurationSelection
 import KeyStatsRow from "./components/KeyStatsRow";
 import SessionsTimelineChart from "./components/SessionsTimelineChart";
 import TrafficSourcesWidget from "./components/TrafficSourcesWidget";
-import GeoLocationMap from "./components/GeoLocationMap";
 // Conversion tracking components
 import ConversionFunnelWidget from "./components/ConversionFunnelWidget";
 import KonzeptcheckDashboard from "./components/KonzeptcheckDashboard";
@@ -446,12 +445,7 @@ async function UserTrackingDashboard() {
         <TrafficSourcesWidget />
       </div>
 
-      {/* Geographic Location Map */}
-      <div className="mb-8">
-        <GeoLocationMap />
-      </div>
-
-      {/* Google Analytics Insights */}
+      {/* Google Analytics Insights - Geographic & Demographics Data */}
       <div className="mb-8">
         <GoogleAnalyticsInsights />
       </div>
