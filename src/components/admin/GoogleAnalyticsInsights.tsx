@@ -215,8 +215,6 @@ export default function GoogleAnalyticsInsights({ className = '' }: GoogleAnalyt
 
       {/* Demographics Data */}
       {demographics && (
-      {/* Demographics Data */}
-      {demographics && (
         <div className="bg-white rounded-lg border border-gray-200">
           <div className="p-6 border-b border-gray-200">
             <div className="flex items-center justify-between">
