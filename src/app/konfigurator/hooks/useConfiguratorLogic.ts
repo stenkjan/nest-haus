@@ -4,7 +4,6 @@ import { ImageManager } from "../core/ImageManager";
 import { PriceCalculator } from "../core/PriceCalculator";
 import { configuratorData } from "../data/configuratorData";
 import { calculateSizeDependentPrice } from "@/constants/configurator";
-import { PriceUtils } from "../core/PriceUtils";
 
 export function useConfiguratorLogic(_rightPanelRef?: RefObject<HTMLDivElement>) {
   // Track pricing data loading state
