@@ -88,6 +88,7 @@ export default function QuantitySelector({
             type="button"
             onClick={handleDecrease}
             disabled={value <= 0}
+            aria-label="Decrease quantity"
             className="bg-gray-200 hover:bg-gray-300 rounded-lg min-w-[2.75rem] min-h-[2.75rem] flex items-center justify-center transition-colors disabled:opacity-50 disabled:cursor-not-allowed touch-manipulation"
           >
             <svg
@@ -114,6 +115,7 @@ export default function QuantitySelector({
             type="button"
             onClick={handleIncrease}
             disabled={value >= max}
+            aria-label="Increase quantity"
             className="bg-gray-200 hover:bg-gray-300 rounded-lg min-w-[2.75rem] min-h-[2.75rem] flex items-center justify-center transition-colors disabled:opacity-50 disabled:cursor-not-allowed touch-manipulation"
           >
             <svg

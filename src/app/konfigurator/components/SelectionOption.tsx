@@ -623,9 +623,19 @@ export default function SelectionOption({
     }
   };
 
+  const handleKeyDown = (e: React.KeyboardEvent) => {
+    if (e.key === 'Enter' || e.key === ' ') {
+      e.preventDefault();
+      onClick(id);
+    }
+  };
+
   return (
     <div
-      className={`box_selection flex justify-between items-center min-h-[6rem] lg:min-h-[5.5rem] border rounded-[1.2rem] px-[clamp(0.625rem,1.35vw,1.35rem)] py-[clamp(0.75rem,1.5vw,1rem)] cursor-pointer transition-all duration-200 min-w-0 min-h-[44px] relative ${
+      role="button"
+      tabIndex={0}
+      onKeyDown={handleKeyDown}
+      className={`box_selection flex justify-between items-center min-h-[6rem] lg:min-h-[5.5rem] border rounded-[1.2rem] px-[clamp(0.625rem,1.35vw,1.35rem)] py-[clamp(0.75rem,1.5vw,1rem)] cursor-pointer transition-all duration-200 min-w-0 min-h-[44px] relative outline-none focus:ring-2 focus:ring-[#3D6CE1] focus:ring-offset-2 ${
         isSelected
           ? "selected border-[#3D6CE1] shadow-[0_0_0_1px_#3D6CE1] bg-blue-50/50"
           : "border-gray-300 hover:border-[#3D6CE1] hover:shadow-sm"
