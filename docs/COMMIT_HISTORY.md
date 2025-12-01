@@ -4,6 +4,24 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [0890b9c57f2661a735898ad47013f74fd70947cb] - Mon Dec 1 11:52:47 2025 +0100
+
+**Author**: stenkjan
+**Message**: `Enhance UnifiedContentCard for mobile support and update styles  - Added mobile description support in UnifiedContentCard for better responsiveness. - Updated CSS to include a new class for larger primary text on mobile/tablet. - Modified card content to improve title and description formatting for mobile display.  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/globals.css
+- src/components/cards/UnifiedContentCard.tsx
+
+
+#### 📚 Documentation Changes
+- docs/STRIPE_PRODUCTION_SETUP.md
+
+
+---
+
 ## [472c43ab67c0f70fa3c774e63d5e33b867c96ed0] - Fri Nov 28 14:04:03 2025 +0100
 
 **Author**: stenkjan
