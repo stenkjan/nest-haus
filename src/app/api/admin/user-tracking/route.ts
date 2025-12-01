@@ -10,6 +10,23 @@ import { Prisma } from '@prisma/client';
 import { prisma } from '@/lib/prisma';
 import { getIPFilterClause } from '@/lib/analytics-filter';
 
+/**
+ * Get bot filter clause based on filter parameter
+ */
+function getBotFilterClause(filter: string): Prisma.UserSessionWhereInput {
+    if (filter === 'real_users') {
+        return {
+            OR: [
+                { isBot: false },
+                { isBot: null, qualityScore: { gte: 0.6 } },
+            ],
+        };
+    } else if (filter === 'bots') {
+        return { isBot: true };
+    }
+    return {}; // 'all' = no bot filter
+}
+
 // Type definitions
 interface ConfigurationData {
     nestType?: string;
@@ -846,14 +863,31 @@ class UserTrackingService {
     }
 }
 
-export async function GET() {
+/**
+ * GET /api/admin/user-tracking
+ * 
+ * Query parameters:
+ * - filter: 'all' | 'real_users' | 'bots' (default: 'all')
+ */
+export async function GET(request: Request) {
+    const { searchParams } = new URL(request.url);
+    const filter = searchParams.get('filter') || 'all';
+
     try {
-        console.log('📊 User tracking request started');
+        console.log(`📊 User tracking request started (filter: ${filter})`);
         const startTime = Date.now();
+
+        // Build where clause based on filter (currently unused - will be used in next phase)
+        const _whereClause = {
+            status: {
+                in: ['IN_CART', 'COMPLETED', 'CONVERTED'] as const,
+            },
+            ...getBotFilterClause(filter),
+        };
 
         // Fetch all data in parallel with error handling
         const results = await Promise.allSettled([
-            UserTrackingService.getFunnelMetrics(),
+            UserTrackingService.getFunnelMetrics(getBotFilterClause(filter)),
             UserTrackingService.getTopConfigurations(),
             UserTrackingService.getPriceDistribution(),
             UserTrackingService.getSelectionStats(),

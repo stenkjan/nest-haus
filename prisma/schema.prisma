@@ -57,6 +57,12 @@ model UserSession {
   marketingConsent     Boolean?          // Specifically for marketing cookies
   functionalConsent    Boolean?          // Specifically for functional cookies
   
+  // Bot detection
+  isBot                Boolean?          // Detected as bot/scraper
+  botConfidence        Float?            // 0-1 confidence score
+  botDetectionMethod   String?           // Which method detected it (user-agent, fingerprint, behavioral)
+  qualityScore         Float?            // 0-1 session quality (1 = high quality real user)
+  
   selectionEvents   SelectionEvent[]
   interactionEvents InteractionEvent[]
 

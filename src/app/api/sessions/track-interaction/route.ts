@@ -11,6 +11,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
 import { SessionManager } from '@/lib/redis';
 import { getLocationFromIP, parseReferrer } from '@/services/geolocation-service';
+import { BotDetector } from '@/lib/security/BotDetector';
 import crypto from 'crypto';
 
 /**
@@ -72,6 +73,23 @@ export async function POST(request: NextRequest) {
 
     // Generate userIdentifier for deduplication
     const userIdentifier = generateUserIdentifier(ipAddress, userAgent);
+
+    // Run bot detection
+    const botDetector = BotDetector.getInstance();
+    const botResult = await botDetector.detectBot(
+      sessionId,
+      userAgent,
+      undefined, // fingerprint - can be added later from client
+      ipAddress
+    );
+
+    // Calculate quality score
+    let qualityScore = 0.5; // Baseline for non-bot
+    if (!botResult.isBot) {
+      qualityScore = 0.7; // Higher baseline for humans
+    } else {
+      qualityScore = Math.max(0, 0.5 - botResult.confidence * 0.5); // Reduce for bots
+    }
 
     // 1. Check if we have an existing session for this user TODAY
     const today = new Date();
@@ -203,6 +221,11 @@ export async function POST(request: NextRequest) {
           userIdentifier,
           visitCount: isNewDay ? currentVisitCount + 1 : 1, // Increment for returning user, 1 for new user
           lastVisitDate: new Date(),
+          // Bot detection results
+          isBot: botResult.isBot,
+          botConfidence: botResult.confidence,
+          botDetectionMethod: botResult.detectionMethods.join(', '),
+          qualityScore,
           // Add geolocation data on creation
           ...(locationData && {
             country: locationData.country,
