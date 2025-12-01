@@ -49,3 +49,4 @@ The webhook handler at `src/app/api/payments/webhook/route.ts` uses `STRIPE_WEBH
 *   **Receipts**: Stripe automatically sends receipts if enabled in Dashboard settings.
 *   **Payouts**: Verify your bank account is connected in Stripe for payouts.
 
+

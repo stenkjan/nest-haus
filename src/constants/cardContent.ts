@@ -1091,9 +1091,11 @@ export const WARUM_WIR_TEAM_CARDS_CONTENT: ContentCardData[] = [
 export const GLASS_QUOTE_CARDS_CONTENT: ContentCardData[] = [
     {
         id: 0,
-        title: "Wir sind \n registrierter \n Baumeisterbetrieb \n in Österreich",
+        title: "Wir sind \n registrierter \n Baumeister- \n Betrieb \n in Österreich",
+        mobileTitle: "Wir sind registrierter Baumeister-Betrieb in Österreich",
         subtitle: "",
         description: "Mitglieder Bundesinnung Bau",
+        mobileDescription: "Mitglieder Bundesinnung Bau",
         backgroundColor: "#121212",
         aspectRatio: "2x1", // Portrait format (tall)
         textColor: "text-white",

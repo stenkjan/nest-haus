@@ -252,6 +252,11 @@ h2 {
     @apply text-sm md:text-base lg:text-base xl:text-lg 2xl:text-xl text-black leading-snug whitespace-pre-line;
   }
 
+  /* Primary P Large - One size larger at mobile/tablet for glass-quote cards */
+  .p-primary-large {
+    @apply text-base md:text-lg lg:text-lg xl:text-xl 2xl:text-2xl leading-snug whitespace-pre-line;
+  }
+
   .p-primary-small {
     @apply text-xs md:text-xs lg:text-xs xl:text-sm 2xl:text-base leading-snug whitespace-pre-line;
   }
