@@ -11,6 +11,7 @@ import SessionInteractionTracker from "@/components/tracking/SessionInteractionT
 import { CookieConsentProvider } from "@/contexts/CookieConsentContext";
 import CookieBanner from "@/components/CookieBanner";
 import CookieSettingsHandler from "@/components/CookieSettingsHandler";
+import CookieSettingsModal from "@/components/CookieSettingsModal";
 // Security components - content protection and DevTools detection
 import SecurityProvider from "@/components/security/SecurityProvider";
 // Analytics components - Web Vitals tracking and Google Analytics
@@ -188,6 +189,7 @@ export default function RootLayout({
 
           {/* Global Components */}
           <CookieBanner />
+          <CookieSettingsModal />
           <CookieSettingsHandler />
           <AlphaTestProvider />
           <AlphaSessionTracker />

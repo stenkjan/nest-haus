@@ -83,6 +83,39 @@ export function CookieConsentProvider({
     setHasConsented(true);
     setShowBanner(false);
 
+    // Update Google Consent Mode v2
+    if (typeof window !== "undefined" && window.gtag) {
+      window.gtag("consent", "update", {
+        analytics_storage: newPreferences.analytics ? "granted" : "denied",
+        ad_storage: newPreferences.marketing ? "granted" : "denied",
+        ad_user_data: newPreferences.marketing ? "granted" : "denied",
+        ad_personalization: newPreferences.marketing ? "granted" : "denied",
+        functionality_storage: newPreferences.functional ? "granted" : "denied",
+        personalization_storage: newPreferences.functional
+          ? "granted"
+          : "denied",
+      });
+    }
+
+    // Save consent to database (non-blocking)
+    const sessionId = localStorage.getItem("nest-haus-session-id");
+    if (sessionId) {
+      fetch("/api/sessions/update-consent", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          sessionId,
+          analyticsConsent: newPreferences.analytics,
+          marketingConsent: newPreferences.marketing,
+          functionalConsent: newPreferences.functional,
+          timestamp: Date.now(),
+        }),
+      }).catch((error) => {
+        // Silent fail - don't interrupt user experience
+        console.warn("Failed to save consent to database:", error);
+      });
+    }
+
     // Trigger custom event for analytics integration
     window.dispatchEvent(
       new CustomEvent("cookiePreferencesUpdated", {

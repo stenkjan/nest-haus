@@ -37,14 +37,14 @@ export default function CookieBanner() {
                 Helfen Sie uns, unsere Website mit Cookies zu verbessern
               </p>
               <p>
-                Wir verwenden Cookies und verarbeiten Daten von Ihrem Gerät, um
-                die Leistung der Website zu analysieren, Werbeinhalte zu
-                personalisieren und Ihre Nutzererfahrung zu verbessern. Ihre
-                Einwilligung umfasst auch Datenübertragungen außerhalb des
-                Landes,
+                Wir verwenden Cookies und ähnliche Technologien, um die Leistung
+                der Website zu analysieren, Inhalte zu personalisieren und
+                relevante Werbung anzuzeigen. Ihre Einwilligung umfasst die
+                Aktivierung von Google Signals für demografische Berichte und
+                Remarketing sowie die Datenübertragung in Drittländer (z.B.
+                USA).
                 <br />
-                in dem Sie sich befinden, beispielsweise in die USA. Weitere
-                Informationen hierzu finden Sie in den{" "}
+                Weitere Informationen finden Sie in den{" "}
                 <button
                   onClick={handleShowSettings}
                   className="text-[#000000FF] hover:text-[#2855d6] underline font-medium"
@@ -52,6 +52,11 @@ export default function CookieBanner() {
                   Cookie-Einstellungen
                 </button>
                 .
+              </p>
+              <p className="text-xs text-gray-600 mt-2 italic">
+                Hinweis: Auch bei Ablehnung erfassen wir anonymisierte,
+                cookiefreie Seitenaufrufe ohne Nutzeridentifikation (Google
+                Consent Mode v2).
               </p>
             </div>
           </div>
@@ -86,4 +91,3 @@ export default function CookieBanner() {
     </div>
   );
 }
-

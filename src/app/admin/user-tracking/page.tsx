@@ -25,6 +25,8 @@ import ConversionFunnelWidget from "./components/ConversionFunnelWidget";
 import KonzeptcheckDashboard from "./components/KonzeptcheckDashboard";
 // Google Analytics insights
 import GoogleAnalyticsInsights from "@/components/admin/GoogleAnalyticsInsights";
+// GA4 Consent tracking
+import GA4ConsentWidget from "./components/GA4ConsentWidget";
 
 // Types matching the API response
 interface UserTrackingData {
@@ -448,6 +450,11 @@ async function UserTrackingDashboard() {
       {/* Google Analytics Insights - Geographic (Countries/Cities) & Demographics Data */}
       <div className="mb-8">
         <GoogleAnalyticsInsights />
+      </div>
+
+      {/* GA4 Consent Rate Tracking */}
+      <div className="mb-8">
+        <GA4ConsentWidget />
       </div>
 
       {/* Conversion Tracking */}

@@ -50,6 +50,13 @@ model UserSession {
   lastVisitDate     DateTime          @default(now())  // Last visit timestamp
   userIdentifier    String?                            // Hash of IP+UserAgent for deduplication
   
+  // Cookie consent tracking
+  hasCookieConsent     Boolean?          // null = not set, true = accepted, false = rejected
+  cookieConsentDate    DateTime?         // When user made the decision
+  analyticsConsent     Boolean?          // Specifically for analytics cookies
+  marketingConsent     Boolean?          // Specifically for marketing cookies
+  functionalConsent    Boolean?          // Specifically for functional cookies
+  
   selectionEvents   SelectionEvent[]
   interactionEvents InteractionEvent[]
 
