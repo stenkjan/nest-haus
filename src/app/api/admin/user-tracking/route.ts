@@ -225,10 +225,16 @@ class UserTrackingService {
      * Calculate funnel metrics
      * Shows all sessions, then how many reached cart/inquiry/conversion
      */
-    static async getFunnelMetrics() {
+    static async getFunnelMetrics(botFilter: Prisma.UserSessionWhereInput = {}) {
+        // Combine IP filter and bot filter for all queries
+        const baseFilter = {
+            ...getIPFilterClause(),
+            ...botFilter
+        };
+
         // Count ALL sessions (including ACTIVE and ABANDONED)
         const totalSessions = await prisma.userSession.count({
-            where: getIPFilterClause()
+            where: baseFilter
         });
 
         // Sessions with configuration data (user created a config)
@@ -237,28 +243,28 @@ class UserTrackingService {
                 configurationData: {
                     not: Prisma.JsonNull
                 },
-                ...getIPFilterClause()
+                ...baseFilter
             }
         });
 
         const reachedCart = await prisma.userSession.count({
             where: {
                 status: { in: ['IN_CART', 'COMPLETED', 'CONVERTED'] },
-                ...getIPFilterClause()
+                ...baseFilter
             }
         });
 
         const completedInquiry = await prisma.userSession.count({
             where: {
                 status: { in: ['COMPLETED', 'CONVERTED'] },
-                ...getIPFilterClause()
+                ...baseFilter
             }
         });
 
         const converted = await prisma.userSession.count({
             where: {
                 status: 'CONVERTED',
-                ...getIPFilterClause()
+                ...baseFilter
             }
         });
 
