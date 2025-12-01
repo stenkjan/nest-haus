@@ -10,7 +10,6 @@ import SessionInteractionTracker from "@/components/tracking/SessionInteractionT
 // Cookie components - enabled for GDPR compliance
 import { CookieConsentProvider } from "@/contexts/CookieConsentContext";
 import CookieBanner from "@/components/CookieBanner";
-import CookieSettingsHandler from "@/components/CookieSettingsHandler";
 import CookieSettingsModal from "@/components/CookieSettingsModal";
 // Security components - content protection and DevTools detection
 import SecurityProvider from "@/components/security/SecurityProvider";
@@ -190,7 +189,6 @@ export default function RootLayout({
           {/* Global Components */}
           <CookieBanner />
           <CookieSettingsModal />
-          <CookieSettingsHandler />
           <AlphaTestProvider />
           <AlphaSessionTracker />
           <SessionInteractionTracker />

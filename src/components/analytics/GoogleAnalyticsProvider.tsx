@@ -23,7 +23,7 @@
 
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import Script from "next/script";
 import { useCookieConsent } from "@/contexts/CookieConsentContext";
 
@@ -35,7 +35,6 @@ export default function GoogleAnalyticsProvider({
   gaId,
 }: GoogleAnalyticsProviderProps) {
   const { preferences, hasConsented } = useCookieConsent();
-  const [isGtagReady, setIsGtagReady] = useState(false);
 
   // Initialize consent mode BEFORE gtag loads (using dataLayer)
   // ALWAYS initialize - even if consent is denied (for cookieless pings)
@@ -88,64 +87,6 @@ export default function GoogleAnalyticsProvider({
     }
   }, [hasConsented, preferences]);
 
-  // Update consent when gtag is ready and preferences change
-  useEffect(() => {
-    if (!isGtagReady || !hasConsented) return;
-
-    // Now that gtag is loaded, we can use it to update consent
-    if (typeof window !== "undefined" && window.gtag) {
-      window.gtag("consent", "update", {
-        ad_storage: preferences.marketing ? "granted" : "denied",
-        ad_user_data: preferences.marketing ? "granted" : "denied",
-        ad_personalization: preferences.marketing ? "granted" : "denied",
-        analytics_storage: preferences.analytics ? "granted" : "denied",
-        functionality_storage: preferences.functional ? "granted" : "denied",
-        personalization_storage: preferences.functional ? "granted" : "denied",
-      });
-
-      console.log(
-        "🔄 Google Analytics consent updated (via gtag):",
-        preferences
-      );
-    }
-  }, [preferences, isGtagReady, hasConsented]);
-
-  // Listen for cookie preference updates via custom event
-  useEffect(() => {
-    const handlePreferencesUpdate = (event: CustomEvent) => {
-      const newPreferences = event.detail;
-
-      if (typeof window !== "undefined" && window.gtag) {
-        window.gtag("consent", "update", {
-          ad_storage: newPreferences.marketing ? "granted" : "denied",
-          ad_user_data: newPreferences.marketing ? "granted" : "denied",
-          ad_personalization: newPreferences.marketing ? "granted" : "denied",
-          analytics_storage: newPreferences.analytics ? "granted" : "denied",
-          functionality_storage: newPreferences.functional
-            ? "granted"
-            : "denied",
-          personalization_storage: newPreferences.functional
-            ? "granted"
-            : "denied",
-        });
-
-        console.log("🔄 Google Analytics consent updated dynamically");
-      }
-    };
-
-    window.addEventListener(
-      "cookiePreferencesUpdated",
-      handlePreferencesUpdate as EventListener
-    );
-
-    return () => {
-      window.removeEventListener(
-        "cookiePreferencesUpdated",
-        handlePreferencesUpdate as EventListener
-      );
-    };
-  }, []);
-
   // ALWAYS render GA4 script (even if consent denied - for cookieless pings)
   // The consent mode configuration controls what data is collected
   return (
@@ -156,7 +97,6 @@ export default function GoogleAnalyticsProvider({
         strategy="afterInteractive"
         src={`https://www.googletagmanager.com/gtag/js?id=${gaId}`}
         onLoad={() => {
-          setIsGtagReady(true);
           console.log("✅ Google Analytics gtag script loaded");
         }}
       />
