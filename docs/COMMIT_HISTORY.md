@@ -4,6 +4,34 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [f658755e175c3febd11b09fee085e769e3e48441] - Mon Dec 1 15:47:55 2025 +0100
+
+**Author**: stenkjan
+**Message**: `Enhance user session tracking with bot detection features  - Added fields for bot detection in UserSession model: isBot, botConfidence, botDetectionMethod, and qualityScore. - Implemented bot filter logic in user tracking API to differentiate between real users and bots. - Integrated bot detection in session interaction tracking, calculating quality scores based on detection results.  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/admin/user-tracking/components/BotAnalysisWidget.tsx
+- src/app/admin/user-tracking/components/FilterToggle.tsx
+- src/app/admin/user-tracking/components/GA4ComparisonWidget.tsx
+- src/app/api/admin/analyze-usa-sessions/route.ts
+- src/app/api/admin/bot-analysis/route.ts
+- src/app/api/admin/retroactive-bot-analysis/route.ts
+- src/app/api/admin/user-tracking/route.ts
+- src/app/api/sessions/track-interaction/route.ts
+
+
+#### ⚙️ Backend Changes
+- prisma/schema.prisma
+
+
+#### 📚 Documentation Changes
+- docs/BOT_DETECTION_STRATEGY.md
+
+
+---
+
 ## [624b2caa32ed12d62b07ba743d748e7fa870bbd5] - Mon Dec 1 15:30:33 2025 +0100
 
 **Author**: stenkjan
