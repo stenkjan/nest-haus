@@ -887,7 +887,7 @@ export async function GET(request: Request) {
 
         // Fetch all data in parallel with error handling
         const results = await Promise.allSettled([
-            UserTrackingService.getFunnelMetrics(getBotFilterClause(filter)),
+            UserTrackingService.getFunnelMetrics(),
             UserTrackingService.getTopConfigurations(),
             UserTrackingService.getPriceDistribution(),
             UserTrackingService.getSelectionStats(),
