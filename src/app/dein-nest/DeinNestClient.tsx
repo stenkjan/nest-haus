@@ -124,8 +124,8 @@ export default function DeinNestClient() {
               {/* Header at Top */}
               <div className="flex justify-center">
                 <SectionHeader
-                  title="Take it easy"
-                  subtitle="Bauen muss nicht kompliziert sein"
+                  title="Dein ®Nest"
+                  subtitle="Hausbau muss nicht immer kompliziert sein"
                   titleClassName="text-white"
                   subtitleClassName="text-white"
                 />
@@ -265,7 +265,7 @@ export default function DeinNestClient() {
         >
           <SectionHeader
             title="Konfiguriere dein ®Nest Haus"
-            subtitle="Dein Stil. Dein Zuhause."
+            subtitle="Gestalten heißt verstehen"
             mobileTitle="Konfiguriere dein<br/>®Nest Haus"
             wrapperMargin="mb-8 md:mb-12"
           />
@@ -280,7 +280,7 @@ export default function DeinNestClient() {
             customData={[
               {
                 id: 1,
-                title: "Gestalten heißt Verstehen",
+                title: "Dein Stil. Dein Zuhause.",
                 subtitle: "",
                 description:
                   "<span class='text-nest-gray'>Im Nest Konfigurator gestaltest du </span><span class='text-black font-medium'>dein Zuhause Schritt für Schritt</span><span class='text-nest-gray'> und behältst den Preis stets im Überblick.</span><br/><br/><span class='text-nest-gray'>Entdecke unsere </span><span class='text-black font-medium'>vielfältigen Möglichkeiten</span><span class='text-nest-gray'> und konfiguriere deine Basis für dein individuelles </span><span class='text-black font-medium'>Nest-Haus</span><span class='text-nest-gray'>.</span>",
@@ -353,7 +353,7 @@ export default function DeinNestClient() {
                 title: "Architektur für ein bewegtes Leben",
                 subtitle: "",
                 description:
-                  "<span class='text-black font-medium'>Aufbauen. Mitnehmen. Weitergeben.</span><br/><br/><span class='text-black font-medium'>Das einzige Haus der Welt, dass sich an die Lebenszyklen seiner Bewohner anpasst.</span><br/><br/><span class='text-black font-medium'>Nicht umgekehrt.</span>",
+                  "<span class='text-nest-gray'>Das </span><span class='text-black font-medium'>erste Haus</span><span class='text-nest-gray'> der </span><span class='text-black font-medium'>Welt</span><span class='text-nest-gray'>, welches sich an </span><span class='text-black font-medium'>dein Leben anpasst</span><span class='text-nest-gray'>, nicht umgekehrt.</span><br/><br/><span class='text-nest-gray'>Deine </span><span class='text-black font-medium'>Atmosphäre</span><span class='text-nest-gray'>, deine Vorstellungen. </span><span class='text-black font-medium'>Weil nur du weißt, wie du richtig wohnst.</span>",
                 video: IMAGES.videos.nestHausTransport,
                 backgroundColor: "#F4F4F4",
                 buttons: [

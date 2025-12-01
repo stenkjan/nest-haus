@@ -1282,7 +1282,14 @@ export default function UnifiedContentCard({
 
     // Determine heading level (default to h3)
     const headingLevel = card.headingLevel || "h3";
-    const headingClass = headingLevel === "h2" ? "h2-title" : "h3-secondary";
+    const baseHeadingClass =
+      headingLevel === "h2" ? "h2-title" : "h3-secondary";
+
+    // Use larger heading for first card (id: 0) when h2
+    const headingClass =
+      headingLevel === "h2" && card.id === 0
+        ? "h2-title-large"
+        : baseHeadingClass;
 
     // Determine text order (default: description first, title second)
     const reverseOrder = card.reverseTextOrder || false;
@@ -1434,6 +1441,9 @@ export default function UnifiedContentCard({
     // Use custom padding if specified, otherwise use default
     const paddingClasses = card.customPadding || "p-6 md:p-8 lg:p-10";
 
+    // Conditional title class: Use p-tertiary for first card (id: 0), p-primary for others
+    const titleClass = card.id === 0 ? "p-tertiary" : "p-primary";
+
     const cardContent = (
       <div
         className={`relative z-10 h-full flex flex-col justify-between ${paddingClasses}`}
@@ -1468,19 +1478,19 @@ export default function UnifiedContentCard({
             <div className="mb-2 md:mb-3 flex-shrink-0">{card.icon}</div>
           )}
 
-          {/* Top Text - p-primary-large (larger on mobile) with mobile text support */}
+          {/* Top Text - p-tertiary for first card (id: 0), p-primary for others */}
           {card.title &&
             (card.externalLink ? (
               <a
                 href={card.externalLink}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="p-primary-large text-white mb-1 underline hover:opacity-80 transition-opacity cursor-pointer"
+                className={`${titleClass} text-white mb-1 underline hover:opacity-80 transition-opacity cursor-pointer`}
               >
                 {getCardText(card, "title")}
               </a>
             ) : (
-              <p className="p-primary-large text-white mb-1 underline">
+              <p className={`${titleClass} text-white mb-1 underline`}>
                 {getCardText(card, "title")}
               </p>
             ))}
@@ -1505,9 +1515,9 @@ export default function UnifiedContentCard({
             <span className="block text-4xl md:text-4xl lg:text-5xl text-white/90 leading-none h-8 md:h-8 lg:h-10">
               &ldquo;
             </span>
-            {/* Quote Text - p-primary-large (larger on mobile) */}
+            {/* Quote Text - p-primary */}
             <p
-              className="p-primary-large text-white leading-relaxed"
+              className="p-primary text-white leading-relaxed"
               dangerouslySetInnerHTML={{ __html: quoteText }}
             />
           </div>
@@ -1521,9 +1531,9 @@ export default function UnifiedContentCard({
             transition={{ delay: index * 0.1 + 0.4, duration: 0.6 }}
             className="flex flex-col items-start h-[80px] md:h-[100px] justify-end"
           >
-            {/* Attribution Name - p-primary-large (larger on mobile) */}
+            {/* Attribution Name - p-primary */}
             {attributionName && (
-              <p className="p-primary-large text-white mb-1">{attributionName}</p>
+              <p className="p-primary text-white mb-1">{attributionName}</p>
             )}
 
             {/* Attribution Title - p-primary-small */}
@@ -1554,8 +1564,9 @@ export default function UnifiedContentCard({
   // Render team-card layout (full image background with custom team/value card layout)
   const renderTeamCardLayout = (card: ContentCardData, index: number) => {
     // Determine image fit behavior - use custom imagePosition if provided, otherwise right-aligned for team photos
-    const objectFit = card.imageFit === "contain" ? "object-contain" : "object-cover";
-    const objectPosition = card.imagePosition 
+    const objectFit =
+      card.imageFit === "contain" ? "object-contain" : "object-cover";
+    const objectPosition = card.imagePosition
       ? `object-${card.imagePosition}`
       : "object-right";
     const imageFitClass = `${objectFit} ${objectPosition}`;
