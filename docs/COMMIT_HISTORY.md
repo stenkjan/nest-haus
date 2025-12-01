@@ -4,6 +4,39 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [c31f5bbf9e6fa8b6be3e2d54cd054d389a0110f8] - Mon Dec 1 15:15:35 2025 +0100
+
+**Author**: stenkjan
+**Message**: `Implement cookie consent tracking and enhance Google Analytics integration  - Added fields for cookie consent tracking in UserSession model. - Integrated CookieSettingsModal into the layout for user consent management. - Introduced GA4ConsentWidget in the user tracking dashboard for consent rate tracking. - Updated CookieBanner to reflect changes in consent messaging and handling. - Enhanced GoogleAnalyticsProvider to support consent mode v2 and Google Signals. - Updated CookieConsentContext to save consent preferences to the database and trigger updates for Google Consent Mode.  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/admin/user-tracking/components/GA4ConsentWidget.tsx
+- src/app/admin/user-tracking/page.tsx
+- src/app/api/admin/consent-stats/route.ts
+- src/app/api/sessions/update-consent/route.ts
+- src/app/layout.tsx
+- src/components/CookieBanner.tsx
+- src/components/CookieSettingsModal.tsx
+- src/components/analytics/GoogleAnalyticsProvider.tsx
+- src/contexts/CookieConsentContext.tsx
+
+
+#### ⚙️ Backend Changes
+- prisma/schema.prisma
+
+
+#### 📚 Documentation Changes
+- docs/COMPLIANCE_SUMMARY.md
+- docs/GA4_CONSENT_IMPLEMENTATION_SUMMARY.md
+- docs/GA4_COOKIELESS_PINGS_IMPLEMENTATION.md
+- docs/GA4_COOKIE_CONSENT_IMPLEMENTATION.md
+- docs/SENSITIVE_CATEGORIES_COMPLIANCE.md
+
+
+---
+
 ## [6300c5d14c80f62ae7cccb2969498e891e983656] - Mon Dec 1 13:58:29 2025 +0100
 
 **Author**: stenkjan
