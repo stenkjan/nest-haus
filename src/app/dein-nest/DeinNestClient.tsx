@@ -195,7 +195,7 @@ export default function DeinNestClient() {
               className="h2-title text-center"
               dangerouslySetInnerHTML={{
                 __html:
-                  "<span class='text-nest-gray'>Wir vereinen </span><span class='text-black font-medium'>architektonisches Design</span><span class='text-nest-gray'> mit </span><span class='text-black font-medium'>industrieller Präzision.</span><span class='text-nest-gray'> Qualität wird dabei neu definiert. </span> <br/><br/><span class='text-nest-gray'> Und innen... </span> <br/><br/><span class='text-nest-gray'>deine Atmosphäre, deine Vorstellungen.</span><br/><span class='text-black font-medium'>Weil nur du weißt, wie du richtig wohnst.</span>",
+                  "<span class='text-nest-gray'>Das </span><span class='text-black font-medium'>erste Haus</span><span class='text-nest-gray'> der </span><span class='text-black font-medium'>Welt</span><span class='text-nest-gray'>, welches sich an </span><span class='text-black font-medium'>dein Leben anpasst</span><span class='text-nest-gray'>, nicht umgekehrt.</span><br/><br/><span class='text-nest-gray'>Deine </span><span class='text-black font-medium'>Atmosphäre</span><span class='text-nest-gray'>, deine Vorstellungen. </span><span class='text-black font-medium'>Weil nur du weißt, wie du richtig wohnst.</span>",
               }}
             />
           </div>
@@ -353,7 +353,7 @@ export default function DeinNestClient() {
                 title: "Architektur für ein bewegtes Leben",
                 subtitle: "",
                 description:
-                  "<span class='text-nest-gray'>Das </span><span class='text-black font-medium'>erste Haus</span><span class='text-nest-gray'> der </span><span class='text-black font-medium'>Welt</span><span class='text-nest-gray'>, welches sich an </span><span class='text-black font-medium'>dein Leben anpasst</span><span class='text-nest-gray'>, nicht umgekehrt.</span><br/><br/><span class='text-nest-gray'>Deine </span><span class='text-black font-medium'>Atmosphäre</span><span class='text-nest-gray'>, deine Vorstellungen. </span><span class='text-black font-medium'>Weil nur du weißt, wie du richtig wohnst.</span>",
+                  "<span class='text-black font-medium'>Aufbauen. Mitnehmen. Weitergeben.</span><br/><br/><span class='text-nest-gray'>Das einzige Haus der Welt, dass sich an die Lebenszyklen seiner Bewohner anpasst.<br/><br/>Nicht umgekehrt.</span>",
                 video: IMAGES.videos.nestHausTransport,
                 backgroundColor: "#F4F4F4",
                 buttons: [

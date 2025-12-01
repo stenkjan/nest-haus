@@ -75,13 +75,16 @@ export async function POST() {
 
       // Save bot detection record if it's a bot
       if (botResult.isBot) {
+        // Convert riskLevel to uppercase for Prisma enum
+        const riskLevelUpper = botResult.riskLevel.toUpperCase() as 'LOW' | 'MEDIUM' | 'HIGH' | 'CRITICAL';
+        
         await prisma.botDetection.create({
           data: {
             sessionId: session.sessionId,
             isBot: botResult.isBot,
             confidence: botResult.confidence,
             detectionMethods: botResult.detectionMethods,
-            riskLevel: botResult.riskLevel,
+            riskLevel: riskLevelUpper,
             allowAccess: botResult.allowAccess,
             reasons: botResult.reasons,
             userAgent: session.userAgent,
