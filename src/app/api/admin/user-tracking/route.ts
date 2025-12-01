@@ -1,3 +1,4 @@
+
 /**
  * User Tracking API - Enhanced Analytics
  * 
@@ -887,7 +888,7 @@ export async function GET(request: Request) {
 
         // Fetch all data in parallel with error handling
         const results = await Promise.allSettled([
-            UserTrackingService.getFunnelMetrics(),
+            UserTrackingService.getFunnelMetrics(getBotFilterClause(filter)),
             UserTrackingService.getTopConfigurations(),
             UserTrackingService.getPriceDistribution(),
             UserTrackingService.getSelectionStats(),
@@ -951,4 +952,3 @@ export async function GET(request: Request) {
         }, { status: 500 });
     }
 }
-
