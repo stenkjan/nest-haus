@@ -646,9 +646,6 @@ export default async function UserTrackingPage() {
                 trends
               </p>
             </div>
-            <div className="flex items-center space-x-3">
-              <div className="text-sm text-gray-500">🔴 Live Data</div>
-            </div>
           </div>
         </div>
       </div>

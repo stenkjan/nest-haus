@@ -391,7 +391,7 @@ async function ConfigurationDataDashboard() {
         <div className="flex items-center justify-between">
           <div>
             <h3 className="text-sm font-medium text-blue-800">
-              🔴 Live Data Summary
+              Live Data Summary
             </h3>
             <p className="text-xs text-blue-600">
               {configData.metadata.totalConfigurations} total configurations
@@ -614,7 +614,6 @@ export default async function PopularConfigurationsPage() {
               </p>
             </div>
             <div className="flex items-center space-x-3">
-              <div className="text-sm text-gray-500">🔴 Live Data</div>
               <button className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition-colors text-sm">
                 Export Data
               </button>
