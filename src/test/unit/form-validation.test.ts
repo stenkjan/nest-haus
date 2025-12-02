@@ -122,7 +122,7 @@ describe('Form Validation Tests', () => {
 
         it('should accept address with commas and periods', () => {
             expect(validateAddress('123 Main St., Suite 100')).toBe(true);
-            expect(validateAddress('Karmeliterplatz 8, 8010 Graz')).toBe(true);
+            expect(validateAddress('Zösenberg 51, 8044 Weinitzen')).toBe(true);
         });
 
         it('should reject too short addresses', () => {
@@ -283,7 +283,7 @@ describe('Form Validation Tests', () => {
                 name: 'Hans Müller',
                 phone: '+43 664 1234567',
                 message: 'I am interested in a NEST-Haus',
-                address: 'Karmeliterplatz 8',
+                address: 'Zösenberg 51',
             };
 
             const result = validateContactForm(formData);

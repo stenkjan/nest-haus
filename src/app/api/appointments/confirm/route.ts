@@ -89,7 +89,7 @@ export async function GET(request: NextRequest) {
         ).toISOString(), // 60 minutes duration
         attendeeEmail: updatedInquiry.email,
         attendeeName: updatedInquiry.name || undefined,
-        location: 'NEST-Haus Office, Karmeliterplatz 8, 8010 Graz',
+        location: 'NEST-Haus Office, Zösenberg 51, 8044 Weinitzen',
       });
 
       if (eventResult.success) {

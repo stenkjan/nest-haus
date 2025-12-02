@@ -28,9 +28,9 @@ const localBusinessSchema = {
   telephone: "0043 664 5403399",
   address: {
     "@type": "PostalAddress",
-    streetAddress: "Karmeliterplatz 8",
-    addressLocality: "Graz",
-    postalCode: "8010",
+    streetAddress: "Zösenberg 51",
+    addressLocality: "Weinitzen",
+    postalCode: "8044",
     addressCountry: "AT",
   },
   geo: {

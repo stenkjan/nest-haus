@@ -269,11 +269,11 @@ export function generateCustomerConfirmationEmail(data: CustomerConfirmationData
         <div class="info-grid">
           <div class="info-item" style="border-radius:0 !important">
             <div class="info-label">Straße</div>
-            <div class="info-value">Karmeliterplatz 8</div>
+            <div class="info-value">Zösenberg 51</div>
           </div>
           <div class="info-item" style="border-radius:0 !important">
             <div class="info-label">Stadt</div>
-            <div class="info-value">8010, Graz, Steiermark</div>
+            <div class="info-value">8044, Weinitzen, Steiermark</div>
           </div>
           <div class="info-item" style="border-radius:0 !important">
             <div class="info-label">Land</div>
@@ -359,8 +359,8 @@ Email: nest@nest-haus.at
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 ADRESSE - Komm vorbei!
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-Straße: Karmeliterplatz 8
-Stadt: 8010, Graz, Steiermark
+Straße: Zösenberg 51
+Stadt: 8044, Weinitzen, Steiermark
 Land: Österreich
 
 ${data.inquiryId ? `Anfrage-ID: ${data.inquiryId}\n\n` : '\n'}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
@@ -371,7 +371,7 @@ Wenn du dein Nest schon jetzt konfigurierst, erhältst du volle Klarheit über P
 Jetzt konfigurieren: https://nest-haus.at/konfigurator
 
 --
-NEST-Haus
+Nest-Haus
 Modulares Wohnen. Nachhaltig. Österreichisch.
 
 Website: https://nest-haus.at

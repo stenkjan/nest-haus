@@ -93,10 +93,10 @@ export function generateICS(data: ICSEventData): string {
     customerEmail,
     appointmentDateTime,
     durationMinutes = 60,
-    location = 'NEST-Haus Office, Karmeliterplatz 8, 8010 Graz, Austria',
+    location = 'Nest-Haus Office, Zösenberg 51, 8044 Weinitzen, Austria',
     description,
     organizerEmail = 'mail@nest-haus.at',
-    organizerName = 'NEST-Haus Team',
+    organizerName = 'Nest-Haus Team',
   } = data;
 
   // Calculate end time
@@ -115,7 +115,7 @@ export function generateICS(data: ICSEventData): string {
 
   // Build description
   const fullDescription = description ||
-    `Beratungstermin bei NEST-Haus\n\n` +
+    `Beratungstermin bei Nest-Haus\n\n` +
     `Kunde: ${customerName}\n` +
     `E-Mail: ${customerEmail}\n` +
     `Anfrage-ID: ${inquiryId}\n\n` +
@@ -125,7 +125,7 @@ export function generateICS(data: ICSEventData): string {
   const icsLines: string[] = [
     'BEGIN:VCALENDAR',
     'VERSION:2.0',
-    'PRODID:-//NEST-Haus//Appointment Booking//DE',
+    'PRODID:-//Nest-Haus//Appointment Booking//DE',
     'CALSCALE:GREGORIAN',
     'METHOD:REQUEST',
     'BEGIN:VTIMEZONE',
@@ -150,7 +150,7 @@ export function generateICS(data: ICSEventData): string {
     `DTSTAMP:${dtStamp}`,
     `DTSTART;TZID=Europe/Vienna:${dtStart}`,
     `DTEND;TZID=Europe/Vienna:${dtEnd}`,
-    foldLine(`SUMMARY:NEST-Haus Beratungstermin - ${escapeICSText(customerName)}`),
+    foldLine(`SUMMARY:Nest-Haus Beratungstermin - ${escapeICSText(customerName)}`),
     foldLine(`DESCRIPTION:${escapeICSText(fullDescription)}`),
     foldLine(`LOCATION:${escapeICSText(location)}`),
     `STATUS:TENTATIVE`,
@@ -165,7 +165,7 @@ export function generateICS(data: ICSEventData): string {
     'BEGIN:VALARM',
     'TRIGGER:-PT1H',
     'ACTION:DISPLAY',
-    foldLine(`DESCRIPTION:Erinnerung: Ihr Termin bei NEST-Haus beginnt in 1 Stunde.`),
+    foldLine(`DESCRIPTION:Erinnerung: Ihr Termin bei Nest-Haus beginnt in 1 Stunde.`),
     'END:VALARM',
     'END:VEVENT',
     'END:VCALENDAR',

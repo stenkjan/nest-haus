@@ -287,7 +287,7 @@ Check admin inbox (mail@nest-haus.at):
 - ✅ Summary: "NEST-Haus Beratungstermin - [Customer Name]"
 - ✅ Date/Time: Correct appointment time
 - ✅ Duration: 60 minutes
-- ✅ Location: NEST-Haus Office, Karmeliterplatz 8, 8010 Graz
+- ✅ Location: NEST-Haus Office, Zösenberg 51, 8044 Graz
 - ✅ Organizer: markus@sustain-nest.com
 - ✅ Attendee: customer email
 - ✅ Status: TENTATIVE
@@ -323,7 +323,7 @@ Check admin inbox (mail@nest-haus.at):
 - ✅ Event appears on calendar
 - ✅ Title: "NEST-Haus Beratung - [Customer Name]"
 - ✅ Description includes customer details and inquiry ID
-- ✅ Location: NEST-Haus Office, Karmeliterplatz 8, 8010 Graz
+- ✅ Location: NEST-Haus Office, Zösenberg 51, 8044 Weinitzen
 - ✅ Time: Correct appointment time (60 minutes)
 
 ---

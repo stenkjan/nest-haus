@@ -127,7 +127,7 @@ export default function DatenschutzClient() {
               <p className="p-primary">
                 SustainNest GmbH
                 <br />
-                Karmeliterplatz 8, 8010 Graz
+                Zösenberg 51, 8044 Weinitzen
                 <br />
                 Telefon: +43 (0) 664 5403399
                 <br />

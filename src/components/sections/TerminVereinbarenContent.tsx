@@ -78,9 +78,9 @@ export const TerminVereinbarenContent: React.FC<
             </h4>
             <div className="text-xs md:text-sm">
               <span className="text-black font-medium">
-                Karmeliterplatz 8
+                Zösenberg 51
                 <br />
-                8010, Graz
+                8044, Weinitzen
                 <br />
                 Steiermark
                 <br />
@@ -197,10 +197,10 @@ export const TerminVereinbarenContent: React.FC<
             </h2>
             <div className="grid grid-cols-[auto_1fr] gap-x-4 gap-y-1 p-primary-small leading-relaxed">
               <span className="text-nest-gray">Straße:</span>
-              <span className="text-black font-medium">Karmeliterplatz 8</span>
+              <span className="text-black font-medium">Zösenberg 51</span>
               <span className="text-nest-gray">Stadt:</span>
               <span className="text-black font-medium">
-                8010, Graz, Steiermark
+                8044, Weinitzen, Steiermark
               </span>
               <span className="text-nest-gray">Land:</span>
               <span className="text-black font-medium">Österreich</span>
@@ -267,9 +267,9 @@ export const TerminVereinbarenContent: React.FC<
             </h4>
             <div className="text-xs md:text-sm">
               <span className="text-black font-medium">
-                Karmeliterplatz 8
+                Zösenberg 51
                 <br />
-                8010, Graz
+                8044, Weinitzen
                 <br />
                 Steiermark
                 <br />

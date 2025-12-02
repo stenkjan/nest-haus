@@ -117,7 +117,7 @@ export class EmailService {
           customerEmail: data.email,
           appointmentDateTime: new Date(data.appointmentDateTime),
           durationMinutes: 60,
-          location: 'NEST-Haus Office, Karmeliterplatz 8, 8010 Graz, Austria',
+          location: 'Nest-Haus Office, Zösenberg 51, 8044 Weinitzen, Austria',
           description: data.message,
           organizerEmail: this.ADMIN_EMAIL,
           organizerName: this.FROM_NAME,
@@ -456,8 +456,8 @@ export class EmailService {
   </div>
   
   <div class="footer">
-    <p>© 2025 NEST-Haus | SustainNest GmbH<br>
-    Karmeliterplatz 8, 8010 Graz, Österreich</p>
+    <p>© 2025 Nest-Haus | SustainNest GmbH<br>
+    Zösenberg 51, 8044 Weinitzen, Österreich</p>
     </div>
   </div>
 </body>
@@ -498,8 +498,8 @@ Telefon: +43 384 775 090
 
 Besuchen Sie uns: https://nest-haus.at
 
-© 2025 NEST-Haus | SustainNest GmbH
-Karmeliterplatz 8, 8010 Graz, Österreich
+© 2025 Nest-Haus | ecoChalets GmbH
+Zösenberg 51, 8044 Weinitzen, Österreich
 `;
   }
 
@@ -1289,7 +1289,7 @@ Automatische Benachrichtigung vom NEST-Haus System`;
         customerEmail: data.email,
         appointmentDateTime: new Date(data.appointmentDateTime),
         durationMinutes: 60,
-        location: 'NEST-Haus Office, Karmeliterplatz 8, 8010 Graz, Austria',
+        location: 'Nest-Haus Office, Zösenberg 51, 8044 Weinitzen, Austria',
         description: data.message,
         organizerEmail: this.ADMIN_EMAIL,
         organizerName: this.FROM_NAME,

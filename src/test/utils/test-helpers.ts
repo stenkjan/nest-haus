@@ -234,7 +234,7 @@ export const TEST_PHONES = {
  */
 export const TEST_ADDRESSES = {
     VALID: [
-        'Karmeliterplatz 8',
+        'Zösenberg 51',
         '123 Main Street',
         'Bahnhofstraße 45',
         'Rue de la Paix 12',
