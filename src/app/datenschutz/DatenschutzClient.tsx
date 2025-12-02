@@ -125,7 +125,7 @@ export default function DatenschutzClient() {
               </p>
 
               <p className="p-primary">
-                SustainNest GmbH
+                eco Chalets GmbH
                 <br />
                 Zösenberg 51, 8044 Weinitzen
                 <br />
