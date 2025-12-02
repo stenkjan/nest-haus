@@ -4,6 +4,23 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [a8ab7dc2ec3ab3d6cd5d39b374c26e692d05278e] - Mon Dec 1 16:38:26 2025 +0100
+
+**Author**: stenkjan
+**Message**: `Enhance user tracking API funnel metrics retrieval with combined IP and bot filters  - Updated  to accept a  parameter, allowing for more precise filtering of user sessions. - Refactored funnel metrics queries to utilize a combined filter for improved data accuracy.  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/api/admin/user-tracking/route.ts
+
+
+#### 📚 Documentation Changes
+- docs/STRIPE_PRODUCTION_SETUP.md
+
+
+---
+
 ## [4d76855a587d2f7b4a10e04fde08725c60098a78] - Mon Dec 1 16:11:59 2025 +0100
 
 **Author**: stenkjan
