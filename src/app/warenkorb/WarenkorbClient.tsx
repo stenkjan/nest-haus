@@ -70,7 +70,7 @@ export default function WarenkorbClient() {
     
     // Get house configuration value for custom dimension
     const houseConfigValue = hasHouseConfig 
-      ? items.find(item => 'nest' in item && item.nest)?.totalPrice || 0
+      ? (items.find(item => 'nest' in item && item.nest) as ConfigurationCartItem)?.totalPrice || 0
       : 0;
 
     // Build items array for GA4
