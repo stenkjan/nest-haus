@@ -498,7 +498,7 @@ Telefon: +43 384 775 090
 
 Besuchen Sie uns: https://nest-haus.at
 
-© 2025 Nest-Haus | ecoChalets GmbH
+© 2025 Nest-Haus | eco Chalets GmbH
 Zösenberg 51, 8044 Weinitzen, Österreich
 `;
   }
