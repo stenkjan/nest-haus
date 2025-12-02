@@ -4,6 +4,15 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [500163761f2dd7a2a69baa5485fd7e2727881656] - Tue Dec 2 09:18:27 2025 +0100
+
+**Author**: stenkjan
+**Message**: `Fix company name typo in EmailService to reflect accurate branding: changed "ecoChalets GmbH" to "eco Chalets GmbH".  `
+
+### Changes Analysis
+
+---
+
 ## [1011fb7e6efd5433e5951b7c56d49416ea748d97] - Tue Dec 2 09:13:08 2025 +0100
 
 **Author**: stenkjan
