@@ -55,3 +55,10 @@
   - Define target audience and keywords.
 - [ ] **Positionierung & Planung**
   - Strategy for paid and organic growth.
+
+### Important ToDos
+
+Vimeo Wechsel? startet erlaubt nciht video replacement und hat vimeo zeichen, standard kostet 18€
+nest system texte m. bernhard
+tablet optimierung
+google ads

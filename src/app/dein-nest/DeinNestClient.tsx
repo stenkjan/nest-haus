@@ -236,12 +236,12 @@ export default function DeinNestClient() {
             <div className="pt-8">
               {/* Button combination */}
               <div className="flex flex-wrap gap-4 justify-center">
-                <Link href="/konzept-check">
+                <Link href="/nest-system">
                   <Button variant="primary" size="xs">
-                    Konzept-Check
+                    Nest-System
                   </Button>
                 </Link>
-                <Link href="/konfigurator">
+                <Link href="/warum-wir">
                   <Button variant="landing-secondary-blue" size="xs">
                     Warum mit Nest?
                   </Button>
@@ -304,6 +304,17 @@ export default function DeinNestClient() {
               },
             ]}
           />
+
+          {/* Mobile-only button underneath the card */}
+          {isMobile && (
+            <div className="flex justify-center mt-6">
+              <Link href="/konfigurator">
+                <Button variant="primary" size="xs">
+                  Jetzt konfigurieren
+                </Button>
+              </Link>
+            </div>
+          )}
         </section>
         {/* Section 6 - Video Background Cards */}
         <section id="vorteile-nest" className="w-full py-8 md:py-16 bg-white">
@@ -373,6 +384,17 @@ export default function DeinNestClient() {
               },
             ]}
           />
+
+          {/* Mobile-only button underneath the card */}
+          {isMobile && (
+            <div className="flex justify-center mt-6">
+              <Link href="/warum-wir">
+                <Button variant="primary" size="xs">
+                  Unsere Philosophie
+                </Button>
+              </Link>
+            </div>
+          )}
         </section>
         {/* Section 8 - Partners */}
         <section id="unsere-partner" className="w-full pb-8 md:py-16 bg-white">

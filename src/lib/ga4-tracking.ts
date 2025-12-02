@@ -139,6 +139,35 @@ export function trackAddToCart(data: {
 }
 
 /**
+ * Track begin checkout (when user enters warenkorb to pay for Konzept-Check)
+ * VALUE: Always use Konzept-Check price (€3,000) to match purchase event
+ * ITEMS: Include house configuration if present (for context), but value reflects payment only
+ */
+export function trackBeginCheckout(data: {
+  value: number; // Konzept-Check price in EUR (e.g., 3000.00)
+  items: Array<{
+    item_id: string;
+    item_name: string;
+    item_category?: string;
+    price: number;
+    quantity: number;
+  }>;
+  hasConfiguration?: boolean; // Whether user has house config in cart
+  configurationValue?: number; // House intent value for custom dimension
+}) {
+  pushEvent('begin_checkout', {
+    ecommerce: {
+      currency: 'EUR',
+      value: data.value, // CRITICAL: Use payment value (€3k), NOT house value (€150k)
+      items: data.items,
+    },
+    // Custom parameters for segmentation
+    has_house_configuration: data.hasConfiguration || false,
+    house_intent_value: data.configurationValue || 0, // Track separately for analysis
+  });
+}
+
+/**
  * Track purchase (ecommerce event)
  */
 export function trackPurchase(data: {

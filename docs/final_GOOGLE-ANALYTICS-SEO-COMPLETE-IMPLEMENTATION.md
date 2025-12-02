@@ -92,14 +92,15 @@ window.gtag("consent", "default", {
 - ✅ Console logging for debugging
 - ✅ Graceful fallback if GA4 not loaded
 
-#### 3. Active Event Implementations (4 Main Events)
+#### 3. Active Event Implementations (5 Main Events)
 
-| Event             | File                                    | Status    | Purpose                     |
-| ----------------- | --------------------------------------- | --------- | --------------------------- |
-| `generate_lead`   | `AppointmentBooking.tsx` (line ~300)    | ✅ Active | Appointment bookings        |
-| `add_to_cart`     | `CartFooter.tsx` (line ~182)            | ✅ Active | Configuration added to cart |
-| `purchase`        | `PaymentSuccessTracker.tsx` (line ~110) | ✅ Active | Konzept-Check payment       |
-| `config_complete` | `CartFooter.tsx` (line ~182)            | ✅ Active | Configuration completed     |
+| Event             | File                                    | Status    | Purpose                              |
+| ----------------- | --------------------------------------- | --------- | ------------------------------------ |
+| `generate_lead`   | `AppointmentBooking.tsx` (line ~300)    | ✅ Active | Appointment bookings                 |
+| `add_to_cart`     | `CartFooter.tsx` (line ~182)            | ✅ Active | Configuration added (€150k intent)   |
+| `begin_checkout`  | `WarenkorbClient.tsx` (line ~126)       | ✅ Active | Checkout started (€3k payment)       |
+| `purchase`        | `PaymentSuccessTracker.tsx` (line ~110) | ✅ Active | Konzept-Check payment (€3k revenue)  |
+| `config_complete` | `CartFooter.tsx` (line ~182)            | ✅ Active | Configuration completed (€150k)      |
 
 **Additional events available** (not yet used):
 
@@ -256,6 +257,93 @@ GA4 → Reports → Monetization → Ecommerce purchases
 
 ---
 
+### 2.5. `begin_checkout` (Checkout Initiated)
+
+**Triggered when:** User enters Warenkorb page (either with configuration or konzept-check only)
+
+**Event data sent:**
+
+```javascript
+{
+  event: 'begin_checkout',
+  ecommerce: {
+    currency: 'EUR',
+    value: 3000.00,  // Konzept-Check payment value (matches purchase)
+    items: [{
+      item_id: 'KONZEPT-CHECK-001',
+      item_name: 'Konzeptcheck',
+      item_category: 'service',
+      price: 3000.00,
+      quantity: 1
+    }, {
+      item_id: 'HOUSE-CONF-abc123',
+      item_name: '2-Module',
+      item_category: 'house_configuration',
+      price: 0,  // Not being paid for now
+      quantity: 1
+    }]
+  },
+  has_house_configuration: true,
+  house_intent_value: 150000.00  // Custom parameter for funnel analysis
+}
+```
+
+**Important: Hybrid Funnel Strategy**
+
+This event uses **Payment Value Only** (€3,000) to maintain accurate revenue reports:
+- `add_to_cart`: €150,000 (Intent Value - potential deal size)
+- `begin_checkout`: €3,000 (Payment Value - what user will pay)
+- `purchase`: €3,000 (Actual Revenue - what user paid)
+
+**Why this matters:**
+- Prevents inflated ROAS calculations
+- Maintains accurate conversion funnel (€3k → €3k)
+- Preserves high-intent signals (€150k) in custom parameters
+- Enables proper remarketing for "high intent, low conversion" users
+
+**What you can do in GA4:**
+
+- ✅ Track checkout initiation rate from configuration
+- ✅ Analyze drop-off between add_to_cart and begin_checkout
+- ✅ Calculate true conversion rate (begin_checkout → purchase)
+- ✅ Create audiences: "Started checkout but didn't purchase"
+- ✅ Segment by `has_house_configuration` dimension
+
+**Recommended GA4 setup:**
+
+```
+GA4 → Configure → Custom Definitions → Create custom dimension
+- Dimension name: "has_house_configuration"
+- Scope: Event
+- Event parameter: "has_house_configuration"
+
+- Dimension name: "house_intent_value"
+- Scope: Event
+- Event parameter: "house_intent_value"
+```
+
+**Funnel Analysis Strategy:**
+
+Create two separate funnels in GA4 Explore:
+
+**Funnel 1: Intent & Engagement**
+1. page_view (/konfigurator)
+2. config_complete (€150k intent)
+3. add_to_cart (€150k intent)
+4. generate_lead (appointment booked)
+
+**Funnel 2: Revenue & Payment**
+1. add_to_cart (€150k intent signal)
+2. begin_checkout (€3k payment starts)
+3. purchase (€3k revenue confirmed)
+
+This dual-funnel approach shows:
+- Where high-intent users drop off before payment
+- True conversion rate for payment funnel
+- Accurate revenue attribution
+
+---
+
 ### 3. `purchase` (Konzept-Check Payment)
 
 **Triggered when:** User completes Stripe payment for Konzept-Check
@@ -348,12 +436,13 @@ GA4 → Configure → Custom Definitions → Create custom dimension
 GA4 → Configure → Events
 
 Find these events and mark as conversion:
-- ✅ "purchase" → Toggle "Mark as conversion" ✓ (PRIMARY GOAL)
-- ✅ "generate_lead" → Toggle "Mark as conversion" ✓
-- ✅ "add_to_cart" → Toggle "Mark as conversion" ✓
+- ✅ "purchase" → Toggle "Mark as conversion" ✓ (PRIMARY REVENUE GOAL)
+- ✅ "generate_lead" → Toggle "Mark as conversion" ✓ (PRIMARY LEAD GOAL)
+- ✅ "begin_checkout" → Toggle "Mark as conversion" ✓ (SECONDARY - Payment Intent)
+- ✅ "config_complete" → Toggle "Mark as conversion" (ENGAGEMENT - High Intent Signal)
 ```
 
-**Why:** This enables conversion tracking and optimization in GA4 reports
+**Why:** Enables conversion tracking, ROAS calculation, and audience segmentation
 
 ---
 
@@ -385,6 +474,16 @@ Event-scoped dimensions:
 5. house_model
    - Scope: Event
    - Event parameter: house_model
+
+6. has_house_configuration
+   - Scope: Event
+   - Event parameter: has_house_configuration
+   - Type: Boolean
+
+7. house_intent_value
+   - Scope: Event
+   - Event parameter: house_intent_value
+   - Type: Number (for funnel analysis)
 ```
 
 **Why:** Enables detailed segmentation and analysis in reports

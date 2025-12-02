@@ -13,6 +13,7 @@ import {
 import type { CartItem, ConfigurationCartItem } from "../../store/cartStore";
 import CheckoutStepper from "./components/CheckoutStepper";
 import PaymentSuccessTracker from "@/components/analytics/PaymentSuccessTracker";
+import { trackBeginCheckout } from "@/lib/ga4-tracking";
 
 import Footer from "@/components/Footer";
 
@@ -49,6 +50,80 @@ export default function WarenkorbClient() {
       .catch((error) => {
         console.error("❌ Warenkorb: Failed to load pricing data:", error);
       });
+  }, []);
+
+  // Track begin_checkout event when user enters warenkorb
+  useEffect(() => {
+    if (typeof window === 'undefined') return;
+    
+    // Prevent duplicate tracking on same page load
+    const hasTrackedCheckout = sessionStorage.getItem('checkout_tracked');
+    if (hasTrackedCheckout === 'true') return;
+    
+    // Only track if there are items in cart (konzept-check mode always has 1 item)
+    if (items.length === 0) return;
+
+    console.log('🛒 Tracking begin_checkout event');
+
+    // Determine if user has house configuration
+    const hasHouseConfig = items.some(item => 'nest' in item && item.nest);
+    
+    // Get house configuration value for custom dimension
+    const houseConfigValue = hasHouseConfig 
+      ? items.find(item => 'nest' in item && item.nest)?.totalPrice || 0
+      : 0;
+
+    // Build items array for GA4
+    const checkoutItems = [];
+    
+    // Always include Konzept-Check as the payable item
+    checkoutItems.push({
+      item_id: 'KONZEPT-CHECK-001',
+      item_name: 'Konzeptcheck',
+      item_category: 'service',
+      price: 3000.00, // Fixed Konzept-Check price
+      quantity: 1,
+    });
+
+    // If house config exists, include it for context (but value already set to €3k above)
+    if (hasHouseConfig) {
+      const configItem = items.find(item => 'nest' in item && item.nest);
+      if (configItem && 'nest' in configItem) {
+        checkoutItems.push({
+          item_id: `HOUSE-CONF-${configItem.sessionId?.substring(0, 8) || 'TEMP'}`,
+          item_name: configItem.nest?.name || 'Nest Haus Konfiguration',
+          item_category: 'house_configuration',
+          price: 0, // Not being paid for now, included for context only
+          quantity: 1,
+        });
+      }
+    }
+
+    // Track begin_checkout with Konzept-Check value
+    trackBeginCheckout({
+      value: 3000.00, // CRITICAL: Payment value only (matches purchase)
+      items: checkoutItems,
+      hasConfiguration: hasHouseConfig,
+      configurationValue: houseConfigValue / 100, // Convert cents to euros
+    });
+
+    // Mark as tracked for this session
+    sessionStorage.setItem('checkout_tracked', 'true');
+
+    // Clear tracking flag when leaving warenkorb
+    return () => {
+      // Don't clear here - let it persist for page session
+    };
+  }, [items]); // Dependency on items to track when cart loads
+
+  // Clear checkout tracking flag when user navigates away
+  useEffect(() => {
+    const handleBeforeUnload = () => {
+      sessionStorage.removeItem('checkout_tracked');
+    };
+    
+    window.addEventListener('beforeunload', handleBeforeUnload);
+    return () => window.removeEventListener('beforeunload', handleBeforeUnload);
   }, []);
 
   // Get the actual boolean value for proper memoization dependency

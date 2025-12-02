@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import Footer from "@/components/Footer";
 import { Button } from "@/components/ui";
@@ -55,8 +55,21 @@ const sections = [
 
 export default function KonzeptcheckClient() {
   const [_currentSectionId, setCurrentSectionId] = useState<string>("hero");
+  const [isMobile, setIsMobile] = useState(false);
   // Get konzept-check video cards using PRESET (recommended approach)
   const konzeptcheckVideoCards = ENTWURF_VIDEO_CARDS_PRESET.cards;
+
+  // Mobile detection for conditional button rendering
+  useEffect(() => {
+    const checkDevice = () => {
+      const newIsMobile = window.innerWidth < 768;
+      setIsMobile(newIsMobile);
+    };
+
+    checkDevice();
+    window.addEventListener("resize", checkDevice);
+    return () => window.removeEventListener("resize", checkDevice);
+  }, []);
 
   return (
     <div
@@ -96,7 +109,7 @@ export default function KonzeptcheckClient() {
                 </Link>
                 <Link href="/kontakt">
                   <Button variant="landing-secondary" size="xs">
-                    Termin vereinbaren
+                    Termin
                   </Button>
                 </Link>
               </div>
@@ -192,7 +205,7 @@ export default function KonzeptcheckClient() {
                   },
                   {
                     text: "Konzept-Check bestellen",
-                    variant: "landing-secondary-blue-white",
+                    variant: "landing-secondary",
                     size: "xs",
                     link: "/warenkorb?mode=konzept-check",
                   },
@@ -200,6 +213,18 @@ export default function KonzeptcheckClient() {
               },
             ]}
           />
+
+          {/* Mobile-only button underneath the card */}
+          {isMobile && (
+            <div className="flex justify-center mt-6">
+              <Link href="/konfigurator">
+                <Button variant="primary" size="xs">
+                  Jetzt konfigurieren
+                </Button>
+              </Link>
+            </div>
+          )}
+
           <p className="p-primary-small2 text-nest-gray mt-4 text-center max-w-[300px] md:max-w-[500px] mx-auto">
             *Mit dem Konzept-Check erhältst du deine Grundstücks-Analyse, deinen
             individuellen Entwurfsplan und eine konkrete Kostenplanung.
