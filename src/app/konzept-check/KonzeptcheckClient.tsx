@@ -84,7 +84,7 @@ export default function KonzeptcheckClient() {
             <HybridBlobImage
               path={IMAGES.function.nestHausLinienplanDreier}
               mobilePath={IMAGES.function.nestHausLinienplanDreier}
-              alt="Der Konzept-Check"
+              alt="Konzept-Check"
               className="absolute inset-0 w-full h-full object-cover"
             />
 
@@ -94,7 +94,8 @@ export default function KonzeptcheckClient() {
               <div className="flex justify-center">
                 <SectionHeader
                   title="Der Konzept-Check"
-                  subtitle="Deine optimale Entscheidungsgrundlage."
+                  subtitle="Deine optimale Entscheidungsgrundlage in zwei Schritten"
+                  mobileSubtitle="Deine Entscheidungsgrundlage in zwei Schritten"
                   titleClassName="text-white"
                   subtitleClassName="text-white"
                 />
@@ -120,9 +121,9 @@ export default function KonzeptcheckClient() {
         {/* Grundrissplan Card - With Padding (TALL CARD) */}
         <section id="konzept-check" className="w-full py-8 md:py-16 bg-white">
           <SectionHeader
-            title="Der Grundstücks-Check"
+            title="Schritt 1: Grundstücks-Check"
             subtitle="Starte dein Bauvorhaben mit Rechtssicherheit"
-            mobileTitle="Der Konzept-Check"
+            mobileTitle="Schritt 1: Grundstücks-Check"
             wrapperMargin="mb-8 md:mb-12"
           />
 
@@ -178,9 +179,9 @@ export default function KonzeptcheckClient() {
           className="w-full py-8 md:py-16 bg-white"
         >
           <SectionHeader
-            title="Der Entwurfsplan"
+            title="Schritt 2: Entwurfsplan"
             subtitle="Persönlich geplant, individuell gestaltet."
-            mobileTitle="Der Grundstücks-Check"
+            mobileTitle="Schritt 2: Entwurfsplan"
             wrapperMargin="mb-8 md:mb-12"
           />
           <UnifiedContentCard
