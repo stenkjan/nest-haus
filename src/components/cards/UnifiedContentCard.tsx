@@ -1508,45 +1508,82 @@ export default function UnifiedContentCard({
         </motion.div>
 
         {/* Middle Section: Quote Text - Fixed height for alignment */}
-        <motion.div
-          initial={{ y: 20, opacity: 0 }}
-          animate={{ y: 0, opacity: 1 }}
-          transition={{ delay: index * 0.1 + 0.2, duration: 0.6 }}
-          className="flex items-center md:items-start flex-1 min-h-[200px] md:min-h-[240px] mt-0 mb-4 md:mb-0 lg:mt-8"
-        >
-          <div className="w-full px-8 md:px-0">
-            {/* Large Quote Mark - block element with fixed height */}
-            <span className="block text-4xl md:text-4xl lg:text-5xl text-white/90 leading-none h-8 md:h-8 lg:h-10">
-              &ldquo;
-            </span>
-            {/* Quote Text - p-primary */}
-            <p
-              className="p-primary text-white leading-relaxed"
-              dangerouslySetInnerHTML={{ __html: quoteText }}
-            />
-          </div>
-        </motion.div>
+        {/* Skip middle section for card id: 0 (no quote needed) */}
+        {card.id !== 0 && (
+          <motion.div
+            initial={{ y: 20, opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            transition={{ delay: index * 0.1 + 0.2, duration: 0.6 }}
+            className="flex items-center md:items-start flex-1 min-h-[200px] md:min-h-[240px] mt-0 mb-4 md:mb-0 lg:mt-8"
+          >
+            <div className="w-full px-8 md:px-0">
+              {/* Large Quote Mark - block element with fixed height */}
+              <span className="block text-4xl md:text-4xl lg:text-5xl text-white/90 leading-none h-8 md:h-8 lg:h-10">
+                &ldquo;
+              </span>
+              {/* Quote Text - p-primary */}
+              <p
+                className="p-primary text-white leading-relaxed"
+                dangerouslySetInnerHTML={{ __html: quoteText }}
+              />
+            </div>
+          </motion.div>
+        )}
 
-        {/* Bottom Section: Attribution - Fixed height for alignment */}
-        {(attributionName || attributionTitle) && (
+        {/* Bottom Section: Attribution or Logo (id: 0) - Fixed height for alignment */}
+        {card.id === 0 ? (
+          // Special case for card id: 0 - Show Baumeister Gütesiegel logo
           <motion.div
             initial={{ y: 20, opacity: 0 }}
             animate={{ y: 0, opacity: 1 }}
             transition={{ delay: index * 0.1 + 0.4, duration: 0.6 }}
-            className="flex flex-col items-start h-[80px] md:h-[100px] justify-end"
+            className="flex flex-col items-start justify-end"
           >
-            {/* Attribution Name - p-primary */}
-            {attributionName && (
-              <p className="p-primary text-white mb-1">{attributionName}</p>
-            )}
-
-            {/* Attribution Title - p-primary-small */}
-            {attributionTitle && (
-              <p className="p-primary-small text-gray-400">
-                {attributionTitle}
+            {/* Description text above logo - same margin as title */}
+            {card.description && (
+              <p className="p-primary-small text-gray-400 mb-4">
+                {getCardText(card, "description")}
               </p>
             )}
+
+            {/* Baumeister Gütesiegel Logo */}
+            <div className="w-full max-w-[200px] md:max-w-[240px] lg:max-w-[280px]">
+              <HybridBlobImage
+                path={IMAGES.partners.baumeisterGuetesiegel}
+                alt="Baumeister Gütesiegel"
+                width={280}
+                height={140}
+                className="w-full h-auto object-contain object-left"
+                style={{
+                  filter: "brightness(0) invert(1)", // Makes logo white
+                }}
+                strategy="client"
+                enableCache={true}
+              />
+            </div>
           </motion.div>
+        ) : (
+          // Normal attribution section for other cards
+          (attributionName || attributionTitle) && (
+            <motion.div
+              initial={{ y: 20, opacity: 0 }}
+              animate={{ y: 0, opacity: 1 }}
+              transition={{ delay: index * 0.1 + 0.4, duration: 0.6 }}
+              className="flex flex-col items-start h-[80px] md:h-[100px] justify-end"
+            >
+              {/* Attribution Name - p-primary */}
+              {attributionName && (
+                <p className="p-primary text-white mb-1">{attributionName}</p>
+              )}
+
+              {/* Attribution Title - p-primary-small */}
+              {attributionTitle && (
+                <p className="p-primary-small text-gray-400">
+                  {attributionTitle}
+                </p>
+              )}
+            </motion.div>
+          )
         )}
       </div>
     );
