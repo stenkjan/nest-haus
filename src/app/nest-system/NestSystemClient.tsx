@@ -76,8 +76,11 @@ export default function NestSystemClient() {
   const [currentSectionId, setCurrentSectionId] =
     useState<string>("unsere-technik");
   const [isMobile, setIsMobile] = useState(false);
-  const { isOpen, openPlanungspakete: _openPlanungspakete, closePlanungspakete } =
-    usePlanungspaketePopup();
+  const {
+    isOpen,
+    openPlanungspakete: _openPlanungspakete,
+    closePlanungspakete,
+  } = usePlanungspaketePopup();
 
   // Simple width-based mobile detection (same as entdecken page)
   useEffect(() => {
@@ -191,7 +194,7 @@ export default function NestSystemClient() {
                 backgroundColor="black"
                 text="<p class='p-secondary text-white'><span class='text-nest-gray'>Gleichzeitig bleibt volle <span class='text-white font-medium'>Gestaltungsfreiheit </span><span class='text-nest-gray'>dort, wo sie wirklich zählt.<span class='text-nest-gray'> Individualisierung für persönliche Gestaltung. Jedes Zuhause ist einzigartig und genau da, wo es wichtig ist, bieten wir</span> <span class='text-white font-medium'>maximale Freiheit:</span> <span class='text-nest-gray'>Grundrissgestaltung, Technische Ausstattung, Materialien und Oberflächen, Flexible Raumaufteilung.</span></p>"
                 textPosition="right"
-                maxWidth={false} 
+                maxWidth={false}
                 image1={IMAGES.function.nestHausModulSeiteKonzept}
                 image2={IMAGES.function.nestHausModulSeiteLiniengrafik}
                 image1Description="Seitliche Ansicht zeigt die durchdachte Konstruktion"

@@ -1,8 +1,6 @@
 "use client";
 
 import React, { useState, useRef } from "react";
-import { Button } from "@/components/ui";
-import Link from "next/link";
 import Footer from "@/components/Footer";
 import { SectionHeader } from "@/components/sections";
 
