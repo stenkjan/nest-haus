@@ -4,6 +4,21 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [aa86542f4914bf1ac08d9114e90116370e193614] - Wed Dec 3 12:45:10 2025 +0100
+
+**Author**: stenkjan
+**Message**: `Refactor FAQClient component by removing unused imports  - Removed unused imports for  and  in  to streamline the code and improve maintainability.  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/dein-nest/DeinNestClient.tsx
+- src/app/faq/FAQClient.tsx
+- src/app/nest-system/NestSystemClient.tsx
+
+
+---
+
 ## [43c40d051ffac3a45ffc371169be16c3455b76c6] - Wed Dec 3 12:38:11 2025 +0100
 
 **Author**: stenkjan
