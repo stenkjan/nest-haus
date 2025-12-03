@@ -4068,27 +4068,26 @@ export default function CheckoutStepper({
                                   </div>
                                   <div className="text-sm md:text-base lg:text-lg 2xl:text-xl font-normal leading-relaxed text-gray-900">
                                     {(() => {
-                                      // Determine which package we're dealing with
-                                      let packageType = "basis";
+                                      const planPrice =
+                                        configItem?.planungspaket?.price ||
+                                        (localSelectedPlan
+                                          ? PLANNING_PACKAGES.find(
+                                              (p) =>
+                                                p.value === localSelectedPlan
+                                            )?.price || 0
+                                          : 0);
 
-                                      if (configItem?.planungspaket?.name) {
-                                        const name =
-                                          configItem?.planungspaket?.name?.toLowerCase() ||
-                                          "";
-                                        if (name.includes("plus"))
-                                          packageType = "plus";
-                                        else if (name.includes("pro"))
-                                          packageType = "pro";
-                                      } else if (localSelectedPlan) {
-                                        packageType = localSelectedPlan || "";
+                                      // Check if it's basis planungspaket (should show as Standard)
+                                      const planValue =
+                                        configItem?.planungspaket?.value ||
+                                        localSelectedPlan;
+                                      if (planValue === "basis") {
+                                        return "Standard";
+                                      } else {
+                                        return PriceUtils.formatPrice(
+                                          planPrice
+                                        );
                                       }
-
-                                      // Return price display with "Standard" for basis
-                                      return packageType === "basis"
-                                        ? "Standard"
-                                        : packageType === "plus"
-                                          ? "16.900,00€"
-                                          : "21.900,00€";
                                     })()}
                                   </div>
                                 </div>

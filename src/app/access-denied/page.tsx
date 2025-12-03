@@ -3,7 +3,7 @@ import Link from "next/link";
 import { Button } from "@/components/ui";
 
 export const metadata: Metadata = {
-  title: "Access Denied | NEST-Haus",
+  title: "Access Denied | Nest-Haus",
   description: "Access to this page has been restricted for security reasons.",
   robots: {
     index: false,

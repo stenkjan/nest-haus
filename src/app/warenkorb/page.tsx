@@ -4,7 +4,7 @@ import { generateShoppingCartSchema as _generateShoppingCartSchema } from "@/lib
 
 // Enhanced SEO metadata for the shopping cart page
 export const metadata: Metadata = {
-  title: "Warenkorb | NEST-Haus Modulare Häuser | Ihre Konfiguration",
+  title: "Warenkorb | Nest-Haus Modulare Häuser | Ihre Konfiguration",
   description:
     "Überprüfen Sie Ihre NEST-Haus Konfiguration und stellen Sie Ihre Anfrage. Transparent kalkulierte Preise für modulare Häuser.",
   keywords:
