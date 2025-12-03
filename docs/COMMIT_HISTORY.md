@@ -4,6 +4,19 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [873a8ef4a0560bab32de57776f3e639b4535586c] - Wed Dec 3 16:12:26 2025 +0100
+
+**Author**: stenkjan
+**Message**: `Refactor UnifiedContentCard to simplify conditional rendering  - Updated the conditional rendering in  to use a logical AND operator for displaying the quote section based on card ID. - Removed the spacer div for card ID: 0, streamlining the layout handling.  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/components/cards/UnifiedContentCard.tsx
+
+
+---
+
 ## [5f7f6d1f559543682444c1acc4ee34379df69ea9] - Wed Dec 3 16:02:06 2025 +0100
 
 **Author**: stenkjan
