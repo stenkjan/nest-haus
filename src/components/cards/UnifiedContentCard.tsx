@@ -1509,7 +1509,7 @@ export default function UnifiedContentCard({
 
         {/* Middle Section: Quote Text - Fixed height for alignment */}
         {/* Skip middle section for card id: 0 (no quote needed) */}
-        {card.id !== 0 && (
+        {card.id !== 0 ? (
           <motion.div
             initial={{ y: 20, opacity: 0 }}
             animate={{ y: 0, opacity: 1 }}
@@ -1528,6 +1528,9 @@ export default function UnifiedContentCard({
               />
             </div>
           </motion.div>
+        ) : (
+          // Spacer for card id: 0 to maintain layout spacing
+          <div className="flex-1" />
         )}
 
         {/* Bottom Section: Attribution or Logo (id: 0) - Fixed height for alignment */}
