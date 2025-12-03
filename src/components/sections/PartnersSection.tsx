@@ -102,11 +102,11 @@ const partners: Partner[] = [
     link: "https://www.bp-elektrotechnik.at",
   },
   {
-    id: "gemeinsam-staerker",
-    name: "Gemeinsam stärker",
-    path: IMAGES.partners.kollaborationPartner,
-    description: "Werde Teil von Nest",
-    link: "/kontakt",
+    id: "phil-hoffelner",
+    name: "Phil Hoffelner",
+    path: IMAGES.partners.philHoffelner,
+    description: "Werbeagentur",
+    link: "https://philhoffelner.com/",
   },
 ];
 

@@ -1045,7 +1045,7 @@ export const WARUM_WIR_TEAM_CARDS_CONTENT: ContentCardData[] = [
         textColor: "text-white",
         aspectRatio: "2x1",
         bottomLabel: "",
-        bottomText: "Staatspreis für Innovation 2006 \n Fast Forward Award 2005, 2013 & 2018 \n  European Logistic Award 2012",
+        bottomText: "Staatspreis für Innovation \n Fast Forward Award \n  European Logistic Award",
     },
     {
         id: 3,

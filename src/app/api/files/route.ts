@@ -1,11 +1,24 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { list } from '@vercel/blob';
 
+// Vercel serverless function configuration
+export const runtime = 'nodejs';
+export const maxDuration = 30; // 30 seconds max execution time
+
 // Cache for blob URLs to prevent duplicate API calls
 const urlCache = new Map<string, { url: string; timestamp: number }>();
 const CACHE_TTL = 60 * 60 * 1000; // 1 hour
 
 export async function GET(request: NextRequest) {
+    // Verify blob storage is configured
+    if (!process.env.BLOB_READ_WRITE_TOKEN) {
+        console.error('❌ BLOB_READ_WRITE_TOKEN is not configured');
+        return NextResponse.json({
+            error: 'Blob storage not configured',
+            details: 'BLOB_READ_WRITE_TOKEN environment variable is missing'
+        }, { status: 503 });
+    }
+
     const { searchParams } = new URL(request.url);
     const path = searchParams.get('path');
     const redirect = searchParams.get('redirect') === 'true';
