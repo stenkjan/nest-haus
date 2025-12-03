@@ -972,11 +972,10 @@ export function GrundstueckCheckForm({
               <span className="text-black font-medium">
                 baulichen Anforderungen
               </span>
-              <span className="text-nest-gray"> erfüllt. Für </span>
-              <span className="text-black font-medium">€ 3.000</span>
+              <span className="text-nest-gray"> erfüllt </span>
               <span className="text-nest-gray">
                 {" "}
-                übernehmen wir diese Überprüfung und entwickeln gemeinsam mit
+                Wir übernehmen diese Überprüfung und entwickeln gemeinsam mit
                 dir ein individuelles{" "}
               </span>
               <span className="text-black font-medium">Konzeptcheck</span>
