@@ -972,7 +972,7 @@ export function GrundstueckCheckForm({
               <span className="text-black font-medium">
                 baulichen Anforderungen
               </span>
-              <span className="text-nest-gray"> erfüllt </span>
+              <span className="text-nest-gray"> erfüllt. </span>
               <span className="text-nest-gray">
                 {" "}
                 Wir übernehmen diese Überprüfung und entwickeln gemeinsam mit

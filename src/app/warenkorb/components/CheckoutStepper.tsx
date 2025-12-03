@@ -85,7 +85,8 @@ export default function CheckoutStepper({
   const [internalStepIndex, setInternalStepIndex] = useState<number>(0);
   const [_hasScrolledToBottom, setHasScrolledToBottom] =
     useState<boolean>(false);
-  const [showAppointmentReminder, setShowAppointmentReminder] = useState<boolean>(false);
+  const [showAppointmentReminder, setShowAppointmentReminder] =
+    useState<boolean>(false);
   const isControlled =
     typeof controlledStepIndex === "number" &&
     typeof onStepChange === "function";
@@ -197,14 +198,22 @@ export default function CheckoutStepper({
     if (stepIndex === 2) {
       // Check if user has an appointment
       const hasAppointment = getAppointmentSummary(sessionId);
-      const hasAppointmentFromOther = appointmentDetails && !isAppointmentFromCurrentSession();
-      
+      const hasAppointmentFromOther =
+        appointmentDetails && !isAppointmentFromCurrentSession();
+
       if (!hasAppointment && !hasAppointmentFromOther) {
         // Show reminder popup
         setShowAppointmentReminder(true);
       }
     }
-  }, [stepIndex, isOhneNestMode, appointmentDetails, sessionId, getAppointmentSummary, isAppointmentFromCurrentSession]);
+  }, [
+    stepIndex,
+    isOhneNestMode,
+    appointmentDetails,
+    sessionId,
+    getAppointmentSummary,
+    isAppointmentFromCurrentSession,
+  ]);
 
   useEffect(() => {
     // Sync with configurator's planungspaket when it changes, otherwise use cart item
@@ -1008,7 +1017,7 @@ export default function CheckoutStepper({
 
   const renderProgress = () => {
     return (
-      <div className={`mb-6 ${isOhneNestMode ? 'w-1/2 mx-auto' : 'w-full'}`}>
+      <div className={`mb-6 ${isOhneNestMode ? "w-1/2 mx-auto" : "w-full"}`}>
         {/* Desktop/Tablet */}
         <div className="relative hidden md:block">
           {/* Connecting Line - Only between dots, not extending to edges */}
@@ -1572,31 +1581,31 @@ export default function CheckoutStepper({
                         <div className={`leading-relaxed ${rowTextClass(2)}`}>
                           Planungspaket
                         </div>
-                      <div className={rowSubtitleClass}>
-                        {getRowSubtitle(2)}
+                        <div className={rowSubtitleClass}>
+                          {getRowSubtitle(2)}
+                        </div>
+                      </div>
+                      <div className={`leading-relaxed ${rowTextClass(2)}`}>
+                        {/* Show plan details in both normal and ohne nest mode */}
+                        <span className="inline-flex items-center gap-2">
+                          {selectedPlanName}
+                          {isPlanSelected && (
+                            <>
+                              <span className="text-gray-600">
+                                (
+                                {selectedPlanValue === "basis"
+                                  ? "Standard"
+                                  : PriceUtils.formatPrice(selectedPlanPrice)}
+                                )
+                              </span>
+                              <span aria-hidden className="text-[#3D6CE1]">
+                                ✓
+                              </span>
+                            </>
+                          )}
+                        </span>
                       </div>
                     </div>
-                    <div className={`leading-relaxed ${rowTextClass(2)}`}>
-                      {/* Show plan details in both normal and ohne nest mode */}
-                      <span className="inline-flex items-center gap-2">
-                        {selectedPlanName}
-                        {isPlanSelected && (
-                          <>
-                            <span className="text-gray-600">
-                              (
-                              {selectedPlanValue === "basis"
-                                ? "Standard"
-                                : PriceUtils.formatPrice(selectedPlanPrice)}
-                              )
-                            </span>
-                            <span aria-hidden className="text-[#3D6CE1]">
-                              ✓
-                            </span>
-                          </>
-                        )}
-                      </span>
-                    </div>
-                  </div>
                   )}
                   <div className={rowWrapperClass}>
                     <div className="flex-1 min-w-0">
@@ -1673,8 +1682,14 @@ export default function CheckoutStepper({
                                 // Scroll to appointment section or trigger appointment modal
                                 if (isOhneNestMode) {
                                   // In konzept-check mode, scroll to appointment within same step
-                                  const appointmentSection = document.querySelector('[data-section="appointment-booking"]');
-                                  appointmentSection?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                                  const appointmentSection =
+                                    document.querySelector(
+                                      '[data-section="appointment-booking"]'
+                                    );
+                                  appointmentSection?.scrollIntoView({
+                                    behavior: "smooth",
+                                    block: "start",
+                                  });
                                 } else {
                                   // In normal mode, navigate to appointment step
                                   window.location.hash = "terminvereinbarung";
@@ -2384,7 +2399,10 @@ export default function CheckoutStepper({
                       </p>
                     </div>
 
-                    <div className="w-full md:w-1/2" data-section="appointment-booking">
+                    <div
+                      className="w-full md:w-1/2"
+                      data-section="appointment-booking"
+                    >
                       <AppointmentBooking showLeftSide={false} />
                     </div>
                   </div>
@@ -2421,11 +2439,10 @@ export default function CheckoutStepper({
                         <span className="text-black font-medium">
                           baulichen Anforderungen
                         </span>
-                        <span className="text-nest-gray"> erfüllt. Für </span>
-                        <span className="text-black font-medium">€ 3.000</span>
+                        <span className="text-nest-gray"> erfüllt. </span>
                         <span className="text-nest-gray">
                           {" "}
-                          übernehmen wir diese Überprüfung und entwickeln
+                          Wir übernehmen diese Überprüfung und entwickeln
                           gemeinsam mit dir ein individuelles{" "}
                         </span>
                         <span className="text-black font-medium">
@@ -2535,11 +2552,10 @@ export default function CheckoutStepper({
                         <span className="text-black font-medium">
                           baulichen Anforderungen
                         </span>
-                        <span className="text-nest-gray"> erfüllt. Für </span>
-                        <span className="text-black font-medium">€ 3.000</span>
+                        <span className="text-nest-gray"> erfüllt. </span>
                         <span className="text-nest-gray">
                           {" "}
-                          übernehmen wir diese Überprüfung und entwickeln
+                          Wir übernehmen diese Überprüfung und entwickeln
                           gemeinsam mit dir ein individuelles{" "}
                         </span>
                         <span className="text-black font-medium">
@@ -2782,7 +2798,10 @@ export default function CheckoutStepper({
                 </p>
               </div>
 
-              <div className="w-full md:w-1/2" data-section="appointment-booking">
+              <div
+                className="w-full md:w-1/2"
+                data-section="appointment-booking"
+              >
                 <AppointmentBooking showLeftSide={false} />
               </div>
             </div>
@@ -3195,46 +3214,181 @@ export default function CheckoutStepper({
             {/* Bewerber Data Section - 4 boxes in 2x2 grid with column headers - ONLY IN NORMAL MODE */}
             {!isOhneNestMode && (
               <div className="max-w-6xl mx-auto mt-16 mb-12">
-              {/* Section Headers */}
-              <div className="hidden md:grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
-                <div>
-                  <h3 className="h3-secondary text-black">
-                    <span className="text-black">Bewerber</span>
-                    <span className="text-nest-gray"> Deine Daten</span>
-                  </h3>
+                {/* Section Headers */}
+                <div className="hidden md:grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                  <div>
+                    <h3 className="h3-secondary text-black">
+                      <span className="text-black">Bewerber</span>
+                      <span className="text-nest-gray"> Deine Daten</span>
+                    </h3>
+                  </div>
+                  <div>
+                    <h3 className="h3-secondary text-black">
+                      <span className="text-black">Deine Termine</span>
+                      <span className="text-nest-gray"> Im Überblick</span>
+                    </h3>
+                  </div>
                 </div>
-                <div>
-                  <h3 className="h3-secondary text-black">
-                    <span className="text-black">Deine Termine</span>
-                    <span className="text-nest-gray"> Im Überblick</span>
-                  </h3>
-                </div>
-              </div>
 
-              {/* Content Grid */}
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                {/* Box 1: Bewerber Data (no title) */}
-                <div className="bg-white border border-gray-300 rounded-2xl p-6 flex flex-col justify-center">
-                  <div className="space-y-2">
-                    <div className="grid grid-cols-2 gap-x-8 gap-y-2 text-sm">
+                {/* Content Grid */}
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  {/* Box 1: Bewerber Data (no title) */}
+                  <div className="bg-white border border-gray-300 rounded-2xl p-6 flex flex-col justify-center">
+                    <div className="space-y-2">
+                      <div className="grid grid-cols-2 gap-x-8 gap-y-2 text-sm">
+                        <div>
+                          <div className="text-gray-600">
+                            Vollständiger Name
+                          </div>
+                          <div className="text-gray-900 font-medium">
+                            {getUserData.name && getUserData.lastName
+                              ? `${getUserData.name} ${getUserData.lastName}`
+                              : "—"}
+                          </div>
+                        </div>
+                        <div>
+                          <div className="text-gray-600">Email</div>
+                          <div className="text-gray-900 font-medium">
+                            {getUserData.email || "—"}
+                          </div>
+                        </div>
+                        <div>
+                          <div className="text-gray-600">Telefon</div>
+                          <div className="text-gray-900 font-medium">
+                            {getUserData.phone || "—"}
+                          </div>
+                        </div>
+                        <div>
+                          <div className="text-gray-600">Land</div>
+                          <div className="text-gray-900 font-medium">
+                            {getUserData.country || "—"}
+                          </div>
+                        </div>
+                      </div>
+                      <div className="pt-2">
+                        <button
+                          onClick={() => {
+                            window.location.hash = "entwurf";
+                            // Scroll to the GrundstueckCheckForm after hash change
+                            setTimeout(() => {
+                              const entwurfElement =
+                                document.getElementById("entwurf-formular");
+                              if (entwurfElement) {
+                                entwurfElement.scrollIntoView({
+                                  behavior: "smooth",
+                                  block: "start",
+                                });
+                              }
+                            }, 100);
+                          }}
+                          className="text-blue-600 text-sm hover:underline"
+                        >
+                          Daten bearbeiten
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Box 2: Entwurfsgespräch (no title) */}
+                  <div className="bg-white border border-gray-300 rounded-2xl p-6 flex flex-col justify-center">
+                    <div className="space-y-4">
                       <div>
-                        <div className="text-gray-600">Vollständiger Name</div>
+                        <div className="text-gray-600 text-sm">
+                          {appointmentDetails?.appointmentType === "personal"
+                            ? "Persönliches Gespräch"
+                            : appointmentDetails?.appointmentType === "phone"
+                              ? "Telefonische Beratung"
+                              : "Termin"}
+                        </div>
+                        {isAppointmentInPast ? (
+                          <>
+                            <div className="text-xl font-bold text-gray-900">
+                              Neuen Termin vereinbaren
+                            </div>
+                            <button
+                              onClick={() => {
+                                window.location.hash = "terminvereinbarung";
+                              }}
+                              className="text-blue-600 text-sm hover:underline mt-2"
+                            >
+                              Zur Terminvereinbarung
+                            </button>
+                          </>
+                        ) : (
+                          <>
+                            <div className="text-xl font-bold text-gray-900">
+                              {appointmentDetails?.date
+                                ? new Date(
+                                    appointmentDetails.date
+                                  ).toLocaleDateString("de-DE", {
+                                    day: "2-digit",
+                                    month: "2-digit",
+                                    year: "numeric",
+                                  })
+                                : "—"}
+                            </div>
+                            {appointmentDetails?.time && (
+                              <div className="text-sm text-gray-600 mt-1">
+                                {appointmentDetails.time} Uhr
+                              </div>
+                            )}
+                            <button
+                              onClick={() => {
+                                window.location.hash = "terminvereinbarung";
+                              }}
+                              className="text-blue-600 text-sm hover:underline mt-2"
+                            >
+                              Termin personalisieren
+                            </button>
+                          </>
+                        )}
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Box 3: Grundstücksinformationen (no title) */}
+                  <div className="bg-white border border-gray-300 rounded-2xl p-6 flex flex-col justify-center">
+                    <div className="grid grid-cols-2 md:grid-cols-4 gap-x-8 gap-y-3 text-sm">
+                      <div>
+                        <div className="text-gray-600">Straße und Nummer</div>
                         <div className="text-gray-900 font-medium">
-                          {getUserData.name && getUserData.lastName
-                            ? `${getUserData.name} ${getUserData.lastName}`
-                            : "—"}
+                          {getUserData.address || "—"}
                         </div>
                       </div>
                       <div>
-                        <div className="text-gray-600">Email</div>
+                        <div className="text-gray-600">Stadt</div>
                         <div className="text-gray-900 font-medium">
-                          {getUserData.email || "—"}
+                          {getUserData.city || "—"}
                         </div>
                       </div>
                       <div>
-                        <div className="text-gray-600">Telefon</div>
+                        <div className="text-gray-600">Zusatz</div>
                         <div className="text-gray-900 font-medium">
-                          {getUserData.phone || "—"}
+                          {getUserData.addressLine2 || "—"}
+                        </div>
+                      </div>
+                      <div>
+                        <div className="text-gray-600">Postleitzahl</div>
+                        <div className="text-gray-900 font-medium">
+                          {getUserData.postalCode || "—"}
+                        </div>
+                      </div>
+                      <div>
+                        <div className="text-gray-600">Grundstücknummer</div>
+                        <div className="text-gray-900 font-medium">
+                          {getUserData.propertyNumber || "—"}
+                        </div>
+                      </div>
+                      <div>
+                        <div className="text-gray-600">Bundesland</div>
+                        <div className="text-gray-900 font-medium">
+                          {getUserData.state || "—"}
+                        </div>
+                      </div>
+                      <div>
+                        <div className="text-gray-600">Katastralgemeinde</div>
+                        <div className="text-gray-900 font-medium">
+                          {getUserData.cadastralCommunity || "—"}
                         </div>
                       </div>
                       <div>
@@ -3244,7 +3398,7 @@ export default function CheckoutStepper({
                         </div>
                       </div>
                     </div>
-                    <div className="pt-2">
+                    <div className="pt-3">
                       <button
                         onClick={() => {
                           window.location.hash = "entwurf";
@@ -3266,162 +3420,33 @@ export default function CheckoutStepper({
                       </button>
                     </div>
                   </div>
-                </div>
 
-                {/* Box 2: Entwurfsgespräch (no title) */}
-                <div className="bg-white border border-gray-300 rounded-2xl p-6 flex flex-col justify-center">
-                  <div className="space-y-4">
-                    <div>
+                  {/* Box 4: Lieferungsdatum (no title) */}
+                  <div className="bg-white border border-gray-300 rounded-2xl p-6 flex flex-col justify-center">
+                    <div className="space-y-2">
                       <div className="text-gray-600 text-sm">
-                        {appointmentDetails?.appointmentType === "personal"
-                          ? "Persönliches Gespräch"
-                          : appointmentDetails?.appointmentType === "phone"
-                            ? "Telefonische Beratung"
-                            : "Termin"}
+                        Garantierter Liefertermin
                       </div>
-                      {isAppointmentInPast ? (
-                        <>
-                          <div className="text-xl font-bold text-gray-900">
-                            Neuen Termin vereinbaren
-                          </div>
-                          <button
-                            onClick={() => {
-                              window.location.hash = "terminvereinbarung";
-                            }}
-                            className="text-blue-600 text-sm hover:underline mt-2"
-                          >
-                            Zur Terminvereinbarung
-                          </button>
-                        </>
-                      ) : (
-                        <>
-                          <div className="text-xl font-bold text-gray-900">
-                            {appointmentDetails?.date
-                              ? new Date(
-                                  appointmentDetails.date
-                                ).toLocaleDateString("de-DE", {
-                                  day: "2-digit",
-                                  month: "2-digit",
-                                  year: "numeric",
-                                })
-                              : "—"}
-                          </div>
-                          {appointmentDetails?.time && (
-                            <div className="text-sm text-gray-600 mt-1">
-                              {appointmentDetails.time} Uhr
-                            </div>
-                          )}
-                          <button
-                            onClick={() => {
-                              window.location.hash = "terminvereinbarung";
-                            }}
-                            className="text-blue-600 text-sm hover:underline mt-2"
-                          >
-                            Termin personalisieren
-                          </button>
-                        </>
-                      )}
-                    </div>
-                  </div>
-                </div>
-
-                {/* Box 3: Grundstücksinformationen (no title) */}
-                <div className="bg-white border border-gray-300 rounded-2xl p-6 flex flex-col justify-center">
-                  <div className="grid grid-cols-2 md:grid-cols-4 gap-x-8 gap-y-3 text-sm">
-                    <div>
-                      <div className="text-gray-600">Straße und Nummer</div>
-                      <div className="text-gray-900 font-medium">
-                        {getUserData.address || "—"}
+                      <div className="text-2xl font-bold text-gray-900">
+                        {calculateDeliveryDate}
                       </div>
-                    </div>
-                    <div>
-                      <div className="text-gray-600">Stadt</div>
-                      <div className="text-gray-900 font-medium">
-                        {getUserData.city || "—"}
+                      <div className="text-sm text-gray-600 mt-2">
+                        6 Monate Liefergarantie
                       </div>
-                    </div>
-                    <div>
-                      <div className="text-gray-600">Zusatz</div>
-                      <div className="text-gray-900 font-medium">
-                        {getUserData.addressLine2 || "—"}
-                      </div>
-                    </div>
-                    <div>
-                      <div className="text-gray-600">Postleitzahl</div>
-                      <div className="text-gray-900 font-medium">
-                        {getUserData.postalCode || "—"}
-                      </div>
-                    </div>
-                    <div>
-                      <div className="text-gray-600">Grundstücknummer</div>
-                      <div className="text-gray-900 font-medium">
-                        {getUserData.propertyNumber || "—"}
-                      </div>
-                    </div>
-                    <div>
-                      <div className="text-gray-600">Bundesland</div>
-                      <div className="text-gray-900 font-medium">
-                        {getUserData.state || "—"}
-                      </div>
-                    </div>
-                    <div>
-                      <div className="text-gray-600">Katastralgemeinde</div>
-                      <div className="text-gray-900 font-medium">
-                        {getUserData.cadastralCommunity || "—"}
-                      </div>
-                    </div>
-                    <div>
-                      <div className="text-gray-600">Land</div>
-                      <div className="text-gray-900 font-medium">
-                        {getUserData.country || "—"}
-                      </div>
-                    </div>
-                  </div>
-                  <div className="pt-3">
-                    <button
-                      onClick={() => {
-                        window.location.hash = "entwurf";
-                        // Scroll to the GrundstueckCheckForm after hash change
-                        setTimeout(() => {
-                          const entwurfElement =
-                            document.getElementById("entwurf-formular");
-                          if (entwurfElement) {
-                            entwurfElement.scrollIntoView({
-                              behavior: "smooth",
-                              block: "start",
-                            });
-                          }
-                        }, 100);
-                      }}
-                      className="text-blue-600 text-sm hover:underline"
-                    >
-                      Daten bearbeiten
-                    </button>
-                  </div>
-                </div>
-
-                {/* Box 4: Lieferungsdatum (no title) */}
-                <div className="bg-white border border-gray-300 rounded-2xl p-6 flex flex-col justify-center">
-                  <div className="space-y-2">
-                    <div className="text-gray-600 text-sm">
-                      Garantierter Liefertermin
-                    </div>
-                    <div className="text-2xl font-bold text-gray-900">
-                      {calculateDeliveryDate}
-                    </div>
-                    <div className="text-sm text-gray-600 mt-2">
-                      6 Monate Liefergarantie
                     </div>
                   </div>
                 </div>
               </div>
-            </div>
             )}
 
             {/* So gehts danach weiter Section */}
             <div className="text-center mb-12 pt-4 md:mb-8">
               <h2 className="h2-title text-black mb-2">
-                {isPaymentCompleted ? "Vielen Dank" : isOhneNestMode ? "Dein Überblick" : "So geht's danach weiter"}
+                {isPaymentCompleted
+                  ? "Vielen Dank"
+                  : isOhneNestMode
+                    ? "Dein Überblick"
+                    : "So geht's danach weiter"}
               </h2>
               <p className="p-secondary text-black">
                 {isPaymentCompleted
@@ -4004,69 +4029,70 @@ export default function CheckoutStepper({
                             {!isOhneNestMode &&
                               (configItem?.planungspaket ||
                                 localSelectedPlan) && (
-                              <div className="flex items-center justify-between gap-4 py-3 md:py-4 px-6 md:px-7">
-                                <div className="flex-1 min-w-0">
+                                <div className="flex items-center justify-between gap-4 py-3 md:py-4 px-6 md:px-7">
+                                  <div className="flex-1 min-w-0">
+                                    <div className="text-sm md:text-base lg:text-lg 2xl:text-xl font-normal leading-relaxed text-gray-900">
+                                      {(() => {
+                                        // Get name from cart item first, but use new naming
+                                        if (configItem?.planungspaket?.name) {
+                                          const name =
+                                            configItem?.planungspaket?.name?.toLowerCase() ||
+                                            "";
+                                          if (name.includes("basis"))
+                                            return "Planungspaket 01 Basis";
+                                          if (name.includes("plus"))
+                                            return "Planungspaket 02 Plus";
+                                          if (name.includes("pro"))
+                                            return "Planungspaket 03 Pro";
+                                          return (
+                                            configItem?.planungspaket?.name ||
+                                            "—"
+                                          );
+                                        }
+                                        // Otherwise get from localSelectedPlan
+                                        if (localSelectedPlan) {
+                                          if (localSelectedPlan === "basis")
+                                            return "Planungspaket 01 Basis";
+                                          if (localSelectedPlan === "plus")
+                                            return "Planungspaket 02 Plus";
+                                          if (localSelectedPlan === "pro")
+                                            return "Planungspaket 03 Pro";
+                                          return localSelectedPlan;
+                                        }
+                                        return "—";
+                                      })()}
+                                    </div>
+                                    <div className="text-xs md:text-sm text-gray-500 leading-snug mt-1">
+                                      Planungspaket
+                                    </div>
+                                  </div>
                                   <div className="text-sm md:text-base lg:text-lg 2xl:text-xl font-normal leading-relaxed text-gray-900">
                                     {(() => {
-                                      // Get name from cart item first, but use new naming
+                                      // Determine which package we're dealing with
+                                      let packageType = "basis";
+
                                       if (configItem?.planungspaket?.name) {
                                         const name =
                                           configItem?.planungspaket?.name?.toLowerCase() ||
                                           "";
-                                        if (name.includes("basis"))
-                                          return "Planungspaket 01 Basis";
                                         if (name.includes("plus"))
-                                          return "Planungspaket 02 Plus";
-                                        if (name.includes("pro"))
-                                          return "Planungspaket 03 Pro";
-                                        return (
-                                          configItem?.planungspaket?.name || "—"
-                                        );
+                                          packageType = "plus";
+                                        else if (name.includes("pro"))
+                                          packageType = "pro";
+                                      } else if (localSelectedPlan) {
+                                        packageType = localSelectedPlan || "";
                                       }
-                                      // Otherwise get from localSelectedPlan
-                                      if (localSelectedPlan) {
-                                        if (localSelectedPlan === "basis")
-                                          return "Planungspaket 01 Basis";
-                                        if (localSelectedPlan === "plus")
-                                          return "Planungspaket 02 Plus";
-                                        if (localSelectedPlan === "pro")
-                                          return "Planungspaket 03 Pro";
-                                        return localSelectedPlan;
-                                      }
-                                      return "—";
+
+                                      // Return price display with "Standard" for basis
+                                      return packageType === "basis"
+                                        ? "Standard"
+                                        : packageType === "plus"
+                                          ? "16.900,00€"
+                                          : "21.900,00€";
                                     })()}
                                   </div>
-                                  <div className="text-xs md:text-sm text-gray-500 leading-snug mt-1">
-                                    Planungspaket
-                                  </div>
                                 </div>
-                                <div className="text-sm md:text-base lg:text-lg 2xl:text-xl font-normal leading-relaxed text-gray-900">
-                                  {(() => {
-                                    // Determine which package we're dealing with
-                                    let packageType = "basis";
-
-                                    if (configItem?.planungspaket?.name) {
-                                      const name =
-                                        configItem?.planungspaket?.name?.toLowerCase() ||
-                                        "";
-                                      if (name.includes("plus"))
-                                        packageType = "plus";
-                                      else if (name.includes("pro"))
-                                        packageType = "pro";
-                                    } else if (localSelectedPlan) {
-                                      packageType = localSelectedPlan || "";
-                                    }
-
-                                    // Return price display with "Standard" for basis
-                                    return packageType === "basis"
-                                      ? "Standard"
-                                      : packageType === "plus"
-                                        ? "16.900,00€"
-                                        : "21.900,00€";
-                                  })()}
-                                </div>
-                              </div>
-                            )}
+                              )}
                             {/* Termin mit dem Nest Team row */}
                             <div className="flex items-center justify-between gap-4 py-3 md:py-4 px-6 md:px-7">
                               <div className="flex-1 min-w-0">
@@ -4165,62 +4191,62 @@ export default function CheckoutStepper({
                     {/* Planungspaket row - hide in konzept-check mode */}
                     {!isOhneNestMode &&
                       (configItem?.planungspaket || localSelectedPlan) && (
-                      <div className="flex items-center justify-between gap-4 py-3 md:py-4 px-6 md:px-7 border-t border-gray-200">
-                        <div className="flex-1 min-w-0">
-                          <div className="text-sm md:text-base lg:text-lg 2xl:text-xl font-normal leading-relaxed text-gray-900">
-                            Planungspaket
+                        <div className="flex items-center justify-between gap-4 py-3 md:py-4 px-6 md:px-7 border-t border-gray-200">
+                          <div className="flex-1 min-w-0">
+                            <div className="text-sm md:text-base lg:text-lg 2xl:text-xl font-normal leading-relaxed text-gray-900">
+                              Planungspaket
+                            </div>
+                            <div className="text-xs md:text-sm text-gray-500 leading-snug mt-1">
+                              {(() => {
+                                // Get name from cart item first, but use new naming
+                                if (configItem?.planungspaket?.name) {
+                                  const name =
+                                    configItem?.planungspaket?.name?.toLowerCase() ||
+                                    "";
+                                  if (name.includes("basis"))
+                                    return "Planungspaket 01 Basis";
+                                  if (name.includes("plus"))
+                                    return "Planungspaket 02 Plus";
+                                  if (name.includes("pro"))
+                                    return "Planungspaket 03 Pro";
+                                  return configItem?.planungspaket?.name || "—";
+                                }
+                                // Otherwise get from localSelectedPlan
+                                if (localSelectedPlan) {
+                                  if (localSelectedPlan === "basis")
+                                    return "Planungspaket 01 Basis";
+                                  if (localSelectedPlan === "plus")
+                                    return "Planungspaket 02 Plus";
+                                  if (localSelectedPlan === "pro")
+                                    return "Planungspaket 03 Pro";
+                                }
+                                return "—";
+                              })()}
+                            </div>
                           </div>
-                          <div className="text-xs md:text-sm text-gray-500 leading-snug mt-1">
+                          <div className="text-sm md:text-base lg:text-lg 2xl:text-xl font-normal leading-relaxed text-gray-900">
                             {(() => {
-                              // Get name from cart item first, but use new naming
-                              if (configItem?.planungspaket?.name) {
-                                const name =
-                                  configItem?.planungspaket?.name?.toLowerCase() ||
-                                  "";
-                                if (name.includes("basis"))
-                                  return "Planungspaket 01 Basis";
-                                if (name.includes("plus"))
-                                  return "Planungspaket 02 Plus";
-                                if (name.includes("pro"))
-                                  return "Planungspaket 03 Pro";
-                                return configItem?.planungspaket?.name || "—";
+                              const planPrice =
+                                configItem?.planungspaket?.price ||
+                                (localSelectedPlan
+                                  ? PLANNING_PACKAGES.find(
+                                      (p) => p.value === localSelectedPlan
+                                    )?.price || 0
+                                  : 0);
+
+                              // Check if it's basis planungspaket (should show as Standard)
+                              const planValue =
+                                configItem?.planungspaket?.value ||
+                                localSelectedPlan;
+                              if (planValue === "basis") {
+                                return "Standard";
+                              } else {
+                                return PriceUtils.formatPrice(planPrice);
                               }
-                              // Otherwise get from localSelectedPlan
-                              if (localSelectedPlan) {
-                                if (localSelectedPlan === "basis")
-                                  return "Planungspaket 01 Basis";
-                                if (localSelectedPlan === "plus")
-                                  return "Planungspaket 02 Plus";
-                                if (localSelectedPlan === "pro")
-                                  return "Planungspaket 03 Pro";
-                              }
-                              return "—";
                             })()}
                           </div>
                         </div>
-                        <div className="text-sm md:text-base lg:text-lg 2xl:text-xl font-normal leading-relaxed text-gray-900">
-                          {(() => {
-                            const planPrice =
-                              configItem?.planungspaket?.price ||
-                              (localSelectedPlan
-                                ? PLANNING_PACKAGES.find(
-                                    (p) => p.value === localSelectedPlan
-                                  )?.price || 0
-                                : 0);
-
-                            // Check if it's basis planungspaket (should show as Standard)
-                            const planValue =
-                              configItem?.planungspaket?.value ||
-                              localSelectedPlan;
-                            if (planValue === "basis") {
-                              return "Standard";
-                            } else {
-                              return PriceUtils.formatPrice(planPrice);
-                            }
-                          })()}
-                        </div>
-                      </div>
-                    )}
+                      )}
                     {!isOhneNestMode && (
                       <>
                         <div className="flex items-center justify-between gap-4 py-3 md:py-4 px-6 md:px-7">
@@ -4559,7 +4585,8 @@ export default function CheckoutStepper({
                 Termin erforderlich
               </h3>
               <p className="text-base md:text-lg text-gray-700 mb-6 leading-relaxed">
-                Bitte vereinbaren Sie einen Termin mit uns um Ihre Bestellung abzuschließen
+                Bitte vereinbaren Sie einen Termin mit uns um Ihre Bestellung
+                abzuschließen
               </p>
               <Button
                 variant="primary"
