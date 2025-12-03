@@ -1345,38 +1345,42 @@ export default function UnifiedContentCard({
                 {/* Title first (h2 or h3) */}
                 {headingLevel === "h2" ? (
                   <h2
-                    className={`${headingClass} ${overlayTextColor} font-bold mb-2 md:mb-3 whitespace-pre-line`}
+                    className={`${card.mobileTitleClass || headingClass} ${overlayTextColor} font-bold mb-2 md:mb-3 whitespace-pre-line`}
                   >
                     {getCardText(card, "title")}
                   </h2>
                 ) : (
                   <h3
-                    className={`${headingClass} ${overlayTextColor} font-bold mb-2 md:mb-3 whitespace-pre-line`}
+                    className={`${card.mobileTitleClass || headingClass} ${overlayTextColor} font-bold mb-2 md:mb-3 whitespace-pre-line`}
                   >
                     {getCardText(card, "title")}
                   </h3>
                 )}
                 {/* Description second */}
-                <p className={`p-primary ${overlayTextColor}`}>
+                <p
+                  className={`${card.mobileDescriptionClass || "p-primary"} ${overlayTextColor}`}
+                >
                   {getCardText(card, "description")}
                 </p>
               </>
             ) : (
               <>
                 {/* Default order: Description first */}
-                <p className={`p-primary ${descriptionTextColor} mb-2 md:mb-3`}>
+                <p
+                  className={`${card.mobileDescriptionClass || "p-primary"} ${descriptionTextColor} mb-2 md:mb-3`}
+                >
                   {getCardText(card, "description")}
                 </p>
                 {/* Title second (h2 or h3) */}
                 {headingLevel === "h2" ? (
                   <h2
-                    className={`${headingClass} ${overlayTextColor} font-bold whitespace-pre-line`}
+                    className={`${card.mobileTitleClass || headingClass} ${overlayTextColor} font-bold whitespace-pre-line`}
                   >
                     {getCardText(card, "title")}
                   </h2>
                 ) : (
                   <h3
-                    className={`${headingClass} ${overlayTextColor} font-bold whitespace-pre-line`}
+                    className={`${card.mobileTitleClass || headingClass} ${overlayTextColor} font-bold whitespace-pre-line`}
                   >
                     {getCardText(card, "title")}
                   </h3>

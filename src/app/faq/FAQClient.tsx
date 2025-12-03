@@ -15,7 +15,8 @@ interface FAQItem {
 const faqItems: FAQItem[] = [
   {
     id: 1,
-    question: "Was genau ist ein Nest Haus und wie unterscheidet es sich von einem Fertigteilhaus, Tiny House oder Architektenhaus?",
+    question:
+      "Was genau ist ein Nest Haus und wie unterscheidet es sich von einem Fertigteilhaus, Tiny House oder Architektenhaus?",
     answer:
       "Das Nest Haus versucht durch optimierte Produktionsbedingungen eine enorm hohe Qualität – vergleichbar mit Luxus-Architektenhäusern – leistbar zu machen. Darüber hinaus ermöglichen wir trotz Standardisierung weiterhin individuelle Gestaltungsmöglichkeiten bei der Raumaufteilung und Grundrissplanung. Die hochpräzise Produktion macht es uns möglich, die Module so passgenau zu fertigen, dass sie mehrmals zusammen- und wieder auseinandergebaut werden können. Dadurch entsteht eine Flexibilität ähnlich wie bei einem Tiny House: Du kannst flexibel bleiben und dein Haus mitnehmen, erweitern oder verkaufen. Das Grundstück bleibt dabei stets unabhängig vom Haus.",
   },
@@ -28,8 +29,7 @@ const faqItems: FAQItem[] = [
   {
     id: 3,
     question: "Was kostet der Konzept-Check?",
-    answer:
-      "Der Konzept-Check kostet regulär € 3.000,–.",
+    answer: "Der Konzept-Check kostet regulär € 3.000,–.",
   },
   {
     id: 4,
@@ -39,7 +39,8 @@ const faqItems: FAQItem[] = [
   },
   {
     id: 5,
-    question: "Fenster und Türen – warum sind keine Fenster im Konfigurator zu sehen?",
+    question:
+      "Fenster und Türen – warum sind keine Fenster im Konfigurator zu sehen?",
     answer:
       "Alle Fenster und Türen werden bei uns individuell mit dir gemeinsam und passend zu deinem Grundriss gestaltet. Wir positionieren diese perfekt nach den örtlichen Gegebenheiten, idealer Himmelsausrichtung, Belichtungssituation und deinen persönlichen Präferenzen.",
   },
@@ -63,7 +64,8 @@ const faqItems: FAQItem[] = [
   },
   {
     id: 9,
-    question: "Was passiert, wenn ich mich nach dem Konzept-Check gegen das Nest Haus entscheide?",
+    question:
+      "Was passiert, wenn ich mich nach dem Konzept-Check gegen das Nest Haus entscheide?",
     answer:
       "Die Unterlagen des Konzept-Checks gehören dir. Das bedeutet, du kannst die Grundstücksanalyse auch für andere Bauvorhaben verwenden.",
   },
@@ -207,14 +209,8 @@ export default function FAQClient() {
             {faqItems.map(renderFAQItem)}
           </div>
 
-          {/* CTA Button */}
-          <div className="py-8 md:py-12 flex justify-center">
-            <Link href="/kontakt">
-              <Button variant="primary" size="xs">
-                Melde dich jetzt
-              </Button>
-            </Link>
-          </div>
+          {/* Bottom padding to match top spacing */}
+          <div className="pb-8 md:pb-12"></div>
         </div>
       </section>
 

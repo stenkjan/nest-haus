@@ -34,7 +34,7 @@ export default function ThreeByOneGrid({
   title,
   subtitle,
   maxWidth = true,
-  text = "Standardisierung für Effizienz, Freiheit für Gestaltung. Alles, was sinnvoll standardisiert werden kann, wird perfektioniert. Präzisionsgefertigte Module, effiziente Prozesse und bewährte Konstruktionen sichern höchste Qualität zu einem leistbaren Preis. Gleichzeitig bleibt volle Gestaltungsfreiheit dort, wo sie wirklich zählt.",
+  text = "Standardisierung für Effizienz, Freiheit in der Gestaltung. Alles, was sinnvoll standardisiert werden kann, wird präzise gefertigt. Seriell gefertigte Module, effiziente Prozesse und bewährte Konstruktionen sichern höchste Qualität zu einem leistbaren Preis.",
   mobileText,
   image1 = IMAGES.function.nestHausModulKonzept,
   image2 = IMAGES.function.nestHausModulSeiteKonzept,

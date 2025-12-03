@@ -124,12 +124,6 @@ export const ABLAUF_STEPS_BUTTONS = [
         file: "20250708-Ikea-Layout-A5", // Clean path (API adds files/ prefix and resolves hash/extension)
         fileMode: "open" as const, // Open in new tab
     },
-    {
-        text: "Beratungsgespräch",
-        variant: "landing-secondary-blue" as const,
-        size: "xs" as const,
-        link: "/kontakt",
-    },
 ];
 
 /**

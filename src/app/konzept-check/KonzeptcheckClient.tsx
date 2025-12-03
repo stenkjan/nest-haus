@@ -205,7 +205,7 @@ export default function KonzeptcheckClient() {
                   },
                   {
                     text: "Konzept-Check bestellen",
-                    variant: "landing-secondary",
+                    variant: "landing-secondary-blue",
                     size: "xs",
                     link: "/warenkorb?mode=konzept-check",
                   },

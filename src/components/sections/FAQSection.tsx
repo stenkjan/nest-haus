@@ -48,8 +48,8 @@ const defaultFAQItems: FAQItem[] = [
 export default function FAQSection({
   title = "Klarheit an erster Stelle",
   description = "Antworten auf  häufig gestellte Fragen",
-  buttonText = "Melde dich jetzt",
-  buttonLink = "/kontakt",
+  buttonText = "Zu den FAQs",
+  buttonLink = "/faq",
   faqItems = defaultFAQItems,
 }: FAQSectionProps) {
   const [openIds, setOpenIds] = useState<Set<number>>(new Set([2])); // Start with second question open

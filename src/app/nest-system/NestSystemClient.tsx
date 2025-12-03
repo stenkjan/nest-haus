@@ -168,14 +168,14 @@ export default function NestSystemClient() {
           <section id="dimensionen-module" className="py-8 md:py-16">
             <SectionHeader
               title="Manchmal kommt es auf die Größe an."
-              subtitle="6 Meter Hoch, 8 Meter Breit, unendlich lang."
+              subtitle="6 Meter Hoch, 8 Meter Breit, individuell lang."
               titleClassName="text-white"
               subtitleClassName="text-white"
               wrapperMargin="mb-12 2xl:mb-24"
             />
             <ThreeByOneGrid
               backgroundColor="black"
-              text="<p class='p-secondary text-white'><span class='text-white font-medium'>Standardisierung</span> <span class='text-nest-gray'>für</span> <span class='text-white font-medium'>Effizienz, Freiheit</span> <span class='text-nest-gray'>für</span> <span class='text-white font-medium'>Gestaltung.</span> <span class='text-nest-gray'>Alles, was sinnvoll standardisiert werden kann, wird perfektioniert.</span> <span class='text-white font-medium'>Präzisionsgefertigte Module,</span> <span class='text-nest-gray'>effiziente Prozesse und bewährte Konstruktionen sichern</span> <span class='text-white font-medium'>höchste Qualität</span> <span class='text-nest-gray'>zu einem</span> <span class='text-white font-medium'>leistbaren Preis.</span><br/><br/><span class='text-nest-gray'>Gleichzeitig bleibt volle</span> <span class='text-white font-medium'>Gestaltungsfreiheit</span> <span class='text-nest-gray'>dort, wo sie wirklich zählt.</span></p>"
+              text="<p class='p-secondary text-white'><span class='text-white font-medium'>Standardisierung</span> <span class='text-nest-gray'>für</span> <span class='text-white font-medium'>Effizienz, Freiheit</span> <span class='text-nest-gray'>für</span> <span class='text-white font-medium'>Gestaltung.</span> <span class='text-nest-gray'>Alles, was sinnvoll standardisiert werden kann, wird perfektioniert.</span> <span class='text-white font-medium'>Präzisionsgefertigte Module,</span> <span class='text-nest-gray'>effiziente Prozesse und bewährte Konstruktionen sichern</span> <span class='text-white font-medium'>höchste Qualität</span> <span class='text-nest-gray'>zu einem</span> <span class='text-white font-medium'>leistbaren Preis.</span></p>"
               textPosition="left"
               maxWidth={false}
               image1={IMAGES.function.nestHausModulKonzept}
@@ -189,9 +189,9 @@ export default function NestSystemClient() {
             <div className="pt-16 md:pt-16">
               <ThreeByOneGrid
                 backgroundColor="black"
-                text="<p class='p-secondary text-white'><span class='text-nest-gray'>Das bedeutet:</span> <span class='text-white font-medium'>schnelle Bauzeiten,</span> <span class='text-white font-medium'>zuverlässige Strukturen</span> <span class='text-nest-gray'>und ein</span> <span class='text-white font-medium'>unschlagbares Preis-Leistungs-Verhältnis.</span> <span class='text-nest-gray'>Individualisierung für persönliche Gestaltung. Jedes Zuhause ist einzigartig und genau da, wo es wichtig ist, bieten wir</span> <span class='text-white font-medium'>maximale Freiheit:</span> <span class='text-nest-gray'>Grundriss-gestaltung,Technische Ausstattung, Materialien und Oberflächen, Flexible Wohnflächen.</span></p>"
+                text="<p class='p-secondary text-white'><span class='text-nest-gray'>Gleichzeitig bleibt volle <span class='text-white font-medium'>Gestaltungsfreiheit </span><span class='text-nest-gray'>dort, wo sie wirklich zählt.<span class='text-nest-gray'> Individualisierung für persönliche Gestaltung. Jedes Zuhause ist einzigartig und genau da, wo es wichtig ist, bieten wir</span> <span class='text-white font-medium'>maximale Freiheit:</span> <span class='text-nest-gray'>Grundrissgestaltung, Technische Ausstattung, Materialien und Oberflächen, Flexible Raumaufteilung.</span></p>"
                 textPosition="right"
-                maxWidth={false}
+                maxWidth={false} 
                 image1={IMAGES.function.nestHausModulSeiteKonzept}
                 image2={IMAGES.function.nestHausModulSeiteLiniengrafik}
                 image1Description="Seitliche Ansicht zeigt die durchdachte Konstruktion"
@@ -353,11 +353,11 @@ export default function NestSystemClient() {
             </div>
           </section>
 
-          {/* Section 6 - Konzipiert für deine Ideen */}
+          {/* Section 6 - Kosten-Sparen-Wert erhöhen */}
           <section id="haustechnik" className="w-full py-8 md:py-16 bg-black">
             <SectionHeader
-              title="Konzipiert für deine Ideen"
-              subtitle="Leitungen verlegen muss nicht immer kompliziert sein."
+              title="Kosten-Sparen-Wert erhöhen"
+              subtitle="Einfache Do-It-Yourself-Pakete für alle Bereiche"
               titleClassName="text-white"
               subtitleClassName="text-white"
             />
@@ -405,14 +405,14 @@ Nach Abschluss dieser Arbeiten können die Interior-Platten wieder montiert werd
             {/* Merged Section - Flexibilität */}
             <div className="w-full pt-16 md:pt-32">
               <SectionHeader
-                title="Ob Decke einziehen, oder Haus erweitern."
+                title="Haus erweitern?"
                 subtitle="Dein Nest bleibt flexibel und lässt sich an deine Lebensumstände anpassen"
                 titleClassName="text-white"
                 subtitleClassName="text-nest-gray"
                 wrapperMargin="mb-12 2xl:mb-24"
               />
               <ThreeByOneGrid
-                text="<p class='p-secondary text-white'><span class='text-nest-gray'>Durch intelligente</span> Standardisierung <span class='text-nest-gray'>garantieren wir</span> höchste Qualität, Langlebigkeit und Nachhaltigkeit zum bestmöglichen Preis. <span class='text-nest-gray'>Präzisionsgefertigte Module sorgen für</span> <span class='text-nest-gray'>Stabilität, Energieeffizienz</span> <span class='text-nest-gray'>und ein unvergleichliches Wohngefühl.</span> Dein Zuhause. Dein Stil. Deine Freiheit. <span class='text-nest-gray'>Mit Nest. musst du dich nicht entscheiden,</span> <span class='text-nest-gray'>denn</span> du bekommst alles.</p>"
+                text="<p class='p-secondary text-white'><span class='text-nest-gray'>Durch intelligente</span> Standardisierung <span class='text-nest-gray'> und innovative </span> Modulschnittstellen <span class='text-nest-gray'>garantieren wir</span> höchste Flexibilität, Langlebigkeit und Nachhaltigkeit zum besten Preis. <span class='text-nest-gray'>Mit </span> Nest <span class='text-nest-gray'> wohnst du </span> immer so</span> <span class='text-nest-gray'> wie</span> du es willst.</p>"
                 image1={IMAGES.function.nestHausFundamentPunktfundament}
                 image2={IMAGES.function.nestHausFlexibilitaetErweiterung}
                 image1Description="NEST-Haus Erweiterung Modulbau vergrößern Leichtbau Modul flexibel"

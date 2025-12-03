@@ -44,6 +44,8 @@ export interface ContentCardData {
     mobileTitle?: string;
     mobileSubtitle?: string;
     mobileDescription?: string;
+    mobileTitleClass?: string; // Optional: mobile-only title class override
+    mobileDescriptionClass?: string; // Optional: mobile-only description class override
     image?: string;
     video?: string;
     overlayImage?: string;
@@ -115,7 +117,7 @@ export const MATERIALIEN_CONTENT: ContentCardData[] = [
         title: "Lärche - Fassade",
         subtitle: "",
         description:
-            "Lärchen-Holzlattung vereint natürliche Ästhetik und Langlebigkeit. Warme Farbgebung und charakteristische Maserung sorgen für zeitlose Eleganz. Unbehandelte Lärche ist witterungsbeständig und entwickelt mit der Zeit eine edle silbergraue Patina, die den rustikalen Charme unterstreicht und schützt.",
+            "Lärchen-Holzlattung vereint natürliche Ästhetik und Langlebigkeit. Warme Farbgebung und charakteristische Maserung sorgen für zeitlose Eleganz. Unbehandelte Lärche ist witterungsbeständig und entwickelt mit der Zeit eine edle silbergraue Patina, die den rustikalen Charme unterstreicht.",
         mobileTitle: "Lärche-Fassade",
         mobileSubtitle: "",
         mobileDescription:
@@ -167,7 +169,7 @@ export const MATERIALIEN_CONTENT: ContentCardData[] = [
         title: "Eiche - Innenverkleidung",
         subtitle: "",
         description:
-            "Eichen-Innenverkleidung bringt die Ausstrahlung echten Holzes in Ihre Räume. Warme Farbgebung und charaktervolle Maserung schaffen eine behagliche, hochwertige Atmosphäre. Eiche ist widerstandsfähig und eignet sich für den täglichen Gebrauch – formstabil und langlebig über viele Jahre.",
+            "Eichen-Innenverkleidung bringt die Wärme von Holz in Ihre Räume. Die Farbgebung und charaktervolle Maserung schaffen eine behagliche, hochwertige Atmosphäre. Eiche ist widerstandsfähig und eignet sich für den täglichen Gebrauch – formstabil und langlebig.",
         mobileTitle: "Eiche - Innenverkleidung",
         mobileSubtitle: "",
         mobileDescription:
@@ -203,7 +205,7 @@ export const MATERIALIEN_CONTENT: ContentCardData[] = [
     },
     {
         id: 11,
-        title: "Fichte - Konstruktion",
+        title: "Brettschichtholz",
         subtitle: "",
         description:
             "Brettschichtholz (BSH) ist ein hochwertiger Holzwerkstoff aus verleimten, faserparallel angeordneten Lamellen: formstabil, tragfähig und rissarm – ideal für langlebige Konstruktionen. Zertifizierte Forstwirtschaft und effiziente Fertigung fördern Nachhaltigkeit. Wiederverwendbar und recyclingfähig für eine echte Kreislaufwirtschaft.",
@@ -883,6 +885,8 @@ export const ENTWURF_VIDEO_CARDS_CONTENT: ContentCardData[] = [
         image: IMAGES.function.nestHausInteriorKueche,
         backgroundColor: "#F4F4F4",
         aspectRatio: "2x1", // Portrait format
+        mobileTitleClass: "text-lg md:h3-secondary",
+        mobileDescriptionClass: "text-base md:p-primary",
     },
     {
         id: 3,
@@ -892,6 +896,8 @@ export const ENTWURF_VIDEO_CARDS_CONTENT: ContentCardData[] = [
         video: IMAGES.videos.videoCard04,
         backgroundColor: "#F4F4F4",
         aspectRatio: "2x1", // Portrait format
+        mobileTitleClass: "text-lg md:h3-secondary",
+        mobileDescriptionClass: "text-base md:p-primary",
         buttons: [
             {
                 text: "Termin vereinbaren",
@@ -909,6 +915,8 @@ export const ENTWURF_VIDEO_CARDS_CONTENT: ContentCardData[] = [
         image: IMAGES.hero.mobile.nestHaus3,
         backgroundColor: "#F4F4F4",
         aspectRatio: "2x1", // Portrait format
+        mobileTitleClass: "text-lg md:h3-secondary",
+        mobileDescriptionClass: "text-base md:p-primary",
     },
     {
         id: 5,
@@ -918,6 +926,8 @@ export const ENTWURF_VIDEO_CARDS_CONTENT: ContentCardData[] = [
         image: IMAGES.function.nestHausInteriorSteinplatten,
         backgroundColor: "#f4f4f4",
         aspectRatio: "2x1", // Portrait format
+        mobileTitleClass: "text-lg md:h3-secondary",
+        mobileDescriptionClass: "text-base md:p-primary",
     },
 
 ];
