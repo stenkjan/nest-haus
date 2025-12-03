@@ -1539,11 +1539,9 @@ export default function UnifiedContentCard({
             transition={{ delay: index * 0.1 + 0.4, duration: 0.6 }}
             className="flex flex-col items-start justify-end"
           >
-            {/* Description text above logo - same margin as title */}
-            {card.description && (
-              <p className="p-primary-small text-gray-400 mb-4">
-                {getCardText(card, "description")}
-              </p>
+            {/* Description text above logo - uses parsed quoteText to handle "|||" delimiters */}
+            {quoteText && (
+              <p className="p-primary-small text-gray-400 mb-4">{quoteText}</p>
             )}
 
             {/* Baumeister Gütesiegel Logo */}
