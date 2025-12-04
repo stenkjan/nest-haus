@@ -409,7 +409,7 @@ export function useConfiguratorLogic(_rightPanelRef?: RefObject<HTMLDivElement |
         return null;
       }
     },
-    [configuration]
+    [configuration, geschossdeckeQuantity]
   );
 
   const getDisplayPrice = useCallback(

@@ -1507,7 +1507,7 @@ export default function UnifiedContentCard({
       const titleClass = card.id === 0 ? "h2-title" : "p-primary";
 
       // Refs for overflow detection
-      const titleRef = useRef<HTMLParagraphElement>(null);
+      const titleRef = useRef<HTMLElement>(null);
       const titleContainerRef = useRef<HTMLDivElement>(null);
       const quoteRef = useRef<HTMLParagraphElement>(null);
       const quoteContainerRef = useRef<HTMLDivElement>(null);
@@ -1555,6 +1555,7 @@ export default function UnifiedContentCard({
             {card.title &&
               (card.externalLink ? (
                 <a
+                  ref={titleRef as React.RefObject<HTMLAnchorElement>}
                   href={card.externalLink}
                   target="_blank"
                   rel="noopener noreferrer"
@@ -1565,7 +1566,7 @@ export default function UnifiedContentCard({
                 </a>
               ) : (
                 <p
-                  ref={titleRef}
+                  ref={titleRef as React.RefObject<HTMLParagraphElement>}
                   className={`${titleClass} text-white mb-1 underline`}
                   style={{ fontSize: `${titleScale * 100}%` }}
                 >
@@ -1683,6 +1684,7 @@ export default function UnifiedContentCard({
       );
     }
   );
+  GlassQuoteCard.displayName = "GlassQuoteCard";
 
   // Render glass-quote layout (glass background with quote-style text layout)
   const renderGlassQuoteLayout = (card: ContentCardData, index: number) => {
