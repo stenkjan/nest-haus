@@ -1445,8 +1445,8 @@ export default function UnifiedContentCard({
     // Use custom padding if specified, otherwise use default
     const paddingClasses = card.customPadding || "p-6 md:p-8 lg:p-10";
 
-    // Conditional title class: Use p-tertiary for first card (id: 0), p-primary for others
-    const titleClass = card.id === 0 ? "p-tertiary" : "p-primary";
+    // Conditional title class: Use h2-title for first card (id: 0), p-primary for others
+    const titleClass = card.id === 0 ? "h2-title" : "p-primary";
 
     const cardContent = (
       <div
@@ -1482,7 +1482,7 @@ export default function UnifiedContentCard({
             <div className="mb-2 md:mb-3 flex-shrink-0">{card.icon}</div>
           )}
 
-          {/* Top Text - p-tertiary for first card (id: 0), p-primary for others */}
+          {/* Top Text - h2-title for first card (id: 0), p-primary for others */}
           {card.title &&
             (card.externalLink ? (
               <a
@@ -1550,7 +1550,7 @@ export default function UnifiedContentCard({
             )}
 
             {/* Baumeister Gütesiegel Logo - White SVG, no filter needed */}
-            <div className="w-full max-w-[200px] md:max-w-[240px] lg:max-w-[280px]">
+            <div className="w-full max-w-[200px] md:max-w-[240px] lg:max-w-[280px] min-h-[80px] md:min-h-[100px]">
               <HybridBlobImage
                 path={IMAGES.partners.baumeisterGuetesiegel}
                 alt="Baumeister Gütesiegel"
@@ -1558,6 +1558,8 @@ export default function UnifiedContentCard({
                 height={140}
                 className="w-full h-auto object-contain object-left"
                 strategy="client"
+                isCritical={true}
+                isAboveFold={false}
                 enableCache={true}
               />
             </div>
