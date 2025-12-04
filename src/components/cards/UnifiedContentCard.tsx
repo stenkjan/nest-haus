@@ -1631,59 +1631,26 @@ export default function UnifiedContentCard({
             <div className="flex-1 min-h-[200px] md:min-h-[240px]" />
           )}
 
-          {/* Bottom Section: Attribution or Logo (id: 0) - Fixed height for alignment */}
-          {card.id === 0 ? (
-            // Special case for card id: 0 - Show Baumeister Gütesiegel logo
+          {/* Bottom Section: Attribution - Fixed height for alignment */}
+          {(attributionName || attributionTitle) && (
             <motion.div
               initial={{ y: 20, opacity: 0 }}
               animate={{ y: 0, opacity: 1 }}
               transition={{ delay: index * 0.1 + 0.4, duration: 0.6 }}
-              className="flex flex-col items-start justify-end w-full"
+              className="flex flex-col items-start h-[80px] md:h-[100px] justify-end"
             >
-              {/* Description text above logo */}
-              {card.description && (
-                <p
-                  className="p-primary-small text-gray-400 mb-4"
-                  dangerouslySetInnerHTML={{ __html: quoteText }}
-                />
+              {/* Attribution Name - p-primary */}
+              {attributionName && (
+                <p className="p-primary text-white mb-1">{attributionName}</p>
               )}
 
-              {/* Baumeister Gütesiegel Logo */}
-              <div className="w-full max-w-[200px] md:max-w-[240px] lg:max-w-[280px]">
-                <HybridBlobImage
-                  path={IMAGES.partners.baumeisterGuetesiegel}
-                  alt="Baumeister Gütesiegel"
-                  width={280}
-                  height={140}
-                  className="w-full h-auto object-contain object-left"
-                  strategy="client"
-                  isCritical={false}
-                  enableCache={true}
-                />
-              </div>
+              {/* Attribution Title - p-primary-small */}
+              {attributionTitle && (
+                <p className="p-primary-small text-gray-400">
+                  {attributionTitle}
+                </p>
+              )}
             </motion.div>
-          ) : (
-            // Normal attribution section for other cards
-            (attributionName || attributionTitle) && (
-              <motion.div
-                initial={{ y: 20, opacity: 0 }}
-                animate={{ y: 0, opacity: 1 }}
-                transition={{ delay: index * 0.1 + 0.4, duration: 0.6 }}
-                className="flex flex-col items-start h-[80px] md:h-[100px] justify-end"
-              >
-                {/* Attribution Name - p-primary */}
-                {attributionName && (
-                  <p className="p-primary text-white mb-1">{attributionName}</p>
-                )}
-
-                {/* Attribution Title - p-primary-small */}
-                {attributionTitle && (
-                  <p className="p-primary-small text-gray-400">
-                    {attributionTitle}
-                  </p>
-                )}
-              </motion.div>
-            )
           )}
         </div>
       );

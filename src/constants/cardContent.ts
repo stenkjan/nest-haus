@@ -1106,6 +1106,7 @@ export const GLASS_QUOTE_CARDS_CONTENT: ContentCardData[] = [
         subtitle: "",
         description: "Mitglieder Bundesinnung Bau",
         mobileDescription: "Mitglieder Bundesinnung Bau",
+        image: IMAGES.partners.baumeisterGuetesiegel,
         backgroundColor: "#121212",
         aspectRatio: "2x1", // Portrait format (tall)
         textColor: "text-white",
