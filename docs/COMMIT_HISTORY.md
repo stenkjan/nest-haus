@@ -4,6 +4,19 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [8ac80fcaff390a9acfbae26fb666a3b81dc95aeb] - Thu Dec 4 17:15:55 2025 +0100
+
+**Author**: stenkjan
+**Message**: `Refactor UnifiedContentCard to implement responsive height constraints  - Updated the top section of UnifiedContentCard to use responsive height constraints instead of auto height, enhancing adaptability for different screen sizes. - Adjusted class names to apply specific min/max height conditions based on card id, improving overall layout and preventing text cutoff.  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/components/cards/UnifiedContentCard.tsx
+
+
+---
+
 ## [db286c483e5401b2327e56cdc57a6fd9ec883cde] - Thu Dec 4 17:07:19 2025 +0100
 
 **Author**: stenkjan
