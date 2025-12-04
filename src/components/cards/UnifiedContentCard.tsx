@@ -1547,7 +1547,9 @@ export default function UnifiedContentCard({
             initial={{ y: 20, opacity: 0 }}
             animate={{ y: 0, opacity: 1 }}
             transition={{ delay: index * 0.1, duration: 0.6 }}
-            className="flex flex-col items-start h-[120px] md:h-[140px] overflow-hidden"
+            className={`flex flex-col items-start overflow-hidden ${
+              card.id === 0 ? "h-auto" : "h-[120px] md:h-[140px]"
+            }`}
           >
             {/* Logo Image - White filtered, left-aligned */}
             {card.image && (
@@ -1631,8 +1633,8 @@ export default function UnifiedContentCard({
             <div className="flex-1 min-h-[200px] md:min-h-[240px]" />
           )}
 
-          {/* Bottom Section: Attribution - Fixed height for alignment */}
-          {(attributionName || attributionTitle) && (
+          {/* Bottom Section: Attribution - Fixed height for alignment (not for card id 0) */}
+          {card.id !== 0 && (attributionName || attributionTitle) && (
             <motion.div
               initial={{ y: 20, opacity: 0 }}
               animate={{ y: 0, opacity: 1 }}
