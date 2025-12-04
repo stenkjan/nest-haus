@@ -4,6 +4,19 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [75e0d1c7a8fac22021f0e916972bc1a16856d4ed] - Thu Dec 4 16:59:54 2025 +0100
+
+**Author**: stenkjan
+**Message**: `Enhance UnifiedContentCard styling for card id: 0  - Updated class names in UnifiedContentCard to apply different styles based on card id: 0. - Added conditional styling for improved text display and spacing when card id is 0.  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/components/cards/UnifiedContentCard.tsx
+
+
+---
+
 ## [5c4953d6537221320fada04a32fb20ec25b34232] - Thu Dec 4 16:44:06 2025 +0100
 
 **Author**: stenkjan
