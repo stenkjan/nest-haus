@@ -4,6 +4,20 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [7fb576206ea8749ab5aaf67d378f89a0d2ef204d] - Thu Dec 4 15:19:56 2025 +0100
+
+**Author**: stenkjan
+**Message**: `Update dependencies in useConfiguratorLogic and refine ref types in UnifiedContentCard  - Added geschossdeckeQuantity to dependencies in useConfiguratorLogic to ensure proper reactivity. - Changed titleRef type from HTMLParagraphElement to HTMLElement for better type flexibility in UnifiedContentCard. - Updated ref assignment for titleRef to match the new type definition, ensuring correct element referencing.  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/konfigurator/hooks/useConfiguratorLogic.ts
+- src/components/cards/UnifiedContentCard.tsx
+
+
+---
+
 ## [105c824713b8d902f04543670e26cad757b94ccd] - Thu Dec 4 15:07:14 2025 +0100
 
 **Author**: stenkjan
