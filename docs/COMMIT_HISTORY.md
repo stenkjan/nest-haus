@@ -4,6 +4,25 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [cefae1433b31f645f2e7c7f127a21e0423aa4b72] - Thu Dec 4 13:47:41 2025 +0100
+
+**Author**: stenkjan
+**Message**: `Update contact information across multiple components and templates  - Changed phone number to +43 664 3949605 in , , , and various email templates. - Updated  and  to reflect the new contact number using  component for better security. - Ensured consistency in contact details across the application for improved user experience.  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/datenschutz/DatenschutzClient.tsx
+- src/app/impressum/ImpressumClient.tsx
+- src/app/kontakt/page.tsx
+- src/components/payments/PaymentModal.tsx
+- src/components/sections/AppointmentBooking.tsx
+- src/components/sections/TerminVereinbarenContent.tsx
+- src/components/security/ProtectedPhoneNumber.tsx
+
+
+---
+
 ## [efd8c996c32317a837a91e60e4967d1f8baca3fc] - Thu Dec 4 13:23:54 2025 +0100
 
 **Author**: stenkjan
