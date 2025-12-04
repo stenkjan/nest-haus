@@ -1582,7 +1582,11 @@ export default function UnifiedContentCard({
                   href={card.externalLink}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className={`${titleClass} text-white mb-1 underline hover:opacity-80 transition-opacity cursor-pointer`}
+                  className={`${titleClass} text-white ${
+                    card.id === 0
+                      ? "whitespace-pre-line mb-2"
+                      : "mb-1 underline hover:opacity-80 transition-opacity cursor-pointer"
+                  }`}
                   style={{ fontSize: `${titleScale * 100}%` }}
                 >
                   {getCardText(card, "title")}
@@ -1590,7 +1594,11 @@ export default function UnifiedContentCard({
               ) : (
                 <p
                   ref={titleCallbackRef}
-                  className={`${titleClass} text-white mb-1 underline`}
+                  className={`${titleClass} text-white ${
+                    card.id === 0
+                      ? "whitespace-pre-line mb-2"
+                      : "mb-1 underline"
+                  }`}
                   style={{ fontSize: `${titleScale * 100}%` }}
                 >
                   {getCardText(card, "title")}
