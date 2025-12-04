@@ -1657,6 +1657,7 @@ export default function UnifiedContentCard({
                   height={140}
                   className="w-full h-auto object-contain object-left"
                   strategy="client"
+                  isCritical={true}
                   enableCache={true}
                 />
               </div>
