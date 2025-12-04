@@ -27,6 +27,7 @@ interface SelectionOptionProps {
   categoryId?: string;
   nestModel?: string;
   contributionPrice?: number | null; // Actual price contribution for selected options
+  selectedFensterM2Price?: number | null; // m² price of selected fenster option (for relative pricing)
   geschossdeckeQuantity?: number; // Number of Geschossdecke units selected (affects m² calculation)
 }
 
@@ -44,6 +45,7 @@ export default function SelectionOption({
   categoryId,
   nestModel,
   contributionPrice,
+  selectedFensterM2Price,
   geschossdeckeQuantity,
 }: SelectionOptionProps) {
   const renderPrice = () => {
@@ -308,22 +310,19 @@ export default function SelectionOption({
         );
       }
 
-      // Special handling for Fenster - center price without entspricht (only when amount !== 0)
-      if (categoryId === "fenster") {
-        const formattedPrice = price.amount
-          ? PriceUtils.formatPrice(price.amount)
-          : "0 €";
-
+      // Special handling for Fenster - show relative m² price difference
+      if (categoryId === "fenster" && contributionPrice !== null && contributionPrice !== undefined && selectedFensterM2Price !== null && selectedFensterM2Price !== undefined) {
+        // Calculate m² price difference
+        const m2PriceDiff = contributionPrice - selectedFensterM2Price;
+        const fensterFormattedPrice = PriceUtils.formatPrice(Math.abs(m2PriceDiff));
+        
         return (
           <div className="text-right">
             <p className="text-[clamp(0.625rem,1.1vw,0.875rem)] tracking-wide leading-[1.2]">
               &nbsp;
             </p>
             <p className="text-[clamp(0.625rem,1.1vw,0.875rem)] tracking-wide leading-[1.2]">
-              {price.amount !== undefined && price.amount > 0
-                ? `+${formattedPrice}`
-                : formattedPrice}
-              /m²
+              {m2PriceDiff > 0 ? '+' : m2PriceDiff < 0 ? '-' : ''}{fensterFormattedPrice}/m²
             </p>
             <p className="text-[clamp(0.475rem,0.95vw,0.725rem)] tracking-wide leading-[1.2] text-gray-500">
               &nbsp;
@@ -451,15 +450,19 @@ export default function SelectionOption({
         );
       }
 
-      // Special handling for Fenster - center price without entspricht (only when amount !== 0)
-      if (categoryId === "fenster") {
+      // Special handling for Fenster - show relative m² price difference
+      if (categoryId === "fenster" && contributionPrice !== null && contributionPrice !== undefined && selectedFensterM2Price !== null && selectedFensterM2Price !== undefined) {
+        // Calculate m² price difference
+        const m2PriceDiff = contributionPrice - selectedFensterM2Price;
+        const fensterFormattedPrice = PriceUtils.formatPrice(Math.abs(m2PriceDiff));
+        
         return (
           <div className="text-right">
             <p className="text-[clamp(0.625rem,1.1vw,0.875rem)] tracking-wide leading-[1.2] text-gray-700">
               &nbsp;
             </p>
             <p className="text-[clamp(0.625rem,1.1vw,0.875rem)] tracking-wide leading-[1.2] text-gray-700">
-              -{formattedPrice}/m²
+              {m2PriceDiff < 0 ? '-' : m2PriceDiff > 0 ? '+' : ''}{fensterFormattedPrice}/m²
             </p>
             <p className="text-[clamp(0.475rem,0.95vw,0.725rem)] tracking-wide leading-[1.2] text-gray-500">
               &nbsp;
@@ -571,15 +574,16 @@ export default function SelectionOption({
         );
       }
 
-      // Special handling for Fenster - center price without entspricht (only when amount !== 0)
-      if (categoryId === "fenster") {
+      // Special handling for Fenster - show actual m² price (from contributionPrice), not relative difference
+      if (categoryId === "fenster" && contributionPrice !== null && contributionPrice !== undefined) {
+        const fensterFormattedPrice = PriceUtils.formatPrice(contributionPrice);
         return (
           <div className="text-right">
             <p className={`text-[clamp(0.625rem,1.1vw,0.875rem)] tracking-wide leading-[1.2] ${textColor}`}>
               &nbsp;
             </p>
             <p className={`text-[clamp(0.625rem,1.1vw,0.875rem)] tracking-wide leading-[1.2] ${textColor}`}>
-              {formattedPrice}/m²
+              {fensterFormattedPrice}/m²
             </p>
             <p className="text-[clamp(0.475rem,0.95vw,0.725rem)] tracking-wide leading-[1.2] text-gray-500">
               &nbsp;

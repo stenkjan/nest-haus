@@ -174,8 +174,15 @@ export default function ConfiguratorUI({ logic, rightPanelRef }: ConfiguratorUIP
                   <div className="space-y-2">
                     {category.options.map((option) => {
                       const displayPrice = getDisplayPrice(category.id, option.id);
-                      const contributionPrice = isOptionSelected(category.id, option.id)
+                      // For fenster, always calculate contributionPrice (m² price) for all options
+                      // For other categories, only calculate for selected options
+                      const contributionPrice = (category.id === "fenster" || isOptionSelected(category.id, option.id))
                         ? getActualContributionPrice(category.id, option.id)
+                        : null;
+                      
+                      // For fenster, also get the selected option's m² price for relative pricing
+                      const selectedFensterM2Price = category.id === "fenster" && configuration?.fenster
+                        ? getActualContributionPrice(category.id, configuration.fenster.value)
                         : null;
 
                       let dynamicDescription = option.description;
@@ -199,6 +206,7 @@ export default function ConfiguratorUI({ logic, rightPanelRef }: ConfiguratorUIP
                           categoryId={category.id}
                           nestModel={configuration?.nest?.value}
                           contributionPrice={contributionPrice}
+                          selectedFensterM2Price={selectedFensterM2Price}
                           geschossdeckeQuantity={configuration?.geschossdecke?.quantity || 0}
                           onClick={(optionId) => {
                             handleSelection(category.id, optionId);

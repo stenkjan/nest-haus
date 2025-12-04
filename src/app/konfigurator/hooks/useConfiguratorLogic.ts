@@ -359,13 +359,12 @@ export function useConfiguratorLogic(_rightPanelRef?: RefObject<HTMLDivElement |
 
         if (categoryId === "fenster") {
           if (configuration.belichtungspaket && configuration.nest) {
-            // Use Google Sheets combination prices (F70-N78)
-            const fensterSelectionObj = { category: "fenster", value: optionId, name: "", price: 0 };
-            // Calculate total combination price (belichtungspaket + fenster material)
-            return PriceCalculator.calculateBelichtungspaketPrice(
-              configuration.belichtungspaket,
-              configuration.nest,
-              fensterSelectionObj
+            // Return m² price for fenster using the correct formula: total_price / (nest_size * belichtungspaket_percentage)
+            return PriceCalculator.getFensterPricePerSqm(
+              optionId,
+              configuration.nest.value,
+              configuration.belichtungspaket.value,
+              geschossdeckeQuantity
             );
           }
         }

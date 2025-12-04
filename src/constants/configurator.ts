@@ -172,7 +172,7 @@ export const NEST_OPTIONS = [
     id: 'nest80',
     name: 'Nest. 80',
     description: '75m² Nutzfläche',
-    price: 188619,
+    price: 213032,
     monthly: 990,
     modules: 1
   },
@@ -180,7 +180,7 @@ export const NEST_OPTIONS = [
     id: 'nest100',
     name: 'Nest. 100',
     description: '95m² Nutzfläche',
-    price: 226108,
+    price: 254731,
     monthly: 1187,
     modules: 2
   },
@@ -188,7 +188,7 @@ export const NEST_OPTIONS = [
     id: 'nest120',
     name: 'Nest. 120',
     description: '115m² Nutzfläche',
-    price: 263597,
+    price: 296430,
     monthly: 1384,
     modules: 3
   },
@@ -196,7 +196,7 @@ export const NEST_OPTIONS = [
     id: 'nest140',
     name: 'Nest. 140',
     description: '135m² Nutzfläche',
-    price: 301086,
+    price: 338129,
     monthly: 1581,
     modules: 4
   },
@@ -204,7 +204,7 @@ export const NEST_OPTIONS = [
     id: 'nest160',
     name: 'Nest. 160',
     description: '155m² Nutzfläche',
-    price: 338575,
+    price: 379828,
     monthly: 1778,
     modules: 5
   }

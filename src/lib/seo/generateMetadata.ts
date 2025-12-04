@@ -72,7 +72,7 @@ export const PAGE_SEO_CONFIG = {
     },
     "dein-nest": {
         title: "Dein Nest | Nest-Haus Preise & Konfiguration",
-        description: "Nest 80 ab €188.600, Nest 120 ab €263.600, Nest 160 ab €338.600. Individuell konfigurierbar, transportabel und erweiterbar. Dein modulares Traumhaus.",
+        description: "Nest 80 ab €213.000, Nest 120 ab €296.000, Nest 160 ab €380.000. Individuell konfigurierbar, transportabel und erweiterbar. Dein modulares Traumhaus.",
         keywords: "nest haus preise, nest 80, nest 120, nest 160, modulhaus kosten, individuell konfigurierbar, transportabel, modulhaus österreich, haus erweitern",
         priority: 0.8,
         changeFrequency: "monthly" as const,

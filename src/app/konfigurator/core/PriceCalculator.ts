@@ -372,13 +372,13 @@ export class PriceCalculator {
     }
 
     // Fallback prices when pricing data is not available yet (still loading)
-    // These are the base nest prices from Google Sheets
+    // These are the base nest prices from Google Sheets (updated December 2024)
     const nestFallbackPrices: Record<string, number> = {
-      nest80: 188619,
-      nest100: 226108,
-      nest120: 263597,
-      nest140: 301086,
-      nest160: 338575,
+      nest80: 213032,
+      nest100: 254731,
+      nest120: 296430,
+      nest140: 338129,
+      nest160: 379828,
     };
 
     return nestFallbackPrices[nestType] || 0;

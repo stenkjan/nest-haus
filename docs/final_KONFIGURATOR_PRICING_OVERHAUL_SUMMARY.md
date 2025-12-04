@@ -3032,4 +3032,119 @@ if (optionId === "ohne_belag" && currentSelection) {
 
 **Rule**: When a dash-priced option is selected in a category, the standard option displays "Standard" instead of attempting to calculate a relative price from an undefined dash value.
 
+#### 10. Fallback Price Snapshot Update (December 2024)
+
+**Problem**: Multiple files contained outdated fallback prices from November 2024, causing users to see old prices (e.g., nest80: 188.619€) when the pricing API was slow or failed. The "Dein Nest" page also showed hardcoded outdated prices instead of dynamic values.
+
+**Root Cause**: 
+- Fallback prices in code were never updated after the initial Google Sheets sync
+- Multiple locations had hardcoded prices that became stale
+- Dein Nest page had static HTML prices instead of fetching from API
+
+**Updated Fallback Prices (December 2024)**:
+| Nest Size | Old Price | New Price | Difference |
+|-----------|-----------|-----------|------------|
+| nest80    | 188.619€  | 213.032€  | +24.413€   |
+| nest100   | 226.108€  | 254.731€  | +28.623€   |
+| nest120   | 263.597€  | 296.430€  | +32.833€   |
+| nest140   | 301.086€  | 338.129€  | +37.043€   |
+| nest160   | 338.575€  | 379.828€  | +41.253€   |
+
+**Files Updated**:
+
+1. **PriceCalculator.ts** (lines 376-382):
+```typescript
+const nestFallbackPrices: Record<string, number> = {
+  nest80: 213032,   // was 188619
+  nest100: 254731,  // was 226108
+  nest120: 296430,  // was 263597
+  nest140: 338129,  // was 301086
+  nest160: 379828,  // was 338575
+};
+```
+
+2. **configurator.ts** constants (lines 170-210):
+```typescript
+export const NEST_OPTIONS = [
+  { id: 'nest80', name: 'Nest. 80', price: 213032, ... }, // was 188619
+  { id: 'nest100', name: 'Nest. 100', price: 254731, ... }, // was 226108
+  { id: 'nest120', name: 'Nest. 120', price: 296430, ... }, // was 263597
+  { id: 'nest140', name: 'Nest. 140', price: 338129, ... }, // was 301086
+  { id: 'nest160', name: 'Nest. 160', price: 379828, ... }, // was 338575
+];
+```
+
+3. **pricing/calculate API route** (lines 28-34):
+```typescript
+const nestPrices: Record<string, number> = {
+  'nest80': 213032,   // was 188619
+  'nest100': 254731,  // was 226108
+  'nest120': 296430,  // was 263597
+  'nest140': 338129,  // was 301086
+  'nest160': 379828   // was 338575
+};
+```
+
+4. **Test assertions** (pricing-logic.test.ts):
+- Updated mock data nest prices (lines 21-25)
+- Updated integration test expected totals (line 417: 228139 instead of 203726)
+
+5. **SEO metadata** (generateMetadata.ts line 75):
+```typescript
+description: "Nest 80 ab €213.000, Nest 120 ab €296.000, Nest 160 ab €380.000..."
+// was: "Nest 80 ab €188.600, Nest 120 ab €263.600, Nest 160 ab €338.600..."
+```
+
+6. **Price schema** (priceSchema.ts line 116):
+```typescript
+lowPrice: "213032", // was "188619"
+```
+
+7. **Dein Nest Dynamic Pricing** (DeinNestClient.tsx):
+- Added pricing data fetch from `/api/pricing/data`
+- Replaced hardcoded prices (188.600€, 263.600€, 338.600€) with dynamic values
+- Added `formatPrice()` helper to format prices consistently
+- Fallback to updated prices (213.000€, 296.000€, 380.000€) if API fails
+
+**Implementation Details**:
+
+**Before** (Dein Nest - Hardcoded):
+```tsx
+<h3>75m² ab € 188.600.-</h3>
+<h3>115m² ab € 263.600.-</h3>
+<h3>155m² ab € 338.600.-</h3>
+```
+
+**After** (Dein Nest - Dynamic):
+```tsx
+const [pricingData, setPricingData] = useState<PricingData | null>(null);
+
+useEffect(() => {
+  fetch('/api/pricing/data')
+    .then(res => res.json())
+    .then(data => {
+      if (data.success) setPricingData(data.data);
+    })
+    .catch(error => console.error('Failed to load pricing:', error));
+}, []);
+
+const formatPrice = (price: number | undefined): string => {
+  if (!price) return '213.000'; // Updated fallback
+  return Math.round(price / 1000).toString() + '.000';
+};
+
+<h3>75m² ab € {formatPrice(pricingData?.nest?.nest80?.price)}.-</h3>
+<h3>115m² ab € {formatPrice(pricingData?.nest?.nest120?.price)}.-</h3>
+<h3>155m² ab € {formatPrice(pricingData?.nest?.nest160?.price)}.-</h3>
+```
+
+**Benefits**:
+1. **Always Current**: Dein Nest page now shows real-time prices from Google Sheets
+2. **Better Fallbacks**: If pricing API fails, users see December 2024 prices instead of November 2024 prices
+3. **Consistency**: All locations now reference the same source of truth
+4. **SEO Updated**: Search engines index current prices in metadata and structured data
+5. **Maintainability**: One source of truth for all pricing (Google Sheets)
+
+**Note**: These fallback prices should be updated periodically (suggested: monthly or quarterly) to keep them reasonably accurate as a backup. The primary source of truth remains the Google Sheets API.
+
 ---

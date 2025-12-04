@@ -25,6 +25,14 @@ import {
 } from "@/constants/contentCardPresets";
 import Footer from "@/components/Footer";
 
+interface PricingData {
+  nest?: {
+    nest80?: { price: number };
+    nest120?: { price: number };
+    nest160?: { price: number };
+  };
+}
+
 // Define sections with proper structure for entdecken page
 const sections = [
   {
@@ -78,6 +86,7 @@ export default function DeinNestClient() {
   const [_currentSectionId, setCurrentSectionId] =
     useState<string>("dein-nest-preise");
   const [isMobile, setIsMobile] = useState(false);
+  const [pricingData, setPricingData] = useState<PricingData | null>(null);
   const {
     isOpen,
     openPlanungspakete: _openPlanungspakete,
@@ -98,6 +107,24 @@ export default function DeinNestClient() {
     window.addEventListener("resize", checkDevice);
     return () => window.removeEventListener("resize", checkDevice);
   }, []);
+
+  // Fetch pricing data from API
+  useEffect(() => {
+    fetch("/api/pricing/data")
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.success) {
+          setPricingData(data.data);
+        }
+      })
+      .catch((error) => console.error("Failed to load pricing:", error));
+  }, []);
+
+  // Helper function to format prices for display
+  const formatPrice = (price: number | undefined): string => {
+    if (!price) return "213.000";
+    return Math.round(price / 1000).toString() + ".000";
+  };
 
   return (
     <div
@@ -142,7 +169,8 @@ export default function DeinNestClient() {
                         Nest 80
                       </h2>
                       <h3 className="p-primary text-white drop-shadow-lg">
-                        75m² ab € 188.600.-
+                        75m² ab €{" "}
+                        {formatPrice(pricingData?.nest?.nest80?.price)}.-
                       </h3>
                     </div>
 
@@ -152,7 +180,8 @@ export default function DeinNestClient() {
                         Nest 120
                       </h2>
                       <h3 className="p-primary text-white drop-shadow-lg">
-                        115m² ab € 263.600.-
+                        115m² ab €{" "}
+                        {formatPrice(pricingData?.nest?.nest120?.price)}.-
                       </h3>
                     </div>
 
@@ -162,7 +191,8 @@ export default function DeinNestClient() {
                         Nest 160
                       </h2>
                       <h3 className="p-primary text-white drop-shadow-lg">
-                        155m² ab € 338.600.-
+                        155m² ab €{" "}
+                        {formatPrice(pricingData?.nest?.nest160?.price)}.-
                       </h3>
                     </div>
                   </div>

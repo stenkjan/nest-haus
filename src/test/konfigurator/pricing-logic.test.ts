@@ -15,14 +15,14 @@ import { describe, test, expect, beforeAll } from '@jest/globals';
 import { PriceCalculator } from '@/app/konfigurator/core/PriceCalculator';
 import { PriceUtils } from '@/app/konfigurator/core/PriceUtils';
 
-// Mock pricing data that matches Google Sheets structure
+// Mock pricing data that matches Google Sheets structure (December 2024)
 const mockPricingData = {
   nest: {
-    nest80: { price: 188619, pricePerSqm: 2515, squareMeters: 75 },
-    nest100: { price: 226108, pricePerSqm: 2380, squareMeters: 95 },
-    nest120: { price: 263597, pricePerSqm: 2292, squareMeters: 115 },
-    nest140: { price: 301086, pricePerSqm: 2230, squareMeters: 135 },
-    nest160: { price: 338575, pricePerSqm: 2184, squareMeters: 155 },
+    nest80: { price: 213032, pricePerSqm: 2840, squareMeters: 75 },
+    nest100: { price: 254731, pricePerSqm: 2681, squareMeters: 95 },
+    nest120: { price: 296430, pricePerSqm: 2578, squareMeters: 115 },
+    nest140: { price: 338129, pricePerSqm: 2505, squareMeters: 135 },
+    nest160: { price: 379828, pricePerSqm: 2451, squareMeters: 155 },
   },
   geschossdecke: {
     basePrice: 4115,
@@ -400,7 +400,7 @@ describe('Konfigurator Pricing Logic Tests', () => {
   describe('8. Integration Tests', () => {
     test('complete configuration calculation (nest80 + PVC + light)', () => {
       const config = {
-        nest: { category: 'nest', value: 'nest80', name: 'Nest 80', price: 188619 },
+        nest: { category: 'nest', value: 'nest80', name: 'Nest 80', price: 213032 },
         gebaeudehuelle: { category: 'gebaeudehuelle', value: 'trapezblech', name: 'Trapezblech', price: 0 },
         innenverkleidung: { category: 'innenverkleidung', value: 'ohne_innenverkleidung', name: 'Standard', price: 0 },
         fussboden: { category: 'fussboden', value: 'ohne_belag', name: 'Standard', price: 0 },
@@ -412,9 +412,9 @@ describe('Konfigurator Pricing Logic Tests', () => {
       // Calculate total using PriceCalculator
       const totalPrice = PriceCalculator.calculateTotalPrice(config as any);
 
-      // Expected: 188619 (nest) + 0 (trapezblech) + 0 (ohne_innenverkleidung) + 0 (ohne_belag) + 15107 (belichtung+fenster) + 0 (basis)
+      // Expected: 213032 (nest) + 0 (trapezblech) + 0 (ohne_innenverkleidung) + 0 (ohne_belag) + 15107 (belichtung+fenster) + 0 (basis)
       // Note: belichtungspaket price is the TOTAL combination price (includes fenster)
-      expect(totalPrice).toBe(203726); // 188619 + 15107
+      expect(totalPrice).toBe(228139); // 213032 + 15107
     });
 
     test('verify all relative pricing scenarios work together', () => {

@@ -113,7 +113,7 @@ export function generateProductPriceSchema(
             offers: {
                 "@type": "AggregateOffer",
                 priceCurrency: "EUR",
-                lowPrice: "188619",
+                lowPrice: "213032",
                 highPrice: "450000",
                 availability: "https://schema.org/InStock",
                 offerCount: "5",
