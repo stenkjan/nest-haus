@@ -3,7 +3,7 @@
 import React, { useState, useEffect, useRef, useCallback } from "react";
 import { motion, useMotionValue, animate } from "framer-motion";
 import Link from "next/link";
-import { HybridBlobImage } from "@/components/images";
+import { HybridBlobImage, ClientBlobImage } from "@/components/images";
 import { ClientBlobVideo } from "@/components/images";
 import { Button } from "@/components/ui";
 import { Dialog } from "@/components/ui";
@@ -1434,14 +1434,21 @@ export default function UnifiedContentCard({
     containerRef: React.RefObject<HTMLElement | null>
   ) => {
     const [fontScale, setFontScale] = useState(1);
+    const observedElementRef = useRef<T | null>(null);
 
     useEffect(() => {
+      const textElement = textRef.current;
+      const containerElement = containerRef.current;
+
+      if (!textElement || !containerElement) return;
+
+      // If the observed element has changed (e.g., <p> to <a>), reset font scale
+      if (observedElementRef.current !== textElement) {
+        observedElementRef.current = textElement;
+        setFontScale(1);
+      }
+
       const checkOverflow = () => {
-        if (!textRef.current || !containerRef.current) return;
-
-        const textElement = textRef.current;
-        const containerElement = containerRef.current;
-
         // Check if text overflows container
         const textHeight = textElement.scrollHeight;
         const containerHeight = containerElement.clientHeight;
@@ -1460,18 +1467,15 @@ export default function UnifiedContentCard({
       checkOverflow();
       window.addEventListener("resize", checkOverflow);
       const resizeObserver = new ResizeObserver(checkOverflow);
-      if (containerRef.current) {
-        resizeObserver.observe(containerRef.current);
-      }
-      if (textRef.current) {
-        resizeObserver.observe(textRef.current);
-      }
+
+      resizeObserver.observe(containerElement);
+      resizeObserver.observe(textElement);
 
       return () => {
         window.removeEventListener("resize", checkOverflow);
         resizeObserver.disconnect();
       };
-    }, [textRef, containerRef]); // Removed fontScale from dependencies to prevent infinite loop
+    }, [textRef, containerRef]);
 
     return fontScale;
   };
@@ -1507,10 +1511,47 @@ export default function UnifiedContentCard({
       const titleClass = card.id === 0 ? "h2-title" : "p-primary";
 
       // Refs for overflow detection
-      const titleRef = useRef<HTMLElement>(null);
       const titleContainerRef = useRef<HTMLDivElement>(null);
-      const quoteRef = useRef<HTMLParagraphElement>(null);
       const quoteContainerRef = useRef<HTMLDivElement>(null);
+
+      // Use state-based refs to trigger re-renders when elements change
+      const [titleElement, setTitleElement] = useState<HTMLElement | null>(
+        null
+      );
+      const [quoteElement, setQuoteElement] =
+        useState<HTMLParagraphElement | null>(null);
+
+      // Create callback refs that update state when element changes
+      const titleCallbackRef = useCallback((node: HTMLElement | null) => {
+        setTitleElement(node);
+      }, []);
+
+      const quoteCallbackRef = useCallback(
+        (node: HTMLParagraphElement | null) => {
+          setQuoteElement(node);
+        },
+        []
+      );
+
+      // Convert to stable ref objects for useTextOverflow
+      const titleRef = useRef<HTMLElement>(null);
+      const quoteRef = useRef<HTMLParagraphElement>(null);
+
+      // Update refs when elements change
+      useEffect(() => {
+        if (titleElement) {
+          (titleRef as React.MutableRefObject<HTMLElement | null>).current =
+            titleElement;
+        }
+      }, [titleElement]);
+
+      useEffect(() => {
+        if (quoteElement) {
+          (
+            quoteRef as React.MutableRefObject<HTMLParagraphElement | null>
+          ).current = quoteElement;
+        }
+      }, [quoteElement]);
 
       // Detect overflow and adjust font size
       const titleScale = useTextOverflow(titleRef, titleContainerRef);
@@ -1555,7 +1596,7 @@ export default function UnifiedContentCard({
             {card.title &&
               (card.externalLink ? (
                 <a
-                  ref={titleRef as React.RefObject<HTMLAnchorElement>}
+                  ref={titleCallbackRef}
                   href={card.externalLink}
                   target="_blank"
                   rel="noopener noreferrer"
@@ -1566,7 +1607,7 @@ export default function UnifiedContentCard({
                 </a>
               ) : (
                 <p
-                  ref={titleRef as React.RefObject<HTMLParagraphElement>}
+                  ref={titleCallbackRef}
                   className={`${titleClass} text-white mb-1 underline`}
                   style={{ fontSize: `${titleScale * 100}%` }}
                 >
@@ -1598,7 +1639,7 @@ export default function UnifiedContentCard({
                 </span>
                 {/* Quote Text - p-primary */}
                 <p
-                  ref={quoteRef}
+                  ref={quoteCallbackRef}
                   className="p-primary text-white leading-relaxed"
                   style={{ fontSize: `${quoteScale * 100}%` }}
                   dangerouslySetInnerHTML={{ __html: quoteText }}
@@ -1627,19 +1668,17 @@ export default function UnifiedContentCard({
                 />
               )}
 
-              {/* Baumeister Gütesiegel Logo - White SVG, no filter needed */}
-              <div className="w-full max-w-[200px] md:max-w-[240px] lg:max-w-[280px] min-h-[80px] md:min-h-[100px] flex items-center">
-                <HybridBlobImage
-                  key={`baumeister-logo-${card.id}`}
-                  path={IMAGES.partners.baumeisterGuetesiegel}
+              {/* Baumeister Gütesiegel Logo - White SVG */}
+              <div className="w-full max-w-[200px] md:max-w-[240px] lg:max-w-[280px] min-h-[80px] md:min-h-[100px] flex items-center bg-red-500/10">
+                <ClientBlobImage
+                  key={`baumeister-logo-${card.id}-${Date.now()}`}
+                  path="347-nest-haus-baumeister-guetesiegel-meister-betrieb"
                   alt="Baumeister Gütesiegel"
                   width={280}
                   height={140}
                   className="w-full h-auto object-contain object-left"
                   style={{ display: "block" }}
-                  strategy="client"
-                  isCritical={true}
-                  isAboveFold={true}
+                  priority={true}
                   enableCache={true}
                 />
               </div>
