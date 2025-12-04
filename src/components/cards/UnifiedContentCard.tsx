@@ -1508,8 +1508,7 @@ export default function UnifiedContentCard({
         </motion.div>
 
         {/* Middle Section: Quote Text - Fixed height for alignment */}
-        {/* Skip middle section for card id: 0 (no quote needed) */}
-        {card.id !== 0 && (
+        {card.id !== 0 ? (
           <motion.div
             initial={{ y: 20, opacity: 0 }}
             animate={{ y: 0, opacity: 1 }}
@@ -1528,6 +1527,9 @@ export default function UnifiedContentCard({
               />
             </div>
           </motion.div>
+        ) : (
+          // Spacer for card id: 0 - fixed height without flex-growth to maintain justify-between spacing
+          <div className="h-[200px] md:h-[240px]" />
         )}
 
         {/* Bottom Section: Attribution or Logo (id: 0) - Fixed height for alignment */}
@@ -1547,7 +1549,7 @@ export default function UnifiedContentCard({
               />
             )}
 
-            {/* Baumeister Gütesiegel Logo */}
+            {/* Baumeister Gütesiegel Logo - White SVG, no filter needed */}
             <div className="w-full max-w-[200px] md:max-w-[240px] lg:max-w-[280px]">
               <HybridBlobImage
                 path={IMAGES.partners.baumeisterGuetesiegel}
@@ -1555,9 +1557,6 @@ export default function UnifiedContentCard({
                 width={280}
                 height={140}
                 className="w-full h-auto object-contain object-left"
-                style={{
-                  filter: "brightness(0) invert(1)", // Makes logo white
-                }}
                 strategy="client"
                 enableCache={true}
               />

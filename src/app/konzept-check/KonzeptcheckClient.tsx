@@ -103,6 +103,7 @@ export default function KonzeptcheckClient() {
 
               {/* Buttons at Bottom */}
               <div className="flex gap-4 justify-center">
+                FFFFF
                 <Link href="/warenkorb?mode=konzept-check">
                   <Button variant="primary" size="xs">
                     Konzept-Check bestellen

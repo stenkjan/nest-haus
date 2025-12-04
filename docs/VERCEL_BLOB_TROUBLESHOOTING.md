@@ -538,3 +538,4 @@ curl "http://localhost:3000/api/images?path=hero"
 - Use timeouts for all async operations
 - Test locally AND in Vercel before deploying
 
+
