@@ -15,7 +15,6 @@ import {
 } from '@/constants/configurator'
 import type { PricingData, NestSize } from '@/services/pricing-sheet-service'
 
-import { PriceUtils } from './PriceUtils'
 // REMOVED: SimplePriceCache class - no longer needed after reverting complex pricing logic
 
 interface SelectionOption {
