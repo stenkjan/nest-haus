@@ -1541,13 +1541,17 @@ export default function UnifiedContentCard({
         <div
           className={`relative z-10 h-full flex flex-col justify-between ${paddingClasses}`}
         >
-          {/* Top Section: Logo + Title + Subtitle - Auto height to prevent text cutoff */}
+          {/* Top Section: Logo + Title + Subtitle - Responsive height constraints */}
           <motion.div
             ref={titleContainerRef}
             initial={{ y: 20, opacity: 0 }}
             animate={{ y: 0, opacity: 1 }}
             transition={{ delay: index * 0.1, duration: 0.6 }}
-            className="flex flex-col items-start"
+            className={`flex flex-col items-start overflow-hidden ${
+              card.id === 0 
+                ? "min-h-[180px] max-h-[220px] md:min-h-[200px] md:max-h-[240px] lg:min-h-[220px] lg:max-h-[260px]"
+                : "min-h-[140px] max-h-[180px] md:min-h-[160px] md:max-h-[200px] lg:min-h-[180px] lg:max-h-[220px]"
+            }`}
           >
             {/* Logo Image - White filtered, left-aligned */}
             {card.image && (
