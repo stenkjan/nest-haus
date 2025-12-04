@@ -1430,28 +1430,18 @@ export default function UnifiedContentCard({
 
   // Hook to detect text overflow and adjust font size dynamically
   const useTextOverflow = <T extends HTMLElement>(
-    textRef: React.RefObject<T | null>,
-    containerRef: React.RefObject<HTMLElement | null>
+    element: T | null,
+    container: HTMLElement | null
   ) => {
     const [fontScale, setFontScale] = useState(1);
-    const observedElementRef = useRef<T | null>(null);
 
     useEffect(() => {
-      const textElement = textRef.current;
-      const containerElement = containerRef.current;
-
-      if (!textElement || !containerElement) return;
-
-      // If the observed element has changed (e.g., <p> to <a>), reset font scale
-      if (observedElementRef.current !== textElement) {
-        observedElementRef.current = textElement;
-        setFontScale(1);
-      }
+      if (!element || !container) return;
 
       const checkOverflow = () => {
         // Check if text overflows container
-        const textHeight = textElement.scrollHeight;
-        const containerHeight = containerElement.clientHeight;
+        const textHeight = element.scrollHeight;
+        const containerHeight = container.clientHeight;
 
         setFontScale((prev) => {
           if (textHeight > containerHeight && prev > 0.7) {
@@ -1468,14 +1458,14 @@ export default function UnifiedContentCard({
       window.addEventListener("resize", checkOverflow);
       const resizeObserver = new ResizeObserver(checkOverflow);
 
-      resizeObserver.observe(containerElement);
-      resizeObserver.observe(textElement);
+      resizeObserver.observe(container);
+      resizeObserver.observe(element);
 
       return () => {
         window.removeEventListener("resize", checkOverflow);
         resizeObserver.disconnect();
       };
-    }, [textRef, containerRef]);
+    }, [element, container]); // Re-run when actual elements change
 
     return fontScale;
   };
@@ -1510,9 +1500,19 @@ export default function UnifiedContentCard({
       // Conditional title class: Use h2-title for first card (id: 0), p-primary for others
       const titleClass = card.id === 0 ? "h2-title" : "p-primary";
 
-      // Refs for overflow detection
-      const titleContainerRef = useRef<HTMLDivElement>(null);
-      const quoteContainerRef = useRef<HTMLDivElement>(null);
+      // Refs for overflow detection containers
+      const [titleContainer, setTitleContainer] =
+        useState<HTMLDivElement | null>(null);
+      const [quoteContainer, setQuoteContainer] =
+        useState<HTMLDivElement | null>(null);
+
+      const titleContainerRef = useCallback((node: HTMLDivElement | null) => {
+        setTitleContainer(node);
+      }, []);
+
+      const quoteContainerRef = useCallback((node: HTMLDivElement | null) => {
+        setQuoteContainer(node);
+      }, []);
 
       // Use state-based refs to trigger re-renders when elements change
       const [titleElement, setTitleElement] = useState<HTMLElement | null>(
@@ -1533,29 +1533,9 @@ export default function UnifiedContentCard({
         []
       );
 
-      // Convert to stable ref objects for useTextOverflow
-      const titleRef = useRef<HTMLElement>(null);
-      const quoteRef = useRef<HTMLParagraphElement>(null);
-
-      // Update refs when elements change
-      useEffect(() => {
-        if (titleElement) {
-          (titleRef as React.MutableRefObject<HTMLElement | null>).current =
-            titleElement;
-        }
-      }, [titleElement]);
-
-      useEffect(() => {
-        if (quoteElement) {
-          (
-            quoteRef as React.MutableRefObject<HTMLParagraphElement | null>
-          ).current = quoteElement;
-        }
-      }, [quoteElement]);
-
-      // Detect overflow and adjust font size
-      const titleScale = useTextOverflow(titleRef, titleContainerRef);
-      const quoteScale = useTextOverflow(quoteRef, quoteContainerRef);
+      // Detect overflow and adjust font size - pass actual elements, not refs
+      const titleScale = useTextOverflow(titleElement, titleContainer);
+      const quoteScale = useTextOverflow(quoteElement, quoteContainer);
 
       const cardContent = (
         <div
@@ -1671,7 +1651,7 @@ export default function UnifiedContentCard({
               {/* Baumeister Gütesiegel Logo - White SVG */}
               <div className="w-full max-w-[200px] md:max-w-[240px] lg:max-w-[280px] min-h-[80px] md:min-h-[100px] flex items-center bg-red-500/10">
                 <ClientBlobImage
-                  key={`baumeister-logo-${card.id}-${Date.now()}`}
+                  key={`baumeister-logo-${card.id}`}
                   path="347-nest-haus-baumeister-guetesiegel-meister-betrieb"
                   alt="Baumeister Gütesiegel"
                   width={280}
