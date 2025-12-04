@@ -264,7 +264,7 @@ export function generateAppointmentReminderEmail(data: AppointmentReminderData):
       <p style="margin-top: 12px;">
         <a href="https://nest-haus.at">Website</a> ·
         <a href="mailto:mail@nest-haus.at">E-Mail</a> ·
-        <a href="tel:+436642531869">Telefon</a>
+        <a href="tel:+436643949605">Telefon</a>
       </p>
     </div>
   </div>
@@ -303,7 +303,7 @@ Modulares Wohnen. Nachhaltig. Österreichisch.
 
 Website: https://nest-haus.at
 E-Mail: mail@nest-haus.at
-Telefon: +43 664 2531869
+Telefon: +43 664 3949605
   `;
 
   return { subject, html, text };

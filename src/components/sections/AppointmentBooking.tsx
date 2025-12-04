@@ -3,6 +3,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import { Button } from "@/components/ui";
 import { TerminVereinbarenContent } from "./TerminVereinbarenContent";
+import { ProtectedPhoneNumber } from "@/components/security/ProtectedPhoneNumber";
 import { useCartStore } from "@/store/cartStore";
 import { useConfiguratorStore } from "@/store/configuratorStore";
 import { trackAppointmentBooking } from "@/lib/ga4-tracking";
@@ -786,13 +787,19 @@ const AppointmentBooking = ({
                   </h2>
                   <div className="grid grid-cols-[auto_1fr] gap-x-4 gap-y-1 p-primary-small leading-relaxed">
                     <span className="text-nest-gray">Telefon1:</span>
-                    <span className="text-black font-medium">
-                      +43 (0) 664 2531869
-                    </span>
+                    <ProtectedPhoneNumber
+                      number="+43 664 3949605"
+                      displayFormat="+43 (0) 664 3949605"
+                      className="text-black font-medium"
+                      enableTelLink={true}
+                    />
                     <span className="text-nest-gray">Telefon2:</span>
-                    <span className="text-black font-medium">
-                      +43 (0) 664 1001947
-                    </span>
+                    <ProtectedPhoneNumber
+                      number="+43 660 5649683"
+                      displayFormat="+43 (0) 660 5649683"
+                      className="text-black font-medium"
+                      enableTelLink={true}
+                    />
                     <span className="text-nest-gray">Email:</span>
                     <span className="text-black font-medium">
                       mail@nest-haus.at

@@ -251,11 +251,11 @@ export function generateCustomerConfirmationEmail(data: CustomerConfirmationData
         <div class="info-grid">
         <div class="info-item" style="border-radius:0 !important">
           <div class="info-label">Mobil</div>
-          <div class="info-value">+43 (0) 664 2531869</div>
+          <div class="info-value">+43 (0) 664 3949605</div>
         </div>
           <div class="info-item" style="border-radius:0 !important">
             <div class="info-label">Telefon</div>
-            <div class="info-value">+43 (0) 664 1001947</div>
+            <div class="info-value">+43 (0) 660 5649683</div>
           </div>
           <div class="info-item" style="border-radius:0 !important">
             <div class="info-label">Email</div>
@@ -352,8 +352,8 @@ ${isAppointment
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 KONTAKT - Melde dich!
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-Telefon: +43 (0) 664 1001947
-Mobil: +43 (0) 664 2531869
+Telefon: +43 (0) 660 5649683
+Mobil: +43 (0) 664 3949605
 Email: nest@nest-haus.at
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━

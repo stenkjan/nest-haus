@@ -25,7 +25,7 @@ const localBusinessSchema = {
   name: "NEST-Haus",
   image: "https://nest-haus.at/images/nest-haus-buero.jpg",
   email: "hello@nest.at",
-  telephone: "0043 664 5403399",
+  telephone: "+43 664 3949605",
   address: {
     "@type": "PostalAddress",
     streetAddress: "Zösenberg 51",

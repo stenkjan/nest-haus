@@ -101,7 +101,7 @@ export default function ImpressumClient() {
                   <div className="space-y-4">
                     <div>
                       <h4 className="font-medium mb-2">Telefon</h4>
-                      <p>+43 664 2531869</p>
+                      <p>+43 664 3949605</p>
                     </div>
 
                     <div>

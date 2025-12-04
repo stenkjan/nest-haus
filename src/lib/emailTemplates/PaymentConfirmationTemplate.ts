@@ -763,9 +763,9 @@ export function generatePaymentConfirmationEmail(data: PaymentConfirmationEmailD
             <h3>Kontakt</h3>
             <div class="contact-grid">
               <span class="contact-label">Telefon 1:</span>
-              <span class="contact-value">+43 (0) 664 2531869</span>
+              <span class="contact-value">+43 (0) 664 3949605</span>
               <span class="contact-label">Telefon 2:</span>
-              <span class="contact-value">+43 (0) 664 1001947</span>
+              <span class="contact-value">+43 (0) 660 5649683</span>
               <span class="contact-label">Email:</span>
               <span class="contact-value">mail@nest-haus.at</span>
             </div>
@@ -852,8 +852,8 @@ DIE NÄCHSTEN SCHRITTE:
 4. Umsetzung: Wir starten mit der professionellen Planung und Ausführung
 
 KONTAKT:
-Telefon 1: +43 (0) 664 2531869
-Telefon 2: +43 (0) 664 1001947
+Telefon 1: +43 (0) 664 3949605
+Telefon 2: +43 (0) 660 5649683
 E-Mail: mail@nest-haus.at
 Website: nest-haus.at
 

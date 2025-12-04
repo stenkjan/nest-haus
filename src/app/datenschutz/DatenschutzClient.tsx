@@ -129,7 +129,7 @@ export default function DatenschutzClient() {
                 <br />
                 Zösenberg 51, 8044 Weinitzen
                 <br />
-                Telefon: +43 (0) 664 5403399
+                Telefon: +43 664 3949605
                 <br />
                 E-Mail: markus@sustain-nest.at
               </p>
