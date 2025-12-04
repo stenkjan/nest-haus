@@ -231,7 +231,7 @@ h2 {
 
   /* H2 Title Glass - Larger variant for glass quote cards */
   .h2-title-glass {
-    @apply font-medium text-3xl md:text-3xl lg:text-4xl xl:text-4xl 2xl:text-5xl;
+    @apply font-medium text-3xl sm:text-3xl md:text-3xl lg:text-4xl xl:text-4xl 2xl:text-5xl;
   }
 
   /* H2 Title Large - Significantly larger mobile size, moderately larger desktop */
