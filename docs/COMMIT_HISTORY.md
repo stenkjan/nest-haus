@@ -4,6 +4,19 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [1a84d2da06d2af1cd5a36fd5528c1694eeafd68f] - Thu Dec 4 17:39:52 2025 +0100
+
+**Author**: stenkjan
+**Message**: `Add larger variant for H2 title glass class in globals.css  - Introduced a new class  for larger text styling specifically for glass quote cards. - This class enhances the visual hierarchy and readability of H2 titles in the context of glass-themed designs.  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/globals.css
+
+
+---
+
 ## [fd8fb1e8b082645ebbbcb60edfe495e96b525db2] - Thu Dec 4 17:26:44 2025 +0100
 
 **Author**: stenkjan
