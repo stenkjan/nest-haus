@@ -1285,11 +1285,8 @@ export default function UnifiedContentCard({
     const baseHeadingClass =
       headingLevel === "h2" ? "h2-title" : "h3-secondary";
 
-    // Use larger heading for first card (id: 0) when h2
-    const headingClass =
-      headingLevel === "h2" && card.id === 0
-        ? "h2-title-large"
-        : baseHeadingClass;
+    // Use h2-title for first card (id: 0) when h2 (not h2-title-large)
+    const headingClass = baseHeadingClass;
 
     // Determine text order (default: description first, title second)
     const reverseOrder = card.reverseTextOrder || false;
@@ -1431,6 +1428,51 @@ export default function UnifiedContentCard({
     );
   };
 
+  // Hook to detect text overflow and adjust font size dynamically
+  const useTextOverflow = <T extends HTMLElement>(
+    textRef: React.RefObject<T | null>,
+    containerRef: React.RefObject<HTMLElement | null>
+  ) => {
+    const [fontScale, setFontScale] = useState(1);
+
+    useEffect(() => {
+      const checkOverflow = () => {
+        if (!textRef.current || !containerRef.current) return;
+
+        const textElement = textRef.current;
+        const containerElement = containerRef.current;
+
+        // Check if text overflows container
+        const textHeight = textElement.scrollHeight;
+        const containerHeight = containerElement.clientHeight;
+
+        if (textHeight > containerHeight && fontScale > 0.7) {
+          setFontScale((prev) => Math.max(0.7, prev - 0.05));
+        } else if (textHeight <= containerHeight * 0.9 && fontScale < 1) {
+          setFontScale((prev) => Math.min(1, prev + 0.05));
+        }
+      };
+
+      // Check on mount and resize
+      checkOverflow();
+      window.addEventListener("resize", checkOverflow);
+      const resizeObserver = new ResizeObserver(checkOverflow);
+      if (containerRef.current) {
+        resizeObserver.observe(containerRef.current);
+      }
+      if (textRef.current) {
+        resizeObserver.observe(textRef.current);
+      }
+
+      return () => {
+        window.removeEventListener("resize", checkOverflow);
+        resizeObserver.disconnect();
+      };
+    }, [textRef, containerRef, fontScale]);
+
+    return fontScale;
+  };
+
   // Render glass-quote layout (glass background with quote-style text layout)
   const renderGlassQuoteLayout = (card: ContentCardData, index: number) => {
     // Parse the description to extract quote text and attribution
@@ -1448,16 +1490,27 @@ export default function UnifiedContentCard({
     // Conditional title class: Use h2-title for first card (id: 0), p-primary for others
     const titleClass = card.id === 0 ? "h2-title" : "p-primary";
 
+    // Refs for overflow detection
+    const titleRef = useRef<HTMLParagraphElement>(null);
+    const titleContainerRef = useRef<HTMLDivElement>(null);
+    const quoteRef = useRef<HTMLParagraphElement>(null);
+    const quoteContainerRef = useRef<HTMLDivElement>(null);
+
+    // Detect overflow and adjust font size
+    const titleScale = useTextOverflow(titleRef, titleContainerRef);
+    const quoteScale = useTextOverflow(quoteRef, quoteContainerRef);
+
     const cardContent = (
       <div
         className={`relative z-10 h-full flex flex-col justify-between ${paddingClasses}`}
       >
         {/* Top Section: Logo + Title + Subtitle - Fixed height for alignment */}
         <motion.div
+          ref={titleContainerRef}
           initial={{ y: 20, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
           transition={{ delay: index * 0.1, duration: 0.6 }}
-          className="flex flex-col items-start h-[120px] md:h-[140px]"
+          className="flex flex-col items-start h-[120px] md:h-[140px] overflow-hidden"
         >
           {/* Logo Image - White filtered, left-aligned */}
           {card.image && (
@@ -1490,11 +1543,16 @@ export default function UnifiedContentCard({
                 target="_blank"
                 rel="noopener noreferrer"
                 className={`${titleClass} text-white mb-1 underline hover:opacity-80 transition-opacity cursor-pointer`}
+                style={{ fontSize: `${titleScale * 100}%` }}
               >
                 {getCardText(card, "title")}
               </a>
             ) : (
-              <p className={`${titleClass} text-white mb-1 underline`}>
+              <p
+                ref={titleRef}
+                className={`${titleClass} text-white mb-1 underline`}
+                style={{ fontSize: `${titleScale * 100}%` }}
+              >
                 {getCardText(card, "title")}
               </p>
             ))}
@@ -1510,10 +1568,11 @@ export default function UnifiedContentCard({
         {/* Middle Section: Quote Text - Fixed height for alignment */}
         {card.id !== 0 ? (
           <motion.div
+            ref={quoteContainerRef}
             initial={{ y: 20, opacity: 0 }}
             animate={{ y: 0, opacity: 1 }}
             transition={{ delay: index * 0.1 + 0.2, duration: 0.6 }}
-            className="flex items-center md:items-start flex-1 min-h-[200px] md:min-h-[240px] mt-0 mb-4 md:mb-0 lg:mt-8"
+            className="flex items-center md:items-start flex-1 min-h-[200px] md:min-h-[240px] mt-0 mb-4 md:mb-0 lg:mt-8 overflow-hidden"
           >
             <div className="w-full px-8 md:px-0">
               {/* Large Quote Mark - block element with fixed height */}
@@ -1522,7 +1581,9 @@ export default function UnifiedContentCard({
               </span>
               {/* Quote Text - p-primary */}
               <p
+                ref={quoteRef}
                 className="p-primary text-white leading-relaxed"
+                style={{ fontSize: `${quoteScale * 100}%` }}
                 dangerouslySetInnerHTML={{ __html: quoteText }}
               />
             </div>
@@ -1539,7 +1600,7 @@ export default function UnifiedContentCard({
             initial={{ y: 20, opacity: 0 }}
             animate={{ y: 0, opacity: 1 }}
             transition={{ delay: index * 0.1 + 0.4, duration: 0.6 }}
-            className="flex flex-col items-start justify-end"
+            className="flex flex-col items-start justify-end w-full"
           >
             {/* Description text above logo - uses parsed quoteText to handle "|||" delimiters and HTML */}
             {card.description && (
@@ -1550,16 +1611,18 @@ export default function UnifiedContentCard({
             )}
 
             {/* Baumeister Gütesiegel Logo - White SVG, no filter needed */}
-            <div className="w-full max-w-[200px] md:max-w-[240px] lg:max-w-[280px] min-h-[80px] md:min-h-[100px]">
+            <div className="w-full max-w-[200px] md:max-w-[240px] lg:max-w-[280px] min-h-[80px] md:min-h-[100px] flex items-center">
               <HybridBlobImage
+                key={`baumeister-logo-${card.id}`}
                 path={IMAGES.partners.baumeisterGuetesiegel}
                 alt="Baumeister Gütesiegel"
                 width={280}
                 height={140}
                 className="w-full h-auto object-contain object-left"
+                style={{ display: "block" }}
                 strategy="client"
                 isCritical={true}
-                isAboveFold={false}
+                isAboveFold={true}
                 enableCache={true}
               />
             </div>
