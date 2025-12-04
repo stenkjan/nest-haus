@@ -4,6 +4,19 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [3fff7abc317fc433c98323c0a2562cb5d5c71cc7] - Thu Dec 4 16:15:25 2025 +0100
+
+**Author**: stenkjan
+**Message**: `Add isCritical prop to UnifiedContentCard for enhanced functionality  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/components/cards/UnifiedContentCard.tsx
+
+
+---
+
 ## [b4ab64c24f15b985851aa566d11f85a337f96a03] - Thu Dec 4 16:09:09 2025 +0100
 
 **Author**: stenkjan
