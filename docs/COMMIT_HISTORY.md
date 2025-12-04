@@ -4,6 +4,19 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [5c4953d6537221320fada04a32fb20ec25b34232] - Thu Dec 4 16:44:06 2025 +0100
+
+**Author**: stenkjan
+**Message**: `Refactor UnifiedContentCard and update card content for improved display  - Adjusted height handling in UnifiedContentCard to allow dynamic sizing for card id: 0. - Updated subtitle and description for card id: 0 in card content constants to enhance clarity and relevance.  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/components/cards/UnifiedContentCard.tsx
+
+
+---
+
 ## [0ae17200dafdebe5a5b79b6842503b059656eeb6] - Thu Dec 4 16:33:03 2025 +0100
 
 **Author**: stenkjan
