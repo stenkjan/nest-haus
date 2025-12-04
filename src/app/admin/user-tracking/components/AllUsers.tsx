@@ -579,7 +579,7 @@ function ConfigurationModal({
                             );
                           return match ? (
                             <p className="text-xs text-green-700 font-semibold mt-1">
-                              {match[1]} PV-Module • 0,4 kWpeak pro Panel
+                              {match[1]} PV-Module • 1,8 kWpeak
                             </p>
                           ) : null;
                         })()}

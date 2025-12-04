@@ -132,7 +132,7 @@ export const configuratorData: CategoryData[] = [
       {
         id: 'pv_modules',
         name: 'Photovoltaik-Module',
-        description: '0,4 kWpeak pro Panel\n3 Panels pro PV-Modul',
+        description: '1,8 kWpeak\n4 Panele pro PV-Modul',
         price: { type: 'upgrade', amount: 1170, monthly: 6 }
       }
     ],
