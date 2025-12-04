@@ -1541,15 +1541,13 @@ export default function UnifiedContentCard({
         <div
           className={`relative z-10 h-full flex flex-col justify-between ${paddingClasses}`}
         >
-          {/* Top Section: Logo + Title + Subtitle - Fixed height for alignment */}
+          {/* Top Section: Logo + Title + Subtitle - Auto height to prevent text cutoff */}
           <motion.div
             ref={titleContainerRef}
             initial={{ y: 20, opacity: 0 }}
             animate={{ y: 0, opacity: 1 }}
             transition={{ delay: index * 0.1, duration: 0.6 }}
-            className={`flex flex-col items-start overflow-hidden ${
-              card.id === 0 ? "h-auto" : "h-[120px] md:h-[140px]"
-            }`}
+            className="flex flex-col items-start"
           >
             {/* Logo Image - White filtered, left-aligned */}
             {card.image && (
