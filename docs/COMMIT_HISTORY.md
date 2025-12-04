@@ -4,6 +4,28 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [efd8c996c32317a837a91e60e4967d1f8baca3fc] - Thu Dec 4 13:23:54 2025 +0100
+
+**Author**: stenkjan
+**Message**: `Update fallback prices and implement dynamic pricing for "Dein Nest" page  - Revised fallback prices for nest models to reflect December 2024 values, ensuring users see accurate pricing during API delays. - Updated multiple files including , , and  to replace hardcoded prices with dynamic values fetched from the API. - Enhanced SEO metadata and price schema to align with updated pricing. - Improved test assertions to validate new pricing logic and ensure consistency across the application.  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/api/pricing/calculate/route.ts
+- src/app/dein-nest/DeinNestClient.tsx
+- src/app/konfigurator/components/ConfiguratorUI.tsx
+- src/app/konfigurator/components/SelectionOption.tsx
+- src/app/konfigurator/core/PriceCalculator.ts
+- src/app/konfigurator/hooks/useConfiguratorLogic.ts
+
+
+#### 📚 Documentation Changes
+- docs/final_KONFIGURATOR_PRICING_OVERHAUL_SUMMARY.md
+
+
+---
+
 ## [56b1ee091eb4294bcdf72db3b81928dad3657048] - Thu Dec 4 12:40:33 2025 +0100
 
 **Author**: stenkjan
