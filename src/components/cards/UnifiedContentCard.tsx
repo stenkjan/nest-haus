@@ -1446,11 +1446,14 @@ export default function UnifiedContentCard({
         const textHeight = textElement.scrollHeight;
         const containerHeight = containerElement.clientHeight;
 
-        if (textHeight > containerHeight && fontScale > 0.7) {
-          setFontScale((prev) => Math.max(0.7, prev - 0.05));
-        } else if (textHeight <= containerHeight * 0.9 && fontScale < 1) {
-          setFontScale((prev) => Math.min(1, prev + 0.05));
-        }
+        setFontScale((prev) => {
+          if (textHeight > containerHeight && prev > 0.7) {
+            return Math.max(0.7, prev - 0.05);
+          } else if (textHeight <= containerHeight * 0.9 && prev < 1) {
+            return Math.min(1, prev + 0.05);
+          }
+          return prev;
+        });
       };
 
       // Check on mount and resize
@@ -1468,202 +1471,228 @@ export default function UnifiedContentCard({
         window.removeEventListener("resize", checkOverflow);
         resizeObserver.disconnect();
       };
-    }, [textRef, containerRef, fontScale]);
+    }, [textRef, containerRef]); // Removed fontScale from dependencies to prevent infinite loop
 
     return fontScale;
   };
 
-  // Render glass-quote layout (glass background with quote-style text layout)
-  const renderGlassQuoteLayout = (card: ContentCardData, index: number) => {
-    // Parse the description to extract quote text and attribution
-    // Expected format: "quote text|||attribution name|||attribution title"
-    // Mobile description support: Use mobileDescription if available
-    const description = getCardText(card, "description");
-    const parts = (description || "").split("|||");
-    const quoteText = parts[0] || "";
-    const attributionName = parts[1] || "";
-    const attributionTitle = parts[2] || "";
+  // Separate component for glass quote card to properly use hooks
+  // Defined inside component to access getCardText and getImagePath
+  const GlassQuoteCard = React.memo(
+    ({
+      card,
+      index,
+      getCardText,
+      getImagePath,
+    }: {
+      card: ContentCardData;
+      index: number;
+      getCardText: (
+        card: ContentCardData,
+        field: "title" | "subtitle" | "description"
+      ) => string;
+      getImagePath: (imageUrl: string) => string;
+    }) => {
+      // Parse the description to extract quote text and attribution
+      const description = getCardText(card, "description");
+      const parts = (description || "").split("|||");
+      const quoteText = parts[0] || "";
+      const attributionName = parts[1] || "";
+      const attributionTitle = parts[2] || "";
 
-    // Use custom padding if specified, otherwise use default
-    const paddingClasses = card.customPadding || "p-6 md:p-8 lg:p-10";
+      // Use custom padding if specified, otherwise use default
+      const paddingClasses = card.customPadding || "p-6 md:p-8 lg:p-10";
 
-    // Conditional title class: Use h2-title for first card (id: 0), p-primary for others
-    const titleClass = card.id === 0 ? "h2-title" : "p-primary";
+      // Conditional title class: Use h2-title for first card (id: 0), p-primary for others
+      const titleClass = card.id === 0 ? "h2-title" : "p-primary";
 
-    // Refs for overflow detection
-    const titleRef = useRef<HTMLParagraphElement>(null);
-    const titleContainerRef = useRef<HTMLDivElement>(null);
-    const quoteRef = useRef<HTMLParagraphElement>(null);
-    const quoteContainerRef = useRef<HTMLDivElement>(null);
+      // Refs for overflow detection
+      const titleRef = useRef<HTMLParagraphElement>(null);
+      const titleContainerRef = useRef<HTMLDivElement>(null);
+      const quoteRef = useRef<HTMLParagraphElement>(null);
+      const quoteContainerRef = useRef<HTMLDivElement>(null);
 
-    // Detect overflow and adjust font size
-    const titleScale = useTextOverflow(titleRef, titleContainerRef);
-    const quoteScale = useTextOverflow(quoteRef, quoteContainerRef);
+      // Detect overflow and adjust font size
+      const titleScale = useTextOverflow(titleRef, titleContainerRef);
+      const quoteScale = useTextOverflow(quoteRef, quoteContainerRef);
 
-    const cardContent = (
-      <div
-        className={`relative z-10 h-full flex flex-col justify-between ${paddingClasses}`}
-      >
-        {/* Top Section: Logo + Title + Subtitle - Fixed height for alignment */}
-        <motion.div
-          ref={titleContainerRef}
-          initial={{ y: 20, opacity: 0 }}
-          animate={{ y: 0, opacity: 1 }}
-          transition={{ delay: index * 0.1, duration: 0.6 }}
-          className="flex flex-col items-start h-[120px] md:h-[140px] overflow-hidden"
+      const cardContent = (
+        <div
+          className={`relative z-10 h-full flex flex-col justify-between ${paddingClasses}`}
         >
-          {/* Logo Image - White filtered, left-aligned */}
-          {card.image && (
-            <div className="mb-2 md:mb-3 w-24 h-12 md:w-32 md:h-16 flex-shrink-0">
-              <HybridBlobImage
-                path={getImagePath(card.image)}
-                alt={getCardText(card, "title")}
-                width={128}
-                height={64}
-                className="w-full h-full object-contain object-left"
-                style={{
-                  filter: "brightness(0) invert(1)", // Makes logo white
-                }}
-                strategy="client"
-                enableCache={true}
-              />
-            </div>
-          )}
-
-          {/* Icon fallback */}
-          {!card.image && card.icon && (
-            <div className="mb-2 md:mb-3 flex-shrink-0">{card.icon}</div>
-          )}
-
-          {/* Top Text - h2-title for first card (id: 0), p-primary for others */}
-          {card.title &&
-            (card.externalLink ? (
-              <a
-                href={card.externalLink}
-                target="_blank"
-                rel="noopener noreferrer"
-                className={`${titleClass} text-white mb-1 underline hover:opacity-80 transition-opacity cursor-pointer`}
-                style={{ fontSize: `${titleScale * 100}%` }}
-              >
-                {getCardText(card, "title")}
-              </a>
-            ) : (
-              <p
-                ref={titleRef}
-                className={`${titleClass} text-white mb-1 underline`}
-                style={{ fontSize: `${titleScale * 100}%` }}
-              >
-                {getCardText(card, "title")}
-              </p>
-            ))}
-
-          {/* Secondary Top Text - p-primary-small with mobile text support */}
-          {card.subtitle && (
-            <p className="p-primary-small text-gray-400">
-              {getCardText(card, "subtitle")}
-            </p>
-          )}
-        </motion.div>
-
-        {/* Middle Section: Quote Text - Fixed height for alignment */}
-        {card.id !== 0 ? (
+          {/* Top Section: Logo + Title + Subtitle - Fixed height for alignment */}
           <motion.div
-            ref={quoteContainerRef}
+            ref={titleContainerRef}
             initial={{ y: 20, opacity: 0 }}
             animate={{ y: 0, opacity: 1 }}
-            transition={{ delay: index * 0.1 + 0.2, duration: 0.6 }}
-            className="flex items-center md:items-start flex-1 min-h-[200px] md:min-h-[240px] mt-0 mb-4 md:mb-0 lg:mt-8 overflow-hidden"
+            transition={{ delay: index * 0.1, duration: 0.6 }}
+            className="flex flex-col items-start h-[120px] md:h-[140px] overflow-hidden"
           >
-            <div className="w-full px-8 md:px-0">
-              {/* Large Quote Mark - block element with fixed height */}
-              <span className="block text-4xl md:text-4xl lg:text-5xl text-white/90 leading-none h-8 md:h-8 lg:h-10">
-                &ldquo;
-              </span>
-              {/* Quote Text - p-primary */}
-              <p
-                ref={quoteRef}
-                className="p-primary text-white leading-relaxed"
-                style={{ fontSize: `${quoteScale * 100}%` }}
-                dangerouslySetInnerHTML={{ __html: quoteText }}
-              />
-            </div>
-          </motion.div>
-        ) : (
-          // Spacer for card id: 0 - flex-1 to maintain consistent justify-between spacing with other cards
-          <div className="flex-1 min-h-[200px] md:min-h-[240px]" />
-        )}
-
-        {/* Bottom Section: Attribution or Logo (id: 0) - Fixed height for alignment */}
-        {card.id === 0 ? (
-          // Special case for card id: 0 - Show Baumeister Gütesiegel logo
-          <motion.div
-            initial={{ y: 20, opacity: 0 }}
-            animate={{ y: 0, opacity: 1 }}
-            transition={{ delay: index * 0.1 + 0.4, duration: 0.6 }}
-            className="flex flex-col items-start justify-end w-full"
-          >
-            {/* Description text above logo - uses parsed quoteText to handle "|||" delimiters and HTML */}
-            {card.description && (
-              <p
-                className="p-primary-small text-gray-400 mb-4"
-                dangerouslySetInnerHTML={{ __html: quoteText }}
-              />
+            {/* Logo Image - White filtered, left-aligned */}
+            {card.image && (
+              <div className="mb-2 md:mb-3 w-24 h-12 md:w-32 md:h-16 flex-shrink-0">
+                <HybridBlobImage
+                  path={getImagePath(card.image)}
+                  alt={getCardText(card, "title")}
+                  width={128}
+                  height={64}
+                  className="w-full h-full object-contain object-left"
+                  style={{
+                    filter: "brightness(0) invert(1)", // Makes logo white
+                  }}
+                  strategy="client"
+                  enableCache={true}
+                />
+              </div>
             )}
 
-            {/* Baumeister Gütesiegel Logo - White SVG, no filter needed */}
-            <div className="w-full max-w-[200px] md:max-w-[240px] lg:max-w-[280px] min-h-[80px] md:min-h-[100px] flex items-center">
-              <HybridBlobImage
-                key={`baumeister-logo-${card.id}`}
-                path={IMAGES.partners.baumeisterGuetesiegel}
-                alt="Baumeister Gütesiegel"
-                width={280}
-                height={140}
-                className="w-full h-auto object-contain object-left"
-                style={{ display: "block" }}
-                strategy="client"
-                isCritical={true}
-                isAboveFold={true}
-                enableCache={true}
-              />
-            </div>
+            {/* Icon fallback */}
+            {!card.image && card.icon && (
+              <div className="mb-2 md:mb-3 flex-shrink-0">{card.icon}</div>
+            )}
+
+            {/* Top Text - h2-title for first card (id: 0), p-primary for others */}
+            {card.title &&
+              (card.externalLink ? (
+                <a
+                  href={card.externalLink}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className={`${titleClass} text-white mb-1 underline hover:opacity-80 transition-opacity cursor-pointer`}
+                  style={{ fontSize: `${titleScale * 100}%` }}
+                >
+                  {getCardText(card, "title")}
+                </a>
+              ) : (
+                <p
+                  ref={titleRef}
+                  className={`${titleClass} text-white mb-1 underline`}
+                  style={{ fontSize: `${titleScale * 100}%` }}
+                >
+                  {getCardText(card, "title")}
+                </p>
+              ))}
+
+            {/* Secondary Top Text - p-primary-small with mobile text support */}
+            {card.subtitle && (
+              <p className="p-primary-small text-gray-400">
+                {getCardText(card, "subtitle")}
+              </p>
+            )}
           </motion.div>
-        ) : (
-          // Normal attribution section for other cards
-          (attributionName || attributionTitle) && (
+
+          {/* Middle Section: Quote Text - Fixed height for alignment */}
+          {card.id !== 0 ? (
+            <motion.div
+              ref={quoteContainerRef}
+              initial={{ y: 20, opacity: 0 }}
+              animate={{ y: 0, opacity: 1 }}
+              transition={{ delay: index * 0.1 + 0.2, duration: 0.6 }}
+              className="flex items-center md:items-start flex-1 min-h-[200px] md:min-h-[240px] mt-0 mb-4 md:mb-0 lg:mt-8 overflow-hidden"
+            >
+              <div className="w-full px-8 md:px-0">
+                {/* Large Quote Mark - block element with fixed height */}
+                <span className="block text-4xl md:text-4xl lg:text-5xl text-white/90 leading-none h-8 md:h-8 lg:h-10">
+                  &ldquo;
+                </span>
+                {/* Quote Text - p-primary */}
+                <p
+                  ref={quoteRef}
+                  className="p-primary text-white leading-relaxed"
+                  style={{ fontSize: `${quoteScale * 100}%` }}
+                  dangerouslySetInnerHTML={{ __html: quoteText }}
+                />
+              </div>
+            </motion.div>
+          ) : (
+            // Spacer for card id: 0 - flex-1 to maintain consistent justify-between spacing with other cards
+            <div className="flex-1 min-h-[200px] md:min-h-[240px]" />
+          )}
+
+          {/* Bottom Section: Attribution or Logo (id: 0) - Fixed height for alignment */}
+          {card.id === 0 ? (
+            // Special case for card id: 0 - Show Baumeister Gütesiegel logo
             <motion.div
               initial={{ y: 20, opacity: 0 }}
               animate={{ y: 0, opacity: 1 }}
               transition={{ delay: index * 0.1 + 0.4, duration: 0.6 }}
-              className="flex flex-col items-start h-[80px] md:h-[100px] justify-end"
+              className="flex flex-col items-start justify-end w-full"
             >
-              {/* Attribution Name - p-primary */}
-              {attributionName && (
-                <p className="p-primary text-white mb-1">{attributionName}</p>
+              {/* Description text above logo - uses parsed quoteText to handle "|||" delimiters and HTML */}
+              {card.description && (
+                <p
+                  className="p-primary-small text-gray-400 mb-4"
+                  dangerouslySetInnerHTML={{ __html: quoteText }}
+                />
               )}
 
-              {/* Attribution Title - p-primary-small */}
-              {attributionTitle && (
-                <p className="p-primary-small text-gray-400">
-                  {attributionTitle}
-                </p>
-              )}
+              {/* Baumeister Gütesiegel Logo - White SVG, no filter needed */}
+              <div className="w-full max-w-[200px] md:max-w-[240px] lg:max-w-[280px] min-h-[80px] md:min-h-[100px] flex items-center">
+                <HybridBlobImage
+                  key={`baumeister-logo-${card.id}`}
+                  path={IMAGES.partners.baumeisterGuetesiegel}
+                  alt="Baumeister Gütesiegel"
+                  width={280}
+                  height={140}
+                  className="w-full h-auto object-contain object-left"
+                  style={{ display: "block" }}
+                  strategy="client"
+                  isCritical={true}
+                  isAboveFold={true}
+                  enableCache={true}
+                />
+              </div>
             </motion.div>
-          )
-        )}
-      </div>
-    );
+          ) : (
+            // Normal attribution section for other cards
+            (attributionName || attributionTitle) && (
+              <motion.div
+                initial={{ y: 20, opacity: 0 }}
+                animate={{ y: 0, opacity: 1 }}
+                transition={{ delay: index * 0.1 + 0.4, duration: 0.6 }}
+                className="flex flex-col items-start h-[80px] md:h-[100px] justify-end"
+              >
+                {/* Attribution Name - p-primary */}
+                {attributionName && (
+                  <p className="p-primary text-white mb-1">{attributionName}</p>
+                )}
 
+                {/* Attribution Title - p-primary-small */}
+                {attributionTitle && (
+                  <p className="p-primary-small text-gray-400">
+                    {attributionTitle}
+                  </p>
+                )}
+              </motion.div>
+            )
+          )}
+        </div>
+      );
+
+      return (
+        <div
+          className="relative w-full h-full overflow-hidden rounded-3xl"
+          style={{
+            backgroundColor: "#121212",
+            boxShadow:
+              "inset 0 0 20px rgba(255, 255, 255, 0.6), 0 8px 32px rgba(0, 0, 0, 0.3)",
+          }}
+        >
+          {cardContent}
+        </div>
+      );
+    }
+  );
+
+  // Render glass-quote layout (glass background with quote-style text layout)
+  const renderGlassQuoteLayout = (card: ContentCardData, index: number) => {
     return (
-      <div
-        className="relative w-full h-full overflow-hidden rounded-3xl"
-        style={{
-          backgroundColor: "#121212",
-          boxShadow:
-            "inset 0 0 20px rgba(255, 255, 255, 0.6), 0 8px 32px rgba(0, 0, 0, 0.3)",
-        }}
-      >
-        {cardContent}
-      </div>
+      <GlassQuoteCard
+        card={card}
+        index={index}
+        getCardText={getCardText}
+        getImagePath={getImagePath}
+      />
     );
   };
 
