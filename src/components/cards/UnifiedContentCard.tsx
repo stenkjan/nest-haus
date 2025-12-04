@@ -1528,8 +1528,8 @@ export default function UnifiedContentCard({
             </div>
           </motion.div>
         ) : (
-          // Spacer for card id: 0 - fixed height without flex-growth to maintain justify-between spacing
-          <div className="h-[200px] md:h-[240px]" />
+          // Spacer for card id: 0 - flex-1 to maintain consistent justify-between spacing with other cards
+          <div className="flex-1 min-h-[200px] md:min-h-[240px]" />
         )}
 
         {/* Bottom Section: Attribution or Logo (id: 0) - Fixed height for alignment */}
