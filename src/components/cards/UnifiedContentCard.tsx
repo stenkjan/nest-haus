@@ -3,7 +3,7 @@
 import React, { useState, useEffect, useRef, useCallback } from "react";
 import { motion, useMotionValue, animate } from "framer-motion";
 import Link from "next/link";
-import { HybridBlobImage, ClientBlobImage } from "@/components/images";
+import { HybridBlobImage } from "@/components/images";
 import { ClientBlobVideo } from "@/components/images";
 import { Button } from "@/components/ui";
 import { Dialog } from "@/components/ui";
@@ -1640,7 +1640,7 @@ export default function UnifiedContentCard({
               transition={{ delay: index * 0.1 + 0.4, duration: 0.6 }}
               className="flex flex-col items-start justify-end w-full"
             >
-              {/* Description text above logo - uses parsed quoteText to handle "|||" delimiters and HTML */}
+              {/* Description text above logo */}
               {card.description && (
                 <p
                   className="p-primary-small text-gray-400 mb-4"
@@ -1648,17 +1648,15 @@ export default function UnifiedContentCard({
                 />
               )}
 
-              {/* Baumeister Gütesiegel Logo - White SVG */}
-              <div className="w-full max-w-[200px] md:max-w-[240px] lg:max-w-[280px] min-h-[80px] md:min-h-[100px] flex items-center bg-red-500/10">
-                <ClientBlobImage
-                  key={`baumeister-logo-${card.id}`}
-                  path="347-nest-haus-baumeister-guetesiegel-meister-betrieb"
+              {/* Baumeister Gütesiegel Logo */}
+              <div className="w-full max-w-[200px] md:max-w-[240px] lg:max-w-[280px]">
+                <HybridBlobImage
+                  path={IMAGES.partners.baumeisterGuetesiegel}
                   alt="Baumeister Gütesiegel"
                   width={280}
                   height={140}
                   className="w-full h-auto object-contain object-left"
-                  style={{ display: "block" }}
-                  priority={true}
+                  strategy="client"
                   enableCache={true}
                 />
               </div>

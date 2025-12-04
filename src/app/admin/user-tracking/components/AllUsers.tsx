@@ -8,6 +8,7 @@ interface DetailedItem {
   price: number;
   description?: string;
   squareMeters?: number;
+  quantity?: number;
 }
 
 interface ConfigurationWithDetails {
@@ -175,12 +176,19 @@ function UserCard({
 
   const getCountryFlag = (country: string | null): string => {
     const flags: Record<string, string> = {
-      Germany: "🇩🇪", DE: "🇩🇪",
-      Austria: "🇦🇹", AT: "🇦🇹",
-      Switzerland: "🇨🇭", CH: "🇨🇭",
-      US: "🇺🇸", GB: "🇬🇧", FR: "🇫🇷", IT: "🇮🇹", ES: "🇪🇸",
+      Germany: "🇩🇪",
+      DE: "🇩🇪",
+      Austria: "🇦🇹",
+      AT: "🇦🇹",
+      Switzerland: "🇨🇭",
+      CH: "🇨🇭",
+      US: "🇺🇸",
+      GB: "🇬🇧",
+      FR: "🇫🇷",
+      IT: "🇮🇹",
+      ES: "🇪🇸",
     };
-    return country ? (flags[country] || "🌍") : "🌍";
+    return country ? flags[country] || "🌍" : "🌍";
   };
 
   return (
@@ -197,7 +205,8 @@ function UserCard({
             </span>
             <div className="flex-1">
               <h3 className="text-lg font-semibold text-gray-900">
-                {config.userLocation.city || "Unknown"}, {config.userLocation.country || "Unknown"}
+                {config.userLocation.city || "Unknown"},{" "}
+                {config.userLocation.country || "Unknown"}
               </h3>
               <p className="text-xs text-gray-500 font-mono">
                 {config.userLocation.ipAddress || "Unknown IP"}
@@ -571,18 +580,13 @@ function ConfigurationModal({
                             {config.detailedConfiguration.pvanlage.description}
                           </p>
                         )}
-                        {/* Extract module count from value (e.g., "pv_3" -> "3 Module") */}
-                        {(() => {
-                          const match =
-                            config.detailedConfiguration.pvanlage.value.match(
-                              /pv_(\d+)/
-                            );
-                          return match ? (
-                            <p className="text-xs text-green-700 font-semibold mt-1">
-                              {match[1]} PV-Module • 1,8 kWpeak
-                            </p>
-                          ) : null;
-                        })()}
+                        {/* Display module count from quantity field */}
+                        {config.detailedConfiguration.pvanlage.quantity && (
+                          <p className="text-xs text-green-700 font-semibold mt-1">
+                            {config.detailedConfiguration.pvanlage.quantity}{" "}
+                            PV-Module • 1,8 kWpeak pro Modul
+                          </p>
+                        )}
                       </div>
                       <span className="font-bold text-green-700 ml-4 whitespace-nowrap">
                         €
@@ -905,11 +909,13 @@ export default function AllUsers() {
   const [error, setError] = useState<string | null>(null);
   const [selectedConfig, setSelectedConfig] =
     useState<ConfigurationWithDetails | null>(null);
-  
+
   // Filter & Sort State
   const [showWithConfig, setShowWithConfig] = useState(true);
   const [showWithoutConfig, setShowWithoutConfig] = useState(true);
-  const [sortBy, setSortBy] = useState<'date-newest' | 'date-oldest' | 'location-asc' | 'time-high' | 'time-low'>('date-newest');
+  const [sortBy, setSortBy] = useState<
+    "date-newest" | "date-oldest" | "location-asc" | "time-high" | "time-low"
+  >("date-newest");
 
   useEffect(() => {
     fetchConfigurations();
@@ -960,24 +966,34 @@ export default function AllUsers() {
     // Step 2: Sort
     const sorted = [...filtered];
     switch (sortBy) {
-      case 'date-newest':
-        sorted.sort((a, b) => new Date(b.startTime).getTime() - new Date(a.startTime).getTime());
+      case "date-newest":
+        sorted.sort(
+          (a, b) =>
+            new Date(b.startTime).getTime() - new Date(a.startTime).getTime()
+        );
         break;
-      case 'date-oldest':
-        sorted.sort((a, b) => new Date(a.startTime).getTime() - new Date(b.startTime).getTime());
+      case "date-oldest":
+        sorted.sort(
+          (a, b) =>
+            new Date(a.startTime).getTime() - new Date(b.startTime).getTime()
+        );
         break;
-      case 'location-asc':
+      case "location-asc":
         sorted.sort((a, b) => {
-          const locationA = `${a.userLocation.country || 'ZZZ'} ${a.userLocation.city || 'ZZZ'}`;
-          const locationB = `${b.userLocation.country || 'ZZZ'} ${b.userLocation.city || 'ZZZ'}`;
+          const locationA = `${a.userLocation.country || "ZZZ"} ${a.userLocation.city || "ZZZ"}`;
+          const locationB = `${b.userLocation.country || "ZZZ"} ${b.userLocation.city || "ZZZ"}`;
           return locationA.localeCompare(locationB);
         });
         break;
-      case 'time-high':
-        sorted.sort((a, b) => b.userActivity.timeSpent - a.userActivity.timeSpent);
+      case "time-high":
+        sorted.sort(
+          (a, b) => b.userActivity.timeSpent - a.userActivity.timeSpent
+        );
         break;
-      case 'time-low':
-        sorted.sort((a, b) => a.userActivity.timeSpent - b.userActivity.timeSpent);
+      case "time-low":
+        sorted.sort(
+          (a, b) => a.userActivity.timeSpent - b.userActivity.timeSpent
+        );
         break;
     }
 
@@ -994,9 +1010,7 @@ export default function AllUsers() {
   if (loading) {
     return (
       <div className="bg-white rounded-lg shadow p-6">
-        <h2 className="text-2xl font-bold text-gray-900 mb-4">
-          All Users
-        </h2>
+        <h2 className="text-2xl font-bold text-gray-900 mb-4">All Users</h2>
         <div className="flex items-center justify-center py-12">
           <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
           <span className="ml-3 text-gray-600">Loading users...</span>
@@ -1008,9 +1022,7 @@ export default function AllUsers() {
   if (error) {
     return (
       <div className="bg-white rounded-lg shadow p-6">
-        <h2 className="text-2xl font-bold text-gray-900 mb-4">
-          All Users
-        </h2>
+        <h2 className="text-2xl font-bold text-gray-900 mb-4">All Users</h2>
         <div className="bg-red-50 border border-red-200 rounded-lg p-4">
           <p className="text-red-800">Error: {error}</p>
         </div>
@@ -1023,12 +1035,9 @@ export default function AllUsers() {
       <div className="bg-white rounded-lg shadow p-6">
         <div className="flex justify-between items-center mb-6">
           <div>
-            <h2 className="text-2xl font-bold text-gray-900">
-              All Users
-            </h2>
+            <h2 className="text-2xl font-bold text-gray-900">All Users</h2>
             <p className="text-sm text-gray-600 mt-1">
-              {configurations.length} total users • Click any card for
-              details
+              {configurations.length} total users • Click any card for details
             </p>
           </div>
           <button
@@ -1044,7 +1053,9 @@ export default function AllUsers() {
           <div className="flex flex-wrap gap-4 items-center">
             {/* Sort Dropdown */}
             <div className="flex items-center gap-2">
-              <label className="text-sm font-medium text-gray-700">Sort by:</label>
+              <label className="text-sm font-medium text-gray-700">
+                Sort by:
+              </label>
               <select
                 value={sortBy}
                 onChange={(e) => setSortBy(e.target.value as typeof sortBy)}
