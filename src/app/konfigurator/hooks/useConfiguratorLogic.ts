@@ -358,18 +358,15 @@ export function useConfiguratorLogic(_rightPanelRef?: RefObject<HTMLDivElement |
         }
 
         if (categoryId === "fenster") {
-          if (option?.price?.amount && configuration.belichtungspaket && configuration.nest) {
-            let totalArea = 0;
-            const nestSizeMap: Record<string, number> = {
-              nest80: 80, nest100: 100, nest120: 120, nest140: 140, nest160: 160,
-            };
-            const size = nestSizeMap[configuration.nest.value] || 80;
-            const percentageMap: Record<string, number> = {
-              light: 0.15, medium: 0.22, bright: 0.28,
-            };
-            const percentage = percentageMap[configuration.belichtungspaket.value] || 0.12;
-            totalArea += Math.ceil(size * percentage);
-            return totalArea * option.price.amount;
+          if (configuration.belichtungspaket && configuration.nest) {
+            // Use Google Sheets combination prices (F70-N78)
+            const fensterSelectionObj = { category: "fenster", value: optionId, name: "", price: 0 };
+            // Calculate total combination price (belichtungspaket + fenster material)
+            return PriceCalculator.calculateBelichtungspaketPrice(
+              configuration.belichtungspaket,
+              configuration.nest,
+              fensterSelectionObj
+            );
           }
         }
 
@@ -540,16 +537,28 @@ export function useConfiguratorLogic(_rightPanelRef?: RefObject<HTMLDivElement |
         };
       }
 
-      // Fussboden
+      // Fussboden (Bodenbelag)
       if (pricingData && categoryId === "fussboden") {
         const rawOptionPrice = pricingData.bodenbelag[optionId]?.[currentNestValue];
-        const optionPrice = rawOptionPrice ?? 0;
-        const ohneBelagPrice = pricingData.bodenbelag.ohne_belag?.[currentNestValue] || 0;
         const currentSelection = configuration?.fussboden;
 
+        // If this option has a dash price, show dash
         if (rawOptionPrice === -1) return { type: "dash" as const };
+        
+        // If this option is selected, show as selected
         if (currentSelection && currentSelection.value === optionId) return { type: "selected" as const };
 
+        // Special case: if this is the standard option (ohne_belag) and a DASH option is selected
+        if (optionId === "ohne_belag" && currentSelection) {
+          const rawSelectedPrice = pricingData.bodenbelag[currentSelection.value]?.[currentNestValue];
+          // If selected option is dash, standard should show "standard" not relative price
+          if (rawSelectedPrice === -1) {
+            return { type: "standard" as const };
+          }
+        }
+
+        const optionPrice = rawOptionPrice ?? 0;
+        const ohneBelagPrice = pricingData.bodenbelag.ohne_belag?.[currentNestValue] || 0;
         const normalizedOption = optionPrice === -1 ? 0 : optionPrice;
         const normalizedOhne = ohneBelagPrice === -1 ? 0 : ohneBelagPrice;
         const relativePrice = normalizedOption - normalizedOhne;
@@ -559,15 +568,6 @@ export function useConfiguratorLogic(_rightPanelRef?: RefObject<HTMLDivElement |
 
         const rawSelectedPrice = pricingData.bodenbelag[currentSelection.value]?.[currentNestValue];
         const selectedPrice = rawSelectedPrice ?? 0;
-
-        if (rawSelectedPrice === -1) {
-          if (relativePrice === 0) return { type: "included" as const };
-          return {
-            type: relativePrice > 0 ? ("upgrade" as const) : ("discount" as const),
-            amount: Math.abs(relativePrice),
-            monthly: PriceCalculator.calculateMonthlyPaymentAmount(Math.abs(relativePrice)),
-          };
-        }
 
         const normalizedSelected = selectedPrice === -1 ? 0 : selectedPrice;
         const selectedRelative = normalizedSelected - normalizedOhne;
@@ -586,19 +586,23 @@ export function useConfiguratorLogic(_rightPanelRef?: RefObject<HTMLDivElement |
         const currentSelection = configuration?.planungspaket;
         if (currentSelection && currentSelection.value === optionId) return { type: "selected" as const };
 
+        // Get price for this option
         let dynamicPrice = 0;
         if (optionId === "plus") dynamicPrice = pricingData.planungspaket.plus[currentNestValue];
         else if (optionId === "pro") dynamicPrice = pricingData.planungspaket.pro[currentNestValue];
+        // basis always has price 0
 
-        if (dynamicPrice === 0 && currentSelection?.value === "basis") return { type: "included" as const };
+        // If no selection yet
         if (!currentSelection) {
-          if (dynamicPrice === 0) return { type: "included" as const };
-          return { type: "base" as const, amount: dynamicPrice, monthly: PriceCalculator.calculateMonthlyPaymentAmount(dynamicPrice) };
+          if (dynamicPrice === 0) return { type: "included" as const }; // basis shows as included
+          return { type: "upgrade" as const, amount: dynamicPrice, monthly: PriceCalculator.calculateMonthlyPaymentAmount(dynamicPrice) };
         }
 
+        // Calculate price of currently selected option
         let selectedPrice = 0;
         if (currentSelection.value === "plus") selectedPrice = pricingData.planungspaket.plus[currentNestValue];
         else if (currentSelection.value === "pro") selectedPrice = pricingData.planungspaket.pro[currentNestValue];
+        // basis = 0
 
         const priceDiff = dynamicPrice - selectedPrice;
         if (priceDiff === 0) return { type: "upgrade" as const, amount: 0, monthly: 0 };
@@ -620,6 +624,7 @@ export function useConfiguratorLogic(_rightPanelRef?: RefObject<HTMLDivElement |
                   name: "",
                   price: 0,
               };
+              // Calculate total combination price (belichtung + fenster)
               return PriceCalculator.calculateBelichtungspaketPrice(
                   selectionOption,
                   configuration.nest,
@@ -645,18 +650,16 @@ export function useConfiguratorLogic(_rightPanelRef?: RefObject<HTMLDivElement |
           }
 
           if (categoryId === "fenster") {
-             if (option.price.amount && configuration.belichtungspaket) {
-                  let totalArea = 0;
-                  const nestSizeMap: Record<string, number> = {
-                      nest80: 80, nest100: 100, nest120: 120, nest140: 140, nest160: 160,
-                  };
-                  const size = nestSizeMap[configuration.nest.value] || 80;
-                  const percentageMap: Record<string, number> = {
-                      light: 0.15, medium: 0.22, bright: 0.28,
-                  };
-                  const percentage = percentageMap[configuration.belichtungspaket.value] || 0.12;
-                  totalArea += Math.ceil(size * percentage);
-                  return totalArea * option.price.amount;
+             if (configuration.belichtungspaket) {
+                  // Use Google Sheets combination prices (F70-N78)
+                  // Create a temporary fenster selection object
+                  const fensterSelectionObj = { category: "fenster", value: optionId, name: "", price: 0 };
+                  // Calculate total combination price (belichtungspaket + this fenster material)
+                  return PriceCalculator.calculateBelichtungspaketPrice(
+                    configuration.belichtungspaket,
+                    configuration.nest,
+                    fensterSelectionObj
+                  );
              }
           }
           
@@ -667,8 +670,98 @@ export function useConfiguratorLogic(_rightPanelRef?: RefObject<HTMLDivElement |
           return option.price.amount || 0;
       };
 
+      // Special handling for belichtungspaket relative pricing
+      if (categoryId === "belichtungspaket" && pricingData && configuration?.nest && configuration?.fenster) {
+        const currentSelection = configuration.belichtungspaket;
+        
+        if (currentSelection && currentSelection.value === optionId) {
+          return { type: "selected" as const };
+        }
+        
+        // Calculate price for this option (keeping fenster material the same)
+        const optionSelectionObj = { category: "belichtungspaket", value: optionId, name: "", price: 0 };
+        const optionPrice = PriceCalculator.calculateBelichtungspaketPrice(
+          optionSelectionObj,
+          configuration.nest,
+          configuration.fenster
+        );
+        
+        if (optionPrice === -1) return { type: "dash" as const };
+        
+        if (!currentSelection) {
+          // No selection yet - show as base price
+          return { 
+            type: "upgrade" as const, 
+            amount: optionPrice, 
+            monthly: PriceCalculator.calculateMonthlyPaymentAmount(optionPrice) 
+          };
+        }
+        
+        // Calculate price for currently selected option (with same fenster material)
+        const currentSelectionObj = { category: "belichtungspaket", value: currentSelection.value, name: "", price: 0 };
+        const currentPrice = PriceCalculator.calculateBelichtungspaketPrice(
+          currentSelectionObj,
+          configuration.nest,
+          configuration.fenster
+        );
+        
+        const priceDiff = optionPrice - currentPrice;
+        
+        if (priceDiff === 0) return { type: "upgrade" as const, amount: 0, monthly: 0 };
+        return {
+          type: priceDiff > 0 ? ("upgrade" as const) : ("discount" as const),
+          amount: Math.abs(priceDiff),
+          monthly: PriceCalculator.calculateMonthlyPaymentAmount(Math.abs(priceDiff)),
+        };
+      }
+
+      // Special handling for fenster relative pricing
+      if (categoryId === "fenster" && pricingData && configuration?.nest && configuration?.belichtungspaket) {
+        const currentSelection = configuration.fenster;
+        
+        if (currentSelection && currentSelection.value === optionId) {
+          return { type: "selected" as const };
+        }
+        
+        // Calculate price for this option (keeping belichtungspaket the same)
+        const fensterSelectionObj = { category: "fenster", value: optionId, name: "", price: 0 };
+        const optionPrice = PriceCalculator.calculateBelichtungspaketPrice(
+          configuration.belichtungspaket,
+          configuration.nest,
+          fensterSelectionObj
+        );
+        
+        if (optionPrice === -1) return { type: "dash" as const };
+        
+        if (!currentSelection) {
+          // No selection yet - show as base price
+          return { 
+            type: "upgrade" as const, 
+            amount: optionPrice, 
+            monthly: PriceCalculator.calculateMonthlyPaymentAmount(optionPrice) 
+          };
+        }
+        
+        // Calculate price for currently selected fenster material (with same belichtungspaket)
+        const currentFensterObj = { category: "fenster", value: currentSelection.value, name: "", price: 0 };
+        const currentPrice = PriceCalculator.calculateBelichtungspaketPrice(
+          configuration.belichtungspaket,
+          configuration.nest,
+          currentFensterObj
+        );
+        
+        const priceDiff = optionPrice - currentPrice;
+        
+        if (priceDiff === 0) return { type: "upgrade" as const, amount: 0, monthly: 0 };
+        return {
+          type: priceDiff > 0 ? ("upgrade" as const) : ("discount" as const),
+          amount: Math.abs(priceDiff),
+          monthly: PriceCalculator.calculateMonthlyPaymentAmount(Math.abs(priceDiff)),
+        };
+      }
+
       // Helper for handling complex relative pricing logic
-      if (["belichtungspaket", "fenster", "bodenaufbau", "geschossdecke"].includes(categoryId)) {
+      if (["fenster", "bodenaufbau", "geschossdecke"].includes(categoryId)) {
         const currentSelection = configuration[categoryId as keyof typeof configuration] as ConfigurationItem | undefined;
         
         // Special check for bodenaufbau availability
@@ -685,7 +778,41 @@ export function useConfiguratorLogic(_rightPanelRef?: RefObject<HTMLDivElement |
              else if (pricingData.bodenaufbau["elekt. fbh"]) bodenaufbauKey = "elekt. fbh";
           }
           const rawPrice = pricingData.bodenaufbau?.[bodenaufbauKey]?.[nestSize as keyof (typeof pricingData.bodenaufbau)[typeof bodenaufbauKey]];
+          
+          // If this option has a dash price, show dash
           if (rawPrice === -1) return { type: "dash" as const };
+          
+          // Special case: if ohne_heizung (standard) and a DASH option is currently selected
+          if (optionId === "ohne_heizung" && currentSelection) {
+            // Get the price of the currently selected option
+            let selectedKey = currentSelection.value;
+            if (selectedKey === "wassergefuehrte_fussbodenheizung") {
+              if (pricingData.bodenaufbau["wassergefuehrte_fussbodenheizung"]) selectedKey = "wassergefuehrte_fussbodenheizung";
+              else if (pricingData.bodenaufbau["wassergef. fbh"]) selectedKey = "wassergef. fbh";
+            }
+            if (selectedKey === "elektrische_fussbodenheizung") {
+              if (pricingData.bodenaufbau["elektrische_fussbodenheizung"]) selectedKey = "elektrische_fussbodenheizung";
+              else if (pricingData.bodenaufbau["elekt. fbh"]) selectedKey = "elekt. fbh";
+            }
+            const selectedPrice = pricingData.bodenaufbau?.[selectedKey]?.[nestSize as keyof (typeof pricingData.bodenaufbau)[typeof selectedKey]];
+            
+            // If selected option is dash, standard should show "standard" not relative price
+            if (selectedPrice === -1) {
+              return { type: "standard" as const };
+            }
+          }
+          
+          // Also: if ohne_heizung and all other options are dash, show as "standard"
+          if (optionId === "ohne_heizung") {
+            const allOtherOptionsAreDash = Object.keys(pricingData.bodenaufbau).every((key) => {
+              if (key === "ohne_heizung") return true; // Skip the standard option itself
+              const price = pricingData.bodenaufbau[key]?.[nestSize as keyof (typeof pricingData.bodenaufbau)[typeof key]];
+              return price === -1; // Check if all upgrade options are dash
+            });
+            if (allOtherOptionsAreDash) {
+              return { type: "standard" as const };
+            }
+          }
         }
 
         if (currentSelection) {

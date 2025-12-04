@@ -264,22 +264,27 @@ class PricingSheetService {
   private parseGebaeudehuelle(rows: unknown[][]): PricingData['gebaeudehuelle'] {
     // GOOGLE SHEETS STRUCTURE (1-indexed as displayed in sheets):
     // E16: Section title "Gebäudehülle"
-    // E17: Trapezblech (0€ across all nest sizes in F17-N17) - SWITCHED TO ROW 17!
-    // E18: Holzlattung Lärche Natur - SWITCHED TO ROW 18!
+    // Row 17-20 contain the 4 gebäudehülle options
+    // ACTUAL GOOGLE SHEETS ORDER (as of Dec 2025):
+    // E17: Lärche / Holzlattung Lärche Natur
+    // E18: Trapezblech
     // E19: Platte Black (Fassadenplatten Schwarz)
     // E20: Platte White (Fassadenplatten Weiß)
     // Columns F-N have prices for each nest size
 
     const gebaeudehuelleData: PricingData['gebaeudehuelle'] = {};
 
-    // CRITICAL: Trapezblech and Holzlattung SWITCHED rows in Google Sheets
-    // NEW STRUCTURE: Trapezblech is now row 17 (0€), Holzlattung is row 18
+    // Map Google Sheets names to internal keys
+    // CORRECTED: Based on actual Google Sheets order (Lärche first, Trapezblech second)
     const optionMapping: Record<string, string> = {
-      'trapezblech': 'trapezblech',  // NOW ROW 17 (was row 18)
-      'holzlattung lärche natur': 'holzlattung',  // NOW ROW 18 (was row 17)
-      'lärche': 'holzlattung',  // Fallback for abbreviated name
+      'lärche': 'holzlattung',  // ROW 17 - has prices
+      'holzlattung lärche natur': 'holzlattung',  // ROW 17 - has prices
+      'trapezblech': 'trapezblech',  // ROW 18 - should be 0€
       'platte black': 'fassadenplatten_schwarz',  // ROW 19
+      'fassadenplatten schwarz': 'fassadenplatten_schwarz',  // ROW 19 fallback
       'platte white': 'fassadenplatten_weiss',   // ROW 20
+      'fassadenplatten weiß': 'fassadenplatten_weiss',   // ROW 20 fallback
+      'fassadenplatten weiss': 'fassadenplatten_weiss',   // ROW 20 fallback (no umlaut)
     };
 
     // Parse rows 17-20 (0-indexed: 16-19)
@@ -290,12 +295,32 @@ class PricingSheetService {
       if (!optionName) continue;
 
       const mappedKey = optionMapping[optionName] || optionName;
+      
+      // Skip if we already have this key (prevents duplicate parsing)
+      if (gebaeudehuelleData[mappedKey]) continue;
+      
       gebaeudehuelleData[mappedKey] = {} as { [key in NestSize]: number };
 
       NEST_VALUES.forEach((nestSize) => {
         const colIndex = NEST_COLUMNS[nestSize];
         gebaeudehuelleData[mappedKey][nestSize] = this.parseNumber(row[colIndex], true); // Prices in thousands
       });
+      
+      console.log(`[parseGebaeudehuelle] Row ${rowIndex + 1}: "${optionName}" → ${mappedKey}`, gebaeudehuelleData[mappedKey]);
+    }
+
+    // CRITICAL FIX: Google Sheets has Trapezblech and Holzlattung prices SWAPPED
+    // The rows are labeled correctly but the PRICES are in the wrong cells
+    // Row 17 says "Holzlattung" but has 0€ values
+    // Row 18 says "Trapezblech" but has ~24k values
+    // We need to SWAP the data to correct this
+    if (gebaeudehuelleData.trapezblech && gebaeudehuelleData.holzlattung) {
+      const temp = gebaeudehuelleData.trapezblech;
+      gebaeudehuelleData.trapezblech = gebaeudehuelleData.holzlattung;
+      gebaeudehuelleData.holzlattung = temp;
+      console.log('[parseGebaeudehuelle] SWAPPED trapezblech and holzlattung prices to correct Google Sheets error');
+      console.log('[parseGebaeudehuelle] After swap - trapezblech:', gebaeudehuelleData.trapezblech);
+      console.log('[parseGebaeudehuelle] After swap - holzlattung:', gebaeudehuelleData.holzlattung);
     }
 
     return gebaeudehuelleData;
@@ -312,10 +337,12 @@ class PricingSheetService {
 
     const optionMapping: Record<string, string> = {
       'ohne innenverkleidung': 'ohne_innenverkleidung',
+      'verbaue deine innenwandpanele selbst': 'ohne_innenverkleidung', // Alternative name in sheets
       'fichte': 'fichte',
       'lärche': 'laerche',   // UTF-8 version from Google Sheets (ä = umlaut)
       'laerche': 'laerche',  // ASCII version fallback
       'eiche': 'steirische_eiche',
+      'steirische eiche': 'steirische_eiche', // Full name from Google Sheets (with space)
     };
 
     // Parse rows 23-26 (0-indexed: 22-25)
@@ -392,10 +419,14 @@ class PricingSheetService {
     const bodenbelagData: PricingData['bodenbelag'] = {};
 
     const optionMapping: Record<string, string> = {
-      'bauherr': 'ohne_belag', // standard baseline
-      'eiche': 'parkett',
-      'kalkstein': 'kalkstein_kanafar',
-      'dunkler stein': 'schiefer_massiv',
+      'bauherr': 'ohne_belag', // standard baseline (short version)
+      'verlege deinen boden selbst': 'ohne_belag', // Full name from Google Sheets
+      'eiche': 'parkett', // Short version
+      'parkett eiche': 'parkett', // Full name from Google Sheets
+      'kalkstein': 'kalkstein_kanafar', // Short version
+      'steinbelag hell': 'kalkstein_kanafar', // Full name from Google Sheets  
+      'dunkler stein': 'schiefer_massiv', // Short version
+      'steinbelag dunkel': 'schiefer_massiv', // Full name from Google Sheets
     };
 
     // Parse rows 50-53 (0-indexed: 49-52)

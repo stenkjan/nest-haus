@@ -1063,13 +1063,14 @@ export class PriceCalculator {
 
   /**
    * Get fenster price per m² for display in fenster section
-   * Calculates: total_price / nest_size
+   * Calculates: total_price / (nest_size_numeric * belichtungspaket_percentage)
+   * NOTE: Geschossdecke does NOT affect fenster m² calculation
    */
   static getFensterPricePerSqm(
     fensterValue: string,
     nestValue: string,
     belichtungspaketValue: string,
-    geschossdeckeQuantity?: number
+    _geschossdeckeQuantity?: number // Intentionally unused - geschossdecke doesn't affect fenster m²
   ): number {
     const pricingData = this.getPricingData();
     if (pricingData) {
@@ -1080,10 +1081,30 @@ export class PriceCalculator {
       const fensterPricing = pricingData.fenster.totalPrices[fensterKey];
       if (fensterPricing && fensterPricing[nestSize]) {
         const totalPrice = fensterPricing[nestSize][belichtungKey];
-        if (totalPrice !== undefined) {
-          // Calculate price per m² using the correct formula: (nestSize - 5) + (geschossdecke * 6.5)
-          const squareMeters = PriceUtils.getAdjustedNutzflaeche(nestValue, geschossdeckeQuantity);
-          return squareMeters > 0 ? Math.round(totalPrice / squareMeters) : 0;
+        if (totalPrice !== undefined && totalPrice !== -1) {
+          // Nest size numeric values (from base area)
+          const nestSizeNumeric: Record<string, number> = {
+            'nest80': 75,
+            'nest100': 95,
+            'nest120': 115,
+            'nest140': 135,
+            'nest160': 155,
+          };
+          
+          // Belichtungspaket percentages
+          const belichtungPercentage: Record<string, number> = {
+            'light': 0.15,   // 15%
+            'medium': 0.22,  // 22%
+            'bright': 0.28,  // 28%
+          };
+          
+          const baseArea = nestSizeNumeric[nestValue] || 75;
+          const percentage = belichtungPercentage[belichtungspaketValue] || 0.15;
+          
+          // Formula: total_price / (nest_size * belichtung_percentage)
+          // Example: 15107 / (75 * 0.15) = 15107 / 11.25 = 1343€/m²
+          const effectiveArea = baseArea * percentage;
+          return effectiveArea > 0 ? Math.round(totalPrice / effectiveArea) : 0;
         }
       }
     }

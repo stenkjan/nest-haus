@@ -275,6 +275,12 @@ export default function WarenkorbClient() {
         const newUrl = new URL(window.location.href);
         newUrl.searchParams.delete("mode");
         window.history.replaceState({}, "", newUrl.toString());
+        
+        // CRITICAL FIX: Set correct hash for configuration mode immediately
+        if (!window.location.hash || window.location.hash === "#konzept-check") {
+          window.history.replaceState(null, "", "#übersicht");
+          setStepIndex(0); // Ensure step index matches the configuration mode
+        }
       } else {
         // DEFAULT: Everything else is konzept-check mode (2 steps)
         console.log("��� DEFAULT → KONZEPT-CHECK MODE");
@@ -294,13 +300,16 @@ export default function WarenkorbClient() {
           newUrl.searchParams.delete("mode");
           window.history.replaceState({}, "", newUrl.toString());
         }
+        
+        // Set correct hash for konzept-check mode
+        if (!window.location.hash || window.location.hash === "#übersicht") {
+          window.history.replaceState(null, "", "#konzept-check");
+          setStepIndex(0); // Ensure step index matches the konzept-check mode
+        }
       }
 
-            // Set default hash if none exists
-      if (!window.location.hash) {
-        window.history.replaceState(null, "", "#übersicht");
-      } else {
-        // Initialize stepIndex from hash AFTER mode is determined
+      // Initialize stepIndex from hash if hash already exists
+      if (window.location.hash && window.location.hash !== "#übersicht" && window.location.hash !== "#konzept-check") {
         const hash = window.location.hash.slice(1);
         const stepFromHash = hashToStep[hash as keyof typeof hashToStep];
         if (stepFromHash !== undefined) {

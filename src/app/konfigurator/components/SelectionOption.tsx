@@ -494,12 +494,29 @@ export default function SelectionOption({
     }
 
     if (price.type === "standard") {
+      // Special case: if amount is 0 or undefined, show "Standard" label like "included" type
+      if (!price.amount || price.amount === 0) {
+        return (
+          <div className="text-right">
+            <p className="text-[clamp(0.625rem,1.1vw,0.875rem)] tracking-wide leading-[1.2]">
+              &nbsp;
+            </p>
+            <p className="text-[clamp(0.625rem,1.1vw,0.875rem)] tracking-wide leading-[1.2]">
+              Standard
+            </p>
+            <p className="text-[clamp(0.475rem,0.95vw,0.725rem)] tracking-wide leading-[1.2] text-gray-500">
+              &nbsp;
+            </p>
+          </div>
+        );
+      }
+      
       // Check if price is -1 (price on request) and format accordingly
       const formattedPrice = price.amount && PriceUtils.isPriceOnRequest(price.amount)
         ? "-"
         : price.amount
           ? PriceUtils.formatPrice(price.amount)
-          : "0 €";
+          : "Standard";
 
       const shouldShowPricePerSqm =
         categoryId &&
