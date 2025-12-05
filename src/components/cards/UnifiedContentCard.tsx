@@ -1498,7 +1498,7 @@ export default function UnifiedContentCard({
       const paddingClasses = card.customPadding || "p-6 md:p-8 lg:p-10";
 
       // Conditional title class: Use h2-title-large for first card (id: 0), p-primary for others
-      const titleClass = card.id === 0 ? "h2-title-large" : "p-primary";
+      const titleClass = card.id === 0 ? "h2-title-glass mt-6" : "p-primary";
 
       // Refs for overflow detection containers
       const [titleContainer, setTitleContainer] =
@@ -1582,7 +1582,7 @@ export default function UnifiedContentCard({
                   rel="noopener noreferrer"
                   className={`${titleClass} text-white ${
                     card.id === 0
-                      ? "whitespace-pre-line mb-2"
+                      ? "whitespace-pre-line mb-8"
                       : "mb-1 underline hover:opacity-80 transition-opacity cursor-pointer"
                   }`}
                   style={{ fontSize: `${titleScale * 100}%` }}
@@ -1594,7 +1594,7 @@ export default function UnifiedContentCard({
                   ref={titleCallbackRef}
                   className={`${titleClass} text-white ${
                     card.id === 0
-                      ? "whitespace-pre-line mb-2"
+                      ? "whitespace-pre-line mb-8"
                       : "mb-1 underline"
                   }`}
                   style={{ fontSize: `${titleScale * 100}%` }}
