@@ -1612,7 +1612,7 @@ export default function UnifiedContentCard({
           </motion.div>
 
           {/* Middle Section: Quote Text - Fixed height for alignment */}
-          {card.id !== 0 ? (
+          {card.id !== 0 && (
             <motion.div
               ref={quoteContainerRef}
               initial={{ y: 20, opacity: 0 }}
