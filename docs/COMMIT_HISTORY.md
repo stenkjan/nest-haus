@@ -4,6 +4,19 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [418f7e8a788aca751b863b9ae0d867cd46f1e66e] - Fri Dec 5 17:02:38 2025 +0100
+
+**Author**: stenkjan
+**Message**: `Update title class in UnifiedContentCard for first card  - Changed the title class for the first card in  from  to  to align with the updated design specifications.  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/components/cards/UnifiedContentCard.tsx
+
+
+---
+
 ## [47feb7e9480067fb6a633e56a83bc0b6a08fe081] - Fri Dec 5 16:46:19 2025 +0100
 
 **Author**: stenkjan
