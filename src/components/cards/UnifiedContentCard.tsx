@@ -1497,8 +1497,8 @@ export default function UnifiedContentCard({
       // Use custom padding if specified, otherwise use default
       const paddingClasses = card.customPadding || "p-6 md:p-8 lg:p-10";
 
-      // Conditional title class: Use h2-title for first card (id: 0), p-primary for others
-      const titleClass = card.id === 0 ? "h2-title" : "p-primary";
+      // Conditional title class: Use h2-title-glass for first card (id: 0), p-primary for others
+      const titleClass = card.id === 0 ? "h2-title-glass" : "p-primary";
 
       // Refs for overflow detection containers
       const [titleContainer, setTitleContainer] =
@@ -1634,9 +1634,6 @@ export default function UnifiedContentCard({
                 />
               </div>
             </motion.div>
-          ) : (
-            // Spacer for card id: 0 - flex-1 to maintain consistent justify-between spacing with other cards
-            <div className="flex-1 min-h-[200px] md:min-h-[240px]" />
           )}
 
           {/* Bottom Section: Attribution - Fixed height for alignment (not for card id 0) */}
