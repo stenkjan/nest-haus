@@ -50,9 +50,9 @@ export const metadata: Metadata = {
       // favicon.ico is automatically served from src/app/favicon.ico by Next.js
       { url: "/icon.svg", type: "image/svg+xml" },
     ],
-    // Apple Touch Icon - TODO: Replace with actual 180x180px PNG with opaque background
+    // Apple Touch Icon - Using nav icon (can be replaced with 180x180px PNG later)
     apple: [
-      { url: "/icon.svg", sizes: "180x180", type: "image/svg+xml" },
+      { url: "/0-homebutton-nest-haus.svg", sizes: "180x180", type: "image/svg+xml" },
     ],
   },
   openGraph: {
