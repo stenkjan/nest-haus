@@ -1,43 +1,10 @@
 import type { Metadata } from "next";
 import WarenkorbWrapper from "./WarenkorbWrapper";
 import { generateShoppingCartSchema as _generateShoppingCartSchema } from "@/lib/seo/priceSchema";
+import { generatePageMetadata, generateBreadcrumbSchema } from "@/lib/seo/generateMetadata";
 
 // Enhanced SEO metadata for the shopping cart page
-export const metadata: Metadata = {
-  title: "Warenkorb | Nest-Haus Modulare Häuser | Ihre Konfiguration",
-  description:
-    "Überprüfen Sie Ihre NEST-Haus Konfiguration und stellen Sie Ihre Anfrage. Transparent kalkulierte Preise für modulare Häuser.",
-  keywords:
-    "warenkorb, nest haus konfiguration, modulhaus anfrage, hausbau warenkorb, fertighaus bestellen",
-  alternates: {
-    canonical: "https://nest-haus.at/warenkorb",
-  },
-  openGraph: {
-    title: "NEST-Haus Warenkorb | Ihre Konfiguration",
-    description:
-      "Überprüfen Sie Ihre NEST-Haus Konfiguration und stellen Sie Ihre unverbindliche Anfrage.",
-    url: "https://nest-haus.at/warenkorb",
-    images: [
-      {
-        url: "/images/warenkorb-preview.jpg",
-        width: 1200,
-        height: 630,
-        alt: "NEST-Haus Warenkorb Übersicht",
-      },
-    ],
-  },
-  twitter: {
-    card: "summary_large_image",
-    title: "NEST-Haus Warenkorb | Ihre Konfiguration",
-    description:
-      "Überprüfen Sie Ihre NEST-Haus Konfiguration und stellen Sie Ihre unverbindliche Anfrage.",
-    images: ["/images/warenkorb-twitter.jpg"],
-  },
-  robots: {
-    index: false, // Don't index individual shopping carts
-    follow: true,
-  },
-};
+export const metadata: Metadata = generatePageMetadata("warenkorb");
 
 // Structured Data for Shopping Cart
 const shoppingCartSchema = {
@@ -69,10 +36,19 @@ const productSchema = {
   },
 };
 
+// Breadcrumb Schema
+const breadcrumbSchema = generateBreadcrumbSchema("warenkorb");
+
 // Server Component - Can handle SEO, metadata, and structured data
 export default function WarenkorbPage() {
   return (
     <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(breadcrumbSchema),
+        }}
+      />
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{

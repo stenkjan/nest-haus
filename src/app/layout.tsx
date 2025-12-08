@@ -41,34 +41,33 @@ export const metadata: Metadata = {
     address: false,
     telephone: false,
   },
-  metadataBase: new URL("https://www.nest-haus.at"),
+  metadataBase: new URL("https://nest-haus.at"),
   alternates: {
-    canonical: "https://www.nest-haus.at",
+    canonical: "https://nest-haus.at",
   },
   icons: {
     icon: [
       // favicon.ico is automatically served from src/app/favicon.ico by Next.js
       { url: "/icon.svg", type: "image/svg+xml" },
     ],
-    // Note: Apple Touch Icon should be PNG format
-    // TODO: Replace apple-icon.svg with apple-touch-icon.png (180x180px with opaque background)
-    // apple: [
-    //   { url: "/apple-touch-icon.png", sizes: "180x180", type: "image/png" },
-    // ],
+    // Apple Touch Icon - TODO: Replace with actual 180x180px PNG with opaque background
+    apple: [
+      { url: "/icon.svg", sizes: "180x180", type: "image/svg+xml" },
+    ],
   },
   openGraph: {
     title: "Nest-Haus | Weil nur du weißt, wie du wohnen willst",
     description:
       "Entdecken Sie NEST-Haus modulare Bausysteme. Nachhaltig, energieeffizient und individuell konfigurierbar.",
-    url: "https://www.nest-haus.at",
+    url: "https://nest-haus.at",
     siteName: "NEST-Haus",
     locale: "de_DE",
     type: "website",
     images: [
       {
-        url: "https://www.nest-haus.at/api/images/6-NEST-Haus-4-Module-Ansicht-Meer-Mediteran-Stirnseite-Holzlattung-Laerche.jpg",
+        url: "https://nest-haus.at/api/images/6-NEST-Haus-4-Module-Ansicht-Meer-Mediteran-Stirnseite-Holzlattung-Laerche.jpg",
         secureUrl:
-          "https://www.nest-haus.at/api/images/6-NEST-Haus-4-Module-Ansicht-Meer-Mediteran-Stirnseite-Holzlattung-Laerche.jpg",
+          "https://nest-haus.at/api/images/6-NEST-Haus-4-Module-Ansicht-Meer-Mediteran-Stirnseite-Holzlattung-Laerche.jpg",
         width: 1200,
         height: 630,
         alt: "Nest-Haus | Weil nur du weißt, wie du wohnen willst",
@@ -82,7 +81,7 @@ export const metadata: Metadata = {
     description:
       "Entdecken Sie NEST-Haus modulare Bausysteme. Nachhaltig, energieeffizient und individuell konfigurierbar.",
     images: [
-      "https://www.nest-haus.at/api/images/6-NEST-Haus-4-Module-Ansicht-Meer-Mediteran-Stirnseite-Holzlattung-Laerche.jpg",
+      "https://nest-haus.at/api/images/6-NEST-Haus-4-Module-Ansicht-Meer-Mediteran-Stirnseite-Holzlattung-Laerche.jpg",
     ],
   },
   robots: {
@@ -127,6 +126,14 @@ export default function RootLayout({
       <head>
         {/* SEO Verification Tags */}
         <SEOVerification />
+
+        {/* Mobile-Specific Meta Tags */}
+        <meta name="apple-mobile-web-app-capable" content="yes" />
+        <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+        <meta name="apple-mobile-web-app-title" content="Nest-Haus" />
+        <meta name="application-name" content="Nest-Haus" />
+        <meta name="theme-color" content="#ffffff" />
+        <meta name="mobile-web-app-capable" content="yes" />
 
         {/* Organization Schema (Original) */}
         <script

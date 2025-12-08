@@ -31,8 +31,8 @@ export const PAGE_SEO_CONFIG = {
         keywords: "modulhaus, fertighaus, nachhaltiges bauen, energieeffizient, Österreich, hausbau konfigurator, modulare häuser, nachhaltig wohnen",
         priority: 1.0,
         changeFrequency: "weekly" as const,
-        ogImage: "/images/7-NEST-Haus-Innenperspektive-Kalkstein-Holz-Verglasung-Stirnseite-og.jpg",
-        twitterImage: "/images/7-NEST-Haus-Innenperspektive-Kalkstein-Holz-Verglasung-Stirnseite-og.jpg",
+        ogImage: "7-NEST-Haus-Innenperspektive-Kalkstein-Holz-Verglasung-Stirnseite-og.jpg",
+        twitterImage: "7-NEST-Haus-Innenperspektive-Kalkstein-Holz-Verglasung-Stirnseite-og.jpg",
     },
     konfigurator: {
         title: "Konfigurator | Nest-Haus online konfigurieren & Preis berechnen",
@@ -40,8 +40,8 @@ export const PAGE_SEO_CONFIG = {
         keywords: "haus konfigurator online, modulhaus konfigurieren, preis berechnen, interaktiver konfigurator, modulhaus planen, nest haus konfigurator, hausbau planer österreich, echtzeit preise",
         priority: 0.9,
         changeFrequency: "weekly" as const,
-        ogImage: "/images/6-NEST-Haus-4-Module-Ansicht-Meer-Mediteran-Stirnseite-Holzlattung-Laerche.png",
-        twitterImage: "/images/6-NEST-Haus-4-Module-Ansicht-Meer-Mediteran-Stirnseite-Holzlattung-Laerche.png",
+        ogImage: "6-NEST-Haus-4-Module-Ansicht-Meer-Mediteran-Stirnseite-Holzlattung-Laerche.png",
+        twitterImage: "6-NEST-Haus-4-Module-Ansicht-Meer-Mediteran-Stirnseite-Holzlattung-Laerche.png",
     },
     warenkorb: {
         title: "Warenkorb | Konzept-Check & Planungspaket bestellen",
@@ -49,8 +49,8 @@ export const PAGE_SEO_CONFIG = {
         keywords: "konzept-check bestellen, planungspaket wählen, konfiguration überprüfen, nest haus warenkorb, bestellung abschließen, modulhaus bestellen, hausbau bestellung österreich",
         priority: 0.7,
         changeFrequency: "weekly" as const,
-        ogImage: "/images/2-NEST-Haus-7-Module-Ansicht-Weisse-Fassadenplatten.png",
-        twitterImage: "/images/2-NEST-Haus-7-Module-Ansicht-Weisse-Fassadenplatten.png",
+        ogImage: "2-NEST-Haus-7-Module-Ansicht-Weisse-Fassadenplatten.png",
+        twitterImage: "2-NEST-Haus-7-Module-Ansicht-Weisse-Fassadenplatten.png",
     },
     kontakt: {
         title: "Kontakt | Nest-Haus Graz | Termin vereinbaren",
@@ -58,8 +58,8 @@ export const PAGE_SEO_CONFIG = {
         keywords: "nest haus kontakt, termin vereinbaren, beratung graz, zösenberg 51 graz, grundstücks-check anfrage, modulhaus beratung österreich, nest haus termin",
         priority: 0.8,
         changeFrequency: "monthly" as const,
-        ogImage: "/images/6-NEST-Haus-4-Module-Ansicht-Meer-Mediteran-Stirnseite-Holzlattung-Laerche.png",
-        twitterImage: "/images/6-NEST-Haus-4-Module-Ansicht-Meer-Mediteran-Stirnseite-Holzlattung-Laerche.png",
+        ogImage: "6-NEST-Haus-4-Module-Ansicht-Meer-Mediteran-Stirnseite-Holzlattung-Laerche.png",
+        twitterImage: "6-NEST-Haus-4-Module-Ansicht-Meer-Mediteran-Stirnseite-Holzlattung-Laerche.png",
     },
     warumWir: {
         title: "Warum Wir | Nest-Haus Team & Vision",
@@ -67,8 +67,8 @@ export const PAGE_SEO_CONFIG = {
         keywords: "nest vision, nest haus team, markus schmoltner, verlässlichkeit, innovation erfahrung, warum nest haus, modulhaus philosophie, nest team österreich",
         priority: 0.6,
         changeFrequency: "monthly" as const,
-        ogImage: "/images/335-nest-haus-team-markus-schmoltner.png",
-        twitterImage: "/images/335-nest-haus-team-markus-schmoltner.png",
+        ogImage: "335-nest-haus-team-markus-schmoltner.png",
+        twitterImage: "335-nest-haus-team-markus-schmoltner.png",
     },
     "dein-nest": {
         title: "Dein Nest | Nest-Haus Preise & Konfiguration",
@@ -76,8 +76,8 @@ export const PAGE_SEO_CONFIG = {
         keywords: "nest haus preise, nest 80, nest 120, nest 160, modulhaus kosten, individuell konfigurierbar, transportabel, modulhaus österreich, haus erweitern",
         priority: 0.8,
         changeFrequency: "monthly" as const,
-        ogImage: "/images/7-NEST-Haus-Innenperspektive-Kalkstein-Holz-Verglasung-Stirnseite.jpg",
-        twitterImage: "/images/7-NEST-Haus-Innenperspektive-Kalkstein-Holz-Verglasung-Stirnseite.jpg",
+        ogImage: "7-NEST-Haus-Innenperspektive-Kalkstein-Holz-Verglasung-Stirnseite.jpg",
+        twitterImage: "7-NEST-Haus-Innenperspektive-Kalkstein-Holz-Verglasung-Stirnseite.jpg",
     },
     "nest-system": {
         title: "Nest System | Modulares Bausystem 6m hoch, 8m breit",
@@ -85,8 +85,8 @@ export const PAGE_SEO_CONFIG = {
         keywords: "nest system, modulares bausystem, 6 meter hoch, 8 meter breit, modulhaus materialien, fenster türen individuell, haustechnik, modulbau österreich, nachhaltige materialien",
         priority: 0.7,
         changeFrequency: "monthly" as const,
-        ogImage: "/images/13-NEST-Haus-System-Hausbau-Modulbau-Serienproduktion-Modulbau-flexibel-Holzbau.png",
-        twitterImage: "/images/13-NEST-Haus-System-Hausbau-Modulbau-Serienproduktion-Modulbau-flexibel-Holzbau.png",
+        ogImage: "13-NEST-Haus-System-Hausbau-Modulbau-Serienproduktion-Modulbau-flexibel-Holzbau.png",
+        twitterImage: "13-NEST-Haus-System-Hausbau-Modulbau-Serienproduktion-Modulbau-flexibel-Holzbau.png",
     },
     "konzept-check": {
         title: "Konzept-Check €3.000 | Grundstücksanalyse & Entwurf",
@@ -94,8 +94,8 @@ export const PAGE_SEO_CONFIG = {
         keywords: "konzept-check, grundstücksanalyse, rechtssicher bauen, bebauungsmöglichkeiten, konzept-check 3000 euro, nest haus planung, grundstück check, bauvorhaben analyse",
         priority: 0.8,
         changeFrequency: "monthly" as const,
-        ogImage: "/images/3-NEST-Haus-3-Gebaeude-Vogelperspektive-Holzlattung-Laerche.png",
-        twitterImage: "/images/3-NEST-Haus-3-Gebaeude-Vogelperspektive-Holzlattung-Laerche.png",
+        ogImage: "3-NEST-Haus-3-Gebaeude-Vogelperspektive-Holzlattung-Laerche.png",
+        twitterImage: "3-NEST-Haus-3-Gebaeude-Vogelperspektive-Holzlattung-Laerche.png",
     },
     showcase: {
         title: "Showcase | Nest-Haus Projekte & Referenzen",
@@ -103,8 +103,8 @@ export const PAGE_SEO_CONFIG = {
         keywords: "showcase, projekte, referenzen, realisierte häuser, modulhaus projekte, referenzprojekte",
         priority: 0.6,
         changeFrequency: "monthly" as const,
-        ogImage: "/images/showcase-og.jpg",
-        twitterImage: "/images/showcase-twitter.jpg",
+        ogImage: "6-NEST-Haus-4-Module-Ansicht-Meer-Mediteran-Stirnseite-Holzlattung-Laerche.png",
+        twitterImage: "6-NEST-Haus-4-Module-Ansicht-Meer-Mediteran-Stirnseite-Holzlattung-Laerche.png",
     },
     datenschutz: {
         title: "Datenschutz | Nest-Haus Datenschutzerklärung",
@@ -112,8 +112,8 @@ export const PAGE_SEO_CONFIG = {
         keywords: "datenschutz, datenschutzerklärung, privatsphäre, datenschutz bestimmungen",
         priority: 0.3,
         changeFrequency: "yearly" as const,
-        ogImage: "/images/datenschutz-og.jpg",
-        twitterImage: "/images/datenschutz-twitter.jpg",
+        ogImage: "6-NEST-Haus-4-Module-Ansicht-Meer-Mediteran-Stirnseite-Holzlattung-Laerche.png",
+        twitterImage: "6-NEST-Haus-4-Module-Ansicht-Meer-Mediteran-Stirnseite-Holzlattung-Laerche.png",
     },
     impressum: {
         title: "Impressum | Nest-Haus Kontaktdaten & Rechtliches",
@@ -121,8 +121,8 @@ export const PAGE_SEO_CONFIG = {
         keywords: "impressum, kontakt, rechtliches, unternehmensdaten, kontaktinformationen",
         priority: 0.3,
         changeFrequency: "yearly" as const,
-        ogImage: "/images/impressum-og.jpg",
-        twitterImage: "/images/impressum-twitter.jpg",
+        ogImage: "6-NEST-Haus-4-Module-Ansicht-Meer-Mediteran-Stirnseite-Holzlattung-Laerche.png",
+        twitterImage: "6-NEST-Haus-4-Module-Ansicht-Meer-Mediteran-Stirnseite-Holzlattung-Laerche.png",
     },
     agb: {
         title: "AGB | Nest-Haus Allgemeine Geschäftsbedingungen",
@@ -130,8 +130,8 @@ export const PAGE_SEO_CONFIG = {
         keywords: "agb, allgemeine geschäftsbedingungen, vertragsbedingungen, rechtliches",
         priority: 0.3,
         changeFrequency: "yearly" as const,
-        ogImage: "/images/agb-og.jpg",
-        twitterImage: "/images/agb-twitter.jpg",
+        ogImage: "6-NEST-Haus-4-Module-Ansicht-Meer-Mediteran-Stirnseite-Holzlattung-Laerche.png",
+        twitterImage: "6-NEST-Haus-4-Module-Ansicht-Meer-Mediteran-Stirnseite-Holzlattung-Laerche.png",
     },
     faq: {
         title: "FAQ | Nest-Haus Fragen zu Kosten, Konzept-Check & Bauzeit",
@@ -139,8 +139,8 @@ export const PAGE_SEO_CONFIG = {
         keywords: "nest haus faq, häufige fragen modulhaus, konzept-check fragen, kosten nest haus, bauzeit dauer, nest haus vs fertighaus, nest haus vs tiny house, modulhaus fragen österreich",
         priority: 0.7,
         changeFrequency: "monthly" as const,
-        ogImage: "/images/5-NEST-Haus-6-Module-Wald-Ansicht-Schwarze-Fassadenplatten.png",
-        twitterImage: "/images/5-NEST-Haus-6-Module-Wald-Ansicht-Schwarze-Fassadenplatten.png",
+        ogImage: "5-NEST-Haus-6-Module-Wald-Ansicht-Schwarze-Fassadenplatten.png",
+        twitterImage: "5-NEST-Haus-6-Module-Wald-Ansicht-Schwarze-Fassadenplatten.png",
     },
 } as const;
 
@@ -170,8 +170,16 @@ export function generatePageMetadata(
     const title = customData?.title || pageConfig.title;
     const description = customData?.description || pageConfig.description;
     const keywords = customData?.keywords || pageConfig.keywords;
-    const ogImage = customData?.ogImage || pageConfig.ogImage;
-    const twitterImage = customData?.twitterImage || pageConfig.twitterImage;
+    
+    // Build full OG image URLs using /api/images/ for Vercel Blob
+    const ogImage = customData?.ogImage 
+        ? `${baseConfig.baseUrl}/api/images/${customData.ogImage.replace(/^\/?(images\/)?/, '')}` 
+        : `${baseConfig.baseUrl}/api/images/${pageConfig.ogImage.replace(/^\/?(images\/)?/, '')}`;
+    
+    const twitterImage = customData?.twitterImage 
+        ? `${baseConfig.baseUrl}/api/images/${customData.twitterImage.replace(/^\/?(images\/)?/, '')}` 
+        : `${baseConfig.baseUrl}/api/images/${pageConfig.twitterImage.replace(/^\/?(images\/)?/, '')}`;
+    
     const canonical = customData?.canonical || `${baseConfig.baseUrl}/${pageKey === 'home' ? '' : pageKey}`;
 
     return {
@@ -200,8 +208,7 @@ export function generatePageMetadata(
             images: [
                 {
                     url: ogImage,
-                    // Add secureUrl to help strict scrapers like WhatsApp
-                    secureUrl: ogImage.startsWith('http') ? ogImage : `${baseConfig.baseUrl}${ogImage}`,
+                    secureUrl: ogImage,
                     width: 1200,
                     height: 630,
                     alt: title,

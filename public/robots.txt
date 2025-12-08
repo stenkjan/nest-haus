@@ -1,3 +1,14 @@
+# Allow Googlebot-Image to crawl images (specific before general)
+User-agent: Googlebot-Image
+Allow: /api/images/
+Allow: /images/
+Allow: /*.jpg
+Allow: /*.jpeg
+Allow: /*.png
+Allow: /*.webp
+Allow: /*.svg
+
+# General rules for all bots
 User-agent: *
 Allow: /
 Disallow: /admin/
@@ -6,8 +17,8 @@ Disallow: /test/
 Disallow: /_next/
 Disallow: /*?*sessionId*
 
-# Allow important pages
-Allow: /api/images
+# Allow important pages and images
+Allow: /api/images/
 Allow: /konfigurator
 Allow: /warenkorb
 

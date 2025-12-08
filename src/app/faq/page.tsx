@@ -1,5 +1,5 @@
 import FAQClient from "./FAQClient";
-import { generatePageMetadata, SEO_CONFIG } from "@/lib/seo/generateMetadata";
+import { generatePageMetadata, SEO_CONFIG, generateBreadcrumbSchema } from "@/lib/seo/generateMetadata";
 
 // Use centralized SEO metadata configuration
 export const metadata = generatePageMetadata("faq");
@@ -13,10 +13,19 @@ const faqSchema = {
   url: `${SEO_CONFIG.baseUrl}/faq`,
 };
 
+// Breadcrumb Schema
+const breadcrumbSchema = generateBreadcrumbSchema("faq");
+
 // Server Component
 export default function FAQPage() {
   return (
     <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(breadcrumbSchema),
+        }}
+      />
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{

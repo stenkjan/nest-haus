@@ -90,8 +90,8 @@ export function generateEnhancedOrganizationSchema(): OrganizationSchema {
     "@type": "Organization",
     "name": "NEST-Haus",
     "alternateName": "Nest-Haus Modulhaus",
-    "url": "https://www.nest-haus.at",
-    "logo": "https://www.nest-haus.at/api/images/0-homebutton-nest-haus.svg",
+    "url": "https://nest-haus.at",
+    "logo": "https://nest-haus.at/api/images/0-homebutton-nest-haus.svg",
     "description": "Nachhaltige, energieeffiziente Modulhäuser aus Österreich. Individuell konfigurierbar mit modernem Design.",
     "foundingDate": "2024",
     "address": {
@@ -126,10 +126,10 @@ export function generateWebSiteSchema() {
     "@context": "https://schema.org",
     "@type": "WebSite",
     "name": "NEST-Haus",
-    "url": "https://www.nest-haus.at",
+    "url": "https://nest-haus.at",
     "potentialAction": {
       "@type": "SearchAction",
-      "target": "https://www.nest-haus.at/search?q={search_term_string}",
+      "target": "https://nest-haus.at/search?q={search_term_string}",
       "query-input": "required name=search_term_string"
     }
   }
