@@ -139,7 +139,7 @@ export async function POST(request: NextRequest) {
       const calendarResult = await GoogleCalendarService.createEvent({
         summary: `NEST-Haus Beratungstermin - ${inquiry.name || 'Kunde'}`,
         description: `Beratungstermin mit ${inquiry.name || 'Kunde'}\n\nE-Mail: ${inquiry.email}\n${inquiry.phone ? `Telefon: ${inquiry.phone}\n` : ''}${inquiry.message ? `\nNachricht:\n${inquiry.message}` : ''}\n\nAnfrage-ID: ${inquiry.id}`,
-        location: 'NEST-Haus Office, Zösenberg 51, 8044 Weinitzen, Austria',
+        location: 'NEST-Haus Office, Zösenberg 51, 8045 Weinitzen, Austria',
         startDateTime: inquiry.appointmentDateTime.toISOString(),
         endDateTime: endDateTime.toISOString(),
         attendeeEmail: inquiry.email,

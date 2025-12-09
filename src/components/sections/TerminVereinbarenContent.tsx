@@ -87,7 +87,7 @@ export const TerminVereinbarenContent: React.FC<
               <span className="text-black font-medium">
                 Zösenberg 51
                 <br />
-                8044, Weinitzen
+                8045, Weinitzen
                 <br />
                 Steiermark
                 <br />
@@ -213,7 +213,7 @@ export const TerminVereinbarenContent: React.FC<
               <span className="text-black font-medium">Zösenberg 51</span>
               <span className="text-nest-gray">Stadt:</span>
               <span className="text-black font-medium">
-                8044, Weinitzen, Steiermark
+                8045, Weinitzen, Steiermark
               </span>
               <span className="text-nest-gray">Land:</span>
               <span className="text-black font-medium">Österreich</span>
@@ -290,7 +290,7 @@ export const TerminVereinbarenContent: React.FC<
               <span className="text-black font-medium">
                 Zösenberg 51
                 <br />
-                8044, Weinitzen
+                8045, Weinitzen
                 <br />
                 Steiermark
                 <br />

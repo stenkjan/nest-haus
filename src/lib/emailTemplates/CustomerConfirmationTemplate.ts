@@ -273,7 +273,7 @@ export function generateCustomerConfirmationEmail(data: CustomerConfirmationData
           </div>
           <div class="info-item" style="border-radius:0 !important">
             <div class="info-label">Stadt</div>
-            <div class="info-value">8044, Weinitzen, Steiermark</div>
+            <div class="info-value">8045, Weinitzen, Steiermark</div>
           </div>
           <div class="info-item" style="border-radius:0 !important">
             <div class="info-label">Land</div>
@@ -360,7 +360,7 @@ Email: nest@nest-haus.at
 ADRESSE - Komm vorbei!
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 Straße: Zösenberg 51
-Stadt: 8044, Weinitzen, Steiermark
+Stadt: 8045, Weinitzen, Steiermark
 Land: Österreich
 
 ${data.inquiryId ? `Anfrage-ID: ${data.inquiryId}\n\n` : '\n'}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━

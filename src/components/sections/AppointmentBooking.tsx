@@ -820,7 +820,7 @@ const AppointmentBooking = ({
                     </span>
                     <span className="text-nest-gray">Stadt:</span>
                     <span className="text-black font-medium">
-                      8044, Weinitzen, Steiermark
+                      8045, Weinitzen, Steiermark
                     </span>
                     <span className="text-nest-gray">Land:</span>
                     <span className="text-black font-medium">Österreich</span>

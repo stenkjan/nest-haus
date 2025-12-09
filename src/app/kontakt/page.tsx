@@ -30,7 +30,7 @@ const localBusinessSchema = {
     "@type": "PostalAddress",
     streetAddress: "Zösenberg 51",
     addressLocality: "Weinitzen",
-    postalCode: "8044",
+    postalCode: "8045",
     addressCountry: "AT",
   },
   geo: {

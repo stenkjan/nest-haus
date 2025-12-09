@@ -23,14 +23,24 @@ const sections = [
   { id: "cookies", title: "Cookies", slug: "cookies" },
   { id: "kontaktaufnahme", title: "Kontaktaufnahme", slug: "kontaktaufnahme" },
   {
-    id: "analyse-tools",
-    title: "Analyse-Tools und Werbung",
-    slug: "analyse-tools",
+    id: "website-analyse",
+    title: "Website-Analyse und Tracking",
+    slug: "website-analyse",
   },
   {
-    id: "plugins",
-    title: "Plugins und eingebettete Funktionen",
-    slug: "plugins",
+    id: "zahlungsabwicklung",
+    title: "Zahlungsabwicklung",
+    slug: "zahlungsabwicklung",
+  },
+  {
+    id: "email-kommunikation",
+    title: "E-Mail-Kommunikation",
+    slug: "email-kommunikation",
+  },
+  {
+    id: "google-dienste",
+    title: "Google-Dienste und externe Tools",
+    slug: "google-dienste",
   },
   {
     id: "speicherdauer",
@@ -127,7 +137,7 @@ export default function DatenschutzClient() {
               <p className="p-primary">
                 eco Chalets GmbH
                 <br />
-                Zösenberg 51, 8044 Weinitzen
+                Zösenberg 51, 8045 Weinitzen
                 <br />
                 Telefon: +43 664 3949605
                 <br />
@@ -149,7 +159,7 @@ export default function DatenschutzClient() {
           <div className="w-full max-w-[1536px] mx-auto px-4 sm:px-6 lg:px-8">
             <div className="max-w-4xl mx-auto space-y-6">
               <h3 className="h3-secondary">Hosting und Server-Log-Dateien</h3>
-              <h3 className="h3-secondary">Externes Hosting</h3>
+              <h4 className="h3-secondary">Externes Hosting</h4>
 
               <p className="p-primary">
                 Diese Website wird bei einem externen Dienstleister (Hoster)
@@ -175,7 +185,7 @@ export default function DatenschutzClient() {
                 gewährleisten.
               </p>
 
-              <h3 className="h3-secondary">Server-Log-Dateien</h3>
+              <h4 className="h3-secondary">Server-Log-Dateien</h4>
 
               <p className="p-primary">
                 Der Provider der Seiten (bzw. unser Hosting-Anbieter) erhebt und
@@ -261,6 +271,132 @@ export default function DatenschutzClient() {
                 bei der Deaktivierung von Cookies die Funktionalität dieser
                 Website eingeschränkt sein kann.
               </p>
+
+              <h4 className="h3-secondary">
+                Übersicht der verwendeten Cookies
+              </h4>
+
+              <div className="space-y-4">
+                <div>
+                  <h5 className="font-semibold text-black mb-2">
+                    Notwendige Cookies (keine Einwilligung erforderlich)
+                  </h5>
+                  <p className="p-primary text-sm">
+                    <strong>nest-haus-session</strong>
+                    <br />
+                    Zweck: Verwaltung der Nutzersitzung, Speicherung der
+                    Konfigurator-Auswahl
+                    <br />
+                    Speicherdauer: 7 Tage
+                    <br />
+                    Rechtsgrundlage: Art. 6 Abs. 1 lit. f DSGVO (berechtigtes
+                    Interesse)
+                  </p>
+                  <p className="p-primary text-sm mt-2">
+                    <strong>nest-haus-cookie-consent</strong>
+                    <br />
+                    Zweck: Speicherung Ihrer Cookie-Einwilligung
+                    <br />
+                    Speicherdauer: 365 Tage
+                    <br />
+                    Rechtsgrundlage: Art. 6 Abs. 1 lit. f DSGVO (berechtigtes
+                    Interesse)
+                  </p>
+                  <p className="p-primary text-sm mt-2">
+                    <strong>nest-haus-cookie-preferences</strong>
+                    <br />
+                    Zweck: Speicherung Ihrer Cookie-Präferenzen
+                    <br />
+                    Speicherdauer: 365 Tage
+                    <br />
+                    Rechtsgrundlage: Art. 6 Abs. 1 lit. f DSGVO (berechtigtes
+                    Interesse)
+                  </p>
+                </div>
+
+                <div>
+                  <h5 className="font-semibold text-black mb-2">
+                    Analyse-Cookies (Einwilligung erforderlich)
+                  </h5>
+                  <p className="p-primary text-sm">
+                    <strong>_ga</strong>
+                    <br />
+                    Anbieter: Google Analytics
+                    <br />
+                    Zweck: Eindeutige Nutzer-ID für Analyse
+                    <br />
+                    Speicherdauer: 2 Jahre
+                    <br />
+                    Rechtsgrundlage: Art. 6 Abs. 1 lit. a DSGVO (Einwilligung)
+                  </p>
+                  <p className="p-primary text-sm mt-2">
+                    <strong>_ga_*</strong>
+                    <br />
+                    Anbieter: Google Analytics
+                    <br />
+                    Zweck: Session-Tracking und Engagement-Messung
+                    <br />
+                    Speicherdauer: 2 Jahre
+                    <br />
+                    Rechtsgrundlage: Art. 6 Abs. 1 lit. a DSGVO (Einwilligung)
+                  </p>
+                  <p className="p-primary text-sm mt-2">
+                    <strong>_gid</strong>
+                    <br />
+                    Anbieter: Google Analytics
+                    <br />
+                    Zweck: Unterscheidung von Nutzern
+                    <br />
+                    Speicherdauer: 24 Stunden
+                    <br />
+                    Rechtsgrundlage: Art. 6 Abs. 1 lit. a DSGVO (Einwilligung)
+                  </p>
+                  <p className="p-primary text-sm mt-2">
+                    <strong>nest-analytics</strong>
+                    <br />
+                    Zweck: Eigene Website-Analyse
+                    <br />
+                    Speicherdauer: 30 Tage
+                    <br />
+                    Rechtsgrundlage: Art. 6 Abs. 1 lit. a DSGVO (Einwilligung)
+                  </p>
+                  <p className="p-primary text-sm mt-2">
+                    <strong>configurator-analytics</strong>
+                    <br />
+                    Zweck: Konfigurator-Nutzung analysieren
+                    <br />
+                    Speicherdauer: 30 Tage
+                    <br />
+                    Rechtsgrundlage: Art. 6 Abs. 1 lit. a DSGVO (Einwilligung)
+                  </p>
+                </div>
+
+                <div>
+                  <h5 className="font-semibold text-black mb-2">
+                    Marketing-Cookies (Einwilligung erforderlich)
+                  </h5>
+                  <p className="p-primary text-sm">
+                    <strong>_gcl_*</strong>
+                    <br />
+                    Anbieter: Google Ads
+                    <br />
+                    Zweck: Conversion-Tracking für Google Ads
+                    <br />
+                    Speicherdauer: 90 Tage
+                    <br />
+                    Rechtsgrundlage: Art. 6 Abs. 1 lit. a DSGVO (Einwilligung)
+                  </p>
+                  <p className="p-primary text-sm mt-2">
+                    <strong>campaign-tracking</strong>
+                    <br />
+                    Zweck: Tracking von Marketing-Kampagnen
+                    <br />
+                    Speicherdauer: 30 Tage
+                    <br />
+                    Rechtsgrundlage: Art. 6 Abs. 1 lit. a DSGVO (Einwilligung)
+                  </p>
+                </div>
+              </div>
             </div>
           </div>
         </section>
@@ -302,18 +438,477 @@ export default function DatenschutzClient() {
                 Datenverarbeitung zu widerrufen. Gesetzliche
                 Aufbewahrungspflichten bleiben davon unberührt.
               </p>
+
+              <h4 className="h3-secondary">Terminbuchungen und Anfragen</h4>
+
+              <p className="p-primary">
+                Wenn Sie über unsere Website einen Termin für eine Beratung
+                buchen oder eine Anfrage senden, speichern wir die von Ihnen
+                angegebenen Daten in unserer PostgreSQL-Datenbank. Diese Daten
+                umfassen Name, E-Mail-Adresse, Telefonnummer (optional),
+                gewünschter Terminzeitpunkt und ggf. weitere Anmerkungen.
+              </p>
+
+              <p className="p-primary">
+                Zusätzlich erfassen wir im Rahmen unserer Nutzungsanalyse (siehe
+                Abschnitt &quot;Eigene Nutzungsanalyse&quot;) anonymisierte
+                Daten über Ihre Interaktion mit der Terminbuchungs-Funktion,
+                jedoch ohne Zuordnung zu Ihrer Person.
+              </p>
+
+              <p className="p-primary">
+                Die E-Mail-Kommunikation im Zusammenhang mit Ihrer Anfrage oder
+                Terminbuchung erfolgt über unseren E-Mail-Dienstleister Resend
+                (siehe Abschnitt &quot;E-Mail-Kommunikation&quot;).
+              </p>
             </div>
           </div>
         </section>
 
-        {/* Analyse-Tools und Werbung Section */}
-        <section id="analyse-tools" className="w-full py-16">
+        {/* Website-Analyse und Tracking Section */}
+        <section id="website-analyse" className="w-full py-16">
           <div className="w-full max-w-[1536px] mx-auto px-4 sm:px-6 lg:px-8">
             <div className="max-w-4xl mx-auto space-y-6">
-              <h3 className="h3-secondary">Analyse-Tools und Werbung</h3>
-              <h3 className="h3-secondary">
+              <h3 className="h3-secondary">Website-Analyse und Tracking</h3>
+
+              <p className="p-primary">
+                Wir setzen verschiedene Technologien zur Analyse der
+                Website-Nutzung ein, um unser Angebot zu verbessern und Ihnen
+                eine optimale Nutzererfahrung zu bieten. Im Folgenden erläutern
+                wir, welche Analyseverfahren wir einsetzen und auf welcher
+                Rechtsgrundlage dies erfolgt.
+              </p>
+
+              <h4 className="h3-secondary">
+                Google Analytics 4 mit Consent Mode v2
+              </h4>
+
+              <p className="p-primary">
+                Diese Website nutzt Google Analytics 4, einen Webanalysedienst
+                der Google Ireland Limited, Gordon House, Barrow Street, Dublin
+                4, Irland (&quot;Google&quot;). Google Analytics verwendet
+                Cookies und ähnliche Technologien, um die Nutzung unserer
+                Website zu analysieren.
+              </p>
+
+              <p className="p-primary">
+                <strong>
+                  Welche Daten werden mit Ihrer Einwilligung erhoben?
+                </strong>
+              </p>
+
+              <p className="p-primary">
+                Wenn Sie Analyse-Cookies akzeptieren, erfasst Google Analytics:
+              </p>
+
+              <p className="p-primary">
+                • Seitenaufrufe, Klicks und Navigation
+                <br />
+                • Verweildauer auf Seiten und Absprungraten
+                <br />
+                • Demografische Daten (Alter, Geschlecht) über Google Signals
+                <br />
+                • Interessenskategorien der Nutzer
+                <br />
+                • Geräteinformationen (Browser, Betriebssystem,
+                Bildschirmauflösung)
+                <br />
+                • Geografische Daten (Land, Stadt)
+                <br />
+                • Traffic-Quellen und Kampagnen-Tracking
+                <br />
+                • Nutzerverhalten und Conversions
+                <br />
+                • Geräteübergreifendes Tracking (Google Signals)
+                <br />• IP-Adresse (gekürzt/anonymisiert)
+              </p>
+
+              <p className="p-primary">
+                <strong>IP-Anonymisierung:</strong> Wir nutzen Google Analytics
+                mit IP-Anonymisierung. Ihre IP-Adresse wird von Google innerhalb
+                der Europäischen Union oder im Europäischen Wirtschaftsraum vor
+                der Übermittlung in die USA gekürzt. Nur in Ausnahmefällen wird
+                die volle IP-Adresse an einen Server von Google in den USA
+                übertragen und dort gekürzt.
+              </p>
+
+              <p className="p-primary">
+                <strong>Google Signals:</strong> Mit Ihrer Einwilligung zu
+                Marketing-Cookies aktivieren wir Google Signals, wodurch Google
+                geräteübergreifende Daten erheben und für Remarketing-Zwecke
+                nutzen kann.
+              </p>
+
+              <p className="p-primary">
+                <strong>Rechtsgrundlage:</strong> Die Nutzung von Google
+                Analytics mit vollem Funktionsumfang erfolgt nur mit Ihrer
+                ausdrücklichen Einwilligung (Art. 6 Abs. 1 lit. a DSGVO und § 25
+                Abs. 1 TTDSG). Sie können Ihre Einwilligung jederzeit mit
+                Wirkung für die Zukunft widerrufen, indem Sie die
+                Cookie-Einstellungen anpassen.
+              </p>
+
+              <p className="p-primary">
+                <strong>Datenübertragung in die USA:</strong> Die erhobenen
+                Daten werden in der Regel an Server von Google in den USA
+                übertragen. Die Datenübertragung erfolgt auf Grundlage von
+                EU-Standardvertragsklauseln oder im Rahmen des EU-US Data
+                Privacy Framework. Wir haben mit Google einen Vertrag zur
+                Auftragsverarbeitung abgeschlossen.
+              </p>
+
+              <p className="p-primary">
+                <strong>Speicherdauer:</strong> Von Google Analytics erfasste
+                Daten werden nach 14 Monaten automatisch gelöscht (für
+                nutzerbasierte Daten) bzw. nach 2 Monaten (für ereignisbasierte
+                Daten ohne Nutzer-ID).
+              </p>
+
+              <p className="p-primary">
+                Weitere Informationen zu Google Analytics finden Sie unter:{" "}
+                <a
+                  href="https://policies.google.com/privacy?hl=de"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-blue-600 hover:underline"
+                >
+                  https://policies.google.com/privacy?hl=de
+                </a>
+              </p>
+
+              <h4 className="h3-secondary">
+                Cookiefreie Pings (Google Consent Mode v2)
+              </h4>
+
+              <p className="p-primary">
+                Auch wenn Sie Analyse-Cookies ablehnen, verwendet unsere Website
+                Google Analytics im &quot;Consent Mode v2&quot;. Dies bedeutet,
+                dass Google anonymisierte, cookiefreie &quot;Pings&quot; erhält,
+                die keinerlei Rückschlüsse auf Ihre Person zulassen.
+              </p>
+
+              <p className="p-primary">
+                <strong>Was wir erfassen:</strong>
+              </p>
+
+              <p className="p-primary">
+                • Anonymisierte Seitenaufrufe (nur Zählung, keine
+                Nutzeridentifikation)
+                <br />
+                • Herkunftsland Ihres Zugriffs (nur Land, keine Stadt oder IP)
+                <br />• Grobe Gerätekategorie (Desktop/Mobil) – geschätzt durch
+                Google
+              </p>
+
+              <p className="p-primary">
+                <strong>Was wir NICHT erfassen:</strong>
+              </p>
+
+              <p className="p-primary">
+                • Keine Cookies auf Ihrem Gerät
+                <br />
+                • Keine individuelle Nutzerverfolgung
+                <br />
+                • Keine Profilbildung
+                <br />
+                • Keine Weitergabe an Werbepartner
+                <br />• Keine demografischen Daten (Alter, Geschlecht,
+                Interessen)
+              </p>
+
+              <p className="p-primary">
+                <strong>Rechtsgrundlage:</strong> Die cookiefreien Pings
+                erfolgen auf Basis unseres berechtigten Interesses (Art. 6 Abs.
+                1 lit. f DSGVO) zur anonymisierten Website-Analyse. Da keine
+                personenbezogenen Daten erfasst werden und keine Cookies gesetzt
+                werden, ist hierfür keine Einwilligung erforderlich.
+              </p>
+
+              <p className="p-primary">
+                <strong>Ihr Widerspruchsrecht:</strong> Sie können auch diese
+                anonymisierte Erfassung deaktivieren über das{" "}
+                <a
+                  href="https://tools.google.com/dlpage/gaoptout?hl=de"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-blue-600 hover:underline"
+                >
+                  Google Analytics Browser-Add-on
+                </a>
+                .
+              </p>
+
+              <h4 className="h3-secondary">
+                Eigene Nutzungsanalyse (PostgreSQL-Datenbank)
+              </h4>
+
+              <p className="p-primary">
+                Zusätzlich zu Google Analytics betreiben wir ein eigenes
+                Analyse-System auf Basis einer PostgreSQL-Datenbank. Dies
+                erfolgt unabhängig von Ihrer Cookie-Einwilligung auf Grundlage
+                unseres berechtigten Interesses an der Optimierung unserer
+                Website und der Sicherheitsüberwachung.
+              </p>
+
+              <p className="p-primary">
+                <strong>Welche Daten werden erfasst?</strong>
+              </p>
+
+              <p className="p-primary">
+                • Session-ID (anonyme Sitzungskennung, keine personenbezogenen
+                Daten)
+                <br />
+                • Zeitstempel der Seitenaufrufe
+                <br />
+                • Besuchte Seiten und Klickpfade
+                <br />
+                • Klick- und Scroll-Verhalten (über data-tracking-id-Attribute)
+                <br />
+                • Konfigurator-Auswahl und Konfigurationsdaten (anonymisiert)
+                <br />
+                • Geografische Daten (Land, Stadt – ermittelt über IP-Hash)
+                <br />
+                • Traffic-Quelle (Referrer-URL, UTM-Parameter)
+                <br />
+                • Geräteinformationen (Browser, Betriebssystem)
+                <br />
+                • Verweildauer auf der Website
+                <br />• IP-Adresse (gehasht zur Anonymisierung, nicht im
+                Klartext gespeichert)
+              </p>
+
+              <p className="p-primary">
+                <strong>Zweck der Verarbeitung:</strong>
+              </p>
+
+              <p className="p-primary">
+                • Optimierung der Website-Funktionalität und Nutzererfahrung
+                <br />
+                • Sicherheitsüberwachung und Missbrauchserkennung
+                <br />
+                • Analyse der Konfigurator-Nutzung zur Produktverbesserung
+                <br />
+                • Technische Fehleranalyse
+                <br />• Verständnis des Nutzerverhaltens zur Angebotsoptimierung
+              </p>
+
+              <p className="p-primary">
+                <strong>Rechtsgrundlage:</strong> Art. 6 Abs. 1 lit. f DSGVO
+                (berechtigtes Interesse). Unser berechtigtes Interesse liegt in
+                der Optimierung unserer Website, der Gewährleistung der
+                Sicherheit und der Verbesserung unseres Angebots. Die IP-Adresse
+                wird gehasht, sodass keine direkte Identifizierung möglich ist.
+              </p>
+
+              <p className="p-primary">
+                <strong>Datenspeicherung:</strong> Die Session-Daten werden in
+                einer PostgreSQL-Datenbank gespeichert. Detaillierte
+                Analysedaten werden für 30 Tage aufbewahrt, danach werden sie
+                gelöscht oder zu aggregierten Statistiken zusammengefasst (ohne
+                Personenbezug).
+              </p>
+
+              <p className="p-primary">
+                <strong>Datenverarbeiter:</strong> Die Datenbank wird bei
+                unserem Hosting-Anbieter NeonDB betrieben. Wir haben einen
+                Vertrag zur Auftragsverarbeitung abgeschlossen.
+              </p>
+
+              <p className="p-primary">
+                <strong>Ihr Widerspruchsrecht:</strong> Sie haben das Recht, aus
+                Gründen, die sich aus Ihrer besonderen Situation ergeben,
+                jederzeit gegen die Verarbeitung Ihrer Daten auf Grundlage von
+                Art. 6 Abs. 1 lit. f DSGVO Widerspruch einzulegen. Bitte
+                kontaktieren Sie uns hierzu unter den oben angegebenen
+                Kontaktdaten.
+              </p>
+            </div>
+          </div>
+        </section>
+
+        {/* Zahlungsabwicklung Section */}
+        <section id="zahlungsabwicklung" className="w-full py-16">
+          <div className="w-full max-w-[1536px] mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="max-w-4xl mx-auto space-y-6">
+              <h3 className="h3-secondary">Zahlungsabwicklung</h3>
+
+              <h4 className="h3-secondary">Stripe (Zahlungsdienstleister)</h4>
+
+              <p className="p-primary">
+                Für die Abwicklung von Zahlungen auf unserer Website nutzen wir
+                den Zahlungsdienstleister Stripe. Anbieter ist Stripe Payments
+                Europe, Ltd., 1 Grand Canal Street Lower, Grand Canal Dock,
+                Dublin, Irland.
+              </p>
+
+              <p className="p-primary">
+                <strong>Wofür nutzen wir Stripe?</strong>
+              </p>
+
+              <p className="p-primary">
+                Stripe kommt zum Einsatz bei der Bezahlung unseres
+                Konzept-Check-Service (€3.000). Über Stripe können Sie sicher
+                und verschlüsselt per Kreditkarte, SEPA-Lastschrift oder anderen
+                angebotenen Zahlungsmethoden bezahlen.
+              </p>
+
+              <p className="p-primary">
+                <strong>Welche Daten werden an Stripe übermittelt?</strong>
+              </p>
+
+              <p className="p-primary">
+                Wenn Sie eine Zahlung über Stripe vornehmen, werden folgende
+                Daten an Stripe übertragen:
+              </p>
+
+              <p className="p-primary">
+                • Name und E-Mail-Adresse
+                <br />
+                • Zahlungsinformationen (Kreditkartendaten, Bankverbindung – je
+                nach gewählter Zahlungsmethode)
+                <br />
+                • Transaktions-ID und Betrag
+                <br />
+                • Rechnungsadresse (sofern angegeben)
+                <br />• IP-Adresse (zur Betrugsprävention)
+              </p>
+
+              <p className="p-primary">
+                <strong>Wichtig:</strong> Die Zahlungsinformationen (z. B.
+                Kreditkartennummer) werden direkt von Stripe verarbeitet und
+                niemals auf unseren Servern gespeichert. Wir erhalten von Stripe
+                lediglich eine Bestätigung über die erfolgreiche oder
+                fehlgeschlagene Zahlung sowie eine anonymisierte
+                Transaktions-ID.
+              </p>
+
+              <p className="p-primary">
+                <strong>Rechtsgrundlage:</strong> Die Datenverarbeitung erfolgt
+                auf Grundlage von Art. 6 Abs. 1 lit. b DSGVO
+                (Vertragserfüllung). Die Verarbeitung Ihrer Daten durch Stripe
+                ist notwendig, um die von Ihnen beauftragte Zahlung
+                durchzuführen.
+              </p>
+
+              <p className="p-primary">
+                <strong>Datensicherheit:</strong> Stripe erfüllt die strengen
+                PCI-DSS-Standards (Payment Card Industry Data Security Standard)
+                zur sicheren Verarbeitung von Zahlungsdaten. Wir haben mit
+                Stripe einen Vertrag zur Auftragsverarbeitung abgeschlossen.
+              </p>
+
+              <p className="p-primary">
+                <strong>Datenübertragung in die USA:</strong> Stripe kann Daten
+                in die USA übertragen. Die Übertragung erfolgt auf Grundlage von
+                EU-Standardvertragsklauseln oder im Rahmen des EU-US Data
+                Privacy Framework.
+              </p>
+
+              <p className="p-primary">
+                Weitere Informationen zum Datenschutz bei Stripe finden Sie
+                unter:{" "}
+                <a
+                  href="https://stripe.com/de-at/privacy"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-blue-600 hover:underline"
+                >
+                  https://stripe.com/de-at/privacy
+                </a>
+              </p>
+            </div>
+          </div>
+        </section>
+
+        {/* E-Mail-Kommunikation Section */}
+        <section id="email-kommunikation" className="w-full py-16">
+          <div className="w-full max-w-[1536px] mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="max-w-4xl mx-auto space-y-6">
+              <h3 className="h3-secondary">E-Mail-Kommunikation</h3>
+
+              <h4 className="h3-secondary">Resend (E-Mail-Versandservice)</h4>
+
+              <p className="p-primary">
+                Für den Versand von Transaktions-E-Mails (z. B.
+                Terminbestätigungen, Zahlungsbestätigungen) nutzen wir den
+                E-Mail-Dienst Resend. Anbieter ist Resend, Inc. mit Sitz in den
+                USA.
+              </p>
+
+              <p className="p-primary">
+                <strong>Welche E-Mails werden über Resend versendet?</strong>
+              </p>
+
+              <p className="p-primary">
+                • Bestätigung von Terminbuchungen
+                <br />
+                • Bestätigung von Konzept-Check-Käufen
+                <br />
+                • Antworten auf Kontaktformular-Anfragen
+                <br />• Sonstige transaktionale E-Mails im Zusammenhang mit
+                Ihren Anfragen
+              </p>
+
+              <p className="p-primary">
+                <strong>Welche Daten werden an Resend übermittelt?</strong>
+              </p>
+
+              <p className="p-primary">
+                • Ihre E-Mail-Adresse (Empfänger)
+                <br />
+                • Ihr Name (falls angegeben)
+                <br />
+                • E-Mail-Inhalt (Betreff und Nachrichtentext)
+                <br />• Zeitstempel des Versands
+              </p>
+
+              <p className="p-primary">
+                <strong>Rechtsgrundlage:</strong> Die Verarbeitung erfolgt auf
+                Grundlage von Art. 6 Abs. 1 lit. b DSGVO (Vertragserfüllung),
+                sofern die E-Mail im Zusammenhang mit einer vertraglichen
+                Beziehung steht, oder auf Grundlage von Art. 6 Abs. 1 lit. f
+                DSGVO (berechtigtes Interesse an effizienter
+                E-Mail-Kommunikation).
+              </p>
+
+              <p className="p-primary">
+                <strong>Datenübertragung in die USA:</strong> Resend ist ein
+                US-amerikanischer Dienst, sodass Ihre E-Mail-Daten in die USA
+                übertragen werden können. Die Übertragung erfolgt auf Grundlage
+                von EU-Standardvertragsklauseln. Wir haben mit Resend einen
+                Vertrag zur Auftragsverarbeitung abgeschlossen.
+              </p>
+
+              <p className="p-primary">
+                <strong>Speicherdauer:</strong> Resend speichert die versandten
+                E-Mails für maximal 30 Tage zur Zustellungs- und
+                Fehlerprotokollierung. Danach werden die E-Mail-Daten gelöscht.
+              </p>
+
+              <p className="p-primary">
+                Weitere Informationen zum Datenschutz bei Resend finden Sie
+                unter:{" "}
+                <a
+                  href="https://resend.com/privacy"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-blue-600 hover:underline"
+                >
+                  https://resend.com/privacy
+                </a>
+              </p>
+            </div>
+          </div>
+        </section>
+
+        {/* Google-Dienste und externe Tools Section */}
+        <section id="google-dienste" className="w-full py-16">
+          <div className="w-full max-w-[1536px] mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="max-w-4xl mx-auto space-y-6">
+              <h3 className="h3-secondary">Google-Dienste und externe Tools</h3>
+              <h4 className="h3-secondary">
                 Hinweis zur Datenweitergabe in die USA
-              </h3>
+              </h4>
 
               <p className="p-primary">
                 Wir weisen darauf hin, dass bei Verwendung von Google-Tools
@@ -333,75 +928,7 @@ export default function DatenschutzClient() {
                 Datenschutz-Niveaus gemäß Art. 44 ff. DSGVO.
               </p>
 
-              <p className="p-primary">
-                Google Analytics: Diese Website nutzt Funktionen des
-                Webanalysedienstes Google Analytics. Anbieter ist die Google
-                Ireland Limited, Gordon House, Barrow Street, Dublin 4, Irland
-                (&ldquo;Google&rdquo;). Google Analytics ermöglicht es uns, das
-                Verhalten der Websitebesucher zu analysieren. Dabei werden
-                Cookies eingesetzt, die eine Analyse Ihrer Benutzung der Website
-                ermöglichen. Die hierdurch erzeugten Informationen über Ihre
-                Benutzung dieser Website (einschließlich Ihrer gekürzten
-                IP-Adresse) werden in der Regel an einen Server von Google
-                übertragen und dort gespeichert.
-              </p>
-
-              <p className="p-primary">
-                Wir verwenden Google Analytics in der Regel in der aktuellen
-                Version (z. B. Google Analytics 4) mit IP-Anonymisierung. Das
-                bedeutet, Ihre IP-Adresse wird von Google innerhalb der
-                Europäischen Union oder im Europäischen Wirtschaftsraum vor der
-                Übermittlung in die USA gekürzt. Nur in Ausnahmefällen wird die
-                volle IP-Adresse an einen Server von Google in den USA
-                übertragen und dort gekürzt. Die im Rahmen von Google Analytics
-                von Ihrem Browser übermittelte IP-Adresse wird nach Angaben von
-                Google nicht mit anderen Daten von Google zusammengeführt.
-              </p>
-
-              <p className="p-primary">
-                Google wird diese Informationen in unserem Auftrag benutzen, um
-                Ihre Nutzung der Website auszuwerten, Reports über die
-                Websiteaktivitäten zusammenzustellen und weitere mit der
-                Websitenutzung und der Internetnutzung verbundene
-                Dienstleistungen gegenüber uns zu erbringen. Wir haben mit
-                Google einen Vertrag zur Auftragsverarbeitung abgeschlossen.
-              </p>
-
-              <p className="p-primary">
-                Die Setzung von Google-Analytics-Cookies und die Nutzung dieses
-                Analysetools erfolgen nur mit Ihrer ausdrücklichen Einwilligung
-                (Art. 6 Abs. 1 lit. a DSGVO). Sie können diese Einwilligung
-                jederzeit mit Wirkung für die Zukunft widerrufen, indem Sie die
-                entsprechenden Cookie-Einstellungen über unseren Consent-Manager
-                anpassen oder die Verwendung von Google Analytics in Ihrem
-                Browser deaktivieren.
-              </p>
-
-              <p className="p-primary">
-                Zudem können Sie die Erfassung der durch Google Analytics
-                erzeugten und auf Ihre Nutzung der Website bezogenen Daten
-                (inkl. Ihrer IP-Adresse) an Google sowie die Verarbeitung dieser
-                Daten durch Google verhindern, indem Sie das unter folgendem
-                Link verfügbare Browser-Plugin herunterladen und installieren:
-                Google Analytics Opt-Out Plugin.
-              </p>
-
-              <p className="p-primary">
-                Mehr Informationen zum Umgang mit Nutzerdaten bei Google
-                Analytics finden Sie in der Datenschutzerklärung von Google.
-              </p>
-            </div>
-          </div>
-        </section>
-
-        {/* Plugins und eingebettete Funktionen Section */}
-        <section id="plugins" className="w-full py-16">
-          <div className="w-full max-w-[1536px] mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="max-w-4xl mx-auto space-y-6">
-              <h3 className="h3-secondary">
-                Plugins und eingebettete Funktionen
-              </h3>
-              <h3 className="h3-secondary">Google Maps</h3>
+              <h4 className="h3-secondary">Google Maps</h4>
 
               <p className="p-primary">
                 Diese Seite nutzt über eine API den Kartendienst Google Maps.
@@ -432,7 +959,7 @@ export default function DatenschutzClient() {
                 Nutzerdaten finden Sie in der Datenschutzerklärung von Google.
               </p>
 
-              <h3 className="h3-secondary">YouTube</h3>
+              <h4 className="h3-secondary">YouTube</h4>
 
               <p className="p-primary">
                 Unsere Website bindet Videos der Plattform YouTube ein. Anbieter
@@ -481,7 +1008,7 @@ export default function DatenschutzClient() {
                 https://policies.google.com/privacy?hl=de.
               </p>
 
-              <h3 className="h3-secondary">Google Web Fonts</h3>
+              <h4 className="h3-secondary">Google Web Fonts</h4>
 
               <p className="p-primary">
                 Diese Seite nutzt zur einheitlichen Darstellung von Schriftarten
@@ -533,6 +1060,65 @@ export default function DatenschutzClient() {
                 verpflichtet sind (z. B. steuer- oder handelsrechtliche
                 Aufbewahrungsfristen). In letzterem Fall erfolgt die Löschung
                 nach Wegfall der entsprechenden Verpflichtungen.
+              </p>
+
+              <h4 className="h3-secondary">
+                Spezifische Speicherfristen im Überblick
+              </h4>
+
+              <p className="p-primary">
+                <strong>Cookies:</strong>
+                <br />
+                • Notwendige Cookies: 7 bis 365 Tage (je nach Cookie-Typ)
+                <br />
+                • Analyse-Cookies (Google Analytics): Bis zu 2 Jahre
+                <br />
+                • Marketing-Cookies: Bis zu 90 Tage
+                <br />• Cookie-Einwilligung: 12 Monate (danach erneute Abfrage)
+              </p>
+
+              <p className="p-primary">
+                <strong>Website-Analyse-Daten:</strong>
+                <br />
+                • Google Analytics: Nutzerbasierte Daten 14 Monate,
+                ereignisbasierte Daten 2 Monate
+                <br />• Eigene Nutzungsanalyse (PostgreSQL): Detaillierte
+                Session-Daten 30 Tage, danach nur aggregierte Statistiken (ohne
+                Personenbezug)
+              </p>
+
+              <p className="p-primary">
+                <strong>Kontaktanfragen und Terminbuchungen:</strong>
+                <br />
+                Ihre Kontaktdaten werden gespeichert, bis der Zweck der
+                Datenverarbeitung entfällt (z. B. nach abgeschlossener
+                Bearbeitung Ihrer Anfrage oder nach Durchführung des Termins).
+                Danach werden sie gelöscht, sofern keine gesetzlichen
+                Aufbewahrungspflichten bestehen.
+              </p>
+
+              <p className="p-primary">
+                <strong>Zahlungsdaten (Konzept-Check):</strong>
+                <br />
+                Transaktionsdaten werden gemäß steuer- und handelsrechtlicher
+                Aufbewahrungspflichten für 7 bis 10 Jahre aufbewahrt (§ 147 AO,
+                § 257 HGB). Zahlungsinformationen (Kreditkartendaten) werden
+                nicht von uns gespeichert, sondern ausschließlich von Stripe
+                verarbeitet.
+              </p>
+
+              <p className="p-primary">
+                <strong>E-Mail-Kommunikation (Resend):</strong>
+                <br />
+                E-Mail-Versandprotokolle werden von Resend für maximal 30 Tage
+                gespeichert.
+              </p>
+
+              <p className="p-primary">
+                <strong>Server-Log-Dateien:</strong>
+                <br />
+                Server-Logfiles werden in der Regel nach 7 bis 14 Tagen
+                automatisch gelöscht.
               </p>
             </div>
           </div>
@@ -654,7 +1240,7 @@ export default function DatenschutzClient() {
                 Aktualität und Änderung dieser Datenschutzerklärung
               </h3>
               <p className="p-primary">
-                Diese Datenschutzerklärung hat den Stand von August 2025.
+                Diese Datenschutzerklärung hat den Stand von Dezember 2025.
               </p>
 
               <p className="p-primary">

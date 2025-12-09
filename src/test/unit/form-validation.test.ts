@@ -122,7 +122,7 @@ describe('Form Validation Tests', () => {
 
         it('should accept address with commas and periods', () => {
             expect(validateAddress('123 Main St., Suite 100')).toBe(true);
-            expect(validateAddress('Zösenberg 51, 8044 Weinitzen')).toBe(true);
+            expect(validateAddress('Zösenberg 51, 8045 Weinitzen')).toBe(true);
         });
 
         it('should reject too short addresses', () => {

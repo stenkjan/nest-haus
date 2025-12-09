@@ -93,7 +93,7 @@ export function generateICS(data: ICSEventData): string {
     customerEmail,
     appointmentDateTime,
     durationMinutes = 60,
-    location = 'Nest-Haus Office, Zösenberg 51, 8044 Weinitzen, Austria',
+    location = 'Nest-Haus Office, Zösenberg 51, 8045 Weinitzen, Austria',
     description,
     organizerEmail = 'mail@nest-haus.at',
     organizerName = 'Nest-Haus Team',

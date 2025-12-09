@@ -778,7 +778,7 @@ export function generatePaymentConfirmationEmail(data: PaymentConfirmationEmailD
               <span class="contact-label">Straße:</span>
               <span class="contact-value">Zösenberg 51</span>
               <span class="contact-label">Stadt:</span>
-              <span class="contact-value">8044, Weinitzen, Steiermark</span>
+              <span class="contact-value">8045, Weinitzen, Steiermark</span>
               <span class="contact-label">Land:</span>
               <span class="contact-value">Österreich</span>
             </div>
