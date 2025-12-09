@@ -4,6 +4,21 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [c258f9db6a5e8ee68039c5ad750af699ee08a2a6] - Tue Dec 9 13:28:35 2025 +0100
+
+**Author**: stenkjan
+**Message**: `Update NestSystemClient and LandingImagesCarousel components for consistency and clarity  - Changed the href in  for the "Konzept-Check" link to use lowercase for consistency. - Updated section slugs and titles in  to reflect accurate naming conventions and improve clarity in the image descriptions.  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/LandingPageClient.tsx
+- src/app/nest-system/NestSystemClient.tsx
+- src/components/sections/LandingImagesCarousel.tsx
+
+
+---
+
 ## [c1d620e0994309114846dcbbf9feefd1256e5af8] - Tue Dec 9 13:04:04 2025 +0100
 
 **Author**: stenkjan
