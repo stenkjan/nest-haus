@@ -111,9 +111,7 @@ export default function Footer() {
       <div className="w-full max-w-[1536px] mx-auto px-4 sm:px-6 lg:px-8 py-6">
         <div className="flex flex-col md:flex-row justify-between items-center text-[clamp(12px,2.2vw,14px)] text-gray-500 space-y-4 md:space-y-0">
           <div>
-            <p>
-              Copyright © {currentYear} Nest-Haus. Alle Rechte vorbehalten.
-            </p>
+            <p>Copyright © {currentYear} Nest-Haus. Alle Rechte vorbehalten.</p>
           </div>
 
           <div className="flex space-x-6">
