@@ -4,6 +4,21 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [b4e7cb429496a075e097def0b273cde2a5492845] - Tue Dec 9 14:53:24 2025 +0100
+
+**Author**: stenkjan
+**Message**: `Enhance AgbClient and ImpressumClient for improved readability and accessibility  - Updated text colors in  for better contrast and readability. - Added mailto links for email addresses in  to enhance user accessibility. - Removed unused footer link in  to streamline navigation.  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/agb/AgbClient.tsx
+- src/app/impressum/ImpressumClient.tsx
+- src/components/Footer.tsx
+
+
+---
+
 ## [121990e470e12a55c590a2bd402ff414b4410e8b] - Tue Dec 9 14:25:07 2025 +0100
 
 **Author**: stenkjan
