@@ -4,6 +4,19 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [46adae7a96621a8edd9a2377364e0c342d48c157] - Tue Dec 9 15:29:16 2025 +0100
+
+**Author**: stenkjan
+**Message**: `Update company name references in AgbClient for accuracy  - Changed "Nest-Haus GmbH" to "Eco Chalets GmbH" in multiple locations for correct branding. - Updated subtitle and footer to reflect the new company name while maintaining clarity.  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/agb/AgbClient.tsx
+
+
+---
+
 ## [d17725139468d62a17b7543f43ee821463834051] - Tue Dec 9 15:18:17 2025 +0100
 
 **Author**: stenkjan
