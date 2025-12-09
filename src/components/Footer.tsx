@@ -11,50 +11,54 @@ export default function Footer() {
   // Footer structure with navigation links
   const footerColumns = [
     {
-      title: "Home",
+      title: "Überblick",
       items: [
-        { text: "Dein Nest entdecken", href: "/dein-nest" },
-        { text: "Konzept-Check", href: "/konzept-check" },
-        { text: "Terminvereinbarung", href: "/kontakt" },
-        { text: "Warum Wir?", href: "/warum-wir" },
+        { text: "Home", href: "/#dein-nest-haus" },
+        { text: "Kontakt", href: "/kontakt" },
+        { text: "Konfigurator", href: "/konfigurator" },
+        { text: "Warenkorb", href: "/warenkorb?mode=konzept-check" },
+        { text: "FAQ", href: "/faq" },
       ],
     },
     {
       title: "Dein Nest",
       items: [
-        { text: "Preise", href: "/konfigurator" },
-        { text: "Intro Nest", href: "/dein-nest" },
-        { text: "Position am Markt", href: "/dein-nest" },
-        { text: "Haus Konfigurator", href: "/konfigurator" },
+        { text: "Preise", href: "/dein-nest#dein-nest-preise" },
+        { text: "Position am Markt", href: "/dein-nest#position-am-markt" },
+        { text: "Haus Konfigurator", href: "/dein-nest#haus-konfiguraton" },
+        { text: "Vorteile", href: "/dein-nest#vorteile-nest" },
+        { text: "Transportabilität", href: "/dein-nest#transport" },
       ],
     },
     {
       title: "Konzept-Check",
       items: [
-        { text: "Konzept-Check", href: "/konzept-check" },
-        { text: "Beispiele", href: "/konzept-check" },
-        { text: "Grundstücks-Check", href: "/konzept-check" },
-        { text: "Anleitung", href: "/nest-system" },
-        { text: "FAQ", href: "/faq" },
+        { text: "Konzept-Check", href: "/konzept-check#schritte" },
+        { text: "Grundstücks-Check", href: "/konzept-check#grundstueckscheck" },
+        { text: "Entwurfplan", href: "/konzept-check#entwurfsplan" },
+        { text: "Der Ablauf", href: "/konzept-check#anleitung" },
+        { text: "FAQ", href: "/konzept-check#faq" },
       ],
     },
     {
       title: "Nest System",
       items: [
-        { text: "Unsere Technik", href: "/kontakt" },
-        { text: "Materialien", href: "/nest-system" },
-        { text: "Fenster & Türen", href: "/kontakt" },
-        { text: "Haustechnik", href: "/nest-system" },
+        { text: "Unsere Technik", href: "/nest-system#unsere-technik" },
+        { text: "Materialien", href: "/nest-system#materialien" },
+        { text: "Fenster & Türen", href: "/nest-system#fenster-tueren" },
+        { text: "Individualisierung", href: "/nest-system#individualisierung" },
+        { text: "Haustechnik", href: "/nest-system#haustechnik" },
+        { text: "Modulerweiterung", href: "/nest-system#modulerweiterung" },
       ],
     },
     {
-      title: "Kontakt",
+      title: "Warum Wir?",
       items: [
-        { text: "Terminvereinbarung", href: "/kontakt" },
-        { text: "Warum Wir?", href: "/warum-wir" },
-        { text: "Wo du uns findest", href: "/kontakt" },
-        { text: "FAQ", href: "/faq" },
-        { text: "Anschrift", href: "/kontakt" },
+        { text: "Wir sind Nest", href: "/warum-wir#wir-sind-nest" },
+        { text: "Verlässlichkeit", href: "/warum-wir#verlaesslichkeit" },
+        { text: "Unser Team", href: "/warum-wir#unser-team" },
+        { text: "Unsere Partner", href: "/warum-wir#unser-partner" },
+        { text: "Unsere Zukunft", href: "/warum-wir#innovation" },
       ],
     },
   ];
@@ -108,7 +112,7 @@ export default function Footer() {
         <div className="flex flex-col md:flex-row justify-between items-center text-[clamp(12px,2.2vw,14px)] text-gray-500 space-y-4 md:space-y-0">
           <div>
             <p>
-              Copyright © {currentYear} NEST-Haus. Alle Rechte vorbehalten.
+              Copyright © {currentYear} Nest-Haus. Alle Rechte vorbehalten.
             </p>
           </div>
 

@@ -348,16 +348,11 @@ export default function DeinNestClient() {
         </section>
         {/* Section 6 - Video Background Cards */}
         <section id="vorteile-nest" className="w-full py-8 md:py-16 bg-white">
-          <div className="w-full mb-12">
-            <div className="md:pl-12 text-center">
-              <h2 className="h2-title font-normal text-black mb-3 md:mb-4">
-                Warum Nest Sinn macht?
-              </h2>
-              <h3 className="h3-secondary font-normal text-black">
-                Weil bauen nicht immer kompliziert sein muss.
-              </h3>
-            </div>
-          </div>
+          <SectionHeader
+            title="Warum Nest Sinn macht?"
+            subtitle="Weil bauen nicht immer kompliziert sein muss."
+            wrapperMargin="mb-8 md:mb-12"
+          />
 
           <UnifiedContentCard
             layout="overlay-text"

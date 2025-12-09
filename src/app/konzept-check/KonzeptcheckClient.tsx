@@ -22,24 +22,24 @@ import { SectionRouter } from "@/components/SectionRouter";
 // Define sections for konzept-check page
 const sections = [
   {
-    id: "hero",
+    id: "schritte",
     title: "Konzept-Check & Grundstücks-Check",
-    slug: "hero",
-  },
-  {
-    id: "konzept-check",
-    title: "Aller Anfang ist schwer?",
-    slug: "konzept-check",
-  },
-  {
-    id: "beispiele",
-    title: "Beispiele",
-    slug: "beispiele",
+    slug: "schritte",
   },
   {
     id: "grundstueckscheck",
-    title: "Dein Grundstücks-Check",
+    title: "Aller Anfang ist schwer?",
     slug: "grundstueckscheck",
+  },
+  {
+    id: "entdecken",
+    title: "Beispiele",
+    slug: "entdecken",
+  },
+  {
+    id: "entwurfsplan",
+    title: "Dein Grundstücks-Check",
+    slug: "entwurfsplan",
   },
   {
     id: "anleitung",
@@ -54,7 +54,7 @@ const sections = [
 ];
 
 export default function KonzeptcheckClient() {
-  const [_currentSectionId, setCurrentSectionId] = useState<string>("hero");
+  const [_currentSectionId, setCurrentSectionId] = useState<string>("schritte");
   const [isMobile, setIsMobile] = useState(false);
   // Get konzept-check video cards using PRESET (recommended approach)
   const konzeptcheckVideoCards = ENTWURF_VIDEO_CARDS_PRESET.cards;
@@ -78,7 +78,7 @@ export default function KonzeptcheckClient() {
     >
       <SectionRouter sections={sections} onSectionChange={setCurrentSectionId}>
         {/* Hero Section - Simple image with SectionHeader on top */}
-        <section id="hero" className="w-full">
+        <section id="schritte" className="w-full">
           <div className="relative w-full h-[400px] sm:h-[500px] md:h-[600px] lg:h-[700px] xl:h-[800px] 2xl:h-[900px]">
             {/* Background Image */}
             <HybridBlobImage
@@ -119,7 +119,10 @@ export default function KonzeptcheckClient() {
         </section>
 
         {/* Grundrissplan Card - With Padding (TALL CARD) */}
-        <section id="konzept-check" className="w-full py-8 md:py-16 bg-white">
+        <section
+          id="grundstueckscheck"
+          className="w-full py-8 md:py-16 bg-white"
+        >
           <SectionHeader
             title="Schritt 1: Grundstücks-Check"
             subtitle="Starte dein Bauvorhaben mit Rechtssicherheit"
@@ -160,7 +163,7 @@ export default function KonzeptcheckClient() {
         </section>
 
         {/* Video Examples Section */}
-        <section id="beispiele" className="w-full pb-8 md:pb-16">
+        <section id="entdecken" className="w-full pb-8 md:pb-16">
           <UnifiedContentCard
             layout="overlay-text"
             style="standard"
@@ -174,10 +177,7 @@ export default function KonzeptcheckClient() {
         </section>
 
         {/* Grundstück Card - With Padding (TALL CARD) */}
-        <section
-          id="grundstueckscheck"
-          className="w-full py-8 md:py-16 bg-white"
-        >
+        <section id="entwurfsplan" className="w-full py-8 md:py-16 bg-white">
           <SectionHeader
             title="Schritt 2: Entwurfsplan"
             subtitle="Persönlich geplant, individuell gestaltet."

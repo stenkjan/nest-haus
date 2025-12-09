@@ -23,9 +23,9 @@ const sections = [
     slug: "wir-sind-nest",
   },
   {
-    id: "echo",
+    id: "verlaesslichkeit",
     title: "Verlässlichkeit, auf die du bauen kannst",
-    slug: "echo",
+    slug: "verlaesslichkeit",
   },
   {
     id: "unser-team",
@@ -33,9 +33,9 @@ const sections = [
     slug: "unser-team",
   },
   {
-    id: "unser-partner",
+    id: "unsere-partner",
     title: "Unsere Partner",
-    slug: "unser-partner",
+    slug: "unsere-partner",
   },
   {
     id: "innovation",
@@ -126,7 +126,10 @@ export default function WarumWirClient() {
         </section>
 
         {/* Section 2 - Echo - Testimonials / Glass Quote Cards */}
-        <section id="echo" className="w-full bg-black py-8 md:py-16">
+        <section
+          id="verlaesslichkeit"
+          className="w-full bg-black py-8 md:py-16"
+        >
           <div className="w-full">
             <SectionHeader
               title="Verlässlichkeit, auf die du bauen kannst"
@@ -176,7 +179,7 @@ export default function WarumWirClient() {
         </section>
 
         {/* Section 4 - Unser Partner */}
-        <section id="unser-partner">
+        <section id="unsere-partner">
           <PartnersSection />
         </section>
 
