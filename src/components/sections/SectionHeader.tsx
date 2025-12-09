@@ -1,5 +1,4 @@
 import React from "react";
-import { useDeviceDetect } from "@/hooks/useDeviceDetect";
 
 /**
  * SectionHeader Component
@@ -144,23 +143,55 @@ export function SectionHeader({
   className = "",
 }: SectionHeaderProps) {
   const TitleTag = titleTag;
-  const { isMobile } = useDeviceDetect();
 
-  // Determine text to show based on device
-  const displayTitle = isMobile && mobileTitle ? mobileTitle : title;
-  const displaySubtitle = isMobile && mobileSubtitle ? mobileSubtitle : subtitle;
+  // Determine if we have mobile variants
+  const hasMobileVariant = mobileTitle !== undefined;
 
   return (
     <div
-      className={\`w-full px-4 md:px-12 \${centered ? "text-center" : ""} \${wrapperMargin} \${className}\`}
+      className={`w-full px-4 md:px-12 ${centered ? "text-center" : ""} ${wrapperMargin} ${className}`}
     >
-      <TitleTag className={\`h1-secondary mb-2 md:mb-3 \${titleClassName} whitespace-pre-line\`}>
-        {displayTitle}
-      </TitleTag>
-      {displaySubtitle && (
-        <h3 className={\`h3-secondary \${subtitleClassName} whitespace-pre-line\`}>
-          {displaySubtitle}
-        </h3>
+      {/* Desktop Version (≥1024px) */}
+      {hasMobileVariant ? (
+        <>
+          <TitleTag
+            className={`h1-secondary mb-2 md:mb-3 ${titleClassName} whitespace-pre-line hidden lg:block`}
+          >
+            {title}
+          </TitleTag>
+          {subtitle && (
+            <h3 className={`h3-secondary ${subtitleClassName} whitespace-pre-line hidden lg:block`}>
+              {subtitle}
+            </h3>
+          )}
+        </>
+      ) : (
+        <>
+          <TitleTag className={`h1-secondary mb-2 md:mb-3 ${titleClassName} whitespace-pre-line`}>
+            {title}
+          </TitleTag>
+          {subtitle && (
+            <h3 className={`h3-secondary ${subtitleClassName} whitespace-pre-line`}>{subtitle}</h3>
+          )}
+        </>
+      )}
+
+      {/* Mobile Version (<1024px) - Only shown if mobile variants exist */}
+      {hasMobileVariant && (
+        <>
+          <TitleTag
+            className={`h1-secondary mb-2 md:mb-3 ${titleClassName} whitespace-pre-line lg:hidden`}
+          >
+            {mobileTitle}
+          </TitleTag>
+          {mobileSubtitle && (
+            <h3
+              className={`h3-secondary ${subtitleClassName} whitespace-pre-line lg:hidden`}
+            >
+              {mobileSubtitle}
+            </h3>
+          )}
+        </>
       )}
     </div>
   );
