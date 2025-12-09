@@ -227,8 +227,8 @@ export class PriceUtils {
     const middleItems: [string, T][] = [];
     const bottomItems: [string, T][] = [];
 
-    // Define the order for middle items - planungspaket now appears after bodenaufbau
-    const middleOrder = ['gebaeudehuelle', 'innenverkleidung', 'fussboden', 'bodenaufbau', 'planungspaket', 'geschossdecke', 'belichtungspaket', 'pvanlage', 'fenster', 'stirnseite'];
+    // Define the order for middle items - planungspaket now appears after belichtungspaket (last)
+    const middleOrder = ['gebaeudehuelle', 'innenverkleidung', 'fussboden', 'bodenaufbau', 'geschossdecke', 'belichtungspaket', 'planungspaket', 'pvanlage', 'fenster', 'stirnseite'];
 
     entries.forEach(([key, value]) => {
       if (key === 'nest') {

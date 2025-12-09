@@ -144,8 +144,8 @@ export function SectionHeader({
 }: SectionHeaderProps) {
   const TitleTag = titleTag;
 
-  // Determine if we have mobile variants
-  const hasMobileVariant = mobileTitle !== undefined;
+  // Determine if we have mobile variants (either title or subtitle)
+  const hasMobileVariant = mobileTitle !== undefined || mobileSubtitle !== undefined;
 
   return (
     <div
@@ -179,16 +179,24 @@ export function SectionHeader({
       {/* Mobile Version (<1024px) - Only shown if mobile variants exist */}
       {hasMobileVariant && (
         <>
-          <TitleTag
-            className={`h1-secondary mb-2 md:mb-3 ${titleClassName} lg:hidden`}
-            dangerouslySetInnerHTML={{ __html: mobileTitle }}
-          />
-          {mobileSubtitle && (
+          {mobileTitle ? (
+            <TitleTag
+              className={`h1-secondary mb-2 md:mb-3 ${titleClassName} lg:hidden`}
+              dangerouslySetInnerHTML={{ __html: mobileTitle }}
+            />
+          ) : (
+            <TitleTag className={`h1-secondary mb-2 md:mb-3 ${titleClassName} lg:hidden`}>
+              {title}
+            </TitleTag>
+          )}
+          {mobileSubtitle ? (
             <h3
               className={`h3-secondary ${subtitleClassName} lg:hidden`}
               dangerouslySetInnerHTML={{ __html: mobileSubtitle }}
             />
-          )}
+          ) : subtitle ? (
+            <h3 className={`h3-secondary ${subtitleClassName} lg:hidden`}>{subtitle}</h3>
+          ) : null}
         </>
       )}
     </div>
