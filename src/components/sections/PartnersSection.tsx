@@ -192,9 +192,9 @@ export function PartnersSection({ className = "" }: PartnersSectionProps) {
 
             {/* Buttons at the bottom */}
             <div className="flex flex-col gap-4 items-center">
-              <Link href="/kontakt">
+              <Link href="/warum-wir#unser-team">
                 <Button variant="primary" size="xs">
-                  Melde dich!
+                  Unser Team
                 </Button>
               </Link>
             </div>
@@ -216,9 +216,9 @@ export function PartnersSection({ className = "" }: PartnersSectionProps) {
 
               {/* Buttons at bottom */}
               <div className="mt-8 flex flex-col gap-4">
-                <Link href="/kontakt">
+                <Link href="/warum-wir#unser-team">
                   <Button variant="primary" size="xs">
-                    Melde dich!
+                    Unser Team
                   </Button>
                 </Link>
               </div>
