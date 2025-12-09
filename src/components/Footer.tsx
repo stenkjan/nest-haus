@@ -56,7 +56,7 @@ export default function Footer() {
         { text: "Wir sind Nest", href: "/warum-wir#wir-sind-nest" },
         { text: "Verlässlichkeit", href: "/warum-wir#verlaesslichkeit" },
         { text: "Unser Team", href: "/warum-wir#unser-team" },
-        { text: "Unsere Partner", href: "/warum-wir#unser-partner" },
+        { text: "Unsere Partner", href: "/warum-wir#unsere-partner" },
         { text: "Unsere Zukunft", href: "/warum-wir#innovation" },
       ],
     },
