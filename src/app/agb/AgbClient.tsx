@@ -486,7 +486,7 @@ export default function AgbClient() {
                       <strong>Eco Chalets GmbH</strong>
                     </p>
                     <p>Zösenberg 51</p>
-                    <p>A-8045 Weinitzen</p>
+                    <p>8045 Weinitzen</p>
                     <p>Österreich</p>
                     <p>E-Mail: mail@nest-haus.at</p>
                   </div>
@@ -517,7 +517,8 @@ export default function AgbClient() {
                   </p>
                   <div className="bg-[#F4F4F4] p-4 rounded-2xl text-sm">
                     <p className="mb-2">
-                      An: Nest-Haus GmbH, Zösenberg 51, 8045 Weinitzen, widerruf@nest-haus.at
+                      An: Nest-Haus GmbH, Zösenberg 51, 8045 Weinitzen,
+                      widerruf@nest-haus.at
                     </p>
                     <p className="mb-2">
                       Hiermit widerrufe(n) ich/wir (*) den von mir/uns (*)
