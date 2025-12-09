@@ -61,7 +61,7 @@ const LandingImagesCarousel: React.FC<LandingImagesCarouselProps> = ({
         description: {
           title: "Nest 100",
           subtitle: "Mediterrane Ansicht",
-          sectionSlug: "wohnen-ohne-grenzen",
+          sectionSlug: "design-im-freistil",
         },
       },
       {
@@ -71,7 +71,7 @@ const LandingImagesCarousel: React.FC<LandingImagesCarouselProps> = ({
         description: {
           title: "Nest Interior",
           subtitle: "Kalkstein Verglasung",
-          sectionSlug: "zuhause-fuer-ideen",
+          sectionSlug: "visionen-brauchen-raeume",
         },
       },
       {
@@ -81,7 +81,7 @@ const LandingImagesCarousel: React.FC<LandingImagesCarouselProps> = ({
         description: {
           title: "Nest 140",
           subtitle: "Vogelperspektive Holzlattung",
-          sectionSlug: "wohnen-neu-gedacht",
+          sectionSlug: "dein-nest-haus",
         },
       },
       {
@@ -89,9 +89,9 @@ const LandingImagesCarousel: React.FC<LandingImagesCarouselProps> = ({
         mobilePath: IMAGES.hero.mobile.nestHaus5,
         alt: "NEST-Haus Bild 5",
         description: {
-          title: "Nest 100",
+          title: "Nest 80",
           subtitle: "Stirnseite Trapezblech",
-          sectionSlug: "mehr-als-vier-waende",
+          sectionSlug: "keine-lebensentscheidung",
         },
       },
       {
@@ -101,7 +101,7 @@ const LandingImagesCarousel: React.FC<LandingImagesCarouselProps> = ({
         description: {
           title: "Nest Interior",
           subtitle: "Innenverkleidung Fichte, Parkett Eiche",
-          sectionSlug: "gestaltung-fuer-visionen",
+          sectionSlug: "wohnen-neu-gedacht",
         },
       },
       {
@@ -109,9 +109,9 @@ const LandingImagesCarousel: React.FC<LandingImagesCarouselProps> = ({
         mobilePath: IMAGES.hero.mobile.nestHaus7,
         alt: "NEST-Haus Bild 7",
         description: {
-          title: "Nest 120",
+          title: "Nest 140",
           subtitle: "Wald Ansicht Schwarz",
-          sectionSlug: "raum-fuer-ideen",
+          sectionSlug: "wohnen-ohne-grenzen",
         },
       },
     ],

@@ -16,24 +16,28 @@ const sections = [
   { id: "dein-nest-haus", title: "Dein Nest Haus", slug: "dein-nest-haus" },
   {
     id: "design-im-freistil",
-    title: "Design im Freistil",
+    title: "Dein Design im Freistil",
     slug: "design-im-freistil",
   },
   {
-    id: "zuhause-fuer-ideen",
-    title: "Zuhause für Ideen",
-    slug: "zuhause-fuer-ideen",
-  },
-  { id: "raum-fuer-ideen", title: "Raum für Ideen", slug: "raum-fuer-ideen" },
-  {
-    id: "gestaltung-fuer-visionen",
-    title: "Gestaltung für Visionen",
-    slug: "gestaltung-fuer-visionen",
+    id: "visionen-brauchen-raeume",
+    title: "Visionen brauchen Räume",
+    slug: "visionen-brauchen-raeume",
   },
   {
-    id: "mehr-als-vier-waende",
-    title: "Mehr als vier Wände",
-    slug: "mehr-als-vier-waende",
+    id: "wohnen-ohne-grenzen",
+    title: "Wohnen ohne Grenzen",
+    slug: "wohnen-ohne-grenzen",
+  },
+  {
+    id: "wohnen-neu-gedacht",
+    title: "Wohnen neu gedacht",
+    slug: "wohnen-neu-gedacht",
+  },
+  {
+    id: "keine-lebensentscheidung",
+    title: "Keine Lebensentscheidung",
+    slug: "keine-lebensentscheidung",
   },
   {
     id: "nest-entdecken",
@@ -86,7 +90,7 @@ const sectionsContent = [
   },
   {
     id: 3,
-    sectionId: "zuhause-fuer-ideen",
+    sectionId: "visionen-brauchen-raeume",
     imagePath: IMAGES.hero.nestHaus3,
     h1: "Visionen brauchen Räume",
     h3: "Dein Zuhause für Ideen",
@@ -98,7 +102,7 @@ const sectionsContent = [
   },
   {
     id: 4,
-    sectionId: "raum-fuer-ideen",
+    sectionId: "wohnen-ohne-grenzen",
     imagePath: IMAGES.hero.nestHaus7,
     h1: "Wohnen ohne Grenzen",
     h3: "Wo Effizienz auf Architektur trifft",
@@ -110,7 +114,7 @@ const sectionsContent = [
   },
   {
     id: 5,
-    sectionId: "gestaltung-fuer-visionen",
+    sectionId: "wohnen-neu-gedacht",
     imagePath: IMAGES.hero.nestHaus6,
     h1: "Wohnen neu gedacht",
     h3: "Individualität. Design. Flexibilität.",
@@ -122,7 +126,7 @@ const sectionsContent = [
   },
   {
     id: 6,
-    sectionId: "mehr-als-vier-waende",
+    sectionId: "keine-lebensentscheidung",
     imagePath: IMAGES.hero.nestHaus5,
     h1: "Keine Lebensentscheidung",
     h3: "Mit Nest bleibt kein Ort unerreichbar",

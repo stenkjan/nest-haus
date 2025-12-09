@@ -358,7 +358,7 @@ export default function NestSystemClient() {
 
               {/* Single Button - Konzept-Check bestellen */}
               <div className="flex gap-4 justify-center w-full pt-12">
-                <Link href="/warenkorb?mode=Konzept-Check">
+                <Link href="/warenkorb?mode=konzept-check">
                   <Button variant="primary" size="xs">
                     Konzept-Check bestellen
                   </Button>
