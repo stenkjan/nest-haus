@@ -171,7 +171,33 @@ export default function ThreeByOneGrid({
                 animate={{ y: 0, opacity: 1 }}
                 transition={{ delay: 0.2, duration: 0.6 }}
               />
-              {/* Buttons are hidden on mobile/tablet to match VideoCard16by9 behavior */}
+              {/* Show buttons on mobile if showButtons is true */}
+              {showButtons && (
+                <div className="flex flex-row gap-2 items-center justify-center w-full mt-8">
+                  <Button
+                    variant="primary"
+                    size="xs"
+                    className="flex-shrink-0"
+                    onClick={primaryButtonHref ? undefined : primaryButtonOnClick}
+                    href={primaryButtonHref}
+                  >
+                    {primaryButtonText}
+                  </Button>
+                  {secondaryButtonText && secondaryButtonHref && (
+                    <Button
+                      variant="secondary-narrow-white"
+                      size="xs"
+                      className="flex-shrink-0"
+                      onClick={
+                        secondaryButtonHref ? undefined : secondaryButtonOnClick
+                      }
+                      href={secondaryButtonHref}
+                    >
+                      {secondaryButtonText}
+                    </Button>
+                  )}
+                </div>
+              )}
             </div>
 
             {/* Second Image (First Image on Mobile) */}
@@ -230,19 +256,21 @@ export default function ThreeByOneGrid({
                         >
                           {primaryButtonText}
                         </Button>
-                        <Button
-                          variant="secondary-narrow-white"
-                          size="xs"
-                          className="flex-shrink-0"
-                          onClick={
-                            secondaryButtonHref
-                              ? undefined
-                              : secondaryButtonOnClick
-                          }
-                          href={secondaryButtonHref}
-                        >
-                          {secondaryButtonText}
-                        </Button>
+                        {secondaryButtonText && secondaryButtonHref && (
+                          <Button
+                            variant="secondary-narrow-white"
+                            size="xs"
+                            className="flex-shrink-0"
+                            onClick={
+                              secondaryButtonHref
+                                ? undefined
+                                : secondaryButtonOnClick
+                            }
+                            href={secondaryButtonHref}
+                          >
+                            {secondaryButtonText}
+                          </Button>
+                        )}
                       </div>
                     )}
                   </motion.div>
@@ -387,19 +415,21 @@ export default function ThreeByOneGrid({
                         >
                           {primaryButtonText}
                         </Button>
-                        <Button
-                          variant="secondary-narrow-white"
-                          size="xs"
-                          className="flex-shrink-0"
-                          onClick={
-                            secondaryButtonHref
-                              ? undefined
-                              : secondaryButtonOnClick
-                          }
-                          href={secondaryButtonHref}
-                        >
-                          {secondaryButtonText}
-                        </Button>
+                        {secondaryButtonText && secondaryButtonHref && (
+                          <Button
+                            variant="secondary-narrow-white"
+                            size="xs"
+                            className="flex-shrink-0"
+                            onClick={
+                              secondaryButtonHref
+                                ? undefined
+                                : secondaryButtonOnClick
+                            }
+                            href={secondaryButtonHref}
+                          >
+                            {secondaryButtonText}
+                          </Button>
+                        )}
                       </div>
                     )}
                   </motion.div>

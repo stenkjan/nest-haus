@@ -221,6 +221,22 @@ export default function NestSystemClient() {
               maxWidth={false}
               showInstructions={true}
             />
+
+            {/* Button Pair - CTA Section */}
+            <div className="w-full max-w-[1536px] mx-auto px-4 sm:px-6 lg:px-8 pt-12 md:pt-16">
+              <div className="flex flex-row gap-4 justify-center items-center">
+                <Link href="/warum-wir">
+                  <Button variant="primary" size="lg">
+                    Unsere Philosophie
+                  </Button>
+                </Link>
+                <Link href="/konfigurator">
+                  <Button variant="landing-secondary-blue" size="lg">
+                    Konfigurieren
+                  </Button>
+                </Link>
+              </div>
+            </div>
           </section>
 
           {/* Section 4 - Fenster & Türen */}
@@ -264,7 +280,7 @@ export default function NestSystemClient() {
                 showButtons={true}
                 primaryButtonText="Konzept-Check"
                 secondaryButtonText="Konfigurieren"
-                primaryButtonHref="/planungspakete"
+                primaryButtonHref="/konzept-check"
                 secondaryButtonHref="/konfigurator"
               />
             </div>
@@ -340,16 +356,11 @@ export default function NestSystemClient() {
                 </div>
               )}
 
-              {/* Additional Button Combination */}
+              {/* Single Button - Konzept-Check bestellen */}
               <div className="flex gap-4 justify-center w-full pt-12">
-                <Link href="/konzept-check">
+                <Link href="/warenkorb?mode=Konzept-Check">
                   <Button variant="primary" size="xs">
-                    Konzept-Check
-                  </Button>
-                </Link>
-                <Link href="/konfigurator">
-                  <Button variant="landing-secondary-blue" size="xs">
-                    Konfigurieren
+                    Konzept-Check bestellen
                   </Button>
                 </Link>
               </div>

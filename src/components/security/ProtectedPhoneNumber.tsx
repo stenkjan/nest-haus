@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React from "react";
 
 interface ProtectedPhoneNumberProps {
   /** The phone number to display (e.g., "+43 664 3949605") */
@@ -18,11 +18,10 @@ interface ProtectedPhoneNumberProps {
 /**
  * ProtectedPhoneNumber Component
  * 
- * Displays phone numbers with anti-scraper protection:
- * - CSS blur effect initially
- * - Reveals on hover (desktop) or click (mobile)
- * - Encoded tel: links that decode on interaction
- * - Obfuscated data attributes
+ * Displays phone numbers as clickable tel: links
+ * - Always visible (no blur effect)
+ * - Clickable tel: links for easy calling
+ * - Obfuscated data attributes for anti-scraping
  * 
  * Used on /kontakt and terminvereinbarung sections
  */
@@ -33,18 +32,6 @@ export const ProtectedPhoneNumber: React.FC<ProtectedPhoneNumberProps> = ({
   enableTelLink = true,
   textColor = "",
 }) => {
-  const [isRevealed, setIsRevealed] = useState(false);
-  const [isMobile, setIsMobile] = useState(false);
-
-  useEffect(() => {
-    // Detect mobile device
-    setIsMobile(
-      /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
-        navigator.userAgent
-      )
-    );
-  }, []);
-
   const displayText = displayFormat || number;
   
   // Encode phone number for tel: link (remove spaces and special chars except +)
@@ -58,60 +45,28 @@ export const ProtectedPhoneNumber: React.FC<ProtectedPhoneNumberProps> = ({
   // Reverse the number for data attribute obfuscation
   const reversedNumber = number.split("").reverse().join("");
 
-  const handleInteraction = () => {
-    setIsRevealed(true);
-  };
-
-  const handleClick = (e: React.MouseEvent) => {
-    if (isMobile) {
-      e.preventDefault();
-      setIsRevealed(true);
-      
-      // After revealing, if tel link is enabled, trigger it
-      if (enableTelLink && isRevealed) {
-        window.location.href = `tel:${cleanNumber}`;
-      }
-    }
-  };
-
-  const blurStyle: React.CSSProperties = {
-    filter: isRevealed ? "none" : "blur(4px)",
-    transition: "filter 0.3s ease",
-    cursor: isMobile && !isRevealed ? "pointer" : "default",
-    userSelect: isRevealed ? "text" : "none",
-  };
-
-  // If revealed and tel link enabled, wrap in anchor
-  if (isRevealed && enableTelLink) {
+  // If tel link enabled, wrap in anchor
+  if (enableTelLink) {
     return (
       <a
         href={`tel:${cleanNumber}`}
         className={`${className} ${textColor} hover:underline`}
         data-protected="true"
-        onMouseEnter={handleInteraction}
+        data-phone-rev={reversedNumber}
+        data-encoded={encodedTel}
       >
-        <span style={blurStyle}>{displayText}</span>
+        {displayText}
       </a>
     );
   }
 
-  // Not revealed or no tel link
+  // No tel link, just display text
   return (
     <span
       className={`${className} ${textColor}`}
-      style={blurStyle}
-      onMouseEnter={handleInteraction}
-      onClick={handleClick}
       data-phone-rev={reversedNumber}
       data-protected="true"
       data-encoded={encodedTel}
-      role={isMobile && !isRevealed ? "button" : undefined}
-      tabIndex={isMobile && !isRevealed ? 0 : undefined}
-      title={
-        isMobile && !isRevealed
-          ? "Tippen zum Anzeigen der Telefonnummer"
-          : undefined
-      }
     >
       {displayText}
     </span>
@@ -119,4 +74,3 @@ export const ProtectedPhoneNumber: React.FC<ProtectedPhoneNumberProps> = ({
 };
 
 export default ProtectedPhoneNumber;
-
