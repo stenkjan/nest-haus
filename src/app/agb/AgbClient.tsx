@@ -33,7 +33,7 @@ export default function AgbClient() {
               Allgemeine Geschäftsbedingungen
             </h1>
             <h2 className="h2-subtitle tracking-[-0.015em] leading-8 max-w-3xl mx-auto text-center text-black">
-              Nest-Haus GmbH - Modulare Häuser
+              Nest-Haus - Modulare Häuser
             </h2>
 
             <div className="max-w-4xl mx-auto space-y-12 text-gray-700">
@@ -44,7 +44,7 @@ export default function AgbClient() {
                 <div className="space-y-4">
                   <p className="leading-relaxed">
                     Diese Allgemeinen Geschäftsbedingungen (AGB) gelten für alle
-                    Verträge zwischen der Nest-Haus GmbH (nachfolgend
+                    Verträge zwischen der Eco Chalets GmbH (nachfolgend
                     &quot;Nest-Haus&quot; oder &quot;Anbieter&quot;) und ihren
                     Kunden über die Planung, Lieferung und Montage modularer
                     Häuser.
@@ -517,7 +517,7 @@ export default function AgbClient() {
                   </p>
                   <div className="bg-[#F4F4F4] p-4 rounded-2xl text-sm">
                     <p className="mb-2">
-                      An: Nest-Haus GmbH, Zösenberg 51, 8045 Weinitzen,
+                      An: Eco Chalets GmbH, Zösenberg 51, 8045 Weinitzen,
                       widerruf@nest-haus.at
                     </p>
                     <p className="mb-2">
@@ -810,7 +810,7 @@ export default function AgbClient() {
 
               <div className="text-center border-t border-gray-300 pt-8 mt-12">
                 <p className="text-lg font-medium text-black mb-4">
-                  Nest-Haus GmbH
+                  Nest-Haus | Eco Chalets GmbH
                 </p>
                 <p className="text-sm text-gray-600 mb-2">
                   Stand: {new Date().toLocaleDateString("de-AT")} | Version 1.0
