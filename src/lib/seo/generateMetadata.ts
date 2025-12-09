@@ -44,7 +44,7 @@ export const PAGE_SEO_CONFIG = {
         twitterImage: "/images/6-NEST-Haus-4-Module-Ansicht-Meer-Mediteran-Stirnseite-Holzlattung-Laerche.png",
     },
     warenkorb: {
-        title: "Warenkorb | Konzept-Check & Planungspaket bestellen",
+        title: "Warenkorb | Konzept-Check bestellen & Konfiguration einreichen",
         description: "Deine Nest-Haus Konfiguration überprüfen und Konzept-Check bestellen. Planungspakete wählen, Termin vereinbaren, Bestellung abschließen. Jetzt starten!",
         keywords: "konzept-check bestellen, planungspaket wählen, konfiguration überprüfen, nest haus warenkorb, bestellung abschließen, modulhaus bestellen, hausbau bestellung österreich",
         priority: 0.7,
@@ -53,7 +53,7 @@ export const PAGE_SEO_CONFIG = {
         twitterImage: "/images/2-NEST-Haus-7-Module-Ansicht-Weisse-Fassadenplatten.png",
     },
     kontakt: {
-        title: "Kontakt | Nest-Haus Graz | Termin vereinbaren",
+        title: "Kontakt | Termin vereinbaren & Grundstücks-Check anfragen",
         description: "Vereinbare jetzt deinen Termin bei Nest-Haus in Graz, Zösenberg 51. Kostenlose Erstberatung, Grundstücks-Check Anfrage. Wir helfen gerne weiter.",
         keywords: "nest haus kontakt, termin vereinbaren, beratung graz, zösenberg 51 graz, grundstücks-check anfrage, modulhaus beratung österreich, nest haus termin",
         priority: 0.8,
@@ -71,7 +71,7 @@ export const PAGE_SEO_CONFIG = {
         twitterImage: "/images/335-nest-haus-team-markus-schmoltner.png",
     },
     "dein-nest": {
-        title: "Dein Nest | Nest-Haus Preise & Konfiguration",
+        title: "Dein Nest | Was ist Nest-Haus?",
         description: "Nest 80 ab €213.000, Nest 120 ab €296.000, Nest 160 ab €380.000. Individuell konfigurierbar, transportabel und erweiterbar. Dein modulares Traumhaus.",
         keywords: "nest haus preise, nest 80, nest 120, nest 160, modulhaus kosten, individuell konfigurierbar, transportabel, modulhaus österreich, haus erweitern",
         priority: 0.8,
@@ -80,7 +80,7 @@ export const PAGE_SEO_CONFIG = {
         twitterImage: "/images/7-NEST-Haus-Innenperspektive-Kalkstein-Holz-Verglasung-Stirnseite.jpg",
     },
     "nest-system": {
-        title: "Nest System | Modulares Bausystem 6m hoch, 8m breit",
+        title: "Nest System | Modulares bauen",
         description: "Das NEST-System: Module bis 6m hoch, 8m breit, beliebig erweiterbar. Nachhaltige Materialien, individuelle Fenster & Türen, flexible Haustechnik. Modulbau neu gedacht.",
         keywords: "nest system, modulares bausystem, 6 meter hoch, 8 meter breit, modulhaus materialien, fenster türen individuell, haustechnik, modulbau österreich, nachhaltige materialien",
         priority: 0.7,
