@@ -4,6 +4,19 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [70ff6055da8c5291e555c357bf64847c5760de64] - Tue Dec 9 15:41:00 2025 +0100
+
+**Author**: stenkjan
+**Message**: `Fix footer link href for "Unsere Partner" to correct spelling  - Updated the href from "/warum-wir#unser-partner" to "/warum-wir#unsere-partner" for consistency and accuracy.  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/components/Footer.tsx
+
+
+---
+
 ## [3faab0af7ea95b0b1bee1c8f58066be90e6cf231] - Tue Dec 9 15:36:10 2025 +0100
 
 **Author**: stenkjan
