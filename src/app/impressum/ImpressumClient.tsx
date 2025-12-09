@@ -106,7 +106,9 @@ export default function ImpressumClient() {
 
                     <div>
                       <h4 className="font-medium mb-2">E-Mail</h4>
-                      <p>mail@nest-haus.at</p>
+                      <p>
+                        <a href="mailto:mail@nest-haus.at">mail@nest-haus.at</a>
+                      </p>
                     </div>
 
                     <div>
@@ -132,22 +134,30 @@ export default function ImpressumClient() {
                 <div className="space-y-4">
                   <div>
                     <h4 className="font-medium mb-2">Beratung & Planung</h4>
-                    <p>mail@nest-haus.at</p>
+                    <p>
+                      <a href="mailto:mail@nest-haus.at">mail@nest-haus.at</a>
+                    </p>
                   </div>
 
                   <div>
                     <h4 className="font-medium mb-2">Kundenservice</h4>
-                    <p>mail@nest-haus.at</p>
+                    <p>
+                      <a href="mailto:mail@nest-haus.at">mail@nest-haus.at</a>
+                    </p>
                   </div>
 
                   <div>
                     <h4 className="font-medium mb-2">Datenschutz</h4>
-                    <p>mail@nest-haus.at</p>
+                    <p>
+                      <a href="mailto:mail@nest-haus.at">mail@nest-haus.at</a>
+                    </p>
                   </div>
 
                   <div>
                     <h4 className="font-medium mb-2">Presse & Medien</h4>
-                    <p>mail@nest-haus.at</p>
+                    <p>
+                      <a href="mailto:mail@nest-haus.at">mail@nest-haus.at</a>
+                    </p>
                   </div>
                 </div>
               </div>
@@ -324,7 +334,9 @@ export default function ImpressumClient() {
                 <p className="text-lg">
                   Bei Fragen zu diesem Impressum wenden Sie sich bitte an:
                 </p>
-                <p className="text-xl font-medium">mail@nest-haus.at</p>
+                <p className="text-xl font-medium">
+                  <a href="mailto:mail@nest-haus.at">mail@nest-haus.at</a>
+                </p>
               </div>
             </div>
           </div>

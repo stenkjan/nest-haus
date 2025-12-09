@@ -47,7 +47,6 @@ export default function Footer() {
         { text: "Materialien", href: "/nest-system#materialien" },
         { text: "Fenster & Türen", href: "/nest-system#fenster-tueren" },
         { text: "Individualisierung", href: "/nest-system#individualisierung" },
-        { text: "Haustechnik", href: "/nest-system#haustechnik" },
         { text: "Modulerweiterung", href: "/nest-system#modulerweiterung" },
       ],
     },

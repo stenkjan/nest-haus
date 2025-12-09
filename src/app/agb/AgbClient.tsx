@@ -24,39 +24,43 @@ export default function AgbClient() {
   const [_currentSectionId, setCurrentSectionId] = useState<string>("general");
 
   return (
-    <div className="min-h-screen pt-16">
+    <div className="min-h-screen pt-16 bg-[#F4F4F4]">
       <SectionRouter sections={sections} onSectionChange={setCurrentSectionId}>
         {/* General Section */}
         <section id="general" className="w-full py-16">
           <div className="w-full max-w-[1536px] mx-auto px-4 sm:px-6 lg:px-8">
-            <h1 className="font-medium text-4xl md:text-[60px] tracking-[-0.02em] mb-4 text-center">
+            <h1 className="font-medium text-4xl md:text-[60px] tracking-[-0.02em] mb-4 text-center text-black">
               Allgemeine Geschäftsbedingungen
             </h1>
-            <h2 className="h2-subtitle tracking-[-0.015em] leading-8 max-w-3xl mx-auto text-center">
-              NEST-Haus GmbH - Modulare Häuser
+            <h2 className="h2-subtitle tracking-[-0.015em] leading-8 max-w-3xl mx-auto text-center text-black">
+              Nest-Haus GmbH - Modulare Häuser
             </h2>
 
-            <div className="max-w-4xl mx-auto space-y-12 text-center text-gray-700">
+            <div className="max-w-4xl mx-auto space-y-12 text-gray-700">
               <div className="space-y-6">
-                <h3 className="text-2xl font-medium">Geltungsbereich</h3>
+                <h3 className="text-2xl font-medium text-black">
+                  Geltungsbereich
+                </h3>
                 <div className="space-y-4">
                   <p className="leading-relaxed">
                     Diese Allgemeinen Geschäftsbedingungen (AGB) gelten für alle
-                    Verträge zwischen der NEST-Haus GmbH (nachfolgend
-                    &quot;NEST-Haus&quot; oder &quot;Anbieter&quot;) und ihren
+                    Verträge zwischen der Nest-Haus GmbH (nachfolgend
+                    &quot;Nest-Haus&quot; oder &quot;Anbieter&quot;) und ihren
                     Kunden über die Planung, Lieferung und Montage modularer
                     Häuser.
                   </p>
                   <p className="leading-relaxed">
                     Abweichende Bedingungen des Kunden werden nicht anerkannt,
-                    es sei denn, NEST-Haus stimmt ihrer Geltung ausdrücklich
+                    es sei denn, Nest-Haus stimmt ihrer Geltung ausdrücklich
                     schriftlich zu.
                   </p>
                 </div>
               </div>
 
               <div className="space-y-6">
-                <h3 className="text-2xl font-medium">Definitionen</h3>
+                <h3 className="text-2xl font-medium text-black">
+                  Definitionen
+                </h3>
                 <div className="space-y-4">
                   <p>
                     <strong>Verbraucher:</strong> Natürliche Person, die ein
@@ -80,9 +84,11 @@ export default function AgbClient() {
               </div>
 
               <div className="space-y-6">
-                <h3 className="text-2xl font-medium">Anwendbares Recht</h3>
+                <h3 className="text-2xl font-medium text-black">
+                  Anwendbares Recht
+                </h3>
                 <p className="leading-relaxed">
-                  Für alle Rechtsbeziehungen zwischen NEST-Haus und dem Kunden
+                  Für alle Rechtsbeziehungen zwischen Nest-Haus und dem Kunden
                   gilt ausschließlich österreichisches Recht unter Ausschluss
                   des UN-Kaufrechts. Bei Verbrauchern gelten zusätzlich die
                   zwingenden Bestimmungen des Konsumentenschutzgesetzes (KSchG)
@@ -100,13 +106,17 @@ export default function AgbClient() {
         </section>
 
         {/* Contract Section */}
-        <section id="contract" className="w-full py-16 bg-gray-50">
+        <section id="contract" className="w-full py-16">
           <div className="w-full max-w-[1536px] mx-auto px-4 sm:px-6 lg:px-8">
-            <h2 className="h2-section tracking-[-0.02em]">Vertragsabschluss</h2>
+            <h2 className="h2-section tracking-[-0.02em] text-black">
+              Vertragsabschluss
+            </h2>
 
-            <div className="max-w-4xl mx-auto space-y-12 text-center text-gray-700">
+            <div className="max-w-4xl mx-auto space-y-12 text-gray-700">
               <div className="space-y-6">
-                <h3 className="text-2xl font-medium">Angebot und Bestellung</h3>
+                <h3 className="text-2xl font-medium text-black">
+                  Angebot und Bestellung
+                </h3>
                 <div className="space-y-4">
                   <p className="leading-relaxed">
                     Die Darstellung der Produkte auf unserer Website stellt kein
@@ -119,20 +129,20 @@ export default function AgbClient() {
                     ab.
                   </p>
                   <p className="leading-relaxed">
-                    NEST-Haus kann die Bestellung binnen 14 Tagen nach Eingang
+                    Nest-Haus kann die Bestellung binnen 14 Tagen nach Eingang
                     annehmen oder ablehnen.
                   </p>
                 </div>
               </div>
 
-              <div className="bg-gray-50 p-8 rounded-lg">
-                <h3 className="text-xl font-medium mb-4">
+              <div className="bg-white rounded-3xl p-8 md:p-12">
+                <h3 className="text-xl font-medium text-black mb-4">
                   Vertragsbestätigung
                 </h3>
                 <div className="space-y-4">
                   <p className="leading-relaxed">
                     Der Vertrag kommt durch die schriftliche Auftragsbestätigung
-                    von NEST-Haus zustande.
+                    von Nest-Haus zustande.
                   </p>
                   <p className="leading-relaxed">
                     Die Auftragsbestätigung enthält alle wesentlichen
@@ -148,8 +158,8 @@ export default function AgbClient() {
                 </div>
               </div>
 
-              <div className="bg-white p-8 rounded-lg border">
-                <h3 className="text-xl font-medium mb-4">
+              <div className="space-y-6">
+                <h3 className="text-2xl font-medium text-black">
                   Elektronische Vertragsabwicklung
                 </h3>
                 <div className="space-y-4">
@@ -162,7 +172,7 @@ export default function AgbClient() {
                     Vertragssprache ist Deutsch.
                   </p>
                   <p className="leading-relaxed">
-                    NEST-Haus speichert den Vertragstext und sendet dem Kunden
+                    Nest-Haus speichert den Vertragstext und sendet dem Kunden
                     die Bestelldaten und AGB per E-Mail zu.
                   </p>
                 </div>
@@ -174,14 +184,18 @@ export default function AgbClient() {
         {/* Services Section */}
         <section id="services" className="w-full py-16">
           <div className="w-full max-w-[1536px] mx-auto px-4 sm:px-6 lg:px-8">
-            <h2 className="h2-section tracking-[-0.02em]">Leistungen</h2>
+            <h2 className="h2-section tracking-[-0.02em] text-black">
+              Leistungen
+            </h2>
 
             <div className="max-w-4xl mx-auto space-y-8 text-gray-700">
-              <div className="bg-gray-50 p-8 rounded-lg">
-                <h3 className="text-xl font-medium mb-4">Leistungsumfang</h3>
+              <div className="space-y-6">
+                <h3 className="text-xl font-medium text-black">
+                  Leistungsumfang
+                </h3>
                 <div className="space-y-4">
                   <p className="leading-relaxed">
-                    NEST-Haus erbringt folgende Leistungen:
+                    Nest-Haus erbringt folgende Leistungen:
                   </p>
                   <ul className="list-disc list-inside space-y-2 ml-4">
                     <li>Planung und Konstruktion des modularen Hauses</li>
@@ -195,8 +209,10 @@ export default function AgbClient() {
                 </div>
               </div>
 
-              <div className="bg-white p-8 rounded-lg border">
-                <h3 className="text-xl font-medium mb-4">Planungsleistungen</h3>
+              <div className="space-y-6">
+                <h3 className="text-xl font-medium text-black">
+                  Planungsleistungen
+                </h3>
                 <div className="space-y-4">
                   <p className="leading-relaxed">
                     Die Planungsleistungen umfassen:
@@ -213,8 +229,10 @@ export default function AgbClient() {
                 </div>
               </div>
 
-              <div className="bg-yellow-50 p-8 rounded-lg border border-yellow-200">
-                <h3 className="text-xl font-medium mb-4">Kundenpflichten</h3>
+              <div className="space-y-6">
+                <h3 className="text-xl font-medium text-black">
+                  Kundenpflichten
+                </h3>
                 <div className="space-y-4">
                   <p className="leading-relaxed">Der Kunde ist verpflichtet:</p>
                   <ul className="list-disc list-inside space-y-2 ml-4">
@@ -236,13 +254,17 @@ export default function AgbClient() {
         </section>
 
         {/* Prices Section */}
-        <section id="prices" className="w-full py-16 bg-gray-50">
+        <section id="prices" className="w-full py-16">
           <div className="w-full max-w-[1536px] mx-auto px-4 sm:px-6 lg:px-8">
-            <h2 className="h2-section tracking-[-0.02em]">Preise & Zahlung</h2>
+            <h2 className="h2-section tracking-[-0.02em] text-black">
+              Preise & Zahlung
+            </h2>
 
             <div className="max-w-4xl mx-auto space-y-8 text-gray-700">
-              <div className="bg-white p-8 rounded-lg border">
-                <h3 className="text-xl font-medium mb-4">Preisgestaltung</h3>
+              <div className="space-y-6">
+                <h3 className="text-xl font-medium text-black">
+                  Preisgestaltung
+                </h3>
                 <div className="space-y-4">
                   <p className="leading-relaxed">
                     Alle Preise verstehen sich in Euro (€) inklusive der
@@ -261,8 +283,8 @@ export default function AgbClient() {
                 </div>
               </div>
 
-              <div className="bg-gray-50 p-8 rounded-lg">
-                <h3 className="text-xl font-medium mb-4">
+              <div className="bg-white rounded-3xl border-2 border-[#3D6CE1] p-8 md:p-12">
+                <h3 className="text-xl font-medium text-black mb-4">
                   Zahlungsmodalitäten
                 </h3>
                 <div className="space-y-4">
@@ -288,23 +310,27 @@ export default function AgbClient() {
                 </div>
               </div>
 
-              <div className="bg-white p-8 rounded-lg border">
-                <h3 className="text-xl font-medium mb-4">Zahlungsverzug</h3>
+              <div className="space-y-6">
+                <h3 className="text-xl font-medium text-black">
+                  Zahlungsverzug
+                </h3>
                 <div className="space-y-4">
                   <p className="leading-relaxed">
                     Bei Zahlungsverzug sind Verzugszinsen in Höhe von 4% über
                     dem Basiszinssatz p.a. zu zahlen.
                   </p>
                   <p className="leading-relaxed">
-                    NEST-Haus ist berechtigt, bei Zahlungsverzug die weitere
+                    Nest-Haus ist berechtigt, bei Zahlungsverzug die weitere
                     Leistungserbringung einzustellen, bis alle offenen Beträge
                     beglichen sind.
                   </p>
                 </div>
               </div>
 
-              <div className="bg-red-50 p-8 rounded-lg border border-red-200">
-                <h3 className="text-xl font-medium mb-4">Preisänderungen</h3>
+              <div className="space-y-6">
+                <h3 className="text-xl font-medium text-black">
+                  Preisänderungen
+                </h3>
                 <div className="space-y-4">
                   <p className="leading-relaxed">
                     Preisänderungen nach Vertragsabschluss sind nur zulässig
@@ -331,13 +357,13 @@ export default function AgbClient() {
         {/* Delivery Section */}
         <section id="delivery" className="w-full py-16">
           <div className="w-full max-w-[1536px] mx-auto px-4 sm:px-6 lg:px-8">
-            <h2 className="h2-section tracking-[-0.02em]">
+            <h2 className="h2-section tracking-[-0.02em] text-black">
               Lieferung & Montage
             </h2>
 
             <div className="max-w-4xl mx-auto space-y-8 text-gray-700">
-              <div className="bg-gray-50 p-8 rounded-lg">
-                <h3 className="text-xl font-medium mb-4">Lieferzeiten</h3>
+              <div className="space-y-6">
+                <h3 className="text-xl font-medium text-black">Lieferzeiten</h3>
                 <div className="space-y-4">
                   <p className="leading-relaxed">
                     Die Lieferzeit beträgt in der Regel 8-12 Wochen ab
@@ -355,8 +381,10 @@ export default function AgbClient() {
                 </div>
               </div>
 
-              <div className="bg-white p-8 rounded-lg border">
-                <h3 className="text-xl font-medium mb-4">Lieferung</h3>
+              <div className="bg-white rounded-3xl p-8 md:p-12">
+                <h3 className="text-xl font-medium text-black mb-4">
+                  Lieferung
+                </h3>
                 <div className="space-y-4">
                   <p className="leading-relaxed">
                     Die Lieferung erfolgt frei Baustelle innerhalb Österreichs.
@@ -373,12 +401,12 @@ export default function AgbClient() {
                 </div>
               </div>
 
-              <div className="bg-blue-50 p-8 rounded-lg border border-blue-200">
-                <h3 className="text-xl font-medium mb-4">Montage</h3>
+              <div className="space-y-6">
+                <h3 className="text-xl font-medium text-black">Montage</h3>
                 <div className="space-y-4">
                   <p className="leading-relaxed">
                     Die Montage wird durch qualifizierte Fachkräfte von
-                    NEST-Haus durchgeführt.
+                    Nest-Haus durchgeführt.
                   </p>
                   <p className="leading-relaxed">
                     Montagedauer: In der Regel 2-5 Arbeitstage je nach
@@ -395,8 +423,8 @@ export default function AgbClient() {
                 </div>
               </div>
 
-              <div className="bg-yellow-50 p-8 rounded-lg border border-yellow-200">
-                <h3 className="text-xl font-medium mb-4">Lieferverzug</h3>
+              <div className="space-y-6">
+                <h3 className="text-xl font-medium text-black">Lieferverzug</h3>
                 <div className="space-y-4">
                   <p className="leading-relaxed">
                     Bei Lieferverzug von mehr als 4 Wochen kann der Kunde nach
@@ -414,13 +442,15 @@ export default function AgbClient() {
         </section>
 
         {/* Withdrawal Section */}
-        <section id="withdrawal" className="w-full py-16 bg-gray-50">
+        <section id="withdrawal" className="w-full py-16">
           <div className="w-full max-w-[1536px] mx-auto px-4 sm:px-6 lg:px-8">
-            <h2 className="h2-section tracking-[-0.02em]">Widerrufsrecht</h2>
+            <h2 className="h2-section tracking-[-0.02em] text-black">
+              Widerrufsrecht
+            </h2>
 
             <div className="max-w-4xl mx-auto space-y-8 text-gray-700">
-              <div className="bg-red-50 p-8 rounded-lg border border-red-200">
-                <h3 className="text-xl font-medium mb-4">
+              <div className="bg-white rounded-3xl border-2 border-[#3D6CE1] p-8 md:p-12">
+                <h3 className="text-xl font-medium text-black mb-4">
                   Ausschluss des Widerrufsrechts
                 </h3>
                 <div className="space-y-4">
@@ -439,8 +469,8 @@ export default function AgbClient() {
                 </div>
               </div>
 
-              <div className="bg-white p-8 rounded-lg border">
-                <h3 className="text-xl font-medium mb-4">
+              <div className="space-y-6">
+                <h3 className="text-xl font-medium text-black">
                   Widerruf vor Produktionsbeginn
                 </h3>
                 <div className="space-y-4">
@@ -451,7 +481,7 @@ export default function AgbClient() {
                   <p className="leading-relaxed">
                     Der Widerruf muss schriftlich erklärt werden an:
                   </p>
-                  <div className="bg-gray-100 p-4 rounded">
+                  <div className="bg-white rounded-2xl p-4">
                     <p>
                       <strong>Eco Chalets GmbH</strong>
                     </p>
@@ -461,8 +491,8 @@ export default function AgbClient() {
                 </div>
               </div>
 
-              <div className="bg-gray-50 p-8 rounded-lg">
-                <h3 className="text-xl font-medium mb-4">
+              <div className="space-y-6">
+                <h3 className="text-xl font-medium text-black">
                   Folgen des Widerrufs
                 </h3>
                 <div className="space-y-4">
@@ -475,17 +505,17 @@ export default function AgbClient() {
                 </div>
               </div>
 
-              <div className="bg-blue-50 p-8 rounded-lg border border-blue-200">
-                <h3 className="text-xl font-medium mb-4">
+              <div className="bg-white rounded-3xl border-2 border-[#3D6CE1] p-8 md:p-12">
+                <h3 className="text-xl font-medium text-black mb-4">
                   Muster-Widerrufsformular
                 </h3>
                 <div className="space-y-4">
                   <p className="leading-relaxed">
                     Sie können das folgende Formular verwenden:
                   </p>
-                  <div className="bg-white p-4 rounded border text-sm">
+                  <div className="bg-[#F4F4F4] p-4 rounded-2xl text-sm">
                     <p className="mb-2">
-                      An: NEST-Haus GmbH, [Adresse], widerruf@nest-haus.at
+                      An: Nest-Haus GmbH, [Adresse], widerruf@nest-haus.at
                     </p>
                     <p className="mb-2">
                       Hiermit widerrufe(n) ich/wir (*) den von mir/uns (*)
@@ -516,16 +546,18 @@ export default function AgbClient() {
         {/* Warranty Section */}
         <section id="warranty" className="w-full py-16">
           <div className="w-full max-w-[1536px] mx-auto px-4 sm:px-6 lg:px-8">
-            <h2 className="h2-section tracking-[-0.02em]">Gewährleistung</h2>
+            <h2 className="h2-section tracking-[-0.02em] text-black">
+              Gewährleistung
+            </h2>
 
             <div className="max-w-4xl mx-auto space-y-8 text-gray-700">
-              <div className="bg-green-50 p-8 rounded-lg border border-green-200">
-                <h3 className="text-xl font-medium mb-4">
+              <div className="bg-white rounded-3xl border-2 border-[#3D6CE1] p-8 md:p-12">
+                <h3 className="text-xl font-medium text-black mb-4">
                   Gewährleistungsfristen
                 </h3>
                 <div className="space-y-4">
                   <p className="leading-relaxed">
-                    NEST-Haus gewährt folgende Gewährleistungsfristen:
+                    Nest-Haus gewährt folgende Gewährleistungsfristen:
                   </p>
                   <ul className="list-disc list-inside space-y-2 ml-4">
                     <li>
@@ -548,8 +580,8 @@ export default function AgbClient() {
                 </div>
               </div>
 
-              <div className="bg-white p-8 rounded-lg border">
-                <h3 className="text-xl font-medium mb-4">
+              <div className="space-y-6">
+                <h3 className="text-xl font-medium text-black">
                   Gewährleistungsansprüche
                 </h3>
                 <div className="space-y-4">
@@ -569,8 +601,8 @@ export default function AgbClient() {
                 </div>
               </div>
 
-              <div className="bg-gray-50 p-8 rounded-lg">
-                <h3 className="text-xl font-medium mb-4">
+              <div className="space-y-6">
+                <h3 className="text-xl font-medium text-black">
                   Ausschluss der Gewährleistung
                 </h3>
                 <div className="space-y-4">
@@ -587,8 +619,10 @@ export default function AgbClient() {
                 </div>
               </div>
 
-              <div className="bg-blue-50 p-8 rounded-lg border border-blue-200">
-                <h3 className="text-xl font-medium mb-4">Wartung und Pflege</h3>
+              <div className="space-y-6">
+                <h3 className="text-xl font-medium text-black">
+                  Wartung und Pflege
+                </h3>
                 <div className="space-y-4">
                   <p className="leading-relaxed">
                     Der Kunde erhält eine detaillierte Wartungsanleitung und ist
@@ -610,16 +644,20 @@ export default function AgbClient() {
         </section>
 
         {/* Liability Section */}
-        <section id="liability" className="w-full py-16 bg-gray-50">
+        <section id="liability" className="w-full py-16">
           <div className="w-full max-w-[1536px] mx-auto px-4 sm:px-6 lg:px-8">
-            <h2 className="h2-section tracking-[-0.02em]">Haftung</h2>
+            <h2 className="h2-section tracking-[-0.02em] text-black">
+              Haftung
+            </h2>
 
             <div className="max-w-4xl mx-auto space-y-8 text-gray-700">
-              <div className="bg-white p-8 rounded-lg border">
-                <h3 className="text-xl font-medium mb-4">Haftungsumfang</h3>
+              <div className="space-y-6">
+                <h3 className="text-xl font-medium text-black">
+                  Haftungsumfang
+                </h3>
                 <div className="space-y-4">
                   <p className="leading-relaxed">
-                    NEST-Haus haftet für Schäden nur bei:
+                    Nest-Haus haftet für Schäden nur bei:
                   </p>
                   <ul className="list-disc list-inside space-y-2 ml-4">
                     <li>Vorsatz oder grober Fahrlässigkeit</li>
@@ -630,8 +668,8 @@ export default function AgbClient() {
                 </div>
               </div>
 
-              <div className="bg-red-50 p-8 rounded-lg border border-red-200">
-                <h3 className="text-xl font-medium mb-4">
+              <div className="bg-white rounded-3xl p-8 md:p-12">
+                <h3 className="text-xl font-medium text-black mb-4">
                   Haftungsbeschränkung
                 </h3>
                 <div className="space-y-4">
@@ -650,11 +688,11 @@ export default function AgbClient() {
                 </div>
               </div>
 
-              <div className="bg-gray-50 p-8 rounded-lg">
-                <h3 className="text-xl font-medium mb-4">Versicherung</h3>
+              <div className="space-y-6">
+                <h3 className="text-xl font-medium text-black">Versicherung</h3>
                 <div className="space-y-4">
                   <p className="leading-relaxed">
-                    NEST-Haus ist durch eine Betriebshaftpflichtversicherung mit
+                    Nest-Haus ist durch eine Betriebshaftpflichtversicherung mit
                     einer Deckungssumme von € [Betrag] versichert.
                   </p>
                   <p className="leading-relaxed">
@@ -665,8 +703,8 @@ export default function AgbClient() {
                 </div>
               </div>
 
-              <div className="bg-yellow-50 p-8 rounded-lg border border-yellow-200">
-                <h3 className="text-xl font-medium mb-4">Verjährung</h3>
+              <div className="space-y-6">
+                <h3 className="text-xl font-medium text-black">Verjährung</h3>
                 <div className="space-y-4">
                   <p className="leading-relaxed">
                     Schadensersatzansprüche verjähren in 3 Jahren ab Kenntnis
@@ -685,17 +723,19 @@ export default function AgbClient() {
         {/* Final Section */}
         <section id="final" className="w-full py-16">
           <div className="w-full max-w-[1536px] mx-auto px-4 sm:px-6 lg:px-8">
-            <h2 className="h2-section tracking-[-0.02em]">
+            <h2 className="h2-section tracking-[-0.02em] text-black">
               Schlussbestimmungen
             </h2>
 
             <div className="max-w-4xl mx-auto space-y-8 text-gray-700">
-              <div className="bg-white p-8 rounded-lg border">
-                <h3 className="text-xl font-medium mb-4">Gerichtsstand</h3>
+              <div className="space-y-6">
+                <h3 className="text-xl font-medium text-black">
+                  Gerichtsstand
+                </h3>
                 <div className="space-y-4">
                   <p className="leading-relaxed">
                     Für alle Streitigkeiten aus diesem Vertragsverhältnis ist
-                    das sachlich zuständige Gericht am Sitz von NEST-Haus
+                    das sachlich zuständige Gericht am Sitz von Nest-Haus
                     zuständig.
                   </p>
                   <p className="leading-relaxed">
@@ -707,8 +747,8 @@ export default function AgbClient() {
                 </div>
               </div>
 
-              <div className="bg-gray-50 p-8 rounded-lg">
-                <h3 className="text-xl font-medium mb-4">
+              <div className="space-y-6">
+                <h3 className="text-xl font-medium text-black">
                   Salvatorische Klausel
                 </h3>
                 <div className="space-y-4">
@@ -724,11 +764,13 @@ export default function AgbClient() {
                 </div>
               </div>
 
-              <div className="bg-blue-50 p-8 rounded-lg border border-blue-200">
-                <h3 className="text-xl font-medium mb-4">Änderungen der AGB</h3>
+              <div className="space-y-6">
+                <h3 className="text-xl font-medium text-black">
+                  Änderungen der AGB
+                </h3>
                 <div className="space-y-4">
                   <p className="leading-relaxed">
-                    NEST-Haus behält sich vor, diese AGB zu ändern. Kunden
+                    Nest-Haus behält sich vor, diese AGB zu ändern. Kunden
                     werden über Änderungen rechtzeitig informiert.
                   </p>
                   <p className="leading-relaxed">
@@ -738,8 +780,10 @@ export default function AgbClient() {
                 </div>
               </div>
 
-              <div className="bg-green-50 p-8 rounded-lg border border-green-200">
-                <h3 className="text-xl font-medium mb-4">Streitbeilegung</h3>
+              <div className="bg-white rounded-3xl border-2 border-[#3D6CE1] p-8 md:p-12">
+                <h3 className="text-xl font-medium text-black mb-4">
+                  Streitbeilegung
+                </h3>
                 <div className="space-y-4">
                   <p className="leading-relaxed">
                     Für Streitigkeiten mit Verbrauchern steht die
@@ -748,21 +792,23 @@ export default function AgbClient() {
                   <p className="text-center">
                     <a
                       href="https://ec.europa.eu/consumers/odr/"
-                      className="text-blue-600 hover:text-blue-800"
+                      className="text-[#3D6CE1] hover:underline"
                     >
                       https://ec.europa.eu/consumers/odr/
                     </a>
                   </p>
                   <p className="leading-relaxed">
-                    NEST-Haus ist nicht verpflichtet, an
+                    Nest-Haus ist nicht verpflichtet, an
                     Streitbeilegungsverfahren vor Verbraucherschlichtungsstellen
                     teilzunehmen.
                   </p>
                 </div>
               </div>
 
-              <div className="text-center border-t pt-8">
-                <p className="text-lg font-medium mb-4">NEST-Haus GmbH</p>
+              <div className="text-center border-t border-gray-300 pt-8 mt-12">
+                <p className="text-lg font-medium text-black mb-4">
+                  Nest-Haus GmbH
+                </p>
                 <p className="text-sm text-gray-600 mb-2">
                   Stand: {new Date().toLocaleDateString("de-AT")} | Version 1.0
                 </p>
