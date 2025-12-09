@@ -236,7 +236,7 @@ export default function KonzeptcheckClient() {
           <SectionHeader
             title="Step by Step nach Hause"
             subtitle="So gehts nach dem ersten schritt weiter"
-            mobileTitle="Step by Step <br/>nach Hause"
+            mobileTitle="Step by Step\nnach Hause"
             wrapperMargin="mb-8 md:mb-12"
           />
 

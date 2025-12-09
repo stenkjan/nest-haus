@@ -1,4 +1,5 @@
 import React from "react";
+import { useDeviceDetect } from "@/hooks/useDeviceDetect";
 
 /**
  * SectionHeader Component
@@ -14,14 +15,14 @@ import React from "react";
  * - Consistent margin-bottom between sections (mb-12)
  *
  * New Feature: Responsive Mobile/Desktop Variants
- * - Use `mobileTitle` and `mobileSubtitle` to provide different content for mobile
- * - Supports HTML in mobile variants for line breaks (use `<br/>`)
+ * - Use \`mobileTitle\` and \`mobileSubtitle\` to provide different content for mobile
+ * - Use newline characters (\n) for line breaks with whitespace-pre-line CSS
  * - Mobile subtitle optional - no space occupied if not provided
  *
  * See: /docs/TYPOGRAPHY_STANDARDS.md
  *
  * @example
- * ```tsx
+ * \`\`\`tsx
  * // Basic usage with default styles
  * <SectionHeader
  *   title="Dein Zuhause zieht um"
@@ -32,15 +33,15 @@ import React from "react";
  * <SectionHeader
  *   title="Konfiguriere dein ®Nest Haus"
  *   subtitle="Durch serielle Fertigung zu transparenten Bestpreisen"
- *   mobileTitle="Konfiguriere dein<br/>®Nest Haus"
- *   mobileSubtitle="Durch serielle Fertigung<br/>zu transparenten Bestpreisen"
+ *   mobileTitle="Konfiguriere dein\n®Nest Haus"
+ *   mobileSubtitle="Durch serielle Fertigung\nzu transparenten Bestpreisen"
  * />
  *
  * // Mobile title only (no subtitle on mobile)
  * <SectionHeader
  *   title="Desktop Title with Subtitle"
  *   subtitle="Desktop Subtitle"
- *   mobileTitle="Mobile Title<br/>Only"
+ *   mobileTitle="Mobile Title\nOnly"
  * />
  *
  * // With custom styling
@@ -51,7 +52,7 @@ import React from "react";
  *   subtitleClassName="text-gray-600"
  *   wrapperMargin="md:mb-12 mb-12"
  * />
- * ```
+ * \`\`\`
  */
 
 interface SectionHeaderProps {
@@ -66,13 +67,13 @@ interface SectionHeaderProps {
   subtitle?: string;
 
   /**
-   * Mobile-specific title (supports HTML for line breaks)
+   * Mobile-specific title (use \n for line breaks)
    * If provided, will be used on screens < 1024px instead of title
    */
   mobileTitle?: string;
 
   /**
-   * Mobile-specific subtitle (supports HTML for line breaks)
+   * Mobile-specific subtitle (use \n for line breaks)
    * If provided, will be used on screens < 1024px instead of subtitle
    * If not provided and mobileTitle is set, no subtitle space is occupied on mobile
    */
@@ -143,53 +144,23 @@ export function SectionHeader({
   className = "",
 }: SectionHeaderProps) {
   const TitleTag = titleTag;
+  const { isMobile } = useDeviceDetect();
 
-  // Determine if we have mobile variants (either title or subtitle)
-  const hasMobileVariant = mobileTitle !== undefined || mobileSubtitle !== undefined;
+  // Determine text to show based on device
+  const displayTitle = isMobile && mobileTitle ? mobileTitle : title;
+  const displaySubtitle = isMobile && mobileSubtitle ? mobileSubtitle : subtitle;
 
   return (
     <div
-      className={`w-full px-4 md:px-12 ${centered ? "text-center" : ""} ${wrapperMargin} ${className}`}
+      className={\`w-full px-4 md:px-12 \${centered ? "text-center" : ""} \${wrapperMargin} \${className}\`}
     >
-      {/* Desktop Version (≥1024px) */}
-      {hasMobileVariant ? (
-        <>
-          <TitleTag
-            className={`h1-secondary mb-2 md:mb-3 ${titleClassName} hidden lg:block`}
-          >
-            {title}
-          </TitleTag>
-          {subtitle && (
-            <h3 className={`h3-secondary ${subtitleClassName} hidden lg:block`}>
-              {subtitle}
-            </h3>
-          )}
-        </>
-      ) : (
-        <>
-          <TitleTag className={`h1-secondary mb-2 md:mb-3 ${titleClassName}`}>
-            {title}
-          </TitleTag>
-          {subtitle && (
-            <h3 className={`h3-secondary ${subtitleClassName}`}>{subtitle}</h3>
-          )}
-        </>
-      )}
-
-      {/* Mobile Version (<1024px) - Only shown if mobile variants exist */}
-      {hasMobileVariant && (
-        <>
-          <TitleTag
-            className={`h1-secondary mb-2 md:mb-3 ${titleClassName} lg:hidden`}
-            dangerouslySetInnerHTML={{ __html: mobileTitle }}
-          />
-          {mobileSubtitle && (
-            <h3
-              className={`h3-secondary ${subtitleClassName} lg:hidden`}
-              dangerouslySetInnerHTML={{ __html: mobileSubtitle }}
-            />
-          )}
-        </>
+      <TitleTag className={\`h1-secondary mb-2 md:mb-3 \${titleClassName} whitespace-pre-line\`}>
+        {displayTitle}
+      </TitleTag>
+      {displaySubtitle && (
+        <h3 className={\`h3-secondary \${subtitleClassName} whitespace-pre-line\`}>
+          {displaySubtitle}
+        </h3>
       )}
     </div>
   );

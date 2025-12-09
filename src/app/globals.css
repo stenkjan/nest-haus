@@ -202,12 +202,12 @@ h2 {
 
   /* Alternative H1 styling for other pages (commonly used pattern) */
   .h1-secondary {
-    @apply font-bold text-3xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl 2xl:text-7xl mb-2 md:mb-3;
+    @apply font-bold text-3xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl 2xl:text-7xl mb-2 md:mb-3 whitespace-pre-line;
   }
 
   /* Alternative H3 styling for other pages (commonly used pattern) */
   .h3-secondary {
-    @apply text-base font-medium sm:text-sm md:text-lg lg:text-xl xl:text-2xl mb-4;
+    @apply text-base font-medium sm:text-sm md:text-lg lg:text-xl xl:text-2xl mb-4 whitespace-pre-line;
   }
 
   /* H3 fourth styling - one notch smaller than h3-tertiary-no-m, no margin */
