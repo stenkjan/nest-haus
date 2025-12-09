@@ -179,24 +179,16 @@ export function SectionHeader({
       {/* Mobile Version (<1024px) - Only shown if mobile variants exist */}
       {hasMobileVariant && (
         <>
-          {mobileTitle ? (
-            <TitleTag
-              className={`h1-secondary mb-2 md:mb-3 ${titleClassName} lg:hidden`}
-              dangerouslySetInnerHTML={{ __html: mobileTitle }}
-            />
-          ) : (
-            <TitleTag className={`h1-secondary mb-2 md:mb-3 ${titleClassName} lg:hidden`}>
-              {title}
-            </TitleTag>
-          )}
-          {mobileSubtitle ? (
+          <TitleTag
+            className={`h1-secondary mb-2 md:mb-3 ${titleClassName} lg:hidden`}
+            dangerouslySetInnerHTML={{ __html: mobileTitle }}
+          />
+          {mobileSubtitle && (
             <h3
               className={`h3-secondary ${subtitleClassName} lg:hidden`}
               dangerouslySetInnerHTML={{ __html: mobileSubtitle }}
             />
-          ) : subtitle ? (
-            <h3 className={`h3-secondary ${subtitleClassName} lg:hidden`}>{subtitle}</h3>
-          ) : null}
+          )}
         </>
       )}
     </div>
