@@ -89,7 +89,7 @@ export const PAGE_SEO_CONFIG = {
         twitterImage: "/images/13-NEST-Haus-System-Hausbau-Modulbau-Serienproduktion-Modulbau-flexibel-Holzbau.png",
     },
     "konzept-check": {
-        title: "Konzept-Check €3.000 | Grundstücksanalyse & Entwurf",
+        title: "Konzept-Check | Grundstücksanalyse & Entwurf",
         description: "Konzept-Check für dein Nest Haus: Rechtssichere Grundstücksanalyse, Bebauungsmöglichkeiten, individueller Entwurf. Fertig in 4-6 Wochen. Jetzt bestellen.",
         keywords: "konzept-check, grundstücksanalyse, rechtssicher bauen, bebauungsmöglichkeiten, konzept-check 3000 euro, nest haus planung, grundstück check, bauvorhaben analyse",
         priority: 0.8,
