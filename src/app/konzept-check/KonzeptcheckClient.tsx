@@ -95,6 +95,7 @@ export default function KonzeptcheckClient() {
                 <SectionHeader
                   title="Der Konzept-Check"
                   subtitle="Deine optimale Entscheidungsgrundlage in zwei Schritten"
+                  mobileTitle="Der Konzept-Check"
                   mobileSubtitle="Deine Entscheidungsgrundlage in zwei Schritten"
                   titleClassName="text-white"
                   subtitleClassName="text-white"
