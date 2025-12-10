@@ -19,6 +19,7 @@ export interface CustomerInquiryData {
   requestType: 'contact' | 'appointment';
   preferredContact: 'EMAIL' | 'PHONE' | 'WHATSAPP';
   appointmentDateTime?: string;
+  appointmentType?: 'personal' | 'phone';
   configurationData?: unknown;
   totalPrice?: number;
 }
@@ -85,6 +86,7 @@ export class EmailService {
         email: data.email,
         requestType: data.requestType,
         appointmentDateTime: data.appointmentDateTime,
+        appointmentType: data.appointmentType,
         message: data.message,
         inquiryId: data.inquiryId,
       });

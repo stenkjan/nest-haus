@@ -3,6 +3,7 @@ interface CustomerConfirmationData {
   email: string;
   requestType: 'contact' | 'appointment';
   appointmentDateTime?: string;
+  appointmentType?: 'personal' | 'phone';
   message?: string;
   inquiryId?: string;
 }
@@ -13,6 +14,7 @@ export function generateCustomerConfirmationEmail(data: CustomerConfirmationData
   text: string;
 } {
   const isAppointment = data.requestType === 'appointment';
+  const isPhoneAppointment = data.appointmentType === 'phone';
   const formattedDate = data.appointmentDateTime
     ? new Date(data.appointmentDateTime).toLocaleString('de-DE', {
       timeZone: 'Europe/Vienna',
@@ -213,7 +215,7 @@ export function generateCustomerConfirmationEmail(data: CustomerConfirmationData
       ${isAppointment ? `
       <!-- Appointment Details Card -->
       <div class="glass-card">
-        <h2>📅 Ihr gewünschter Termin</h2>
+        <h2>📅 ${isPhoneAppointment ? 'Ihr gewünschter Gesprächstermin' : 'Ihr gewünschter Termin'}</h2>
         <div class="info-grid">
           <div class="info-item">
             <div class="info-label">Datum und Uhrzeit</div>
@@ -243,6 +245,11 @@ export function generateCustomerConfirmationEmail(data: CustomerConfirmationData
       ? '1. <strong>Terminbestätigung:</strong> Sie erhalten eine Kalendereinladung per E-Mail<br>2. <strong>Vorbereitung:</strong> Notieren Sie sich Ihre Fragen und Wünsche<br>3. <strong>Gespräch:</strong> Wir besprechen Ihr Nest-Haus-Projekt im Detail'
       : '1. <strong>Rückmeldung:</strong> Wir melden uns innerhalb von 2 Werktagen bei Ihnen<br>2. <strong>Beratung:</strong> Gemeinsam besprechen wir Ihre individuellen Anforderungen<br>3. <strong>Planung:</strong> Wir entwickeln eine maßgeschneiderte Lösung für Sie'
     }</p>
+        ${isPhoneAppointment ? `
+        <p style="margin-top: 16px; font-size: 15px; color: #4a4a4a; line-height: 1.6;">
+          Sie können sich auch jederzeit früher für Rückfragen bei uns bei der unten angeführten Telefonnummer melden. Wir freuen uns auf Ihren Anruf!
+        </p>
+        ` : ''}
       </div>
       
       <!-- Contact Info Cards -->
@@ -329,7 +336,7 @@ Hallo ${data.name},
 ${isAppointment
       ? `Vielen Dank für Ihre Terminanfrage. Wir haben Ihre Anfrage erhalten und freuen uns auf unser Gespräch.
 
-Ihr gewünschter Termin:
+${isPhoneAppointment ? 'Ihr gewünschter Gesprächstermin:' : 'Ihr gewünschter Termin:'}
 ${formattedDate}
 Zeitzone: Europe/Vienna (CET/CEST)
 
@@ -347,7 +354,7 @@ DIE NÄCHSTEN SCHRITTE
 ${isAppointment
       ? '1. Terminbestätigung: Sie erhalten eine Kalendereinladung per E-Mail\n2. Vorbereitung: Notieren Sie sich Ihre Fragen und Wünsche\n3. Gespräch: Wir besprechen Ihr Nest-Haus-Projekt im Detail'
       : '1. Rückmeldung: Wir melden uns innerhalb von 2 Werktagen bei Ihnen\n2. Beratung: Gemeinsam besprechen wir Ihre individuellen Anforderungen\n3. Planung: Wir entwickeln eine maßgeschneiderte Lösung für Sie'
-    }
+    }${isPhoneAppointment ? '\n\nSie können sich auch jederzeit früher für Rückfragen bei uns bei der unten angeführten Telefonnummer melden. Wir freuen uns auf Ihren Anruf!' : ''}
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 KONTAKT - Melde dich!

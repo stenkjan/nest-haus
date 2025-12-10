@@ -336,6 +336,7 @@ const AppointmentBooking = ({
         requestType: "appointment" as const,
         preferredContact: "email" as const,
         appointmentDateTime: appointmentDateTime,
+        appointmentType: formData.appointmentType,
       };
 
       console.log("🗓️ Sending appointment request:", contactData);
@@ -528,25 +529,24 @@ const AppointmentBooking = ({
             geprüft und melden uns innerhalb der nächsten 24 Stunden per E-Mail
             bei dir, um den Termin zu bestätigen.
           </p>
-          <div className="flex justify-start">
+          <div className="flex flex-col sm:flex-row gap-3 justify-start">
             <Button
               variant="landing-secondary-blue"
               size="xs"
               onClick={() => {
-                // Show toast: "aktuell nicht möglich"
-                const windowWithToast = window as Window & {
-                  toast?: (message: string) => void;
-                };
-                if (typeof window !== "undefined" && windowWithToast.toast) {
-                  windowWithToast.toast("Aktuell nicht möglich");
-                } else if (typeof window !== "undefined") {
-                  // fallback: alert if no toast system
-                  alert("Aktuell nicht möglich");
-                }
+                window.location.href = "/konfigurator";
               }}
-              disabled
             >
-              Weiteren Termin buchen
+              Jetzt konfigurieren
+            </Button>
+            <Button
+              variant="landing-secondary-blue"
+              size="xs"
+              onClick={() => {
+                window.location.href = "/warenkorb?mode=konzept-check";
+              }}
+            >
+              Konzept-Check bestellen
             </Button>
           </div>
         </div>

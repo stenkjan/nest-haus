@@ -240,6 +240,13 @@ function InquiryCard({ inquiry }: { inquiry: CustomerInquiry }) {
         <div className="mb-4 bg-blue-50 border border-blue-200 rounded-lg p-3">
           <h4 className="text-sm font-medium text-blue-900 mb-2">
             📅 Appointment Request
+            {inquiry.message && (() => {
+              const isPersonal = inquiry.message.includes('Persönliches Gespräch');
+              const isPhone = inquiry.message.includes('Telefonische Beratung');
+              if (isPersonal) return ' (🤝 Persönlich)';
+              if (isPhone) return ' (📞 Telefonisch)';
+              return '';
+            })()}
           </h4>
           <div className="space-y-1 text-sm text-blue-800">
             <p>

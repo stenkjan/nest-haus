@@ -16,6 +16,7 @@ const contactFormSchema = z.object({
   configurationData: z.any().optional(),
   requestType: z.enum(['contact', 'appointment']).default('contact'),
   appointmentDateTime: z.string().optional().nullable(),
+  appointmentType: z.enum(['personal', 'phone']).optional(),
 });
 
 type ContactFormData = z.infer<typeof contactFormSchema>;
@@ -155,6 +156,16 @@ export async function POST(request: NextRequest) {
     console.log('📬 Sending email notifications...');
 
     try {
+      // Extract appointment type from message field if present
+      let appointmentType: 'personal' | 'phone' | undefined = data.appointmentType;
+      if (!appointmentType && data.message) {
+        if (data.message.includes('Persönliches Gespräch')) {
+          appointmentType = 'personal';
+        } else if (data.message.includes('Telefonische Beratung')) {
+          appointmentType = 'phone';
+        }
+      }
+
       // Prepare email data
       const emailData = {
         inquiryId: inquiry.id,
@@ -165,6 +176,7 @@ export async function POST(request: NextRequest) {
         requestType: data.requestType,
         preferredContact: data.preferredContact.toUpperCase() as 'EMAIL' | 'PHONE' | 'WHATSAPP',
         appointmentDateTime: data.appointmentDateTime || undefined,
+        appointmentType,
         configurationData: data.configurationData,
         totalPrice: totalPrice || undefined,
       };
