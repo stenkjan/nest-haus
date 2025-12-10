@@ -298,22 +298,20 @@ const LandingImagesCarousel: React.FC<LandingImagesCarouselProps> = ({
                   style={{ width: `${imageWidth}px` }}
                 >
                   <div className="relative w-full transition-transform duration-300 hover:scale-[1.02] hover:z-10">
-                    {/* Mobile: Clickable image linking to landing page section */}
+                    {/* Mobile: Plain image (overlay contains the single link to avoid nested anchors) */}
                     {isMobile ? (
-                      <Link href={`/#${img.description.sectionSlug}`}>
-                        <HybridBlobImage
-                          path={img.mobilePath}
-                          alt={img.alt}
-                          strategy="client"
-                          isInteractive={true}
-                          enableCache={true}
-                          width={imageWidth}
-                          height={Math.round(imageWidth * 1.333)} // 3:4 on mobile (4/3)
-                          className="object-cover"
-                          sizes={`${imageWidth}px`}
-                          priority={idx === 0}
-                        />
-                      </Link>
+                      <HybridBlobImage
+                        path={img.mobilePath}
+                        alt={img.alt}
+                        strategy="client"
+                        isInteractive={true}
+                        enableCache={true}
+                        width={imageWidth}
+                        height={Math.round(imageWidth * 1.333)} // 3:4 on mobile (4/3)
+                        className="object-cover"
+                        sizes={`${imageWidth}px`}
+                        priority={idx === 0}
+                      />
                     ) : (
                       /* Desktop: Image without link wrapper (text overlay has link) */
                       <HybridBlobImage
