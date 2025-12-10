@@ -4,6 +4,19 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [060e2af7d95690481e0ea31c6360e4ac2c951d40] - Wed Dec 10 09:59:07 2025 +0100
+
+**Author**: stenkjan
+**Message**: `Fix mobileTitle typo in KonzeptcheckClient from "Grundstücks-Analyse" to "Grundstück-Analyse" for consistency in UI presentation.  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/konzept-check/KonzeptcheckClient.tsx
+
+
+---
+
 ## [86a37f39bee4eb79a5dd3a296c0dd08af62a65ae] - Wed Dec 10 09:50:12 2025 +0100
 
 **Author**: stenkjan
