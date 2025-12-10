@@ -297,25 +297,46 @@ const LandingImagesCarousel: React.FC<LandingImagesCarouselProps> = ({
                   className="flex-shrink-0 px-2"
                   style={{ width: `${imageWidth}px` }}
                 >
-                  <div className="relative w-full transition-transform duration-300 hover:scale-[1.02] hover:z-10">
-                    {/* Mobile: Clickable image linking to landing page section */}
-                    {isMobile ? (
-                      <Link href={`/#${img.description.sectionSlug}`}>
-                        <HybridBlobImage
-                          path={img.mobilePath}
-                          alt={img.alt}
-                          strategy="client"
-                          isInteractive={true}
-                          enableCache={true}
-                          width={imageWidth}
-                          height={Math.round(imageWidth * 1.333)} // 3:4 on mobile (4/3)
-                          className="object-cover"
-                          sizes={`${imageWidth}px`}
-                          priority={idx === 0}
-                        />
-                      </Link>
-                    ) : (
-                      /* Desktop: Image without link wrapper (text overlay has link) */
+                  {isMobile ? (
+                    <Link
+                      href={`/#${img.description.sectionSlug}`}
+                      className="relative block w-full transition-transform duration-300 hover:scale-[1.02] hover:z-10"
+                    >
+                      <HybridBlobImage
+                        path={img.mobilePath}
+                        alt={img.alt}
+                        strategy="client"
+                        isInteractive={true}
+                        enableCache={true}
+                        width={imageWidth}
+                        height={Math.round(imageWidth * 1.333)} // 3:4 on mobile (4/3)
+                        className="object-cover"
+                        sizes={`${imageWidth}px`}
+                        priority={idx === 0}
+                      />
+
+                      {/* Mobile Description Overlay - Only title and "Beispiele" */}
+                      <div className="md:hidden absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent p-3">
+                        <div className="flex justify-between items-end">
+                          {/* Left side - Title only */}
+                          <div className="text-white flex-1 pr-4">
+                            <h3 className="p-primary-small text-white">
+                              {img.description.title}
+                            </h3>
+                          </div>
+
+                          {/* Right side - "Beispiele" label (container is clickable) */}
+                          <div className="flex-shrink-0">
+                            <span className="p-primary-small2 text-white hover:text-gray-200 transition-colors duration-200 whitespace-nowrap underline">
+                              Beispiele
+                            </span>
+                          </div>
+                        </div>
+                      </div>
+                    </Link>
+                  ) : (
+                    <div className="relative w-full transition-transform duration-300 hover:scale-[1.02] hover:z-10">
+                      {/* Desktop: Image without link wrapper (text overlay has link) */}
                       <HybridBlobImage
                         path={img.path}
                         alt={img.alt}
@@ -328,69 +349,47 @@ const LandingImagesCarousel: React.FC<LandingImagesCarouselProps> = ({
                         sizes={`${imageWidth}px`}
                         priority={idx === 0}
                       />
-                    )}
 
-                    {/* Mobile Description Overlay - Only title and "Beispiele" */}
-                    <div className="md:hidden absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent p-3">
-                      <div className="flex justify-between items-end">
-                        {/* Left side - Title only */}
-                        <div className="text-white flex-1 pr-4">
-                          <h3 className="p-primary-small text-white">
-                            {img.description.title}
-                          </h3>
-                        </div>
+                      {/* Desktop Description Overlay - Full version */}
+                      <div className="hidden md:block absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent p-3 sm:p-4 lg:p-6">
+                        {/* Flex container for positioning */}
+                        <div className="flex justify-between items-end">
+                          {/* Left side - Title and Subtitle */}
+                          <div className="text-white flex-1 pr-4">
+                            <h3 className="p-primary-small text-white">
+                              {img.description.title}
+                            </h3>
+                            <p className="p-primary-small2 text-gray-200">
+                              {img.description.subtitle}
+                            </p>
+                          </div>
 
-                        {/* Right side - "Beispiele" link */}
-                        <div className="flex-shrink-0">
-                          <Link
-                            href={`/#${img.description.sectionSlug}`}
-                            className="p-primary-small2 text-white hover:text-gray-200 transition-colors duration-200 whitespace-nowrap underline"
-                          >
-                            Beispiele
-                          </Link>
-                        </div>
-                      </div>
-                    </div>
-
-                    {/* Desktop Description Overlay - Full version */}
-                    <div className="hidden md:block absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent p-3 sm:p-4 lg:p-6">
-                      {/* Flex container for positioning */}
-                      <div className="flex justify-between items-end">
-                        {/* Left side - Title and Subtitle */}
-                        <div className="text-white flex-1 pr-4">
-                          <h3 className="p-primary-small text-white">
-                            {img.description.title}
-                          </h3>
-                          <p className="p-primary-small2 text-gray-200">
-                            {img.description.subtitle}
-                          </p>
-                        </div>
-
-                        {/* Right side - Link */}
-                        <div className="flex-shrink-0">
-                          <Link
-                            href={`/#${img.description.sectionSlug}`}
-                            className="inline-flex items-center p-primary-small2 text-white hover:text-gray-200 transition-colors duration-200 group whitespace-nowrap underline"
-                          >
-                            Weitere Beispiele entdecken
-                            <svg
-                              className="ml-2 w-4 h-4 transform transition-transform group-hover:translate-x-1"
-                              fill="none"
-                              stroke="currentColor"
-                              viewBox="0 0 24 24"
+                          {/* Right side - Link */}
+                          <div className="flex-shrink-0">
+                            <Link
+                              href={`/#${img.description.sectionSlug}`}
+                              className="inline-flex items-center p-primary-small2 text-white hover:text-gray-200 transition-colors duration-200 group whitespace-nowrap underline"
                             >
-                              <path
-                                strokeLinecap="round"
-                                strokeLinejoin="round"
-                                strokeWidth={2}
-                                d="M9 5l7 7-7 7"
-                              />
-                            </svg>
-                          </Link>
+                              Weitere Beispiele entdecken
+                              <svg
+                                className="ml-2 w-4 h-4 transform transition-transform group-hover:translate-x-1"
+                                fill="none"
+                                stroke="currentColor"
+                                viewBox="0 0 24 24"
+                              >
+                                <path
+                                  strokeLinecap="round"
+                                  strokeLinejoin="round"
+                                  strokeWidth={2}
+                                  d="M9 5l7 7-7 7"
+                                />
+                              </svg>
+                            </Link>
+                          </div>
                         </div>
                       </div>
                     </div>
-                  </div>
+                  )}
                 </div>
               ))}
             </div>
