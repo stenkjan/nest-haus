@@ -1582,7 +1582,7 @@ export default function UnifiedContentCard({
                   rel="noopener noreferrer"
                   className={`${titleClass} text-white ${
                     card.id === 0
-                      ? "whitespace-pre-line ml-2 mr-2 md: ml-0 md: mr-0"
+                      ? "whitespace-pre-line ml-2 mr-2 md:mt-6 md:mb-4"
                       : "mb-1 underline hover:opacity-80 transition-opacity cursor-pointer"
                   }`}
                 >
@@ -1593,7 +1593,7 @@ export default function UnifiedContentCard({
                   ref={titleCallbackRef}
                   className={`${titleClass} text-white ${
                     card.id === 0
-                      ? "whitespace-pre-line ml-2 mr-2 ml-0 md: mr-0"
+                      ? "whitespace-pre-line ml-2 mr-2 md:mt-6 md:mb-4"
                       : "mb-1 underline"
                   }`}
                 >
