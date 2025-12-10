@@ -72,11 +72,11 @@ export default function KontaktClient() {
           className="w-full py-8 md:py-16 bg-white"
         >
           <SectionHeader
-            title="Dein Konzept-Check"
+            title="Deine Grundstücksanalyse"
             subtitle="Wir überprüfen für dich wie dein neues Haus auf ein Grundstück deiner Wahl passt"
             titleClassName="text-black"
             subtitleClassName="text-black"
-            mobileTitle="Dein Konzept-Check"
+            mobileTitle="Deine Grundstücksanalyse"
             wrapperMargin="mb-8 md:mb-12"
           />
           <GrundstueckCheckForm
