@@ -4,6 +4,19 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [550a7974881eb6833662635fe7b3bdcf50ec1e90] - Wed Dec 10 10:26:50 2025 +0100
+
+**Author**: stenkjan
+**Message**: `Refactor CheckoutStepper: Rearrange sections to place "Appointment Booking" after "Planen heißt Preise kennen" for enhanced user flow and clarity, while updating comments for better understanding.  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/warenkorb/components/CheckoutStepper.tsx
+
+
+---
+
 ## [060e2af7d95690481e0ea31c6360e4ac2c951d40] - Wed Dec 10 09:59:07 2025 +0100
 
 **Author**: stenkjan
