@@ -4,6 +4,20 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [7383df505426ba6ccdb4cfdcc4335ad6c45d2010] - Wed Dec 10 11:35:51 2025 +0100
+
+**Author**: stenkjan
+**Message**: `Fix typo in mobile title for Grundstücksanalyse in KonzeptcheckClient and adjust font size styling in UnifiedContentCard for better responsiveness.  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/konzept-check/KonzeptcheckClient.tsx
+- src/components/cards/UnifiedContentCard.tsx
+
+
+---
+
 ## [5018fafb482757d0e63f728a0235a381734d10ed] - Wed Dec 10 11:20:41 2025 +0100
 
 **Author**: stenkjan
