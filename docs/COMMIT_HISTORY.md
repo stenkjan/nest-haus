@@ -4,6 +4,19 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [ed56dd821b0b4b546eac6ac6e9ed1be7c814781e] - Wed Dec 10 16:08:45 2025 +0100
+
+**Author**: stenkjan
+**Message**: `🔄 Update DeinNestClient: Correct title and mobile title formatting to include hyphen for brand consistency.  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/dein-nest/DeinNestClient.tsx
+
+
+---
+
 ## [2d2c9b3bdf37f6802b31f87c36d7a3bacada6158] - Wed Dec 10 15:43:03 2025 +0100
 
 **Author**: stenkjan
