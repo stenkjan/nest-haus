@@ -127,7 +127,7 @@ export default function KonzeptcheckClient() {
           <SectionHeader
             title="Schritt 1: Grundstücksanalyse"
             subtitle="Starte dein Bauvorhaben mit Rechtssicherheit"
-            mobileTitle="Schritt 1: Grundstück-Analyse"
+            mobileTitle="Schritt 1: Grundstücks-Analyse"
             wrapperMargin="mb-8 md:mb-12"
           />
 

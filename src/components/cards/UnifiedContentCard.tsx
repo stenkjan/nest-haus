@@ -1585,6 +1585,9 @@ export default function UnifiedContentCard({
                       ? "whitespace-pre-line ml-2 mr-2 md:mt-6 md:mb-4"
                       : "mb-1 underline hover:opacity-80 transition-opacity cursor-pointer"
                   }`}
+                  style={
+                    card.id === 0 ? {} : { fontSize: `${titleScale * 100}%` }
+                  }
                 >
                   {getCardText(card, "title")}
                 </a>
@@ -1596,6 +1599,9 @@ export default function UnifiedContentCard({
                       ? "whitespace-pre-line ml-2 mr-2 md:mt-6 md:mb-4"
                       : "mb-1 underline"
                   }`}
+                  style={
+                    card.id === 0 ? {} : { fontSize: `${titleScale * 100}%` }
+                  }
                 >
                   {getCardText(card, "title")}
                 </p>
