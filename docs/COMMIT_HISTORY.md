@@ -19445,7 +19445,7 @@ Successfully tested with complex configuration:
 - **Fichte (1m²)** (Spruce windows)
 - **Planung Pro** (Professional planning package)
 - **Photovoltaik-Panels (4x)** (Solar panels)
-- **Grundstücks-Check** (Property analysis)
+- **Grundstücks-Analyse** (Property analysis)
 - **Total: 307.350 €** ✅
 
 ### **🏗️ Architecture Benefits:**

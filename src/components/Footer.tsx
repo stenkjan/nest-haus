@@ -34,7 +34,10 @@ export default function Footer() {
       title: "Konzept-Check",
       items: [
         { text: "Einstieg", href: "/konzept-check#schritte" },
-        { text: "Grundstücks-Check", href: "/konzept-check#grundstueckscheck" },
+        {
+          text: "Grundstücksanalyse",
+          href: "/konzept-check#grundstueckscheck",
+        },
         { text: "Entwurfplan", href: "/konzept-check#entwurfsplan" },
         { text: "Der Ablauf", href: "/konzept-check#anleitung" },
         { text: "FAQ", href: "/konzept-check#faq" },

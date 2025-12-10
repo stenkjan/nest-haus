@@ -23,7 +23,7 @@ import { SectionRouter } from "@/components/SectionRouter";
 const sections = [
   {
     id: "schritte",
-    title: "Konzept-Check & Grundstücks-Check",
+    title: "Konzept-Check & Grundstücksanalyse",
     slug: "schritte",
   },
   {
@@ -38,7 +38,7 @@ const sections = [
   },
   {
     id: "entwurfsplan",
-    title: "Dein Grundstücks-Check",
+    title: "Deine Grundstücksanalyse",
     slug: "entwurfsplan",
   },
   {
@@ -125,9 +125,9 @@ export default function KonzeptcheckClient() {
           className="w-full py-8 md:py-16 bg-white"
         >
           <SectionHeader
-            title="Schritt 1: Grundstücks-Check"
+            title="Schritt 1: Grundstücksanalyse"
             subtitle="Starte dein Bauvorhaben mit Rechtssicherheit"
-            mobileTitle="Schritt 1: Grundstücks-Check"
+            mobileTitle="Schritt 1: Grundstücks-Analyse"
             wrapperMargin="mb-8 md:mb-12"
           />
 
@@ -228,7 +228,7 @@ export default function KonzeptcheckClient() {
           )}
 
           <p className="p-primary-small2 text-nest-gray mt-4 text-center max-w-[300px] md:max-w-[500px] mx-auto">
-            *Mit dem Konzept-Check erhältst du deine Grundstücks-Analyse, deinen
+            *Mit dem Konzept-Check erhältst du deine Grundstücksanalyse, deinen
             individuellen Entwurfsplan und eine konkrete Kostenplanung.
           </p>
         </section>

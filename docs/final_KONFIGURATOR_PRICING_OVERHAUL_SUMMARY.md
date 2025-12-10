@@ -2428,7 +2428,7 @@ Streamlined the konzept-check mode experience by removing redundant UI elements 
 - **No changes needed** - these buttons never appear in konzept-check mode
 
 **Konzept-check step buttons** (lines 2373-2401):
-- **Location**: End of Konzept-Check step (after Grundstücks-Check form)
+- **Location**: End of Konzept-Check step (after Grundstücks-Analyse form)
 - **Status**: ✅ Correctly positioned
 - **Buttons**: "Neu konfigurieren" + "Nächster Schritt"
 
@@ -2442,7 +2442,7 @@ Streamlined the konzept-check mode experience by removing redundant UI elements 
 5. **Abschluss** - Full price breakdown, delivery date, configuration summary
 
 **Konzept-Check Mode (2 steps)**:
-1. **Konzept-Check** - Appointment booking + Grundstücks-Check form (NO price overview, NO "already configured" text, NO process descriptions)
+1. **Konzept-Check** - Appointment booking + Grundstücks-Analyse form (NO price overview, NO "already configured" text, NO process descriptions)
 2. **Abschluss** - Simplified: "Planen heißt Preise kennen" + Bewerber data + Termine + 3.000€/1.500€ pricing only (NO delivery date, NO nest/planungspaket breakdown, NO process text)
 
 ### Visual Changes

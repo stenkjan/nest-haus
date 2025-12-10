@@ -503,7 +503,7 @@ export const ABLAUF_STEPS_CONTENT: ContentCardData[] = [
         title: "1. Konzept-Check",
         subtitle: "Der erste Schritt",
         description:
-            "Mit dem Konzept-Check erhältst du deine Grundstücks-Analyse, deinen individuellen Entwurfsplan und eine konkrete Kostenplanung. \n\nSolltest du dich gegen den Bau deines Nest Hauses entscheiden, kannst du die Grundstücks-Analyse auch für andere Bauvorhaben verwenden.",
+            "Mit dem Konzept-Check erhältst du deine Grundstücksanalyse, deinen individuellen Entwurfsplan und eine konkrete Kostenplanung. \n\nSolltest du dich gegen den Bau deines Nest Hauses entscheiden, kannst du die Grundstücksanalyse auch für andere Bauvorhaben verwenden.",
         backgroundColor: "#f4f4f4",
         iconNumber: 1,
     },
@@ -661,7 +661,7 @@ export const FULL_IMAGE_CARDS_CONTENT: ContentCardData[] = [
 export const VIDEO_BACKGROUND_CARDS_CONTENT: ContentCardData[] = [
     {
         id: 1,
-        title: "Entwurf und Grundstückscheck",
+        title: "Entwurf und Grundstücksanalyse",
         subtitle: "",
         description: "Dein Konzept-Check",
         video: IMAGES.videos.videoCard01,
@@ -966,7 +966,7 @@ export const PROCESS_CARDS_CONTENT: ContentCardData[] = [
         title: "Die Basis",
         subtitle: "",
         description:
-            "Mit dem Grundstückscheck, der Teil deiner ersten Anzahlung ist, erhältst du sofort rechtliche Sicherheit. Wir prüfen alle relevanten Grundlagen, damit dein Bauvorhaben auf festen Boden gestellt ist. \n\n Dabei analysieren wir, ob dein Grundstück den Vorgaben des Landesbaugesetzes, des Raumordnungsgesetzes und den örtlichen Bestimmungen entspricht.Zusätzlich prüfen wir, ob alle Voraussetzungen für den Aufbau deines Nest Hauses erfüllt sind.So kannst du von Anfang an mit Sicherheit planen.",
+            "Mit der Grundstücksanalyse, die Teil deiner ersten Anzahlung ist, erhältst du sofort rechtliche Sicherheit. Wir prüfen alle relevanten Grundlagen, damit dein Bauvorhaben auf festen Boden gestellt ist. \n\n Dabei analysieren wir, ob dein Grundstück den Vorgaben des Landesbaugesetzes, des Raumordnungsgesetzes und den örtlichen Bestimmungen entspricht.Zusätzlich prüfen wir, ob alle Voraussetzungen für den Aufbau deines Nest Hauses erfüllt sind.So kannst du von Anfang an mit Sicherheit planen.",
         image: IMAGES.function.nestHausEntwurfVorentwurf,
         backgroundColor: "#F4F4F4",
         buttons: [

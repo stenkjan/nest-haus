@@ -606,9 +606,9 @@ export default function WarenkorbClient() {
     if (!item.grundstueckscheck) {
       return {
         type: "grundstueckscheck",
-        name: "Grundstückscheck",
+        name: "Grundstücksanalyse",
         price: GRUNDSTUECKSCHECK_PRICE,
-        description: "Grundstückscheck hinzufügen",
+        description: "Grundstücksanalyse hinzufügen",
       };
     }
 
@@ -661,7 +661,7 @@ export default function WarenkorbClient() {
       pvanlage: "PV-Anlage",
       fenster: "Fenster",
       planungspaket: "Planungspaket",
-      grundstueckscheck: "Grundstückscheck",
+      grundstueckscheck: "Grundstücksanalyse",
     };
     return categoryNames[category] || category;
   };
@@ -674,7 +674,7 @@ export default function WarenkorbClient() {
       if (item.nest?.name) {
         return item.nest.name;
       } else if (item.grundstueckscheck && !item.nest) {
-        return "Grundstückscheck";
+        return "Grundstücksanalyse";
       } else {
         return "Nest Konfiguration";
       }

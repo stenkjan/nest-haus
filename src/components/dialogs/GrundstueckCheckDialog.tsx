@@ -62,7 +62,7 @@ const GrundstueckCheckDialog: React.FC<GrundstueckCheckDialogProps> = ({
         {/* Title above the dialog */}
         <div className="absolute top-ios-5 z-[100] w-full max-w-[1700px] px-6 left-0 right-0 mx-auto">
           <h2 className="hidden md:block font-bold text-h2-mobile md:text-3xl text-center text-gray-900 mb-2">
-            Grundstückscheck
+            Grundstücksanalyse
           </h2>
         </div>
 
@@ -90,7 +90,7 @@ const GrundstueckCheckDialog: React.FC<GrundstueckCheckDialogProps> = ({
                       Rahmenbedingungen und Baugesetze, um dir{" "}
                       <span className="font-bold">Sicherheit und Klarheit</span>{" "}
                       zu verschaffen. Jetzt den{" "}
-                      <span className="font-bold">Grundstücks-Check</span>{" "}
+                      <span className="font-bold">Grundstücksanalyse</span>{" "}
                       machen und uns die rechtlichen und baulichen
                       Voraussetzungen deines Grundstücks prüfen lassen, damit du{" "}
                       <span className="font-bold">

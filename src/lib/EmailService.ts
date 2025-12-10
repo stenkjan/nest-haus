@@ -870,7 +870,7 @@ E-Mail antworten: mailto:${data.email}?subject=Re: Ihre Anfrage bei NEST-Haus
     if (pvanlage?.name) items.push(`PV-Anlage: ${pvanlage.name}`);
     if (fenster?.name) items.push(`Fenster: ${fenster.name}`);
     if (planungspaket?.name) items.push(`Planungspaket: ${planungspaket.name}`);
-    if (grundstueckscheck?.name) items.push(`Grundstückscheck: ${grundstueckscheck.name}`);
+    if (grundstueckscheck?.name) items.push(`Grundstücksanalyse: ${grundstueckscheck.name}`);
 
     if (items.length === 0) return '';
 

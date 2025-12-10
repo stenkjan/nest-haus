@@ -798,7 +798,7 @@ export default function CheckoutStepper({
       belichtungspaket: "Belichtungspaket",
       fenster: "Fenster",
       planungspaket: "Planungspaket",
-      grundstueckscheck: "Grundstückscheck",
+      grundstueckscheck: "Grundstücksanalyse",
       kamindurchzug: "Durchbruch für deinen Kamin",
     };
     return categoryNames[category] || category;
@@ -809,7 +809,7 @@ export default function CheckoutStepper({
   ): string => {
     if ("nest" in item) {
       if (item.nest?.name) return item.nest.name;
-      if (item.grundstueckscheck && !item.nest) return "Grundstückscheck";
+      if (item.grundstueckscheck && !item.nest) return "Grundstücksanalyse";
       return "Nest Konfiguration";
     }
     if ("name" in item) return item.name;
@@ -1007,9 +1007,9 @@ export default function CheckoutStepper({
     if (!item.grundstueckscheck) {
       return {
         type: "grundstueckscheck" as const,
-        name: "Grundstückscheck",
+        name: "Grundstücksanalyse",
         price: GRUNDSTUECKSCHECK_PRICE,
-        description: "Grundstückscheck hinzufügen",
+        description: "Grundstücksanalyse hinzufügen",
       };
     }
     return null;
@@ -1276,7 +1276,7 @@ export default function CheckoutStepper({
       title: "Dein Nest Haus",
       subtitle: "Weil nur du weißt, wie du wohnen willst",
       description:
-        "**Die Bestellung deines Nest-Hauses. Alles beginnt mit dem Entwurf und dem Grundstückscheck. Sobald du dein Nest-Haus bestellst und die erste Teilzahlung leistest, erhältst du von uns deinen verbindlich garantierten Liefertermin. Transparent, planbar und verlässlich.**",
+        "**Die Bestellung deines Nest-Hauses. Alles beginnt mit dem Entwurf und der Grundstücksanalyse. Sobald du dein Nest-Haus bestellst und die erste Teilzahlung leistest, erhältst du von uns deinen verbindlich garantierten Liefertermin. Transparent, planbar und verlässlich.**",
     },
   ];
 
@@ -1391,7 +1391,7 @@ export default function CheckoutStepper({
         case 0:
           return "Ein erster Einblick";
         case 1:
-          return "Entwurf- und Grundstückscheck";
+          return "Entwurf- und Grundstücksanalyse";
         case 2:
           return "Wähle aus 3 Paketen";
         case 3:
@@ -1419,7 +1419,7 @@ export default function CheckoutStepper({
         <div className="flex flex-col md:flex-row md:items-center md:justify-start gap-12 md:gap-6">
           <div className="w-full md:w-1/2 text-left md:px-16 lg:px-24 order-2 md:order-1 mt-5">
             {/* Delivery Date Component for Step 4 - ONLY in normal mode */}
-            {!isOhneNestMode && stepIndex === 4 && (
+            {!isOhneNestMode && stepIndex === 4 && calculateDeliveryDate && (
               <div className="mb-8 text-center md:text-left">
                 <div className="text-sm md:text-base lg:text-lg 2xl:text-xl text-gray-500 leading-relaxed text-center md:text-left mb-1">
                   Dein Liefertermin
@@ -1455,7 +1455,7 @@ export default function CheckoutStepper({
                     deckst du die Kosten für
                   </span>{" "}
                   <span className="text-black font-medium">
-                    Grundstückscheck und Entwurf.
+                    Grundstücksanalyse und Entwurf.
                   </span>{" "}
                   <span className="text-nest-gray">
                     Fahre fort und mache den ersten Schritt in Richtung
@@ -1720,7 +1720,7 @@ export default function CheckoutStepper({
                       <div
                         className={`text-sm md:text-base lg:text-lg 2xl:text-xl font-normal leading-relaxed ${rowTextClass(4)}`}
                       >
-                        {getAppointmentSummary(sessionId) ? (
+                        {calculateDeliveryDate ? (
                           <div className="flex items-start gap-2 justify-end">
                             <span className="text-xs md:text-sm text-gray-600 text-right max-w-[120px] md:max-w-none">
                               {calculateDeliveryDate}
@@ -1747,7 +1747,7 @@ export default function CheckoutStepper({
                       Konzept-Check
                     </div>
                     <div className="text-xs md:text-sm text-gray-500 leading-snug mt-1">
-                      Entwurf- und Grundstückscheck
+                      Entwurf- und Grundstücksanalyse
                     </div>
                   </div>
                   <div className="text-sm md:text-base lg:text-lg 2xl:text-xl font-normal text-gray-900 leading-relaxed">
@@ -1783,28 +1783,18 @@ export default function CheckoutStepper({
     </div>
   );
 
-  // Calculate delivery date: current date + 6 months (next weekday)
+  // Calculate delivery date: appointment date + 6 months (using cart store logic)
   const calculateDeliveryDate = useMemo(() => {
-    const now = new Date();
-    const sixMonthsLater = new Date(now);
-    sixMonthsLater.setMonth(sixMonthsLater.getMonth() + 6);
+    const deliveryDate = _getDeliveryDate(sessionId);
+    
+    if (!deliveryDate) return null;
 
-    // If the date falls on a weekend, move to next Monday
-    const dayOfWeek = sixMonthsLater.getDay();
-    if (dayOfWeek === 0) {
-      // Sunday
-      sixMonthsLater.setDate(sixMonthsLater.getDate() + 1);
-    } else if (dayOfWeek === 6) {
-      // Saturday
-      sixMonthsLater.setDate(sixMonthsLater.getDate() + 2);
-    }
-
-    return sixMonthsLater.toLocaleDateString("de-DE", {
+    return deliveryDate.toLocaleDateString("de-DE", {
       day: "2-digit",
       month: "2-digit",
       year: "numeric",
     });
-  }, []);
+  }, [_getDeliveryDate, sessionId]);
 
   // State for userData loaded from database
   const [userDataFromDb, setUserDataFromDb] = useState<Record<
@@ -2348,7 +2338,7 @@ export default function CheckoutStepper({
             {isOhneNestMode ? (
               // KONZEPT-CHECK MODE: Simplified flow with appointment booking first
               <>
-                {/* Appointment Booking Section - ABOVE Grundstücks-Check */}
+                {/* Appointment Booking Section - ABOVE Grundstücksanalyse */}
                 <div className="mb-12 md:mb-16">
                   <div className="text-center mb-12 md:mb-16">
                     <h2 className="h1-secondary text-black mb-2 md:mb-3">
@@ -2408,11 +2398,11 @@ export default function CheckoutStepper({
                   </div>
                 </div>
 
-                {/* Grundstücks-Check Title and Form */}
+                {/* Grundstücksanalyse Title and Form */}
                 <div id="entwurf-formular" className="mb-16">
                   <div className="text-center mb-12 md:mb-16">
                     <h2 className="h1-secondary text-black mb-2 md:mb-3">
-                      Grundstücks-Check
+                      Grundstücksanalyse
                     </h2>
                     <h3 className="h3-secondary text-black mb-2">
                       Der erste Schritt zu deinem Traumhaus
@@ -3428,7 +3418,7 @@ export default function CheckoutStepper({
                         Garantierter Liefertermin
                       </div>
                       <div className="text-2xl font-bold text-gray-900">
-                        {calculateDeliveryDate}
+                        {calculateDeliveryDate || "—"}
                       </div>
                       <div className="text-sm text-gray-600 mt-2">
                         6 Monate Liefergarantie
@@ -3457,7 +3447,7 @@ export default function CheckoutStepper({
               </p>
             </div>
 
-            {/* Left/Right Layout: Teilzahlungen (left) + Entwurf- und Grundstückscheck (right) */}
+            {/* Left/Right Layout: Teilzahlungen (left) + Entwurf- und Grundstücksanalyse (right) */}
             {!isOhneNestMode &&
               (() => {
                 // Calculate dynamic total (Dein Nest Haus price from Dein Preis Überblick)
@@ -3568,7 +3558,7 @@ export default function CheckoutStepper({
                                 <div className="text-sm text-gray-600 mt-1">
                                   Heute zu begleichen
                                   <br />
-                                  Grundstückscheck und Entwurf
+                                  Grundstücksanalyse und Entwurf
                                 </div>
                               </div>
                               <div className="text-right">
@@ -3661,7 +3651,7 @@ export default function CheckoutStepper({
                         </div>
                       </div>
 
-                      {/* Right: Entwurf- und Grundstückscheck box - compact design per image */}
+                      {/* Right: Entwurf- und Grundstücksanalyse box - compact design per image */}
                       <div className="lg:sticky lg:top-4">
                         {/* Compact box with title/subtitle left, price right */}
                         <div className="border border-gray-300 rounded-2xl p-6 bg-white mb-6">
@@ -3677,7 +3667,7 @@ export default function CheckoutStepper({
                               <div className="text-sm text-gray-600">
                                 {isPaymentCompleted
                                   ? "Zahlung erfolgreich abgeschlossen"
-                                  : "Entwurf und Grundstückscheck"}
+                                  : "Entwurf und Grundstücksanalyse"}
                               </div>
                             </div>
                             {!isPaymentCompleted ? (
@@ -3779,7 +3769,7 @@ export default function CheckoutStepper({
                           Solltest du mit dem Entwurf nicht zufrieden sein,
                           kannst du vom Kauf deines Nest-Hauses zurücktreten. In
                           diesem Fall zahlst du lediglich die Kosten für den
-                          Entwurf und Grundstückscheck.
+                          Entwurf und Grundstücksanalyse.
                         </div>
 
                         {/* Jetzt bezahlen button - centered below text - HIDDEN ON MOBILE */}
@@ -3803,7 +3793,7 @@ export default function CheckoutStepper({
             {/* Ohne-Nest Mode: Show simplified centered payment box */}
             {isOhneNestMode && (
               <div className="max-w-2xl mx-auto mb-12">
-                {/* Centered "Entwurf- und Grundstückscheck" box */}
+                {/* Centered "Entwurf- und Grundstücksanalyse" box */}
                 <div className="border border-gray-300 rounded-2xl p-6 bg-white mb-6">
                   <div className="flex items-start justify-between gap-4">
                     <div className="text-left min-w-0">
@@ -3812,7 +3802,7 @@ export default function CheckoutStepper({
                       >
                         {isPaymentCompleted
                           ? "Bezahlt"
-                          : "Entwurf- und Grundstückscheck"}
+                          : "Entwurf- und Grundstücksanalyse"}
                       </h3>
                       <div className="text-sm text-gray-600">
                         {isPaymentCompleted
@@ -3921,7 +3911,7 @@ export default function CheckoutStepper({
                   Solltest du mit dem Entwurf nicht zufrieden sein, kannst du
                   vom Kauf deines Nest-Hauses zurücktreten. In diesem Fall
                   zahlst du lediglich die Kosten für den Entwurf und
-                  Grundstückscheck.
+                  Grundstücksanalyse.
                 </div>
 
                 {/* Note: "Jetzt bezahlen" button is hidden for ohne nest mode by not rendering it here */}
@@ -4024,7 +4014,7 @@ export default function CheckoutStepper({
                         )}
                         <div className="border border-gray-300 rounded-2xl md:min-w-[260px] w-full overflow-hidden">
                           <div>
-                            {/* Grundstückscheck row - removed "Entwurf" since it's shown below */}
+                            {/* Grundstücksanalyse row - removed "Entwurf" since it's shown below */}
                             {/* Planungspaket row - show if exists in cart OR if locally selected, but hide in konzept-check mode */}
                             {!isOhneNestMode &&
                               (configItem?.planungspaket ||
@@ -4175,7 +4165,7 @@ export default function CheckoutStepper({
                     <div className="flex items-center justify-between gap-4 py-3 md:py-4 px-6 md:px-7">
                       <div className="flex-1 min-w-0">
                         <div className="text-sm md:text-base lg:text-lg 2xl:text-xl font-normal leading-relaxed text-gray-900">
-                          Entwurf & Grundstückscheck
+                          Entwurf & Grundstücksanalyse
                         </div>
                         <div className="text-xs md:text-sm text-gray-500 leading-snug mt-1">
                           Der erste Schritt zu deinem Nest-Haus auf deinem
@@ -4256,7 +4246,7 @@ export default function CheckoutStepper({
                             <div className="text-xs md:text-sm text-gray-500 leading-snug mt-1">
                               30% vom Gesamtpreis
                               <br />
-                              Abzüglch Grundstückscheck: (
+                              Abzüglch Grundstücksanalyse: (
                               {PriceUtils.formatPrice(grundstueckscheckCredit)}
                               ) -
                               <br />
@@ -4317,7 +4307,7 @@ export default function CheckoutStepper({
               </div>
             </div>
 
-            {/* Moved: Entwurf- und Grundstückscheck section at the end */}
+            {/* Moved: Entwurf- und Grundstücksanalyse section at the end */}
             <div className="flex items-start justify-between gap-4 py-3">
               <div className="text-left">
                 <h2
@@ -4325,7 +4315,7 @@ export default function CheckoutStepper({
                 >
                   {isPaymentCompleted
                     ? "Bezahlt"
-                    : "Entwurf- und Grundstückscheck"}
+                    : "Entwurf- und Grundstücksanalyse"}
                 </h2>
                 <div className="text-sm md:text-base lg:text-lg 2xl:text-xl text-gray-700 leading-snug">
                   {isPaymentCompleted && (
@@ -4522,8 +4512,8 @@ export default function CheckoutStepper({
             <div className="border border-gray-300 rounded-[19px] px-6 py-3 bg-white mt-12">
               <div className="text-sm md:text-base lg:text-lg 2xl:text-xl text-gray-700 leading-relaxed">
                 {isOhneNestMode
-                  ? "Du zahlst lediglich den Entwurf und Grundstückscheck"
-                  : "Solltest du mit dem Entwurf nicht zufrieden sein, kannst du vom Kauf deines Nest-Hauses zurücktreten. In diesem Fall zahlst du lediglich die Kosten für den Entwurf und Grundstückscheck."}
+                  ? "Du zahlst lediglich den Entwurf und die Grundstücksanalyse"
+                  : "Solltest du mit dem Entwurf nicht zufrieden sein, kannst du vom Kauf deines Nest-Hauses zurücktreten. In diesem Fall zahlst du lediglich die Kosten für den Entwurf und die Grundstücksanalyse."}
               </div>
             </div>
 
@@ -4605,7 +4595,7 @@ export default function CheckoutStepper({
   // Helper functions for payment
   function getPaymentAmount(): number {
     // Entwurf deposit: €1,500 (150000 cents) - Action price (50% discount from €3,000)
-    // This matches the "Entwurf- und Grundstückscheck" amount displayed in the checkout
+    // This matches the "Entwurf- und Grundstücksanalyse" amount displayed in the checkout
     return 150000; // 1,500 EUR in cents
   }
 

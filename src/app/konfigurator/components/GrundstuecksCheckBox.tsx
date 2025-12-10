@@ -20,7 +20,7 @@ interface GrundstuecksCheckBoxProps {
 // Constants for Grundstückscheck
 const GRUNDSTUECKSCHECK_OPTION = {
   value: "grundstueckscheck",
-  name: "Grundstückscheck", // updated label
+  name: "Grundstücksanalyse", // updated label
   category: "grundstueckscheck",
   description:
     "Prüfung der rechtlichen und baulichen Voraussetzungen deines Grundstücks",

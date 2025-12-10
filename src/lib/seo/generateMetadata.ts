@@ -53,9 +53,9 @@ export const PAGE_SEO_CONFIG = {
         twitterImage: "/images/2-NEST-Haus-7-Module-Ansicht-Weisse-Fassadenplatten.png",
     },
     kontakt: {
-        title: "Kontakt | Termin vereinbaren & Grundstücks-Check anfragen",
-        description: "Vereinbare jetzt deinen Termin bei Nest-Haus in Graz, Zösenberg 51. Kostenlose Erstberatung, Grundstücks-Check Anfrage. Wir helfen gerne weiter.",
-        keywords: "nest haus kontakt, termin vereinbaren, beratung graz, zösenberg 51 graz, grundstücks-check anfrage, modulhaus beratung österreich, nest haus termin",
+        title: "Kontakt | Termin vereinbaren & Grundstücksanalyse anfragen",
+        description: "Vereinbare jetzt deinen Termin bei Nest-Haus in Graz, Zösenberg 51. Kostenlose Erstberatung, Grundstücksanalyse Anfrage. Wir helfen gerne weiter.",
+        keywords: "nest haus kontakt, termin vereinbaren, beratung graz, zösenberg 51 graz, grundstücksanalyse anfrage, modulhaus beratung österreich, nest haus termin",
         priority: 0.8,
         changeFrequency: "monthly" as const,
         ogImage: "/images/6-NEST-Haus-4-Module-Ansicht-Meer-Mediteran-Stirnseite-Holzlattung-Laerche.png",

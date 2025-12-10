@@ -535,7 +535,7 @@ export function generatePaymentConfirmationEmail(data: PaymentConfirmationEmailD
       <!-- Header -->
       <div class="header-section">
         <h1>Konzept-Check bestellt</h1>
-        <p class="subtitle">Vielen Dank, ${data.name}! Ihre Bestellung für den Grundstückscheck und Entwurf war erfolgreich.</p>
+        <p class="subtitle">Vielen Dank, ${data.name}! Ihre Bestellung für die Grundstücksanalyse und den Entwurf war erfolgreich.</p>
       </div>
       
       <!-- Payment Success Card -->
@@ -816,7 +816,7 @@ Nest-Haus - Zahlungsbestätigung
 
 Konzept-Check bestellt
 
-Vielen Dank, ${data.name}! Ihre Bestellung für den Grundstückscheck und Entwurf war erfolgreich.
+Vielen Dank, ${data.name}! Ihre Bestellung für die Grundstücksanalyse und den Entwurf war erfolgreich.
 
 ZAHLUNGSDETAILS:
 - Betrag: ${formattedAmount}
