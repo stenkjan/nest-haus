@@ -330,7 +330,29 @@ const LandingImagesCarousel: React.FC<LandingImagesCarouselProps> = ({
                       />
                     )}
 
-                    {/* Description Overlay - Hidden on mobile */}
+                    {/* Mobile Description Overlay - Only title and "Beispiele" */}
+                    <div className="md:hidden absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent p-3">
+                      <div className="flex justify-between items-end">
+                        {/* Left side - Title only */}
+                        <div className="text-white flex-1 pr-4">
+                          <h3 className="p-primary-small text-white">
+                            {img.description.title}
+                          </h3>
+                        </div>
+
+                        {/* Right side - "Beispiele" link */}
+                        <div className="flex-shrink-0">
+                          <Link
+                            href={`/#${img.description.sectionSlug}`}
+                            className="p-primary-small2 text-white hover:text-gray-200 transition-colors duration-200 whitespace-nowrap underline"
+                          >
+                            Beispiele
+                          </Link>
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Desktop Description Overlay - Full version */}
                     <div className="hidden md:block absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent p-3 sm:p-4 lg:p-6">
                       {/* Flex container for positioning */}
                       <div className="flex justify-between items-end">
