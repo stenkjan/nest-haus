@@ -26,7 +26,7 @@ export default function Footer() {
     {
       title: "Dein Nest",
       items: [
-        { text: "Preise", href: "/dein-nest#dein-nest-preise" },
+        { text: "Preise", href: "/dein-nest#preise" },
         { text: "Position am Markt", href: "/dein-nest#position-am-markt" },
         { text: "Haus Konfigurator", href: "/dein-nest#haus-konfiguraton" },
         { text: "Vorteile", href: "/dein-nest#vorteile-nest" },

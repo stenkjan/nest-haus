@@ -38,7 +38,7 @@ const sections = [
   {
     id: "dein-nest-preise",
     title: "Design für dich gemacht",
-    slug: "dein-nest-preise",
+    slug: "preise",
   },
   {
     id: "intro-nest",
@@ -296,7 +296,7 @@ export default function DeinNestClient() {
           <SectionHeader
             title="Konfiguriere dein ®Nest Haus"
             subtitle="Gestalten heißt verstehen"
-            mobileTitle="Konfiguriere dein ®Nest Haus"
+            mobileTitle="Konfiguriere dein <br/> ®Nest Haus"
             wrapperMargin="mb-8 md:mb-12"
           />
 
