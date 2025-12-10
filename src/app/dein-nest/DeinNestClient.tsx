@@ -294,9 +294,9 @@ export default function DeinNestClient() {
           className="w-full py-8 md:py-16 bg-white"
         >
           <SectionHeader
-            title="Konfiguriere dein ®Nest Haus"
+            title="Konfiguriere dein ®Nest-Haus"
             subtitle="Gestalten heißt verstehen"
-            mobileTitle="Konfiguriere dein <br/> ®Nest Haus"
+            mobileTitle="Konfiguriere dein <br/> ®Nest-Haus"
             wrapperMargin="mb-8 md:mb-12"
           />
 
