@@ -2248,54 +2248,6 @@ export default function CheckoutStepper({
                   </div>
                 </div>
               )}
-
-              {/* Show "Planen heißt Preise kennen" section for ohne-nest mode */}
-              {isOhneNestMode && (
-                <div className="relative w-screen left-1/2 right-1/2 -ml-[50vw] -mr-[50vw] bg-[#F4F4F4] py-12 md:py-16">
-                  <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                    <div className="flex flex-col md:flex-row md:items-center gap-8 md:gap-12">
-                      {/* Text content on left - directly on gray background */}
-                      <div className="w-full md:w-1/2 text-center md:text-left">
-                        <h2 className="text-2xl md:text-3xl lg:text-4xl font-normal text-gray-900 mb-6">
-                          Planen heißt Preise kennen
-                        </h2>
-                        <p className="text-base md:text-lg text-gray-600 mb-8 leading-relaxed">
-                          Wenn du dein Nest schon jetzt konfigurierst, erhältst
-                          du volle Klarheit über Preis, Umfang und
-                          Möglichkeiten. Deine Auswahl bleibt dabei flexibel und
-                          kann jederzeit angepasst werden, falls sich deine
-                          Wünsche im Laufe der Planung verändern.
-                        </p>
-                        <div className="flex justify-center md:justify-start">
-                          <Button
-                            variant="primary"
-                            size="md"
-                            onClick={() => {
-                              window.location.href = "/konfigurator";
-                            }}
-                          >
-                            Jetzt konfigurieren
-                          </Button>
-                        </div>
-                      </div>
-
-                      {/* Image on right - inside white box */}
-                      <div className="w-full md:w-1/2">
-                        <div className="bg-white rounded-3xl overflow-hidden shadow-sm">
-                          <div className="relative w-full aspect-square">
-                            <HybridBlobImage
-                              path="173-NEST-Haus-Konfigurator-Modul-Holzfassade-Steirische-Eiche-Parkett-Eiche"
-                              alt="NEST-Haus Konfiguration"
-                              fill
-                              className="object-cover"
-                            />
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              )}
             </div>
 
             {!isOhneNestMode && (
@@ -2474,6 +2426,67 @@ export default function CheckoutStepper({
                           padding="sm"
                           excludePersonalData={true}
                         />
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Speichern button after Grundstücksanalyse form */}
+                <div className="flex justify-center mb-16 md:mb-20">
+                  <Button
+                    variant="primary"
+                    size="xs"
+                    className="whitespace-nowrap"
+                    onClick={() => {
+                      ensureGrundstueckscheckIncluded();
+                      // Optional: Add success feedback here
+                    }}
+                  >
+                    Speichern
+                  </Button>
+                </div>
+
+                {/* Planen heißt Preise kennen section - moved from outside step conditional */}
+                <div className="relative w-screen left-1/2 right-1/2 -ml-[50vw] -mr-[50vw] bg-[#F4F4F4] py-12 md:py-16 mb-16">
+                  <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                    <div className="flex flex-col md:flex-row md:items-center gap-8 md:gap-12">
+                      {/* Text content on left - directly on gray background */}
+                      <div className="w-full md:w-1/2 text-center md:text-left">
+                        <h2 className="text-2xl md:text-3xl lg:text-4xl font-normal text-gray-900 mb-6">
+                          Planen heißt Preise kennen
+                        </h2>
+                        <p className="text-base md:text-lg text-gray-600 mb-8 leading-relaxed">
+                          Wenn du dein Nest schon jetzt konfigurierst, erhältst
+                          du volle Klarheit über Preis, Umfang und
+                          Möglichkeiten. Deine Auswahl bleibt dabei flexibel und
+                          kann jederzeit angepasst werden, falls sich deine
+                          Wünsche im Laufe der Planung verändern.
+                        </p>
+                        <div className="flex justify-center md:justify-start">
+                          <Button
+                            variant="primary"
+                            size="md"
+                            onClick={() => {
+                              window.location.href = "/konfigurator";
+                            }}
+                          >
+                            Jetzt konfigurieren
+                          </Button>
+                        </div>
+                      </div>
+
+                      {/* Image on right - inside white box */}
+                      <div className="w-full md:w-1/2">
+                        <div className="bg-white rounded-3xl overflow-hidden shadow-sm">
+                          <div className="relative w-full aspect-square">
+                            <HybridBlobImage
+                              path="173-NEST-Haus-Konfigurator-Modul-Holzfassade-Steirische-Eiche-Parkett-Eiche"
+                              alt="NEST-Haus Konfiguration"
+                              fill
+                              className="object-cover"
+                            />
+                          </div>
+                        </div>
                       </div>
                     </div>
                   </div>
