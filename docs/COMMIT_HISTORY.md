@@ -4,6 +4,26 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [2a796f6d4508eba9683a8f2627c2f16372496fea] - Wed Dec 10 14:48:20 2025 +0100
+
+**Author**: stenkjan
+**Message**: `📚 Update documentation and improve LandingImagesCarousel component by removing unnecessary link wrapper for mobile images  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/components/sections/LandingImagesCarousel.tsx
+
+
+#### 📚 Documentation Changes
+- IMPLEMENTATION_SUMMARY_begin_checkout.md
+- TESTING_INSTRUCTIONS_begin_checkout.md
+- docs/STRIPE_PRODUCTION_SETUP.md
+- docs/VERCEL_BLOB_TROUBLESHOOTING.md
+
+
+---
+
 ## [4155acdef7557a01a7c6f5091481234400f904cb] - Wed Dec 10 11:52:58 2025 +0100
 
 **Author**: stenkjan
