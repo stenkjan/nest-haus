@@ -229,6 +229,10 @@ h2 {
     @apply font-medium text-2xl md:text-2xl lg:text-3xl xl:text-3xl 2xl:text-4xl;
   }
 
+  .h2-title-glass {
+    @apply font-medium text-2xl md:text-xl lg:text-3xl xl:text-3xl 2xl:text-4xl;
+  }
+
   /* H2 Title Large - Significantly larger mobile size, moderately larger desktop */
   .h2-title-large {
     @apply font-medium text-4xl sm:text-4xl md:text-4xl lg:text-5xl xl:text-5xl 2xl:text-6xl;

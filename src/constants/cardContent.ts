@@ -1101,8 +1101,8 @@ export const WARUM_WIR_TEAM_CARDS_CONTENT: ContentCardData[] = [
 export const GLASS_QUOTE_CARDS_CONTENT: ContentCardData[] = [
     {
         id: 0,
-        title: "Wir sind registrierter \n Baumeisterbetrieb \n in Österreich",
-        mobileTitle: "Wir sind registrierter Baumeister-Betrieb in Österreich",
+        title: "Wir sind registrierter \n Baumeisterbetrieb in \n Österreich",
+        mobileTitle: "Wir sind registrierter Baumeisterbetrieb in Österreich",
         subtitle: "Mitglieder der Bundesinnung Bau, die über eine Gewerbeberechtigung für das Baumeistergewerbe verfügt.",
         description: "",
         mobileDescription: "",
@@ -1112,7 +1112,7 @@ export const GLASS_QUOTE_CARDS_CONTENT: ContentCardData[] = [
         textColor: "text-white",
         descriptionColor: "text-gray-400", // Same gray as subtitle on other cards
         reverseTextOrder: false, // Description first (p-primary), then title (h2-title)
-        headingLevel: "h2", // Use h2-title for bigger title
+        headingLevel: "h3", // Use h2-title for bigger title
         buttons: [
             {
                 text: "Terminvereinbarung",

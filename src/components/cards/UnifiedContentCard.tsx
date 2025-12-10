@@ -1498,7 +1498,7 @@ export default function UnifiedContentCard({
       const paddingClasses = card.customPadding || "p-6 md:p-8 lg:p-10";
 
       // Conditional title class: Use h2-title-large for first card (id: 0), p-primary for others
-      const titleClass = card.id === 0 ? "h2-title-large mt-6" : "p-primary";
+      const titleClass = card.id === 0 ? "h2-title mt-6 md:mt-0" : "p-primary";
 
       // Refs for overflow detection containers
       const [titleContainer, setTitleContainer] =
@@ -1582,10 +1582,9 @@ export default function UnifiedContentCard({
                   rel="noopener noreferrer"
                   className={`${titleClass} text-white ${
                     card.id === 0
-                      ? "whitespace-pre-line mb-8"
+                      ? "whitespace-pre-line ml-2 mr-2 md: ml-0 md: mr-0"
                       : "mb-1 underline hover:opacity-80 transition-opacity cursor-pointer"
                   }`}
-                  style={{ fontSize: `${titleScale * 100}%` }}
                 >
                   {getCardText(card, "title")}
                 </a>
@@ -1594,10 +1593,9 @@ export default function UnifiedContentCard({
                   ref={titleCallbackRef}
                   className={`${titleClass} text-white ${
                     card.id === 0
-                      ? "whitespace-pre-line mb-8"
+                      ? "whitespace-pre-line ml-2 mr-2 ml-0 md: mr-0"
                       : "mb-1 underline"
                   }`}
-                  style={{ fontSize: `${titleScale * 100}%` }}
                 >
                   {getCardText(card, "title")}
                 </p>
@@ -1605,14 +1603,16 @@ export default function UnifiedContentCard({
 
             {/* Secondary Top Text - p-primary-small with mobile text support */}
             {card.subtitle && (
-              <p className="p-primary-small text-gray-400">
+              <p
+                className={`p-primary-small ${card.id === 0 ? "px-4 pt-4 leading-relaxed" : ""} text-gray-400`}
+              >
                 {getCardText(card, "subtitle")}
               </p>
             )}
           </motion.div>
 
           {/* Middle Section: Quote Text - Fixed height for alignment */}
-          {card.id !== 0 && (
+          {(card.id === 0 || quoteText) && (
             <motion.div
               ref={quoteContainerRef}
               initial={{ y: 20, opacity: 0 }}
@@ -1621,14 +1621,16 @@ export default function UnifiedContentCard({
               className="flex items-center md:items-start flex-1 min-h-[200px] md:min-h-[240px] mt-0 mb-4 md:mb-0 lg:mt-8 overflow-hidden"
             >
               <div className="w-full px-8 md:px-0">
-                {/* Large Quote Mark - block element with fixed height */}
-                <span className="block text-4xl md:text-4xl lg:text-5xl text-white/90 leading-none h-8 md:h-8 lg:h-10">
-                  &ldquo;
-                </span>
-                {/* Quote Text - p-primary */}
+                {/* Large Quote Mark - block element with fixed height (skip for card id 0) */}
+                {card.id !== 0 && (
+                  <span className="block text-4xl md:text-4xl lg:text-5xl text-white/90 leading-none h-8 md:h-8 lg:h-10">
+                    &ldquo;
+                  </span>
+                )}
+                {/* Quote Text - h2-title-large for id 0, p-primary for others */}
                 <p
                   ref={quoteCallbackRef}
-                  className="p-primary text-white leading-relaxed"
+                  className={`${card.id === 0 ? "h2-title-large text-white/80 leading-tight" : "p-primary text-white leading-relaxed"}`}
                   style={{ fontSize: `${quoteScale * 100}%` }}
                   dangerouslySetInnerHTML={{ __html: quoteText }}
                 />
