@@ -4,6 +4,20 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [2d2c9b3bdf37f6802b31f87c36d7a3bacada6158] - Wed Dec 10 15:43:03 2025 +0100
+
+**Author**: stenkjan
+**Message**: `🔄 Update DeinNestClient and Footer: Simplify slug for "dein-nest-preise" to "preise" and adjust mobile title formatting for improved clarity.  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/dein-nest/DeinNestClient.tsx
+- src/components/Footer.tsx
+
+
+---
+
 ## [2ea9f5c1f1d2294a53045adafdd27b8dea4e8409] - Wed Dec 10 15:23:31 2025 +0100
 
 **Author**: stenkjan
