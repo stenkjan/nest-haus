@@ -4,6 +4,21 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [2ea9f5c1f1d2294a53045adafdd27b8dea4e8409] - Wed Dec 10 15:23:31 2025 +0100
+
+**Author**: stenkjan
+**Message**: `🔄 Update PartnersSection: Add 'useKontaktCta' prop to conditionally render CTA label and link for improved user engagement.  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/warum-wir/WarumWirClient.tsx
+- src/components/Footer.tsx
+- src/components/sections/PartnersSection.tsx
+
+
+---
+
 ## [b2c47594e27c1b1acf35b021f38b8196cd6c8109] - Wed Dec 10 15:02:48 2025 +0100
 
 **Author**: stenkjan
