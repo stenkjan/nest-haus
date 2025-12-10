@@ -2288,68 +2288,8 @@ export default function CheckoutStepper({
         {stepIndex === (isOhneNestMode ? 0 : 1) && (
           <div className="space-y-4 pt-16 md:pt-16">
             {isOhneNestMode ? (
-              // KONZEPT-CHECK MODE: Simplified flow with appointment booking first
+              // KONZEPT-CHECK MODE: Grundstücksanalyse first, then Planen heißt Preise kennen, then Appointment
               <>
-                {/* Appointment Booking Section - ABOVE Grundstücksanalyse */}
-                <div className="mb-12 md:mb-16">
-                  <div className="text-center mb-12 md:mb-16">
-                    <h2 className="h1-secondary text-black mb-2 md:mb-3">
-                      Vereinbare jetzt deinen Termin
-                    </h2>
-                    <h3 className="h3-secondary text-black mb-2">
-                      Wir helfen gerne
-                    </h3>
-                  </div>
-
-                  {/* Left text + right calendar layout (from Terminvereinbarung step 2) */}
-                  <div className="flex flex-col md:flex-row md:items-start md:justify-start gap-8">
-                    <div className="w-full md:w-1/2 text-center md:text-left md:px-16 lg:px-24 md:pt-12 md:mt-12">
-                      <p className="p-secondary mb-4 md:mb-6 md:pt-6 hidden md:block">
-                        <span className="text-nest-gray">
-                          Der Kauf deines Hauses ist ein großer Schritt –
-                          und{" "}
-                        </span>
-                        <span className="text-black font-medium">
-                          wir sind da, um dir dabei zu helfen.
-                        </span>
-                        <span className="text-nest-gray">
-                          {" "}
-                          Für mehr Sicherheit und Klarheit{" "}
-                        </span>
-                        <span className="text-black font-medium">
-                          stehen wir dir jederzeit persönlich zur Seite.
-                        </span>
-                        <span className="text-nest-gray">
-                          {" "}
-                          Ruf uns an, um dein{" "}
-                        </span>
-                        <span className="text-black font-medium">
-                          Beratungsgespräch
-                        </span>
-                        <span className="text-nest-gray">
-                          {" "}
-                          zu vereinbaren, oder buche deinen{" "}
-                        </span>
-                        <span className="text-black font-medium">
-                          Termin ganz einfach online.
-                        </span>
-                        <span className="text-nest-gray">
-                          {" "}
-                          Dein Weg zu deinem Traumhaus beginnt mit einem
-                          Gespräch.
-                        </span>
-                      </p>
-                    </div>
-
-                    <div
-                      className="w-full md:w-1/2"
-                      data-section="appointment-booking"
-                    >
-                      <AppointmentBooking showLeftSide={false} />
-                    </div>
-                  </div>
-                </div>
-
                 {/* Grundstücksanalyse Title and Form */}
                 <div id="entwurf-formular" className="mb-16">
                   <div className="text-center mb-12 md:mb-16">
@@ -2431,21 +2371,6 @@ export default function CheckoutStepper({
                   </div>
                 </div>
 
-                {/* Speichern button after Grundstücksanalyse form */}
-                <div className="flex justify-center mb-16 md:mb-20">
-                  <Button
-                    variant="primary"
-                    size="xs"
-                    className="whitespace-nowrap"
-                    onClick={() => {
-                      ensureGrundstueckscheckIncluded();
-                      // Optional: Add success feedback here
-                    }}
-                  >
-                    Speichern
-                  </Button>
-                </div>
-
                 {/* Planen heißt Preise kennen section - moved from outside step conditional */}
                 <div className="relative w-screen left-1/2 right-1/2 -ml-[50vw] -mr-[50vw] bg-[#F4F4F4] py-12 md:py-16 mb-16">
                   <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -2488,6 +2413,66 @@ export default function CheckoutStepper({
                           </div>
                         </div>
                       </div>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Appointment Booking Section - AFTER Planen heißt Preise kennen */}
+                <div className="mb-12 md:mb-16">
+                  <div className="text-center mb-12 md:mb-16">
+                    <h2 className="h1-secondary text-black mb-2 md:mb-3">
+                      Vereinbare jetzt deinen Termin
+                    </h2>
+                    <h3 className="h3-secondary text-black mb-2">
+                      Wir helfen gerne
+                    </h3>
+                  </div>
+
+                  {/* Left text + right calendar layout (from Terminvereinbarung step 2) */}
+                  <div className="flex flex-col md:flex-row md:items-start md:justify-start gap-8">
+                    <div className="w-full md:w-1/2 text-center md:text-left md:px-16 lg:px-24 md:pt-12 md:mt-12">
+                      <p className="p-secondary mb-4 md:mb-6 md:pt-6 hidden md:block">
+                        <span className="text-nest-gray">
+                          Der Kauf deines Hauses ist ein großer Schritt –
+                          und{" "}
+                        </span>
+                        <span className="text-black font-medium">
+                          wir sind da, um dir dabei zu helfen.
+                        </span>
+                        <span className="text-nest-gray">
+                          {" "}
+                          Für mehr Sicherheit und Klarheit{" "}
+                        </span>
+                        <span className="text-black font-medium">
+                          stehen wir dir jederzeit persönlich zur Seite.
+                        </span>
+                        <span className="text-nest-gray">
+                          {" "}
+                          Ruf uns an, um dein{" "}
+                        </span>
+                        <span className="text-black font-medium">
+                          Beratungsgespräch
+                        </span>
+                        <span className="text-nest-gray">
+                          {" "}
+                          zu vereinbaren, oder buche deinen{" "}
+                        </span>
+                        <span className="text-black font-medium">
+                          Termin ganz einfach online.
+                        </span>
+                        <span className="text-nest-gray">
+                          {" "}
+                          Dein Weg zu deinem Traumhaus beginnt mit einem
+                          Gespräch.
+                        </span>
+                      </p>
+                    </div>
+
+                    <div
+                      className="w-full md:w-1/2"
+                      data-section="appointment-booking"
+                    >
+                      <AppointmentBooking showLeftSide={false} />
                     </div>
                   </div>
                 </div>
