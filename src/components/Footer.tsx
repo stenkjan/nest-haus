@@ -2,10 +2,13 @@
 
 import React from "react";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import LandingImagesCarousel from "./sections/LandingImagesCarousel";
 import { GetInContactBanner } from "./sections/GetInContactBanner";
 
 export default function Footer() {
+  const pathname = usePathname();
+  const hideContactBanner = pathname === "/kontakt";
   const currentYear = new Date().getFullYear();
 
   // Footer structure with navigation links
@@ -68,7 +71,7 @@ export default function Footer() {
   return (
     <footer className="bg-[#F4F4F4] text-gray-700 mt-auto" role="contentinfo">
       {/* Get In Contact Banner - Above Footer */}
-      <GetInContactBanner />
+      {!hideContactBanner && <GetInContactBanner />}
 
       {/* Image Carousel Section */}
       <div className="bg-white">

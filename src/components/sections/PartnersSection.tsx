@@ -115,9 +115,19 @@ interface PartnersSectionProps {
    * Additional CSS classes
    */
   className?: string;
+  /**
+   * Switch CTA to Kontakt page with "Melde dich!" label
+   */
+  useKontaktCta?: boolean;
 }
 
-export function PartnersSection({ className = "" }: PartnersSectionProps) {
+export function PartnersSection({
+  className = "",
+  useKontaktCta = false,
+}: PartnersSectionProps) {
+  const ctaLabel = useKontaktCta ? "Melde dich!" : "Unser Team";
+  const ctaHref = useKontaktCta ? "/kontakt" : "/warum-wir#unser-team";
+
   return (
     <div className="w-screen relative left-1/2 right-1/2 -ml-[50vw] -mr-[50vw]">
       <section className={`w-full py-8 md:py-16 bg-[#f4f4f4] ${className}`}>
@@ -192,9 +202,9 @@ export function PartnersSection({ className = "" }: PartnersSectionProps) {
 
             {/* Buttons at the bottom */}
             <div className="flex flex-col gap-4 items-center">
-              <Link href="/warum-wir#unser-team">
+              <Link href={ctaHref}>
                 <Button variant="primary" size="xs">
-                  Unser Team
+                  {ctaLabel}
                 </Button>
               </Link>
             </div>
@@ -216,9 +226,9 @@ export function PartnersSection({ className = "" }: PartnersSectionProps) {
 
               {/* Buttons at bottom */}
               <div className="mt-8 flex flex-col gap-4">
-                <Link href="/warum-wir#unser-team">
+                <Link href={ctaHref}>
                   <Button variant="primary" size="xs">
-                    Unser Team
+                    {ctaLabel}
                   </Button>
                 </Link>
               </div>

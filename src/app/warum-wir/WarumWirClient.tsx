@@ -180,7 +180,7 @@ export default function WarumWirClient() {
 
         {/* Section 4 - Unser Partner */}
         <section id="unsere-partner">
-          <PartnersSection />
+          <PartnersSection useKontaktCta />
         </section>
 
         {/* Section 5 - Innovation - Tall Video Cards Features */}
