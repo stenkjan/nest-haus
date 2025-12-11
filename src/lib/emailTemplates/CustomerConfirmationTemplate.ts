@@ -266,7 +266,7 @@ export function generateCustomerConfirmationEmail(data: CustomerConfirmationData
           </div>
           <div class="info-item" style="border-radius:0 !important">
             <div class="info-label">Email</div>
-            <div class="info-value">nest@nest-haus.at</div>
+            <div class="info-value">mail@nest-haus.at</div>
           </div>
         </div>
       </div>
@@ -361,7 +361,7 @@ KONTAKT - Melde dich!
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 Telefon: +43 (0) 660 5649683
 Mobil: +43 (0) 664 3949605
-Email: nest@nest-haus.at
+Email: mail@nest-haus.at
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 ADRESSE - Komm vorbei!

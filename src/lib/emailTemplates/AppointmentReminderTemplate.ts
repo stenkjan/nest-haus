@@ -260,7 +260,7 @@ export function generateAppointmentReminderEmail(data: AppointmentReminderData):
     </div>
     
     <div class="footer">
-      <p><strong>NEST-Haus</strong><br>Modulares Wohnen. Nachhaltig. Österreichisch.</p>
+      <p><strong>Nest-Haus</strong><br>Modulares Wohnen. Nachhaltig. Österreichisch.</p>
       <p style="margin-top: 12px;">
         <a href="https://nest-haus.at">Website</a> ·
         <a href="mailto:mail@nest-haus.at">E-Mail</a> ·
