@@ -4,6 +4,21 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [3452f207ea82cf859681bbf6b13168b187134e9d] - Wed Dec 10 16:26:03 2025 +0100
+
+**Author**: stenkjan
+**Message**: `🔄 Enhance Appointment Handling: Introduce appointment type detection in inquiries and update email templates to reflect appointment type (personal/phone) for improved clarity and user experience.  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/admin/customer-inquiries/page.tsx
+- src/app/api/contact/route.ts
+- src/components/sections/AppointmentBooking.tsx
+
+
+---
+
 ## [7e9816e1762dbbf254d890eacef0bc07e97e7e8c] - Wed Dec 10 16:18:23 2025 +0100
 
 **Author**: stenkjan
