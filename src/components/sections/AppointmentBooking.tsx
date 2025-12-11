@@ -537,7 +537,7 @@ const AppointmentBooking = ({
                 window.location.href = "/konfigurator";
               }}
             >
-              Jetzt konfigurieren
+              Konfigurieren
             </Button>
             <Button
               variant="landing-secondary-blue"
