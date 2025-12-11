@@ -529,9 +529,9 @@ const AppointmentBooking = ({
             geprüft und melden uns innerhalb der nächsten 24 Stunden per E-Mail
             bei dir, um den Termin zu bestätigen.
           </p>
-          <div className="flex flex-col sm:flex-row gap-3 justify-start">
+          <div className="flex flex-row gap-3 justify-start">
             <Button
-              variant="landing-secondary-blue"
+              variant="landing-primary"
               size="xs"
               onClick={() => {
                 window.location.href = "/konfigurator";
