@@ -33,8 +33,8 @@ export function generateAdminNotificationEmail(data: AdminNotificationData): {
     : '';
 
   const subject = isAppointment
-    ? `📅 Neue Terminanfrage: ${data.name} - ${formattedDate}`
-    : `📧 Neue Kontaktanfrage: ${data.name}`;
+    ? `Neue Terminanfrage: ${data.name} - ${formattedDate}`
+    : `Neue Kontaktanfrage: ${data.name}`;
 
   const html = `
 <!DOCTYPE html>
@@ -163,26 +163,26 @@ export function generateAdminNotificationEmail(data: AdminNotificationData): {
 <body>
   <div class="email-container">
     <div class="header">
-      <h1>${isAppointment ? '📅 Neue Terminanfrage' : '📧 Neue Kontaktanfrage'}</h1>
+      <h1>${isAppointment ? 'Neue Terminanfrage' : 'Neue Kontaktanfrage'}</h1>
       <p style="margin: 8px 0 0 0; opacity: 0.9;">NEST-Haus Admin Notification</p>
     </div>
     
     <div class="content">
       ${isAppointment ? `
       <div class="highlight-box">
-        <div style="font-size: 16px; font-weight: 600; margin-bottom: 8px;">⏰ Gewünschter Termin:</div>
+        <div style="font-size: 16px; font-weight: 600; margin-bottom: 8px;">Gewünschter Termin:</div>
         <div style="font-size: 18px; font-weight: 600; color: #1f2937;">${formattedDate}</div>
         <div style="font-size: 14px; color: #6b7280; margin-top: 4px;">Zeitzone: Europe/Vienna</div>
         <div style="margin-top: 12px; padding-top: 12px; border-top: 1px solid #fbbf24;">
-          <div style="font-size: 14px; color: #d97706;">⏳ <strong>Läuft ab in:</strong> 24 Stunden</div>
-          <div style="font-size: 13px; color: #78716c; margin-top: 4px;">📎 Kalendereinladung (.ics) im Anhang</div>
+          <div style="font-size: 14px; color: #d97706;"><strong>Läuft ab in:</strong> 24 Stunden</div>
+          <div style="font-size: 13px; color: #78716c; margin-top: 4px;">Kalendereinladung (.ics) im Anhang</div>
         </div>
       </div>
       ` : ''}
       
       <!-- Customer Information -->
       <div class="section">
-        <div class="section-title">👤 Kundendaten</div>
+        <div class="section-title">Kundendaten</div>
         <div class="info-grid">
           <div class="info-label">Name:</div>
           <div class="info-value"><strong>${data.name}</strong></div>
@@ -223,7 +223,7 @@ export function generateAdminNotificationEmail(data: AdminNotificationData): {
       
       <!-- Actions -->
       <div class="actions">
-        <div class="section-title">📋 Nächste Schritte</div>
+        <div class="section-title">Nächste Schritte</div>
         <ol style="margin: 16px 0; padding-left: 20px; color: #4b5563;">
           ${isAppointment ? `
           <li>Kalendereinladung (.ics) im Anhang zu eigenem Kalender hinzufügen</li>
@@ -239,14 +239,14 @@ export function generateAdminNotificationEmail(data: AdminNotificationData): {
         
         <div style="margin-top: 20px;">
           <a href="https://nest-haus.at/admin/customer-inquiries" class="btn btn-primary">
-            📊 Admin-Panel öffnen
+            Admin-Panel öffnen
           </a>
           <a href="mailto:${data.email}" class="btn btn-secondary">
-            ✉️ E-Mail senden
+            E-Mail senden
           </a>
           ${data.phone ? `
           <a href="tel:${data.phone}" class="btn btn-secondary">
-            📞 Anrufen
+            Anrufen
           </a>
           ` : ''}
         </div>
@@ -270,13 +270,13 @@ export function generateAdminNotificationEmail(data: AdminNotificationData): {
 NEST-Haus - ${isAppointment ? 'Neue Terminanfrage' : 'Neue Kontaktanfrage'}
 
 ${isAppointment ? `
-⏰ Gewünschter Termin: ${formattedDate}
+Gewünschter Termin: ${formattedDate}
 Zeitzone: Europe/Vienna
-⏳ Läuft ab in: 24 Stunden
-📎 Kalendereinladung (.ics) im Anhang
+Läuft ab in: 24 Stunden
+Kalendereinladung (.ics) im Anhang
 ` : ''}
 
-👤 KUNDENDATEN
+KUNDENDATEN
 Name: ${data.name}
 E-Mail: ${data.email}
 ${data.phone ? `Telefon: ${data.phone}\n` : ''}Bevorzugter Kontakt: ${data.preferredContact}
@@ -291,7 +291,7 @@ ${data.configurationData && data.totalPrice ? `
 Geschätzter Gesamtpreis: ${new Intl.NumberFormat('de-AT', { style: 'currency', currency: 'EUR' }).format(data.totalPrice)}
 ` : ''}
 
-📋 NÄCHSTE SCHRITTE:
+NÄCHSTE SCHRITTE:
 ${isAppointment ? `
 1. Kalendereinladung (.ics) im Anhang zu eigenem Kalender hinzufügen
 2. Kunde wird per E-Mail informiert, wenn Termin in Google Calendar bestätigt wird

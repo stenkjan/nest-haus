@@ -28,8 +28,8 @@ export function generateCustomerConfirmationEmail(data: CustomerConfirmationData
     : '';
 
   const subject = isAppointment
-    ? `📅 Terminanfrage bestätigt - ${formattedDate}`
-    : '✅ Kontaktanfrage bestätigt - NEST-Haus';
+    ? `Terminanfrage bestätigt - ${formattedDate}`
+    : 'Kontaktanfrage bestätigt - NEST-Haus';
 
   const html = `
 <!DOCTYPE html>
@@ -215,7 +215,7 @@ export function generateCustomerConfirmationEmail(data: CustomerConfirmationData
       ${isAppointment ? `
       <!-- Appointment Details Card -->
       <div class="glass-card">
-        <h2>📅 ${isPhoneAppointment ? 'Ihr gewünschter Gesprächstermin' : 'Ihr gewünschter Termin'}</h2>
+        <h2>${isPhoneAppointment ? 'Ihr gewünschter Gesprächstermin' : 'Ihr gewünschter Termin'}</h2>
         <div class="info-grid">
           <div class="info-item">
             <div class="info-label">Datum und Uhrzeit</div>
@@ -227,20 +227,20 @@ export function generateCustomerConfirmationEmail(data: CustomerConfirmationData
           </div>
         </div>
         <p style="margin-top: 16px; font-size: 15px; color: #666;">
-          ⏰ <strong>Wichtig:</strong> Bitte bestätigen Sie Ihren Termin innerhalb von 24 Stunden durch Hinzufügen zum Kalender.
+          <strong>Wichtig:</strong> Bitte bestätigen Sie Ihren Termin innerhalb von 24 Stunden durch Hinzufügen zum Kalender.
         </p>
         <p style="margin-top: 12px; font-size: 14px; color: #999;">
-          📎 Sie finden eine Kalendereinladung (.ics-Datei) im Anhang dieser E-Mail. Öffnen Sie die Datei, um den Termin in Ihrem Kalender zu speichern.
+          Sie finden eine Kalendereinladung (.ics-Datei) im Anhang dieser E-Mail. Öffnen Sie die Datei, um den Termin in Ihrem Kalender zu speichern.
         </p>
         <p style="margin-top: 12px; font-size: 14px; color: #e67e22;">
-          ⚠️ Der Termin ist vorläufig und wird automatisch storniert, wenn er nicht innerhalb von 24 Stunden bestätigt wird.
+          Der Termin ist vorläufig und wird automatisch storniert, wenn er nicht innerhalb von 24 Stunden bestätigt wird.
         </p>
       </div>
       ` : ''}
       
       <!-- Next Steps Card -->
       <div class="glass-card">
-        <h2>⏭️ Die nächsten Schritte</h2>
+        <h2>Die nächsten Schritte</h2>
         <p>${isAppointment
       ? '1. <strong>Terminbestätigung:</strong> Sie erhalten eine Kalendereinladung per E-Mail<br>2. <strong>Vorbereitung:</strong> Notieren Sie sich Ihre Fragen und Wünsche<br>3. <strong>Gespräch:</strong> Wir besprechen Ihr Nest-Haus-Projekt im Detail'
       : '1. <strong>Rückmeldung:</strong> Wir melden uns innerhalb von 2 Werktagen bei Ihnen<br>2. <strong>Beratung:</strong> Gemeinsam besprechen wir Ihre individuellen Anforderungen<br>3. <strong>Planung:</strong> Wir entwickeln eine maßgeschneiderte Lösung für Sie'
@@ -254,7 +254,7 @@ export function generateCustomerConfirmationEmail(data: CustomerConfirmationData
       
       <!-- Contact Info Cards -->
       <div class="glass-card glass-card--plain">
-        <h2>📞 Kontakt <span style="color: #737373; font-weight: 400;">Melde dich!</span></h2>
+        <h2>Kontakt <span style="color: #737373; font-weight: 400;">Melde dich!</span></h2>
         <div class="info-grid">
         <div class="info-item" style="border-radius:0 !important">
           <div class="info-label">Mobil</div>
@@ -272,7 +272,7 @@ export function generateCustomerConfirmationEmail(data: CustomerConfirmationData
       </div>
       
       <div class="glass-card glass-card--plain">
-        <h2>📍 Adresse <span style="color: #737373; font-weight: 400;">Komm vorbei!</span></h2>
+        <h2>Adresse <span style="color: #737373; font-weight: 400;">Komm vorbei!</span></h2>
         <div class="info-grid">
           <div class="info-item" style="border-radius:0 !important">
             <div class="info-label">Straße</div>
@@ -340,11 +340,11 @@ ${isPhoneAppointment ? 'Ihr gewünschter Gesprächstermin:' : 'Ihr gewünschter 
 ${formattedDate}
 Zeitzone: Europe/Vienna (CET/CEST)
 
-⏰ WICHTIG: Bitte bestätigen Sie Ihren Termin innerhalb von 24 Stunden durch Hinzufügen zum Kalender.
+WICHTIG: Bitte bestätigen Sie Ihren Termin innerhalb von 24 Stunden durch Hinzufügen zum Kalender.
 
-📎 Sie finden eine Kalendereinladung (.ics-Datei) im Anhang dieser E-Mail. Öffnen Sie die Datei, um den Termin in Ihrem Kalender zu speichern.
+Sie finden eine Kalendereinladung (.ics-Datei) im Anhang dieser E-Mail. Öffnen Sie die Datei, um den Termin in Ihrem Kalender zu speichern.
 
-⚠️ Der Termin ist vorläufig und wird automatisch storniert, wenn er nicht innerhalb von 24 Stunden bestätigt wird.`
+Der Termin ist vorläufig und wird automatisch storniert, wenn er nicht innerhalb von 24 Stunden bestätigt wird.`
       : `Vielen Dank für Ihre Kontaktanfrage. Wir haben Ihre Nachricht erhalten und melden uns in Kürze bei Ihnen.`
     }
 

@@ -132,7 +132,7 @@ export function generateAdminPaymentNotificationEmail(
 
   const config = parseConfigurationForEmail(data.configurationData);
 
-  const subject = `💰 Zahlung erhalten: ${formattedAmount} - ${data.name}`;
+  const subject = `Zahlung erhalten: ${formattedAmount} - ${data.name}`;
 
   const html = `
 <!DOCTYPE html>
@@ -310,7 +310,6 @@ export function generateAdminPaymentNotificationEmail(
   <div class="email-container">
     <!-- Header -->
     <div class="header">
-      <div class="header-icon">💰</div>
       <h1>Zahlung erfolgreich eingegangen</h1>
       <p style="margin: 8px 0 0 0; opacity: 0.95; font-size: 15px;">NEST-Haus Konfiguration</p>
     </div>
@@ -327,7 +326,7 @@ export function generateAdminPaymentNotificationEmail(
       
       <!-- Payment Details -->
       <div class="section">
-        <div class="section-title">💳 Zahlungsdetails</div>
+        <div class="section-title">Zahlungsdetails</div>
         <div class="info-grid">
           <span class="info-label">Betrag</span>
           <span class="info-value-highlight">${formattedAmount}</span>
@@ -348,7 +347,7 @@ export function generateAdminPaymentNotificationEmail(
       
       <!-- Customer Information -->
       <div class="section">
-        <div class="section-title">👤 Kundendaten</div>
+        <div class="section-title">Kundendaten</div>
         <div class="info-grid">
           <span class="info-label">Name</span>
           <span class="info-value"><strong>${data.name}</strong></span>
@@ -375,7 +374,7 @@ export function generateAdminPaymentNotificationEmail(
           ? `
       <!-- Configuration Selection -->
       <div class="section">
-        <div class="section-title">🏠 Dein Nest - Deine Auswahl</div>
+        <div class="section-title">Dein Nest - Deine Auswahl</div>
         <div class="config-items">
           ${
             config.nestModel
@@ -460,7 +459,7 @@ export function generateAdminPaymentNotificationEmail(
 
       <!-- Configuration Overview -->
       <div class="section">
-        <div class="section-title">📊 Dein Nest - Überblick</div>
+        <div class="section-title">Dein Nest - Überblick</div>
         <div>
           <div class="summary-item">
             <span>Dein Nest Haus</span>
@@ -540,13 +539,13 @@ export function generateAdminPaymentNotificationEmail(
       <!-- Action Buttons -->
       <div style="text-align: center; margin: 30px 0 20px 0;">
         <a href="https://nest-haus.at/admin/customer-inquiries/${data.inquiryId}" class="btn-primary">
-          📋 Anfrage öffnen
+          Anfrage öffnen
         </a>
         <a href="mailto:${data.email}" class="btn-primary btn-secondary">
-          ✉️ Kunde kontaktieren
+          Kunde kontaktieren
         </a>
         <a href="https://dashboard.stripe.com/payments/${data.paymentIntentId}" class="btn-primary btn-secondary">
-          💳 Stripe öffnen
+          Stripe öffnen
         </a>
       </div>
     </div>
@@ -564,7 +563,7 @@ export function generateAdminPaymentNotificationEmail(
   const text = `
 NEST-Haus - Zahlung erfolgreich eingegangen
 
-💰 Zahlung erhalten: ${formattedAmount}
+Zahlung erhalten: ${formattedAmount}
 
 ⚡ AKTION ERFORDERLICH:
 Bitte kontaktieren Sie den Kunden innerhalb von 24 Stunden, um die nächsten Schritte zu besprechen.

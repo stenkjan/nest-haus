@@ -34,7 +34,7 @@ export function generateAppointmentReminderEmail(data: AppointmentReminderData):
   const hoursRemaining = Math.floor(timeRemaining / 60);
   const minutesRemaining = timeRemaining % 60;
 
-  const subject = `⏰ Erinnerung: Termin läuft in ${hoursRemaining}h ${minutesRemaining}min ab - NEST-Haus`;
+  const subject = `Erinnerung: Termin läuft in ${hoursRemaining}h ${minutesRemaining}min ab - NEST-Haus`;
 
   const html = `
 <!DOCTYPE html>
@@ -204,7 +204,7 @@ export function generateAppointmentReminderEmail(data: AppointmentReminderData):
 <body>
   <div class="email-container">
     <div class="header">
-      <h1>⏰ Terminbestätigung läuft bald ab</h1>
+      <h1>Terminbestätigung läuft bald ab</h1>
       <p>Bitte bestätigen Sie Ihren Termin</p>
     </div>
     
@@ -224,7 +224,7 @@ export function generateAppointmentReminderEmail(data: AppointmentReminderData):
       </p>
       
       <div class="appointment-details">
-        <h3>📅 Ihr reservierter Termin</h3>
+        <h3>Ihr reservierter Termin</h3>
         <div class="detail-row">
           <span class="detail-label">Datum & Uhrzeit:</span>
           <span class="detail-value">${formattedDate}</span>
@@ -241,7 +241,7 @@ export function generateAppointmentReminderEmail(data: AppointmentReminderData):
       
       <div style="text-align: center;">
         <a href="mailto:${data.email}" class="cta-button">
-          📎 Kalendereinladung erneut öffnen
+          Kalendereinladung erneut öffnen
         </a>
       </div>
       
@@ -275,7 +275,7 @@ export function generateAppointmentReminderEmail(data: AppointmentReminderData):
   const text = `
 NEST-Haus - Terminbestätigung läuft bald ab
 
-⏰ Ihr Termin läuft in ${hoursRemaining}h ${minutesRemaining}min ab
+Ihr Termin läuft in ${hoursRemaining}h ${minutesRemaining}min ab
 
 Hallo ${data.name},
 

@@ -1,6 +1,12 @@
 "use client";
 
-import React, { useState, useEffect, useRef, useCallback } from "react";
+import React, {
+  useState,
+  useEffect,
+  useRef,
+  useCallback,
+  useMemo,
+} from "react";
 import { motion, useMotionValue, animate } from "framer-motion";
 import Link from "next/link";
 import { HybridBlobImage } from "@/components/images";
@@ -191,8 +197,10 @@ export default function UnifiedContentCard({
   const gap = 24;
 
   // Get card data from category or custom data
-  const cardData =
-    customData || (category ? getContentByCategory(category) : []);
+  const cardData = useMemo(
+    () => customData || (category ? getContentByCategory(category) : []),
+    [customData, category]
+  );
 
   const isStatic = variant === "static";
   const isResponsive = variant === "responsive";
@@ -244,12 +252,15 @@ export default function UnifiedContentCard({
 
   // Process-detail layout needs all cards (first card + 5 detail cards)
   // Static variant shows only first card for carousel layouts
-  const displayCards =
-    layout === "process-detail"
-      ? cardData
-      : isStatic
-        ? cardData.slice(0, 1)
-        : cardData;
+  const displayCards = useMemo(
+    () =>
+      layout === "process-detail"
+        ? cardData
+        : isStatic
+          ? cardData.slice(0, 1)
+          : cardData,
+    [layout, isStatic, cardData]
+  );
 
   // Helper function to calculate individual card width based on aspect ratio
   const getCardWidthForIndex = useCallback(
@@ -696,38 +707,38 @@ export default function UnifiedContentCard({
   }, [navigateCard]);
 
   // Helper function to get appropriate text based on screen size
-  const getCardText = (
-    card: ContentCardData,
-    field: "title" | "subtitle" | "description"
-  ) => {
-    const isMobileScreen = isClient && screenWidth < 1024;
+  const getCardText = useCallback(
+    (card: ContentCardData, field: "title" | "subtitle" | "description") => {
+      const isMobileScreen = isClient && screenWidth < 1024;
 
-    switch (field) {
-      case "title":
-        return isMobileScreen && card.mobileTitle
-          ? card.mobileTitle
-          : card.title;
-      case "subtitle":
-        return isMobileScreen && card.mobileSubtitle
-          ? card.mobileSubtitle
-          : card.subtitle;
-      case "description":
-        return isMobileScreen && card.mobileDescription
-          ? card.mobileDescription
-          : card.description;
-      default:
-        return "";
-    }
-  };
+      switch (field) {
+        case "title":
+          return isMobileScreen && card.mobileTitle
+            ? card.mobileTitle
+            : card.title;
+        case "subtitle":
+          return isMobileScreen && card.mobileSubtitle
+            ? card.mobileSubtitle
+            : card.subtitle;
+        case "description":
+          return isMobileScreen && card.mobileDescription
+            ? card.mobileDescription
+            : card.description;
+        default:
+          return "";
+      }
+    },
+    [isClient, screenWidth]
+  );
 
   // Helper function to get image path from API URL
-  const getImagePath = (imageUrl: string): string => {
+  const getImagePath = useCallback((imageUrl: string): string => {
     if (imageUrl.startsWith("/api/images?path=")) {
       const url = new URL(imageUrl, "http://localhost");
       return decodeURIComponent(url.searchParams.get("path") || "");
     }
     return imageUrl;
-  };
+  }, []);
 
   const containerClasses =
     layout === "video"
