@@ -816,11 +816,11 @@ const AppointmentBooking = ({
                   <div className="grid grid-cols-[auto_1fr] gap-x-4 gap-y-1 p-primary-small leading-relaxed">
                     <span className="text-nest-gray">Straße:</span>
                     <span className="text-black font-medium">
-                      Zösenberg 51
+                      Karmeliterplatz 8
                     </span>
                     <span className="text-nest-gray">Stadt:</span>
                     <span className="text-black font-medium">
-                      8045, Weinitzen, Steiermark
+                      8010, Graz, Steiermark
                     </span>
                     <span className="text-nest-gray">Land:</span>
                     <span className="text-black font-medium">Österreich</span>
