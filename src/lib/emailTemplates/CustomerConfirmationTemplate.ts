@@ -315,7 +315,7 @@ export function generateCustomerConfirmationEmail(data: CustomerConfirmationData
     <div class="footer">
       <p>
         <strong>Nest-Haus</strong><br>
-        Modulares Wohnen. Nachhaltig. Österreichisch.
+        Dein Stil. Dein Zuhause.
       </p>
       <p style="margin-top: 16px;">
         <a href="https://nest-haus.at">Website</a> ·

@@ -535,7 +535,7 @@ export function generatePaymentConfirmationEmail(data: PaymentConfirmationEmailD
       <!-- Header -->
       <div class="header-section">
         <h1>Konzept-Check bestellt</h1>
-        <p class="subtitle">Vielen Dank, ${data.name}! Ihre Bestellung für die Grundstücksanalyse und den Entwurf war erfolgreich.</p>
+        <p class="subtitle">Vielen Dank, ${data.name}! Deine Bestellung war erfolgreich. Unser Team wird sich mit dir in Verbindung setzen.</p>
       </div>
       
       <!-- Payment Success Card -->
@@ -773,12 +773,13 @@ export function generatePaymentConfirmationEmail(data: PaymentConfirmationEmailD
           
           <!-- Adresse Box -->
           <div class="contact-box">
+
             <h3>Adresse</h3>
             <div class="contact-grid">
               <span class="contact-label">Straße:</span>
-              <span class="contact-value">Zösenberg 51</span>
+              <span class="contact-value">Karmeliterplatz 8</span>
               <span class="contact-label">Stadt:</span>
-              <span class="contact-value">8045, Weinitzen, Steiermark</span>
+              <span class="contact-value">8010, Graz, Steiermark</span>
               <span class="contact-label">Land:</span>
               <span class="contact-value">Österreich</span>
             </div>
@@ -793,7 +794,7 @@ export function generatePaymentConfirmationEmail(data: PaymentConfirmationEmailD
     <div class="footer">
       <p>
         <strong>Nest-Haus Team</strong><br>
-        Modulares Wohnen. Nachhaltig. Österreichisch.
+        Dein Stil. Dein Zuhause.
       </p>
       <p style="margin-top: 16px;">
         <a href="https://nest-haus.at">Website</a> ·
@@ -816,7 +817,7 @@ Nest-Haus - Zahlungsbestätigung
 
 Konzept-Check bestellt
 
-Vielen Dank, ${data.name}! Ihre Bestellung für die Grundstücksanalyse und den Entwurf war erfolgreich.
+Vielen Dank, ${data.name}! Deine Bestellung war erfolgreich. Unser Team wird sich mit dir in Verbindung setzen.
 
 ZAHLUNGSDETAILS:
 - Betrag: ${formattedAmount}
