@@ -4,6 +4,15 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [844fafa3e99c058bfd2123ab5d55f2863ce7594f] - Fri Dec 12 12:18:27 2025 +0100
+
+**Author**: stenkjan
+**Message**: `🔧 Fix typo in Baumeister-Betrieb title for consistency in card content  `
+
+### Changes Analysis
+
+---
+
 ## [6b89e10d37770c61c839d5f1b8847a3e10482ccd] - Fri Dec 12 11:14:59 2025 +0100
 
 **Author**: stenkjan
