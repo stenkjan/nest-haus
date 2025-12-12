@@ -1101,8 +1101,8 @@ export const WARUM_WIR_TEAM_CARDS_CONTENT: ContentCardData[] = [
 export const GLASS_QUOTE_CARDS_CONTENT: ContentCardData[] = [
     {
         id: 0,
-        title: "Wir sind registrierter \n Baumeisterbetrieb in \n Österreich",
-        mobileTitle: "Wir sind registrierter Baumeisterbetrieb in Österreich",
+        title: "Wir sind registrierter \n Baumeister-Betrieb in \n Österreich",
+        mobileTitle: "Wir sind registrierter Baumeister-Betrieb in Österreich",
         subtitle: "Mitglieder der Bundesinnung Bau, die über eine Gewerbeberechtigung für das Baumeistergewerbe verfügt.",
         description: "",
         mobileDescription: "",
