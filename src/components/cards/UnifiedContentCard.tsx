@@ -1509,7 +1509,7 @@ export default function UnifiedContentCard({
       const paddingClasses = card.customPadding || "p-6 md:p-8 lg:p-10";
 
       // Conditional title class: Use h2-title-large for first card (id: 0), p-primary for others
-      const titleClass = card.id === 0 ? "h2-title mt-6 md:mt-0" : "p-primary";
+      const titleClass = card.id === 0 ? "h2-title-large mt-6 md:mt-0" : "p-primary";
 
       // Refs for overflow detection containers
       const [titleContainer, setTitleContainer] =
@@ -1621,7 +1621,7 @@ export default function UnifiedContentCard({
             {/* Secondary Top Text - p-primary-small with mobile text support */}
             {card.subtitle && (
               <p
-                className={`p-primary-small ${card.id === 0 ? "px-4 pt-4 leading-relaxed" : ""} text-gray-400`}
+                className={`p-primary-small ${card.id === 0 ? "pl-4 pr-8 pt-4 pt-6 md:pt-4 leading-relaxed" : ""} text-gray-400`}
               >
                 {getCardText(card, "subtitle")}
               </p>
