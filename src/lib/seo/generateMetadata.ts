@@ -4,7 +4,7 @@ import type { Metadata } from "next";
 export const SEO_CONFIG = {
     baseUrl: "https://nest-haus.at",
     siteName: "Nest-Haus",
-    defaultTitle: "Nest-Haus | Ich wohne wie ich will",
+    defaultTitle: "Nest-Haus | Wohne wie du willst",
     defaultDescription: "Entdecken Sie Nest-Haus modulare Bausysteme. Nachhaltig, energieeffizient und individuell konfigurierbar.",
     defaultKeywords: "modulhaus, fertighaus, nachhaltiges bauen, energieeffizient, Österreich, hausbau konfigurator",
     locale: "de_DE",
@@ -26,7 +26,7 @@ export const SEO_CONFIG = {
 // Page-specific SEO configurations
 export const PAGE_SEO_CONFIG = {
     home: {
-        title: "®Nest-Haus | Ich wohne wie ich will",
+        title: "®Nest-Haus | Wohne wie du willst",
         description: "Das erste Haus der Welt, welches sich an dein Leben anpasst, nicht umgekehrt. Deine Atmosphäre, deine Vorstellungen. Weil nur du weißt, wie du richtig wohnst.",
         keywords: "modulhaus, fertighaus, nachhaltiges bauen, energieeffizient, Österreich, hausbau konfigurator, modulare häuser, nachhaltig wohnen",
         priority: 1.0,
