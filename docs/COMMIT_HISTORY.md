@@ -4,6 +4,19 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [4e89880c81e41c74a164a24b67d68aed8704e417] - Fri Dec 12 18:19:45 2025 +0100
+
+**Author**: stenkjan
+**Message**: `🔧 Correct header text in LandingPageClient for consistency  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/LandingPageClient.tsx
+
+
+---
+
 ## [5d01e38ba6bf708865d1d29a399457cc52a56a40] - Fri Dec 12 13:06:23 2025 +0100
 
 **Author**: stenkjan
