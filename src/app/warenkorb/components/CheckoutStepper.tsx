@@ -2875,7 +2875,7 @@ export default function CheckoutStepper({
                       <div>
                         <Button
                           variant="primary"
-                          size="md"
+                          size="xs"
                           onClick={() => {
                             window.location.href = "/konfigurator";
                           }}
