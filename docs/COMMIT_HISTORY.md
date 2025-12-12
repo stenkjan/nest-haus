@@ -4,6 +4,20 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [c5205b3229a999b360f9afeea0121026e33b74d8] - Fri Dec 12 18:52:51 2025 +0100
+
+**Author**: stenkjan
+**Message**: `🔧 Update address details in AppointmentBooking and TerminVereinbarenContent components, and in CustomerConfirmationTemplate for consistency  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/components/sections/AppointmentBooking.tsx
+- src/components/sections/TerminVereinbarenContent.tsx
+
+
+---
+
 ## [0cc4e22f103bd469ae1140f53984fed40426029f] - Fri Dec 12 18:21:18 2025 +0100
 
 **Author**: stenkjan
