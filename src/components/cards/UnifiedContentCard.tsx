@@ -1758,6 +1758,7 @@ export default function UnifiedContentCard({
             animate={{ y: 0, opacity: 1 }}
             transition={{ delay: index * 0.1, duration: 0.6 }}
             className="text-left"
+            style={{ textShadow: "0 1px 3px rgba(0, 0, 0, 0.3)" }}
           >
             {/* Subtitle - p-primary-small */}
             {card.subtitle && (
@@ -1791,6 +1792,7 @@ export default function UnifiedContentCard({
               animate={{ y: 0, opacity: 1 }}
               transition={{ delay: index * 0.1 + 0.2, duration: 0.6 }}
               className="text-left"
+              style={{ textShadow: "0 1px 3px rgba(0, 0, 0, 0.3)" }}
             >
               {/* Bottom Label - p-primary-small */}
               {card.bottomLabel && (
