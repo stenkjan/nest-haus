@@ -4,6 +4,19 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [5f7e5060b2d01adddd174eb54ecc966e9b98312a] - Fri Dec 12 11:02:41 2025 +0100
+
+**Author**: stenkjan
+**Message**: `security: patch CVE-2025-55184, CVE-2025-67779, CVE-2025-55183  - Updated Next.js from 15.3.6 to 15.5.9 - Updated React from 19.1.2 to 19.1.3 - Updated react-dom from 19.1.2 to 19.1.3  Fixes: - CVE-2025-55184 (High): Denial of Service via malicious RSC requests - CVE-2025-67779 (High): Incomplete DoS fix from previous patch - CVE-2025-55183 (Medium): Server Action source code exposure  Security audit confirmed no hardcoded secrets in API routes. Build verification passed successfully.  `
+
+### Changes Analysis
+
+#### 🔧 Configuration Changes
+- package.json
+
+
+---
+
 ## [1b9b1cbf521ccb54faff0a29126ab59b8f31226e] - Fri Dec 12 10:52:39 2025 +0100
 
 **Author**: stenkjan
