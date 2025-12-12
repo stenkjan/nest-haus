@@ -353,8 +353,8 @@ export default function LandingPageClient() {
                           IMAGES.function
                             .nestHausEntdeckenDeinNestErklaerungProdukt,
                         backgroundColor: "#F4F4F4",
-                        primaryAction: "Entdecke Nest",
-                        primaryLink: "/dein-nest",
+                        primaryAction: "Konfigurator",
+                        primaryLink: "/konfigurator",
                       },
                       {
                         id: 2,
