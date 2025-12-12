@@ -29,7 +29,7 @@ export function generateCustomerConfirmationEmail(data: CustomerConfirmationData
 
   const subject = isAppointment
     ? `Terminanfrage bestätigt - ${formattedDate}`
-    : 'Kontaktanfrage bestätigt - NEST-Haus';
+    : 'Kontaktanfrage bestätigt - Nest-Haus';
 
   const html = `
 <!DOCTYPE html>
@@ -314,7 +314,7 @@ export function generateCustomerConfirmationEmail(data: CustomerConfirmationData
     <!-- Footer -->
     <div class="footer">
       <p>
-        <strong>NEST-Haus</strong><br>
+        <strong>Nest-Haus</strong><br>
         Modulares Wohnen. Nachhaltig. Österreichisch.
       </p>
       <p style="margin-top: 16px;">
@@ -329,7 +329,7 @@ export function generateCustomerConfirmationEmail(data: CustomerConfirmationData
   `;
 
   const text = `
-NEST-Haus - ${isAppointment ? 'Terminanfrage bestätigt' : 'Kontaktanfrage bestätigt'}
+Nest-Haus - ${isAppointment ? 'Terminanfrage bestätigt' : 'Kontaktanfrage bestätigt'}
 
 Hallo ${data.name},
 
