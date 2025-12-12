@@ -3326,7 +3326,7 @@ export default function CheckoutStepper({
                               }}
                               className="text-blue-600 text-sm hover:underline mt-2"
                             >
-                              Termin personalisieren
+                              Termin anpassen
                             </button>
                           </>
                         )}
