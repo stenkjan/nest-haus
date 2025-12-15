@@ -43,7 +43,7 @@ export default function ImpressumClient() {
                     </h4>
                     <div className="space-y-1">
                       <p>Zösenberg 51</p>
-                      <p>A-8045 Weinitzen</p>
+                      <p>8045 Weinitzen</p>
                       <p>Österreich</p>
                     </div>
                   </div>
@@ -178,38 +178,38 @@ export default function ImpressumClient() {
                 <h3 className="text-2xl font-medium">Gewerbeordnung</h3>
                 <div className="space-y-2">
                   <p>
-                    <strong>Gewerbeberechtigung:</strong> Architektur und
-                    Ingenieurkonsulentenwesen
+                    <strong>Gewerbeberechtigung:</strong> Mitglieder der
+                    Bundesinnung Bau, die über eine Gewerbeberechtigung für das
+                    Baumeistergewerbe verfügt.
                   </p>
                   <p>
-                    <strong>Gewerbebehörde:</strong> Kammer der Architekten und
-                    Ingenieurkonsulenten für Steiermark und Kärnten
+                    <strong>Gewerbebehörde:</strong> Wirtschaftskammer Steiermark
                   </p>
                   <p>
-                    <strong>Berufsbezeichnung:</strong> Architekt
+                    <strong>Berufsbezeichnung:</strong> Baumeister
                   </p>
                   <p>
                     <strong>Verleihungsstaat:</strong> Österreich
                   </p>
                 </div>
               </div>
-
-              <div className="space-y-4">
-                <h3 className="text-2xl font-medium">Kammerzugehörigkeit</h3>
-                <div className="space-y-2">
-                  <p>
-                    <strong>Architektenkammer:</strong> Kammer der Architekten
-                    und Ingenieurkonsulenten für Steiermark und Kärnten
-                  </p>
-                  <p>
-                    <strong>Fachgruppe:</strong> Architektur
-                  </p>
-                  <p>
-                    <strong>Mitgliedsnummer:</strong> wird nachgereicht
-                  </p>
+{/*             
+                <div className="space-y-4">
+                  <h3 className="text-2xl font-medium">Kammerzugehörigkeit</h3>
+                  <div className="space-y-2">
+                    <p>
+                      <strong>Architektenkammer:</strong> Kammer der Architekten
+                      und Ingenieurkonsulenten für Steiermark und Kärnten
+                    </p>
+                    <p>
+                      <strong>Fachgruppe:</strong> Architektur
+                    </p>
+                    <p>
+                      <strong>Mitgliedsnummer:</strong> wird nachgereicht
+                    </p>
+                  </div>
                 </div>
-              </div>
-
+               */}
               {/* <div className="space-y-4">
                 <h3 className="text-2xl font-medium">Versicherung</h3>
                 <div className="space-y-2">
@@ -221,7 +221,7 @@ export default function ImpressumClient() {
                   <p>Geltungsbereich: Österreich/EU</p>
                 </div>
               </div> */}
-
+{/*               
               <div className="space-y-4">
                 <h3 className="text-2xl font-medium">Aufsichtsbehörde</h3>
                 <div className="space-y-2">
@@ -236,19 +236,19 @@ export default function ImpressumClient() {
                     <strong>Telefon:</strong> +43 316 826344 0
                   </p>
                 </div>
-              </div>
+              </div> */}
 
               <div className="space-y-4">
-                <h3 className="text-2xl font-medium">
+                {/* <h3 className="text-2xl font-medium">
                   Berufsrechtliche Regelungen
-                </h3>
+                </h3> */}
                 <div className="space-y-4">
-                  <p>Es gelten folgende berufsrechtliche Regelungen:</p>
+                  {/* <p>Es gelten folgende berufsrechtliche Regelungen:</p>
                   <div className="space-y-1">
                     <p>Architektengesetz (ArchG) • Bauordnung für Steiermark</p>
                     <p>ÖNORMEN für das Bauwesen • EU-Bauproduktenverordnung</p>
                     <p>Ingenieurkonsulentgesetz (IKG)</p>
-                  </div>
+                  </div> */}
                   <p className="pt-4">
                     <strong>Einsehbar unter:</strong>
                     <a

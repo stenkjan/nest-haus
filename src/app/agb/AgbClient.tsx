@@ -15,8 +15,6 @@ const sections = [
   { id: "prices", title: "Preise & Zahlung", slug: "preise-zahlung" },
   { id: "delivery", title: "Lieferung & Montage", slug: "lieferung-montage" },
   { id: "withdrawal", title: "Widerrufsrecht", slug: "widerrufsrecht" },
-  { id: "warranty", title: "Gewährleistung", slug: "gewaehrleistung" },
-  { id: "liability", title: "Haftung", slug: "haftung" },
   { id: "final", title: "Schlussbestimmungen", slug: "schlussbestimmungen" },
 ];
 
@@ -29,7 +27,14 @@ export default function AgbClient() {
         {/* General Section */}
         <section id="general" className="w-full py-16">
           <div className="w-full max-w-[1536px] mx-auto px-4 sm:px-6 lg:px-8">
-            <h1 className="font-medium text-4xl md:text-[60px] tracking-[-0.02em] mb-4 text-center text-black">
+            {/* Mobile title with line breaks */}
+            <h1 className="font-medium text-4xl tracking-[-0.02em] mb-4 text-center text-black md:hidden">
+              Allgemeine<br />
+              Geschäfts-<br />
+              bedingungen
+            </h1>
+            {/* Desktop title - single line */}
+            <h1 className="hidden md:block font-medium md:text-[60px] tracking-[-0.02em] mb-4 text-center text-black">
               Allgemeine Geschäftsbedingungen
             </h1>
             <h2 className="h2-subtitle tracking-[-0.015em] leading-8 max-w-3xl mx-auto text-center text-black">
@@ -289,64 +294,10 @@ export default function AgbClient() {
                 </h3>
                 <div className="space-y-4">
                   <p className="leading-relaxed">
-                    Die Zahlung erfolgt in folgenden Raten:
-                  </p>
-                  <ul className="list-disc list-inside space-y-2 ml-4">
-                    <li>
-                      <strong>Anzahlung:</strong> 30% bei Vertragsabschluss
-                    </li>
-                    <li>
-                      <strong>Zwischenzahlung:</strong> 40% bei
-                      Produktionsbeginn
-                    </li>
-                    <li>
-                      <strong>Restzahlung:</strong> 30% bei Übergabe
-                    </li>
-                  </ul>
-                  <p className="leading-relaxed mt-4">
-                    Zahlungen sind binnen 14 Tagen nach Rechnungsstellung
-                    fällig.
-                  </p>
-                </div>
-              </div>
-
-              <div className="space-y-6">
-                <h3 className="text-xl font-medium text-black">
-                  Zahlungsverzug
-                </h3>
-                <div className="space-y-4">
-                  <p className="leading-relaxed">
-                    Bei Zahlungsverzug sind Verzugszinsen in Höhe von 4% über
-                    dem Basiszinssatz p.a. zu zahlen.
+                    Die konkreten Zahlungsmodalitäten, Raten und Fälligkeiten werden im individuellen Vertrag festgelegt.
                   </p>
                   <p className="leading-relaxed">
-                    Nest-Haus ist berechtigt, bei Zahlungsverzug die weitere
-                    Leistungserbringung einzustellen, bis alle offenen Beträge
-                    beglichen sind.
-                  </p>
-                </div>
-              </div>
-
-              <div className="space-y-6">
-                <h3 className="text-xl font-medium text-black">
-                  Preisänderungen
-                </h3>
-                <div className="space-y-4">
-                  <p className="leading-relaxed">
-                    Preisänderungen nach Vertragsabschluss sind nur zulässig
-                    bei:
-                  </p>
-                  <ul className="list-disc list-inside space-y-2 ml-4">
-                    <li>Änderungen der gesetzlichen Mehrwertsteuer</li>
-                    <li>Nachträglichen Änderungswünschen des Kunden</li>
-                    <li>
-                      Unvorhersehbaren Kostensteigerungen bei Materialien (&gt;
-                      5%)
-                    </li>
-                  </ul>
-                  <p className="leading-relaxed mt-4">
-                    Der Kunde ist über Preisänderungen unverzüglich zu
-                    informieren.
+                    Der Kunde erhält eine detaillierte Auftragsbestätigung mit allen Zahlungsbedingungen vor Vertragsabschluss.
                   </p>
                 </div>
               </div>
@@ -423,20 +374,6 @@ export default function AgbClient() {
                 </div>
               </div>
 
-              <div className="space-y-6">
-                <h3 className="text-xl font-medium text-black">Lieferverzug</h3>
-                <div className="space-y-4">
-                  <p className="leading-relaxed">
-                    Bei Lieferverzug von mehr als 4 Wochen kann der Kunde nach
-                    schriftlicher Mahnung mit angemessener Nachfrist vom Vertrag
-                    zurücktreten.
-                  </p>
-                  <p className="leading-relaxed">
-                    Schadensersatzansprüche wegen Lieferverzugs sind auf 5% des
-                    Kaufpreises begrenzt.
-                  </p>
-                </div>
-              </div>
             </div>
           </div>
         </section>
@@ -540,183 +477,6 @@ export default function AgbClient() {
                       (*) Unzutreffendes streichen.
                     </p>
                   </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        {/* Warranty Section */}
-        <section id="warranty" className="w-full py-16">
-          <div className="w-full max-w-[1536px] mx-auto px-4 sm:px-6 lg:px-8">
-            <h2 className="h2-section tracking-[-0.02em] text-black">
-              Gewährleistung
-            </h2>
-
-            <div className="max-w-4xl mx-auto space-y-8 text-gray-700">
-              <div className="bg-white rounded-3xl border-2 border-[#3D6CE1] p-8 md:p-12">
-                <h3 className="text-xl font-medium text-black mb-4">
-                  Gewährleistungsfristen
-                </h3>
-                <div className="space-y-4">
-                  <p className="leading-relaxed">
-                    Nest-Haus gewährt folgende Gewährleistungsfristen:
-                  </p>
-                  <ul className="list-disc list-inside space-y-2 ml-4">
-                    <li>
-                      <strong>Konstruktion und Statik:</strong> 30 Jahre
-                    </li>
-                    <li>
-                      <strong>Gebäudehülle (Dach, Wände):</strong> 10 Jahre
-                    </li>
-                    <li>
-                      <strong>Haustechnik:</strong> 2 Jahre
-                    </li>
-                    <li>
-                      <strong>Oberflächenbehandlungen:</strong> 2 Jahre
-                    </li>
-                  </ul>
-                  <p className="leading-relaxed mt-4">
-                    Die Gewährleistungsfrist beginnt mit der Übergabe des
-                    Hauses.
-                  </p>
-                </div>
-              </div>
-
-              <div className="space-y-6">
-                <h3 className="text-xl font-medium text-black">
-                  Gewährleistungsansprüche
-                </h3>
-                <div className="space-y-4">
-                  <p className="leading-relaxed">
-                    Bei Mängeln hat der Kunde zunächst Anspruch auf:
-                  </p>
-                  <ol className="list-decimal list-inside space-y-2 ml-4">
-                    <li>Verbesserung (Reparatur)</li>
-                    <li>Austausch</li>
-                    <li>Preisminderung</li>
-                    <li>Wandlung (Vertragsauflösung)</li>
-                  </ol>
-                  <p className="leading-relaxed mt-4">
-                    Mängel sind unverzüglich, spätestens binnen 8 Tagen nach
-                    Entdeckung, schriftlich anzuzeigen.
-                  </p>
-                </div>
-              </div>
-
-              <div className="space-y-6">
-                <h3 className="text-xl font-medium text-black">
-                  Ausschluss der Gewährleistung
-                </h3>
-                <div className="space-y-4">
-                  <p className="leading-relaxed">
-                    Die Gewährleistung ist ausgeschlossen bei:
-                  </p>
-                  <ul className="list-disc list-inside space-y-2 ml-4">
-                    <li>Natürlicher Abnutzung</li>
-                    <li>Unsachgemäßer Behandlung oder Wartung</li>
-                    <li>Schäden durch Dritte</li>
-                    <li>Höhere Gewalt</li>
-                    <li>Eigenmächtigen Änderungen am Gebäude</li>
-                  </ul>
-                </div>
-              </div>
-
-              <div className="space-y-6">
-                <h3 className="text-xl font-medium text-black">
-                  Wartung und Pflege
-                </h3>
-                <div className="space-y-4">
-                  <p className="leading-relaxed">
-                    Der Kunde erhält eine detaillierte Wartungsanleitung und ist
-                    verpflichtet:
-                  </p>
-                  <ul className="list-disc list-inside space-y-2 ml-4">
-                    <li>Regelmäßige Sichtkontrollen durchzuführen</li>
-                    <li>Empfohlene Wartungsintervalle einzuhalten</li>
-                    <li>
-                      Nur qualifizierte Fachbetriebe mit Reparaturen zu
-                      beauftragen
-                    </li>
-                    <li>Originalersatzteile zu verwenden</li>
-                  </ul>
-                </div>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        {/* Liability Section */}
-        <section id="liability" className="w-full py-16">
-          <div className="w-full max-w-[1536px] mx-auto px-4 sm:px-6 lg:px-8">
-            <h2 className="h2-section tracking-[-0.02em] text-black">
-              Haftung
-            </h2>
-
-            <div className="max-w-4xl mx-auto space-y-8 text-gray-700">
-              <div className="space-y-6">
-                <h3 className="text-xl font-medium text-black">
-                  Haftungsumfang
-                </h3>
-                <div className="space-y-4">
-                  <p className="leading-relaxed">
-                    Nest-Haus haftet für Schäden nur bei:
-                  </p>
-                  <ul className="list-disc list-inside space-y-2 ml-4">
-                    <li>Vorsatz oder grober Fahrlässigkeit</li>
-                    <li>Verletzung wesentlicher Vertragspflichten</li>
-                    <li>Schäden an Leben, Körper oder Gesundheit</li>
-                    <li>Produkthaftung nach dem Produkthaftungsgesetz</li>
-                  </ul>
-                </div>
-              </div>
-
-              <div className="bg-white rounded-3xl p-8 md:p-12">
-                <h3 className="text-xl font-medium text-black mb-4">
-                  Haftungsbeschränkung
-                </h3>
-                <div className="space-y-4">
-                  <p className="leading-relaxed">
-                    Die Haftung für Vermögensschäden ist begrenzt auf:
-                  </p>
-                  <ul className="list-disc list-inside space-y-2 ml-4">
-                    <li>Bei leichter Fahrlässigkeit: Vertragswert</li>
-                    <li>Für mittelbare Schäden: 50% des Vertragswertes</li>
-                    <li>Für entgangenen Gewinn: ausgeschlossen</li>
-                  </ul>
-                  <p className="leading-relaxed mt-4">
-                    Diese Beschränkungen gelten nicht bei Vorsatz oder grober
-                    Fahrlässigkeit.
-                  </p>
-                </div>
-              </div>
-
-              <div className="space-y-6">
-                <h3 className="text-xl font-medium text-black">Versicherung</h3>
-                <div className="space-y-4">
-                  <p className="leading-relaxed">
-                    Nest-Haus ist durch eine Betriebshaftpflichtversicherung mit
-                    einer Deckungssumme von € [Betrag] versichert.
-                  </p>
-                  <p className="leading-relaxed">
-                    Dem Kunden wird empfohlen, eine
-                    Bauherrenhaftpflichtversicherung und
-                    Bauleistungsversicherung abzuschließen.
-                  </p>
-                </div>
-              </div>
-
-              <div className="space-y-6">
-                <h3 className="text-xl font-medium text-black">Verjährung</h3>
-                <div className="space-y-4">
-                  <p className="leading-relaxed">
-                    Schadensersatzansprüche verjähren in 3 Jahren ab Kenntnis
-                    von Schaden und Schädiger.
-                  </p>
-                  <p className="leading-relaxed">
-                    Bei Bauwerken beträgt die Verjährungsfrist für
-                    Schadensersatzansprüche wegen Mängeln 30 Jahre ab Übergabe.
-                  </p>
                 </div>
               </div>
             </div>
