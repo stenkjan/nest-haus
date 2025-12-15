@@ -1404,9 +1404,11 @@ export default function CheckoutStepper({
       <div className="flex flex-col gap-6">
         <div className="w-full">
           <SectionHeader
-            title={stepIndex === 0 ? "Warenkorb" : c.title}
+            title={isOhneNestMode || stepIndex === 0 ? "Warenkorb" : c.title}
             subtitle={
-              stepIndex === 0 ? "Dein Konzept-Check in 4 Wochen" : c.subtitle
+              isOhneNestMode || stepIndex === 0
+                ? "Dein Konzept-Check in 4 Wochen"
+                : c.subtitle
             }
             titleClassName="text-black"
             subtitleClassName="text-black"
