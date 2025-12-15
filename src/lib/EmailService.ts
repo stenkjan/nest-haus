@@ -1235,9 +1235,9 @@ Automatische Benachrichtigung vom NEST-Haus System`;
     switch (method) {
       case 'card': return 'Kreditkarte';
       case 'sepa_debit': return 'SEPA-Lastschrift';
-      case 'sofort': return 'Sofort';
       case 'giropay': return 'Giropay';
       case 'eps': return 'EPS';
+      case 'klarna': return 'Klarna';
       case 'bancontact': return 'Bancontact';
       case 'ideal': return 'iDEAL';
       default: return method;

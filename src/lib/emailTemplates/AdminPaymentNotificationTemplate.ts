@@ -101,9 +101,9 @@ function getPaymentMethodText(method: string): string {
   const methods: Record<string, string> = {
     card: 'Kreditkarte',
     sepa_debit: 'SEPA-Lastschrift',
-    sofort: 'Sofort',
     giropay: 'Giropay',
     eps: 'EPS',
+    klarna: 'Klarna',
     bancontact: 'Bancontact',
     ideal: 'iDEAL',
   };

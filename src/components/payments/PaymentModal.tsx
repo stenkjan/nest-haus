@@ -144,13 +144,6 @@ function PaymentMethodSelection({
       ],
     },
     {
-      id: "sofort" as PaymentMethod,
-      name: "SOFORT Überweisung",
-      icons: [
-        { src: "https://upload.wikimedia.org/wikipedia/commons/f/fb/Sofort%C3%BCberweisung_Logo.svg", alt: "SOFORT" },
-      ],
-    },
-    {
       id: "eps" as PaymentMethod,
       name: "EPS-Überweisung",
       icons: [
@@ -281,7 +274,7 @@ function PaymentError({ error, onRetry, onClose }: PaymentErrorProps) {
 }
 
 // Main payment modal component
-type PaymentMethod = "card" | "klarna" | "eps" | "sofort";
+type PaymentMethod = "card" | "klarna" | "eps";
 type PaymentStep = "method-selection" | "payment-details" | "success" | "error";
 
 export default function PaymentModal({

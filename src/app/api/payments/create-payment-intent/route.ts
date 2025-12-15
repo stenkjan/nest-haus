@@ -75,10 +75,10 @@ export async function POST(request: NextRequest) {
         }
 
         // Create payment intent with specific payment methods if provided
-        // Only allow card, eps, and sofort in step 2 (exclude klarna)
+        // Allow card, eps, and klarna in step 2
         const allowedPaymentMethods = paymentMethodTypes && paymentMethodTypes.length > 0 
             ? paymentMethodTypes 
-            : ['card', 'eps', 'sofort'];
+            : ['card', 'eps', 'klarna'];
 
         const paymentIntent = await stripe.paymentIntents.create({
             amount: Math.round(amount), // Stripe expects amount in cents
