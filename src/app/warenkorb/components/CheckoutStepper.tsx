@@ -1395,7 +1395,7 @@ export default function CheckoutStepper({
         case 2:
           return "Wähle aus 3 Paketen";
         case 3:
-          return "Dein Termin bei Nest";
+          return "Dein Termin bei uns";
         default:
           return "max. 6 Monate";
       }
@@ -1591,7 +1591,7 @@ export default function CheckoutStepper({
                           Dein Nest Haus
                         </div>
                         <div className={rowSubtitleClass}>
-                          Konfiguriere dein Nest mit uns
+                          Konfiguriere dein Nest
                         </div>
                       </div>
                       <div className={`leading-relaxed ${rowTextClass(0)}`}>
@@ -1771,7 +1771,7 @@ export default function CheckoutStepper({
                       Konzept-Check
                     </div>
                     <div className="text-xs md:text-sm text-gray-500 leading-snug mt-1">
-                      Entwurf- und Grundstücksanalyse
+                      Grundstücksanalyse und Entwurfsplan
                     </div>
                   </div>
                   <div className="text-sm md:text-base lg:text-lg 2xl:text-xl font-normal text-gray-900 leading-relaxed">
