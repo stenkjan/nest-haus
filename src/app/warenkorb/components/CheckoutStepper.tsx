@@ -1418,103 +1418,125 @@ export default function CheckoutStepper({
         </div>
         {/* Timeline directly after title/subtitle */}
         {!hideProgress && <div className="mb-6">{renderProgress()}</div>}
-        <div className="flex flex-col md:flex-row md:items-center md:justify-start gap-12 md:gap-6">
-          <div className="w-full md:w-1/2 text-left md:px-16 lg:px-24 order-2 md:order-1 mt-5">
-            {/* Delivery Date Component for Step 4 - ONLY in normal mode */}
-            {!isOhneNestMode && stepIndex === 4 && calculateDeliveryDate && (
-              <div className="mb-8 text-center md:text-left">
-                <div className="text-sm md:text-base lg:text-lg 2xl:text-xl text-gray-500 leading-relaxed text-center md:text-left mb-1">
-                  Dein Liefertermin
+        <div
+          className={`flex flex-col md:flex-row md:items-center gap-12 md:gap-6 ${isOhneNestMode ? "md:justify-center" : "md:justify-start"}`}
+        >
+          {!isOhneNestMode && (
+            <div className="w-full md:w-1/2 text-left md:px-16 lg:px-24 order-2 md:order-1 mt-5">
+              {/* Delivery Date Component for Step 4 - ONLY in normal mode */}
+              {!isOhneNestMode && stepIndex === 4 && calculateDeliveryDate && (
+                <div className="mb-8 text-center md:text-left">
+                  <div className="text-sm md:text-base lg:text-lg 2xl:text-xl text-gray-500 leading-relaxed text-center md:text-left mb-1">
+                    Dein Liefertermin
+                  </div>
+                  <div className="h2-title text-black">
+                    {calculateDeliveryDate}
+                  </div>
                 </div>
-                <div className="h2-title text-black">
-                  {calculateDeliveryDate}
+              )}
+              {stepIndex === 0 && !isOhneNestMode ? (
+                <div className="p-secondary text-center md:text-left">
+                  <p>
+                    <span className="text-nest-gray">
+                      Du hast dein Nest bereits konfiguriert und hast somit den
+                    </span>{" "}
+                    <span className="text-black font-medium">
+                      Überblick über Preis und Aussehen
+                    </span>{" "}
+                    <span className="text-nest-gray">
+                      deines Bauvorhabens. Deine
+                    </span>{" "}
+                    <span className="text-black font-medium">Auswahl</span>{" "}
+                    <span className="text-nest-gray">bleibt dabei stets</span>{" "}
+                    <span className="text-black font-medium">flexibel</span>{" "}
+                    <span className="text-nest-gray">
+                      und kann jederzeit an deine Wünsche angepasst werden.
+                    </span>
+                  </p>
+                  <p className="mt-6">
+                    <span className="text-nest-gray">Mit dem</span>{" "}
+                    <span className="text-black font-medium">
+                      heutigen Kauf
+                    </span>{" "}
+                    <span className="text-nest-gray">
+                      deckst du die Kosten für
+                    </span>{" "}
+                    <span className="text-black font-medium">
+                      Grundstücksanalyse und Entwurf.
+                    </span>{" "}
+                    <span className="text-nest-gray">
+                      Fahre fort und mache den ersten Schritt in Richtung
+                    </span>{" "}
+                    <span className="text-black font-medium">
+                      neues Zuhause.
+                    </span>
+                  </p>
                 </div>
-              </div>
-            )}
-            {stepIndex === 0 && !isOhneNestMode ? (
-              <div className="p-secondary text-center md:text-left">
-                <p>
-                  <span className="text-nest-gray">
-                    Du hast dein Nest bereits konfiguriert und hast somit den
-                  </span>{" "}
-                  <span className="text-black font-medium">
-                    Überblick über Preis und Aussehen
-                  </span>{" "}
-                  <span className="text-nest-gray">
-                    deines Bauvorhabens. Deine
-                  </span>{" "}
-                  <span className="text-black font-medium">Auswahl</span>{" "}
-                  <span className="text-nest-gray">bleibt dabei stets</span>{" "}
-                  <span className="text-black font-medium">flexibel</span>{" "}
-                  <span className="text-nest-gray">
-                    und kann jederzeit an deine Wünsche angepasst werden.
-                  </span>
-                </p>
-                <p className="mt-6">
-                  <span className="text-nest-gray">Mit dem</span>{" "}
-                  <span className="text-black font-medium">heutigen Kauf</span>{" "}
-                  <span className="text-nest-gray">
-                    deckst du die Kosten für
-                  </span>{" "}
-                  <span className="text-black font-medium">
-                    Grundstücksanalyse und Entwurf.
-                  </span>{" "}
-                  <span className="text-nest-gray">
-                    Fahre fort und mache den ersten Schritt in Richtung
-                  </span>{" "}
-                  <span className="text-black font-medium">neues Zuhause.</span>
-                </p>
-              </div>
-            ) : stepIndex !== 0 && !isOhneNestMode ? (
-              <div className="p-secondary whitespace-pre-line text-center md:text-left">
-                {c.description.split("\n").map((paragraph, index) => (
-                  <p key={index} className={index > 0 ? "mt-6" : ""}>
-                    {paragraph
-                      .split(/(\*\*[^*]+\*\*)/)
-                      .map((part, partIndex) => {
-                        if (part.startsWith("**") && part.endsWith("**")) {
+              ) : stepIndex !== 0 && !isOhneNestMode ? (
+                <div className="p-secondary whitespace-pre-line text-center md:text-left">
+                  {c.description.split("\n").map((paragraph, index) => (
+                    <p key={index} className={index > 0 ? "mt-6" : ""}>
+                      {paragraph
+                        .split(/(\*\*[^*]+\*\*)/)
+                        .map((part, partIndex) => {
+                          if (part.startsWith("**") && part.endsWith("**")) {
+                            return (
+                              <span
+                                key={partIndex}
+                                className="text-black font-medium"
+                              >
+                                {part.slice(2, -2)}
+                              </span>
+                            );
+                          }
                           return (
-                            <span
-                              key={partIndex}
-                              className="text-black font-medium"
-                            >
-                              {part.slice(2, -2)}
+                            <span key={partIndex} className="text-nest-gray">
+                              {part}
                             </span>
                           );
-                        }
-                        return (
-                          <span key={partIndex} className="text-nest-gray">
-                            {part}
-                          </span>
-                        );
-                      })}
-                  </p>
-                ))}
-              </div>
-            ) : null}
+                        })}
+                    </p>
+                  ))}
+                </div>
+              ) : null}
 
-            {/* Additional p-primary-small text for step 4 - ONLY in normal mode */}
-            {!isOhneNestMode && stepIndex === 4 && (
-              <div className="p-primary-small text-center md:text-left mt-12">
-                <p>
-                  <span className="text-black font-bold">
-                    *Immer flexibel bleiben
-                  </span>
-                </p>
-                <p className="mt-2">
-                  <span className="text-nest-gray">
-                    Solltest du deine Meinung nach Erstellen des Erstentwurfs
-                    ändern, kannst du vom Kauf, ohne weitere Teilzahlungen,
-                    zurücktreten. In diesem Fall zahlst du lediglich die Kosten
-                    für den Entwurf.
-                  </span>
-                </p>
-              </div>
-            )}
-          </div>
-          <div className="w-full md:w-1/2 order-1 md:order-2">
-            <div className="w-full max-w-[520px] ml-auto mt-1 md:mt-2">
-              <h2 className="h2-title mb-3">
+              {/* Additional p-primary-small text for step 4 - ONLY in normal mode */}
+              {!isOhneNestMode && stepIndex === 4 && (
+                <div className="p-primary-small text-center md:text-left mt-12">
+                  <p>
+                    <span className="text-black font-bold">
+                      *Immer flexibel bleiben
+                    </span>
+                  </p>
+                  <p className="mt-2">
+                    <span className="text-nest-gray">
+                      Solltest du deine Meinung nach Erstellen des Erstentwurfs
+                      ändern, kannst du vom Kauf, ohne weitere Teilzahlungen,
+                      zurücktreten. In diesem Fall zahlst du lediglich die
+                      Kosten für den Entwurf.
+                    </span>
+                  </p>
+                </div>
+              )}
+            </div>
+          )}
+          <div
+            className={
+              isOhneNestMode
+                ? "w-full order-1 md:order-2"
+                : "w-full md:w-1/2 order-1 md:order-2"
+            }
+          >
+            <div
+              className={
+                isOhneNestMode
+                  ? "w-full max-w-[520px] mx-auto mt-1 md:mt-2"
+                  : "w-full max-w-[520px] ml-auto mt-1 md:mt-2"
+              }
+            >
+              <h2
+                className={`h2-title mb-3 ${isOhneNestMode ? "text-center" : ""}`}
+              >
                 {isOhneNestMode ? (
                   <>
                     <span className="text-black">Dein Überblick</span>
@@ -2302,9 +2324,9 @@ export default function CheckoutStepper({
                       Der erste Schritt zu deinem Traumhaus
                     </h3>
                   </div>
-                  <div className="flex flex-col md:flex-row md:items-center md:justify-start gap-6">
-                    <div className="w-full md:w-1/2 text-center md:text-left md:px-16 lg:px-24">
-                      <p className="p-secondary mb-4 md:mt-12">
+                  <div className="flex flex-col md:flex-row md:items-start md:justify-start gap-6">
+                    <div className="w-full md:w-1/2 text-center md:text-left md:mt-4 md:px-16 lg:px-24">
+                      <p className="p-secondary mb-4 mt-12">
                         <span className="text-nest-gray">Mit dem </span>
                         <span className="text-black font-medium">
                           Konzept-Check
@@ -3293,22 +3315,38 @@ export default function CheckoutStepper({
               </div>
             )}
 
+            {/* Konzept-Check Info Box - Only in step 1 (Abschluss) of konzept-check mode */}
+            {isOhneNestMode && stepIndex === 1 && (
+              <div className="text-center mb-2 md:mb-2">
+                <p className="p-secondary mb-4">
+                  <span className="text-nest-gray">Mit dem </span>
+                  <span className="text-black font-medium">Konzept-Check</span>
+                  <span className="text-nest-gray"> erhältst du:</span>
+                </p>
+                <ul className="p-secondary mb-6 list-disc list-inside text-nest-gray space-y-2 inline-block text-left">
+                  <li>Grundstücksplanung</li>
+                  <li>Entwurfsplan</li>
+                  <li>Kostenplanung</li>
+                </ul>
+              </div>
+            )}
+
             {/* So gehts danach weiter Section */}
             <div className="text-center mb-12 pt-4 md:mb-8">
               <h2 className="h2-title text-black mb-2">
                 {isPaymentCompleted
                   ? "Vielen Dank"
                   : isOhneNestMode
-                    ? "Dein Überblick"
+                    ? "Gesamtsumme"
                     : "So geht's danach weiter"}
               </h2>
-              <p className="p-secondary text-black">
-                {isPaymentCompleted
-                  ? "Deine Zahlung wurde bearbeitet"
-                  : isOhneNestMode
-                    ? "Konzeptcheck"
+              {!isOhneNestMode && (
+                <p className="p-secondary text-black">
+                  {isPaymentCompleted
+                    ? "Deine Zahlung wurde bearbeitet"
                     : "Dein Preis im Überblick"}
-              </p>
+                </p>
+              )}
             </div>
 
             {/* Left/Right Layout: Teilzahlungen (left) + Entwurf- und Grundstücksanalyse (right) */}
