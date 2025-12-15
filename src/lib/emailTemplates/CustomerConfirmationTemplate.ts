@@ -227,13 +227,7 @@ export function generateCustomerConfirmationEmail(data: CustomerConfirmationData
           </div>
         </div>
         <p style="margin-top: 16px; font-size: 15px; color: #666;">
-          <strong>Wichtig:</strong> Bitte bestätigen Sie Ihren Termin innerhalb von 24 Stunden durch Hinzufügen zum Kalender.
-        </p>
-        <p style="margin-top: 12px; font-size: 14px; color: #999;">
-          Sie finden eine Kalendereinladung (.ics-Datei) im Anhang dieser E-Mail. Öffnen Sie die Datei, um den Termin in Ihrem Kalender zu speichern.
-        </p>
-        <p style="margin-top: 12px; font-size: 14px; color: #e67e22;">
-          Der Termin ist vorläufig und wird automatisch storniert, wenn er nicht innerhalb von 24 Stunden bestätigt wird.
+          Sie finden eine Kalendereinladung (.ics-Datei) im Anhang dieser E-Mail, die Sie zu Ihrem Kalender hinzufügen können.
         </p>
       </div>
       ` : ''}
@@ -242,7 +236,7 @@ export function generateCustomerConfirmationEmail(data: CustomerConfirmationData
       <div class="glass-card">
         <h2>Die nächsten Schritte</h2>
         <p>${isAppointment
-      ? '1. <strong>Terminbestätigung:</strong> Sie erhalten eine Kalendereinladung per E-Mail<br>2. <strong>Vorbereitung:</strong> Notieren Sie sich Ihre Fragen und Wünsche<br>3. <strong>Gespräch:</strong> Wir besprechen Ihr Nest-Haus-Projekt im Detail'
+      ? '1. <strong>Kalendereinladung:</strong> Sie erhalten eine Kalendereinladung per E-Mail<br>2. <strong>Vorbereitung:</strong> Notieren Sie sich Ihre Fragen und Wünsche<br>3. <strong>Gespräch:</strong> Wir besprechen Ihr Nest-Haus-Projekt im Detail'
       : '1. <strong>Rückmeldung:</strong> Wir melden uns innerhalb von 2 Werktagen bei Ihnen<br>2. <strong>Beratung:</strong> Gemeinsam besprechen wir Ihre individuellen Anforderungen<br>3. <strong>Planung:</strong> Wir entwickeln eine maßgeschneiderte Lösung für Sie'
     }</p>
         ${isPhoneAppointment ? `
@@ -340,11 +334,7 @@ ${isPhoneAppointment ? 'Ihr gewünschter Gesprächstermin:' : 'Ihr gewünschter 
 ${formattedDate}
 Zeitzone: Europe/Vienna (CET/CEST)
 
-WICHTIG: Bitte bestätigen Sie Ihren Termin innerhalb von 24 Stunden durch Hinzufügen zum Kalender.
-
-Sie finden eine Kalendereinladung (.ics-Datei) im Anhang dieser E-Mail. Öffnen Sie die Datei, um den Termin in Ihrem Kalender zu speichern.
-
-Der Termin ist vorläufig und wird automatisch storniert, wenn er nicht innerhalb von 24 Stunden bestätigt wird.`
+Sie finden eine Kalendereinladung (.ics-Datei) im Anhang dieser E-Mail, die Sie zu Ihrem Kalender hinzufügen können.`
       : `Vielen Dank für Ihre Kontaktanfrage. Wir haben Ihre Nachricht erhalten und melden uns in Kürze bei Ihnen.`
     }
 
@@ -352,7 +342,7 @@ Der Termin ist vorläufig und wird automatisch storniert, wenn er nicht innerhal
 DIE NÄCHSTEN SCHRITTE
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 ${isAppointment
-      ? '1. Terminbestätigung: Sie erhalten eine Kalendereinladung per E-Mail\n2. Vorbereitung: Notieren Sie sich Ihre Fragen und Wünsche\n3. Gespräch: Wir besprechen Ihr Nest-Haus-Projekt im Detail'
+      ? '1. Kalendereinladung: Sie erhalten eine Kalendereinladung per E-Mail\n2. Vorbereitung: Notieren Sie sich Ihre Fragen und Wünsche\n3. Gespräch: Wir besprechen Ihr Nest-Haus-Projekt im Detail'
       : '1. Rückmeldung: Wir melden uns innerhalb von 2 Werktagen bei Ihnen\n2. Beratung: Gemeinsam besprechen wir Ihre individuellen Anforderungen\n3. Planung: Wir entwickeln eine maßgeschneiderte Lösung für Sie'
     }${isPhoneAppointment ? '\n\nSie können sich auch jederzeit früher für Rückfragen bei uns bei der unten angeführten Telefonnummer melden. Wir freuen uns auf Ihren Anruf!' : ''}
 

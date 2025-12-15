@@ -1,6 +1,9 @@
 /**
+ * @deprecated This template is no longer used as appointment confirmation is not required.
+ * Appointments are now automatically confirmed upon booking.
+ * 
  * Appointment Reminder Email Template
- * Sent 1 hour before appointment expiration (23 hours after booking)
+ * Previously sent 1 hour before appointment expiration (23 hours after booking)
  */
 
 interface AppointmentReminderData {

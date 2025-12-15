@@ -1404,9 +1404,9 @@ export default function CheckoutStepper({
       <div className="flex flex-col gap-6">
         <div className="w-full">
           <SectionHeader
-            title={stepIndex === 0 ? "Bereit einzuziehen?" : c.title}
+            title={stepIndex === 0 ? "Warenkorb" : c.title}
             subtitle={
-              stepIndex === 0 ? "Liefergarantie von 6 Monaten" : c.subtitle
+              stepIndex === 0 ? "Dein Konzept-Check in 4 Wochen" : c.subtitle
             }
             titleClassName="text-black"
             subtitleClassName="text-black"
@@ -2290,11 +2290,11 @@ export default function CheckoutStepper({
             {isOhneNestMode ? (
               // KONZEPT-CHECK MODE: Grundstücksanalyse first, then Planen heißt Preise kennen, then Appointment
               <>
-                {/* Grundstücksanalyse Title and Form */}
+                {/* Konzept-Check Title and Form */}
                 <div id="entwurf-formular" className="mb-16">
                   <div className="text-center mb-12 md:mb-16">
                     <h2 className="h1-secondary text-black mb-2 md:mb-3">
-                      Grundstücksanalyse
+                      Konzept-Check
                     </h2>
                     <h3 className="h3-secondary text-black mb-2">
                       Der erste Schritt zu deinem Traumhaus
@@ -2303,59 +2303,15 @@ export default function CheckoutStepper({
                   <div className="flex flex-col md:flex-row md:items-center md:justify-start gap-6">
                     <div className="w-full md:w-1/2 text-center md:text-left md:px-16 lg:px-24">
                       <p className="p-secondary mb-4 md:mt-12">
-                        <span className="text-nest-gray">Bevor dein </span>
-                        <span className="text-black font-medium">
-                          Traum vom Nest-Haus
-                        </span>
-                        <span className="text-nest-gray">
-                          {" "}
-                          Realität wird, prüfen wir, ob dein{" "}
-                        </span>
-                        <span className="text-black font-medium">
-                          Grundstück
-                        </span>
-                        <span className="text-nest-gray">
-                          {" "}
-                          alle rechtlichen und{" "}
-                        </span>
-                        <span className="text-black font-medium">
-                          baulichen Anforderungen
-                        </span>
-                        <span className="text-nest-gray"> erfüllt. </span>
-                        <span className="text-nest-gray">
-                          {" "}
-                          Wir übernehmen diese Überprüfung und entwickeln
-                          gemeinsam mit dir ein individuelles{" "}
-                        </span>
-                        <span className="text-black font-medium">
-                          Entwurfskonzept
-                        </span>
-                        <span className="text-nest-gray">
-                          {" "}
-                          deines Nest-Hauses.
-                        </span>
+                        <span className="text-nest-gray">Mit dem </span>
+                        <span className="text-black font-medium">Konzept-Check</span>
+                        <span className="text-nest-gray"> erhältst du:</span>
                       </p>
-                      <p className="p-secondary mb-6">
-                        <span className="text-nest-gray">
-                          Dabei verbinden wir deine{" "}
-                        </span>
-                        <span className="text-black font-medium">Wünsche</span>
-                        <span className="text-nest-gray">
-                          {" "}
-                          mit den gegebenen{" "}
-                        </span>
-                        <span className="text-black font-medium">
-                          Rahmenbedingungen
-                        </span>
-                        <span className="text-nest-gray">
-                          {" "}
-                          und schaffen so die ideale Grundlage für dein{" "}
-                        </span>
-                        <span className="text-black font-medium">
-                          zukünftiges Zuhause
-                        </span>
-                        <span className="text-nest-gray">.</span>
-                      </p>
+                      <ul className="p-secondary mb-6 list-disc list-inside text-nest-gray space-y-2">
+                        <li>Grundstücksplanung</li>
+                        <li>Entwurfsplan</li>
+                        <li>Kostenplanung</li>
+                      </ul>
                     </div>
 
                     <div className="w-full md:w-1/2">
@@ -2371,53 +2327,7 @@ export default function CheckoutStepper({
                   </div>
                 </div>
 
-                {/* Planen heißt Preise kennen section - moved from outside step conditional */}
-                <div className="relative w-screen left-1/2 right-1/2 -ml-[50vw] -mr-[50vw] bg-[#F4F4F4] py-12 md:py-16 mb-16">
-                  <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                    <div className="flex flex-col md:flex-row md:items-center gap-8 md:gap-12">
-                      {/* Text content on left - directly on gray background */}
-                      <div className="w-full md:w-1/2 text-center md:text-left">
-                        <h2 className="text-2xl md:text-3xl lg:text-4xl font-normal text-gray-900 mb-6">
-                          Planen heißt Preise kennen
-                        </h2>
-                        <p className="text-base md:text-lg text-gray-600 mb-8 leading-relaxed">
-                          Wenn du dein Nest schon jetzt konfigurierst, erhältst
-                          du volle Klarheit über Preis, Umfang und
-                          Möglichkeiten. Deine Auswahl bleibt dabei flexibel und
-                          kann jederzeit angepasst werden, falls sich deine
-                          Wünsche im Laufe der Planung verändern.
-                        </p>
-                        <div className="flex justify-center md:justify-start">
-                          <Button
-                            variant="primary"
-                            size="md"
-                            onClick={() => {
-                              window.location.href = "/konfigurator";
-                            }}
-                          >
-                            Jetzt konfigurieren
-                          </Button>
-                        </div>
-                      </div>
-
-                      {/* Image on right - inside white box */}
-                      <div className="w-full md:w-1/2">
-                        <div className="bg-white rounded-3xl overflow-hidden shadow-sm">
-                          <div className="relative w-full aspect-square">
-                            <HybridBlobImage
-                              path="173-NEST-Haus-Konfigurator-Modul-Holzfassade-Steirische-Eiche-Parkett-Eiche"
-                              alt="NEST-Haus Konfiguration"
-                              fill
-                              className="object-cover"
-                            />
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-
-                {/* Appointment Booking Section - AFTER Planen heißt Preise kennen */}
+                {/* Appointment Booking Section */}
                 <div className="mb-12 md:mb-16">
                   <div className="text-center mb-12 md:mb-16">
                     <h2 className="h1-secondary text-black mb-2 md:mb-3">
@@ -2855,54 +2765,6 @@ export default function CheckoutStepper({
 
         {stepIndex === (isOhneNestMode ? 1 : 4) && (
           <div className="space-y-6 pt-16 md:pt-16">
-            {/* Ohne-Nest Mode: Show "Konfiguration hinzufügen" section */}
-            {isOhneNestMode && (
-              <div className="relative w-screen left-1/2 right-1/2 -ml-[50vw] -mr-[50vw] bg-[#F4F4F4] py-12 md:py-16 mb-12">
-                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                  <div className="flex flex-col md:flex-row md:items-center gap-8 md:gap-12">
-                    {/* Text content on left - directly on gray background */}
-                    <div className="w-full md:w-1/2">
-                      <h2 className="text-2xl md:text-3xl lg:text-4xl font-normal text-gray-900 mb-6">
-                        Planen heißt Preise kennen
-                      </h2>
-                      <p className="text-base md:text-lg text-gray-600 mb-8 leading-relaxed">
-                        Wenn du dein Nest schon jetzt konfigurierst, erhältst du
-                        volle Klarheit über Preis, Umfang und Möglichkeiten.
-                        Deine Auswahl bleibt dabei flexibel und kann jederzeit
-                        angepasst werden, falls sich deine Wünsche im Laufe der
-                        Planung verändern.
-                      </p>
-                      <div>
-                        <Button
-                          variant="primary"
-                          size="xs"
-                          onClick={() => {
-                            window.location.href = "/konfigurator";
-                          }}
-                        >
-                          Jetzt konfigurieren
-                        </Button>
-                      </div>
-                    </div>
-
-                    {/* Image on right - inside white box */}
-                    <div className="w-full md:w-1/2">
-                      <div className="bg-white rounded-3xl overflow-hidden shadow-sm">
-                        <div className="relative w-full aspect-square">
-                          <HybridBlobImage
-                            path="173-NEST-Haus-Konfigurator-Modul-Holzfassade-Steirische-Eiche-Parkett-Eiche"
-                            alt="NEST-Haus Konfiguration"
-                            fill
-                            className="object-cover"
-                          />
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            )}
-
             {/* Title before Dein Nest sections */}
             {!isOhneNestMode && (
               <div className="text-center mb-12 md:mb-16">
