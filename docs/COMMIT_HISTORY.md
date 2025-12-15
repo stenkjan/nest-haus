@@ -4,6 +4,19 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [a6b81d2b5467b6196d3f4cf86ad3e4a4298f7652] - Mon Dec 15 13:27:32 2025 +0100
+
+**Author**: stenkjan
+**Message**: `🔧 Update text labels in CheckoutStepper component for clarity and consistency  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/warenkorb/components/CheckoutStepper.tsx
+
+
+---
+
 ## [ff45dd63504ce23ca3aa68358249804c0145a705] - Mon Dec 15 13:01:31 2025 +0100
 
 **Author**: stenkjan
