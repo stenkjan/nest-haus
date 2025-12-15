@@ -1506,7 +1506,7 @@ export default function UnifiedContentCard({
       const attributionTitle = parts[2] || "";
 
       // Use custom padding if specified, otherwise use default
-      const paddingClasses = card.customPadding || "p-6 md:p-8 lg:p-10";
+      const paddingClasses = card.customPadding || "p-4 md:p-4 lg:p-4";
 
       // Conditional title class: Use h2-title-large for first card (id: 0), p-primary for others
       const titleClass = card.id === 0 ? "h2-title-large mt-6 md:mt-0" : "p-primary";
@@ -1593,7 +1593,7 @@ export default function UnifiedContentCard({
                   rel="noopener noreferrer"
                   className={`${titleClass} text-white ${
                     card.id === 0
-                      ? "whitespace-pre-line ml-2 mr-2 md:mt-6 md:mb-4"
+                      ? "whitespace-pre-line ml-2 mr-2 md:ml-0 md:mt-6 md:mb-4"
                       : "mb-1 underline hover:opacity-80 transition-opacity cursor-pointer"
                   }`}
                   style={
