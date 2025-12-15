@@ -232,7 +232,7 @@ function PaymentError({ error, onRetry, onClose }: PaymentErrorProps) {
           onClick={onRetry}
           className="w-full bg-blue-600 text-white py-3 px-4 rounded-lg font-medium hover:bg-blue-700 transition-colors"
         >
-          🔄 Erneut versuchen
+          Erneut versuchen
         </button>
 
         <button
@@ -247,16 +247,16 @@ function PaymentError({ error, onRetry, onClose }: PaymentErrorProps) {
         <p className="font-medium mb-2">Benötigen Sie Hilfe?</p>
         <div className="space-y-1">
           <p>
-            📧{" "}
+            {" "}
             <a
-              href="mailto:support@nest-haus.at"
+              href="mailto:mail@nest-haus.at"
               className="text-blue-600 hover:text-blue-800"
             >
               support@nest-haus.at
             </a>
           </p>
           <p>
-            📞{" "}
+            {" "}
             <a
               href="tel:+43123456789"
               className="text-blue-600 hover:text-blue-800"
