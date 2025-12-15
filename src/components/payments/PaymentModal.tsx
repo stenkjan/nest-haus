@@ -52,7 +52,7 @@ function PaymentSuccess({
   const formattedTime = `${now.getHours().toString().padStart(2, '0')}:${now.getMinutes().toString().padStart(2, '0')}`;
 
   return (
-    <div className="text-center py-8">
+    <div className="text-center py-2">
       {/* Green highlighted box with transaction details */}
       <div className="bg-green-50 border-2 border-green-500 rounded-2xl p-6 mb-6">
         <div className="space-y-3 text-left">
@@ -62,12 +62,20 @@ function PaymentSuccess({
               {sessionId || 'nest-haus-' + paymentIntentId.substring(0, 10)}
             </span>
           </div>
-          <div className="flex justify-between items-center">
-            <span className="text-gray-700 font-medium">Transaktion ID:</span>
-            <span className="font-mono text-xs bg-white px-3 py-1.5 rounded-lg border border-green-300">
-              {paymentIntentId}
-            </span>
+          
+          {/* Transaktion section with centered title */}
+          <div className="space-y-2 pt-2">
+            <div className="text-center">
+              <span className="text-gray-700 font-semibold">Transaktion</span>
+            </div>
+            <div className="flex justify-between items-center gap-2">
+              <span className="text-gray-700 font-medium flex-shrink-0">ID:</span>
+              <span className="font-mono text-xs bg-white px-2 py-1.5 rounded-lg border border-green-300 break-all text-right">
+                {paymentIntentId}
+              </span>
+            </div>
           </div>
+          
           <div className="flex justify-between items-center">
             <span className="text-gray-700 font-medium">Betrag:</span>
             <span className="text-green-700 font-bold text-lg">
@@ -91,9 +99,6 @@ function PaymentSuccess({
         <div className="space-y-4 text-sm text-gray-700">
           <p>
             <strong>Entwurf bestätigt</strong> - Sie erhalten eine Bestätigung per Mail sobald die Zahlung bei uns eingeht
-          </p>
-          <p>
-            <strong>Konfiguration in Bearbeitung</strong> - Ihr Entwurf wird vorbereitet
           </p>
           <p>
             <strong>Wir melden uns Zeitnah</strong> - Unser Team kontaktiert Sie zum vereinbarten Termin

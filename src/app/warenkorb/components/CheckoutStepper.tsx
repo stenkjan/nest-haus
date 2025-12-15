@@ -1786,7 +1786,7 @@ export default function CheckoutStepper({
   // Calculate delivery date: appointment date + 6 months (using cart store logic)
   const calculateDeliveryDate = useMemo(() => {
     const deliveryDate = _getDeliveryDate(sessionId);
-    
+
     if (!deliveryDate) return null;
 
     return deliveryDate.toLocaleDateString("de-DE", {
@@ -1936,8 +1936,8 @@ export default function CheckoutStepper({
   const interiorActive = useMemo(() => {
     return Boolean(
       sourceConfig?.innenverkleidung ||
-        sourceConfig?.fussboden ||
-        _hasPart2BeenActive
+      sourceConfig?.fussboden ||
+      _hasPart2BeenActive
     );
   }, [
     sourceConfig?.innenverkleidung,
@@ -2304,7 +2304,9 @@ export default function CheckoutStepper({
                     <div className="w-full md:w-1/2 text-center md:text-left md:px-16 lg:px-24">
                       <p className="p-secondary mb-4 md:mt-12">
                         <span className="text-nest-gray">Mit dem </span>
-                        <span className="text-black font-medium">Konzept-Check</span>
+                        <span className="text-black font-medium">
+                          Konzept-Check
+                        </span>
                         <span className="text-nest-gray"> erhältst du:</span>
                       </p>
                       <ul className="p-secondary mb-6 list-disc list-inside text-nest-gray space-y-2">
