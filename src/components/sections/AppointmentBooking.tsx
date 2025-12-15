@@ -1057,7 +1057,7 @@ const AppointmentBooking = ({
                         : undefined
                     }
                   >
-                    {isSubmitting ? "Wird gesendet..." : "Jetzt Anfragen"}
+                    {isSubmitting ? "Wird gesendet..." : "Speichern"}
                   </button>
                 </div>
               )}

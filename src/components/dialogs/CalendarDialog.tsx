@@ -352,7 +352,7 @@ const CalendarDialog: React.FC<CalendarDialogProps> = ({ isOpen, onClose }) => {
                       disabled={isSubmitting || !selectedDate}
                       className="bg-blue-600 text-white hover:bg-blue-700 rounded-full py-1.5 sm:py-2 text-xs sm:text-sm px-6 whitespace-nowrap min-w-[120px] flex-shrink-0 !w-auto disabled:bg-gray-400 disabled:cursor-not-allowed"
                     >
-                      {isSubmitting ? "Wird gesendet..." : "Jetzt Anfragen"}
+                      {isSubmitting ? "Wird gesendet..." : "Speichern"}
                     </button>
                   </div>
                 </form>

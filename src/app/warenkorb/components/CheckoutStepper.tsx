@@ -2437,7 +2437,7 @@ export default function CheckoutStepper({
                       }, 100);
                     }}
                   >
-                    Nächster Schritt
+                    Jetzt bestellen
                   </Button>
                 </div>
               </>
