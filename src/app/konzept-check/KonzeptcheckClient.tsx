@@ -277,18 +277,17 @@ export default function KonzeptcheckClient() {
                 image: IMAGES.function.nestHausLinienplanDreier,
                 backgroundColor: "#F4F4F4",
                 imagePosition: "center" as const,
+                buttons: [
+                  {
+                    text: "Konfigurator",
+                    variant: "primary",
+                    size: "xs",
+                    link: "/konfigurator",
+                  },
+                ],
               },
             ]}
           />
-
-          {/* Konfigurator Button below Kostenplanung */}
-          <div className="flex justify-center mt-8">
-            <Link href="/konfigurator">
-              <Button variant="primary" size="xs">
-                Konfigurator starten
-              </Button>
-            </Link>
-          </div>
         </section>
 
         {/* Video Examples Section */}
