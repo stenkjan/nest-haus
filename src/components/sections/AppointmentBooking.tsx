@@ -994,6 +994,7 @@ const AppointmentBooking = ({
                       name="phone"
                       value={formData.phone}
                       onChange={handleInputChange}
+                      required
                       className="border border-gray-200 rounded-[20px] p-4 text-xs md:text-xs lg:text-sm xl:text-sm 2xl:text-base focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent w-full"
                       placeholder="Telefon"
                     />
@@ -1052,7 +1053,7 @@ const AppointmentBooking = ({
                         : undefined
                     }
                   >
-                    {isSubmitting ? "Wird gesendet..." : "Speichern"}
+                    {isSubmitting ? "Wird gesendet..." : "Jetzt anfragen"}
                   </button>
                 </div>
               )}

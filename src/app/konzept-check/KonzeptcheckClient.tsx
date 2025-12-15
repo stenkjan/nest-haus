@@ -42,6 +42,11 @@ const sections = [
     slug: "entwurfsplan",
   },
   {
+    id: "kostenplanung",
+    title: "Kostenplanung",
+    slug: "kostenplanung",
+  },
+  {
     id: "anleitung",
     title: "Step by Step nach Hause",
     slug: "anleitung",

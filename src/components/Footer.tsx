@@ -42,8 +42,8 @@ export default function Footer() {
           href: "/konzept-check#grundstueckscheck",
         },
         { text: "Entwurfplan", href: "/konzept-check#entwurfsplan" },
+        { text: "Kostenplanung", href: "/konzept-check#kostenplanung" },
         { text: "Der Ablauf", href: "/konzept-check#anleitung" },
-        { text: "FAQ", href: "/konzept-check#faq" },
       ],
     },
     {

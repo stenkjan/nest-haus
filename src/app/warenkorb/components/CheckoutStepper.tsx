@@ -1520,153 +1520,230 @@ export default function CheckoutStepper({
               )}
             </div>
           )}
-          <div
-            className={
-              isOhneNestMode
-                ? "w-full order-1 md:order-2"
-                : "w-full md:w-1/2 order-1 md:order-2"
-            }
-          >
-            <div
-              className={
-                isOhneNestMode
-                  ? "w-full max-w-[520px] mx-auto mt-1 md:mt-2"
-                  : "w-full max-w-[520px] ml-auto mt-1 md:mt-2"
-              }
-            >
-              <h2
-                className={`h2-title mb-3 ${isOhneNestMode ? "text-center" : ""}`}
+          {!isOhneNestMode && (
+            <div className="w-full md:w-1/2 order-1 md:order-2">
+              <div
+                className={
+                  isOhneNestMode
+                    ? "w-full max-w-[520px] mx-auto mt-1 md:mt-2"
+                    : "w-full max-w-[520px] ml-auto mt-1 md:mt-2"
+                }
               >
-                {isOhneNestMode ? (
-                  <>
-                    <span className="text-black">Dein Überblick</span>
-                  </>
-                ) : (
-                  <>
-                    <span className="text-black">Dein Preis</span>
-                    <span className="text-nest-gray"> Überblick</span>
-                  </>
-                )}
-              </h2>
-              <div className="border border-gray-300 rounded-2xl md:min-w-[260px] w-full overflow-hidden">
-                <div>
-                  {/* Show house configuration only if NOT in ohne nest mode */}
-                  {!isOhneNestMode && (
-                    <div className={rowWrapperClass}>
-                      <div className="flex-1 min-w-0">
-                        <div className={`leading-relaxed ${rowTextClass(0)}`}>
-                          Dein Nest Haus
+                <h2
+                  className={`h2-title mb-3 ${isOhneNestMode ? "text-center" : ""}`}
+                >
+                  {isOhneNestMode ? (
+                    <>
+                      <span className="text-black">Dein Überblick</span>
+                    </>
+                  ) : (
+                    <>
+                      <span className="text-black">Dein Preis</span>
+                      <span className="text-nest-gray"> Überblick</span>
+                    </>
+                  )}
+                </h2>
+                <div className="border border-gray-300 rounded-2xl md:min-w-[260px] w-full overflow-hidden">
+                  <div>
+                    {/* Show house configuration only if NOT in ohne nest mode */}
+                    {!isOhneNestMode && (
+                      <div className={rowWrapperClass}>
+                        <div className="flex-1 min-w-0">
+                          <div className={`leading-relaxed ${rowTextClass(0)}`}>
+                            Dein Nest Haus
+                          </div>
+                          <div className={rowSubtitleClass}>
+                            {PriceUtils.isPriceOnRequest(total)
+                              ? "Genauer Preis auf Anfrage"
+                              : configItem?.nest
+                                ? (() => {
+                                    // Show m² price for "Dein Nest Haus" (total house price / area)
+                                    const nestModel =
+                                      configItem.nest.value || "";
+                                    const geschossdeckeQty =
+                                      configItem.geschossdecke?.quantity || 0;
+                                    return `${PriceUtils.calculatePricePerSquareMeter(
+                                      total,
+                                      nestModel,
+                                      geschossdeckeQty
+                                    )} inkl. MwSt.`;
+                                  })()
+                                : getRowSubtitle(0)}
+                          </div>
                         </div>
-                        <div className={rowSubtitleClass}>
+                        <div className={`leading-relaxed ${rowTextClass(0)}`}>
                           {PriceUtils.isPriceOnRequest(total)
-                            ? "Genauer Preis auf Anfrage"
-                            : configItem?.nest
-                              ? (() => {
-                                  // Show m² price for "Dein Nest Haus" (total house price / area)
-                                  const nestModel = configItem.nest.value || "";
-                                  const geschossdeckeQty =
-                                    configItem.geschossdecke?.quantity || 0;
-                                  return `${PriceUtils.calculatePricePerSquareMeter(
-                                    total,
-                                    nestModel,
-                                    geschossdeckeQty
-                                  )} inkl. MwSt.`;
-                                })()
-                              : getRowSubtitle(0)}
+                            ? "-"
+                            : PriceUtils.formatPrice(total)}
                         </div>
                       </div>
-                      <div className={`leading-relaxed ${rowTextClass(0)}`}>
-                        {PriceUtils.isPriceOnRequest(total)
-                          ? "-"
-                          : PriceUtils.formatPrice(total)}
-                      </div>
-                    </div>
-                  )}
+                    )}
 
-                  {/* In ohne nest mode, show modified title */}
-                  {isOhneNestMode && (
-                    <div className={rowWrapperClass}>
-                      <div className="flex-1 min-w-0">
+                    {/* In ohne nest mode, show modified title */}
+                    {isOhneNestMode && (
+                      <div className={rowWrapperClass}>
+                        <div className="flex-1 min-w-0">
+                          <div className={`leading-relaxed ${rowTextClass(0)}`}>
+                            Dein Nest Haus
+                          </div>
+                          <div className={rowSubtitleClass}>
+                            Konfiguriere dein Nest
+                          </div>
+                        </div>
                         <div className={`leading-relaxed ${rowTextClass(0)}`}>
-                          Dein Nest Haus
-                        </div>
-                        <div className={rowSubtitleClass}>
-                          Konfiguriere dein Nest
+                          -
                         </div>
                       </div>
-                      <div className={`leading-relaxed ${rowTextClass(0)}`}>
-                        -
+                    )}
+                    {!isOhneNestMode && (
+                      <div className={rowWrapperClass}>
+                        <div className="flex-1 min-w-0">
+                          <div className={`leading-relaxed ${rowTextClass(2)}`}>
+                            Planungspaket
+                          </div>
+                          <div className={rowSubtitleClass}>
+                            {getRowSubtitle(2)}
+                          </div>
+                        </div>
+                        <div className={`leading-relaxed ${rowTextClass(2)}`}>
+                          {/* Show plan details in both normal and ohne nest mode */}
+                          <span className="inline-flex items-center gap-2">
+                            {selectedPlanName}
+                            {isPlanSelected && (
+                              <>
+                                <span className="text-gray-600">
+                                  (
+                                  {selectedPlanValue === "basis"
+                                    ? "Standard"
+                                    : PriceUtils.formatPrice(selectedPlanPrice)}
+                                  )
+                                </span>
+                                <span aria-hidden className="text-[#3D6CE1]">
+                                  ✓
+                                </span>
+                              </>
+                            )}
+                          </span>
+                        </div>
                       </div>
-                    </div>
-                  )}
-                  {!isOhneNestMode && (
+                    )}
                     <div className={rowWrapperClass}>
                       <div className="flex-1 min-w-0">
-                        <div className={`leading-relaxed ${rowTextClass(2)}`}>
-                          Planungspaket
+                        <div className={`leading-relaxed ${rowTextClass(3)}`}>
+                          Terminvereinbarung
                         </div>
                         <div className={rowSubtitleClass}>
-                          {getRowSubtitle(2)}
+                          {getRowSubtitle(3)}
                         </div>
                       </div>
-                      <div className={`leading-relaxed ${rowTextClass(2)}`}>
-                        {/* Show plan details in both normal and ohne nest mode */}
-                        <span className="inline-flex items-center gap-2">
-                          {selectedPlanName}
-                          {isPlanSelected && (
-                            <>
-                              <span className="text-gray-600">
-                                (
-                                {selectedPlanValue === "basis"
-                                  ? "Standard"
-                                  : PriceUtils.formatPrice(selectedPlanPrice)}
-                                )
-                              </span>
-                              <span aria-hidden className="text-[#3D6CE1]">
-                                ✓
-                              </span>
-                            </>
-                          )}
-                        </span>
-                      </div>
-                    </div>
-                  )}
-                  <div className={rowWrapperClass}>
-                    <div className="flex-1 min-w-0">
                       <div className={`leading-relaxed ${rowTextClass(3)}`}>
-                        Terminvereinbarung
-                      </div>
-                      <div className={rowSubtitleClass}>
-                        {getRowSubtitle(3)}
+                        {(() => {
+                          const appointmentSummary =
+                            getAppointmentSummaryShort(sessionId);
+                          const hasAppointmentFromOtherSession =
+                            appointmentDetails &&
+                            !isAppointmentFromCurrentSession(sessionId);
+
+                          // Check if appointment is in the past
+                          if (appointmentSummary && isAppointmentInPast) {
+                            return (
+                              <button
+                                onClick={() => {
+                                  window.location.hash = "terminvereinbarung";
+                                }}
+                                className="text-blue-600 text-sm hover:underline"
+                              >
+                                Neu vereinbaren
+                              </button>
+                            );
+                          }
+
+                          if (appointmentSummary) {
+                            return (
+                              <div className="flex items-start gap-2 justify-end">
+                                <span className="p-primary text-gray-600 whitespace-pre-line text-right">
+                                  {appointmentSummary}
+                                </span>
+                                <span
+                                  aria-hidden
+                                  className="text-[#3D6CE1] flex-shrink-0"
+                                >
+                                  ✓
+                                </span>
+                              </div>
+                            );
+                          } else if (
+                            hasAppointmentFromOtherSession &&
+                            isAppointmentInPast
+                          ) {
+                            return (
+                              <button
+                                onClick={() => {
+                                  window.location.hash = "terminvereinbarung";
+                                }}
+                                className="text-blue-600 p-primary hover:underline"
+                              >
+                                Neu vereinbaren
+                              </button>
+                            );
+                          } else if (hasAppointmentFromOtherSession) {
+                            return (
+                              <div className="flex items-start gap-2 justify-end">
+                                <span className="p-primary text-gray-600 text-right">
+                                  bereits vereinbart
+                                </span>
+                              </div>
+                            );
+                          } else {
+                            // No appointment - show "Jetzt vereinbaren" button
+                            return (
+                              <button
+                                onClick={() => {
+                                  // Scroll to appointment section or trigger appointment modal
+                                  if (isOhneNestMode) {
+                                    // In konzept-check mode, scroll to appointment within same step
+                                    const appointmentSection =
+                                      document.querySelector(
+                                        '[data-section="appointment-booking"]'
+                                      );
+                                    appointmentSection?.scrollIntoView({
+                                      behavior: "smooth",
+                                      block: "start",
+                                    });
+                                  } else {
+                                    // In normal mode, navigate to appointment step
+                                    window.location.hash = "terminvereinbarung";
+                                  }
+                                }}
+                                className="text-blue-600 p-primary hover:underline cursor-pointer"
+                              >
+                                Jetzt vereinbaren
+                              </button>
+                            );
+                          }
+                        })()}
                       </div>
                     </div>
-                    <div className={`leading-relaxed ${rowTextClass(3)}`}>
-                      {(() => {
-                        const appointmentSummary =
-                          getAppointmentSummaryShort(sessionId);
-                        const hasAppointmentFromOtherSession =
-                          appointmentDetails &&
-                          !isAppointmentFromCurrentSession(sessionId);
-
-                        // Check if appointment is in the past
-                        if (appointmentSummary && isAppointmentInPast) {
-                          return (
-                            <button
-                              onClick={() => {
-                                window.location.hash = "terminvereinbarung";
-                              }}
-                              className="text-blue-600 text-sm hover:underline"
-                            >
-                              Neu vereinbaren
-                            </button>
-                          );
-                        }
-
-                        if (appointmentSummary) {
-                          return (
+                    {/* Show delivery date only if NOT in ohne nest mode */}
+                    {!isOhneNestMode && (
+                      <div className={rowWrapperClass}>
+                        <div className="flex-1 min-w-0">
+                          <div
+                            className={`text-sm md:text-base lg:text-lg 2xl:text-xl font-normal leading-relaxed ${rowTextClass(4)}`}
+                          >
+                            Liefertermin
+                          </div>
+                          <div className="text-xs md:text-sm text-gray-500 leading-snug mt-1">
+                            {getRowSubtitle(4)}
+                          </div>
+                        </div>
+                        <div
+                          className={`text-sm md:text-base lg:text-lg 2xl:text-xl font-normal leading-relaxed ${rowTextClass(4)}`}
+                        >
+                          {calculateDeliveryDate ? (
                             <div className="flex items-start gap-2 justify-end">
-                              <span className="p-primary text-gray-600 whitespace-pre-line text-right">
-                                {appointmentSummary}
+                              <span className="text-xs md:text-sm text-gray-600 text-right max-w-[120px] md:max-w-none">
+                                {calculateDeliveryDate}
                               </span>
                               <span
                                 aria-hidden
@@ -1675,120 +1752,40 @@ export default function CheckoutStepper({
                                 ✓
                               </span>
                             </div>
-                          );
-                        } else if (
-                          hasAppointmentFromOtherSession &&
-                          isAppointmentInPast
-                        ) {
-                          return (
-                            <button
-                              onClick={() => {
-                                window.location.hash = "terminvereinbarung";
-                              }}
-                              className="text-blue-600 p-primary hover:underline"
-                            >
-                              Neu vereinbaren
-                            </button>
-                          );
-                        } else if (hasAppointmentFromOtherSession) {
-                          return (
-                            <div className="flex items-start gap-2 justify-end">
-                              <span className="p-primary text-gray-600 text-right">
-                                bereits vereinbart
-                              </span>
-                            </div>
-                          );
-                        } else {
-                          // No appointment - show "Jetzt vereinbaren" button
-                          return (
-                            <button
-                              onClick={() => {
-                                // Scroll to appointment section or trigger appointment modal
-                                if (isOhneNestMode) {
-                                  // In konzept-check mode, scroll to appointment within same step
-                                  const appointmentSection =
-                                    document.querySelector(
-                                      '[data-section="appointment-booking"]'
-                                    );
-                                  appointmentSection?.scrollIntoView({
-                                    behavior: "smooth",
-                                    block: "start",
-                                  });
-                                } else {
-                                  // In normal mode, navigate to appointment step
-                                  window.location.hash = "terminvereinbarung";
-                                }
-                              }}
-                              className="text-blue-600 p-primary hover:underline cursor-pointer"
-                            >
-                              Jetzt vereinbaren
-                            </button>
-                          );
-                        }
-                      })()}
-                    </div>
+                          ) : (
+                            "—"
+                          )}
+                        </div>
+                      </div>
+                    )}
                   </div>
-                  {/* Show delivery date only if NOT in ohne nest mode */}
-                  {!isOhneNestMode && (
-                    <div className={rowWrapperClass}>
-                      <div className="flex-1 min-w-0">
-                        <div
-                          className={`text-sm md:text-base lg:text-lg 2xl:text-xl font-normal leading-relaxed ${rowTextClass(4)}`}
-                        >
-                          Liefertermin
-                        </div>
-                        <div className="text-xs md:text-sm text-gray-500 leading-snug mt-1">
-                          {getRowSubtitle(4)}
-                        </div>
-                      </div>
-                      <div
-                        className={`text-sm md:text-base lg:text-lg 2xl:text-xl font-normal leading-relaxed ${rowTextClass(4)}`}
-                      >
-                        {calculateDeliveryDate ? (
-                          <div className="flex items-start gap-2 justify-end">
-                            <span className="text-xs md:text-sm text-gray-600 text-right max-w-[120px] md:max-w-none">
-                              {calculateDeliveryDate}
-                            </span>
-                            <span
-                              aria-hidden
-                              className="text-[#3D6CE1] flex-shrink-0"
-                            >
-                              ✓
-                            </span>
-                          </div>
-                        ) : (
-                          "—"
-                        )}
-                      </div>
-                    </div>
-                  )}
                 </div>
-              </div>
-              <div className="border border-gray-300 rounded-2xl w-full overflow-hidden mt-3 md:mt-4">
-                <div className={rowWrapperClass}>
-                  <div className="flex-1 min-w-0">
+                <div className="border border-gray-300 rounded-2xl w-full overflow-hidden mt-3 md:mt-4">
+                  <div className={rowWrapperClass}>
+                    <div className="flex-1 min-w-0">
+                      <div className="text-sm md:text-base lg:text-lg 2xl:text-xl font-normal text-gray-900 leading-relaxed">
+                        Konzept-Check
+                      </div>
+                      <div className="text-xs md:text-sm text-gray-500 leading-snug mt-1">
+                        Grundstücksanalyse und Entwurfsplan
+                      </div>
+                    </div>
                     <div className="text-sm md:text-base lg:text-lg 2xl:text-xl font-normal text-gray-900 leading-relaxed">
-                      Konzept-Check
-                    </div>
-                    <div className="text-xs md:text-sm text-gray-500 leading-snug mt-1">
-                      Grundstücksanalyse und Entwurfsplan
-                    </div>
-                  </div>
-                  <div className="text-sm md:text-base lg:text-lg 2xl:text-xl font-normal text-gray-900 leading-relaxed">
-                    <div className="flex items-center gap-2 justify-end">
-                      <span className="text-gray-400 line-through">
-                        3.000 €
-                      </span>
-                      <span>1.500 €</span>
-                    </div>
-                    <div className="text-xs text-gray-500 text-right mt-1">
-                      Preise inkl. MwSt.
+                      <div className="flex items-center gap-2 justify-end">
+                        <span className="text-gray-400 line-through">
+                          3.000 €
+                        </span>
+                        <span>1.500 €</span>
+                      </div>
+                      <div className="text-xs text-gray-500 text-right mt-1">
+                        Preise inkl. MwSt.
+                      </div>
                     </div>
                   </div>
                 </div>
               </div>
             </div>
-          </div>
+          )}
         </div>
       </div>
     );
@@ -2310,14 +2307,196 @@ export default function CheckoutStepper({
         )}
 
         {stepIndex === (isOhneNestMode ? 0 : 1) && (
-          <div className="space-y-4 pt-16 md:pt-16">
+          <div className="space-y-4 pt-4 md:pt-4">
             {isOhneNestMode ? (
               // KONZEPT-CHECK MODE: Unified 2-column layout
               <>
-                {/* Konzept-Check Title */}
+                {/* Text left + Dein Überblick right at top */}
+                <div className="mb-12">
+                  {/* Text left + Dein Überblick right - Same layout as Step 1 */}
+                  <div className="flex flex-col md:grid md:grid-cols-2 gap-8 items-start mb-12">
+                    {/* LEFT: Info text */}
+                    <div className="text-center md:text-left w-full md:px-16 lg:px-24 md:pt-12">
+                      <p className="p-secondary mb-4">
+                        <span className="text-nest-gray">Mit dem </span>
+                        <span className="text-black font-medium">
+                          Konzept-Check
+                        </span>
+                        <span className="text-nest-gray"> erhältst du:</span>
+                      </p>
+                      <ul className="p-secondary mb-6 list-disc list-inside text-nest-gray space-y-2">
+                        <li>Grundstücksplanung</li>
+                        <li>Entwurfsplan</li>
+                        <li>Kostenplanung</li>
+                      </ul>
+                    </div>
+
+                    {/* RIGHT: Dein Überblick box */}
+                    <div className="w-full">
+                      <div className="w-full max-w-[520px] md:ml-auto">
+                        <h2 className="h2-title mb-3 text-center">
+                          <span className="text-black">Dein Überblick</span>
+                        </h2>
+                        <div className="border border-gray-300 rounded-2xl md:min-w-[260px] w-full overflow-hidden">
+                          <div>
+                            <div
+                              className={`flex items-center justify-between gap-4 py-3 md:py-4 px-6 md:px-7`}
+                            >
+                              <div className="flex-1 min-w-0">
+                                <div className="leading-relaxed p-primary text-black font-medium">
+                                  Dein Nest Haus
+                                </div>
+                                <div className="p-primary-small text-nest-gray leading-snug mt-1">
+                                  Konfiguriere dein Nest mit uns
+                                </div>
+                              </div>
+                              <div className="leading-relaxed p-primary text-black font-medium">
+                                -
+                              </div>
+                            </div>
+                            <div
+                              className={`flex items-center justify-between gap-4 py-3 md:py-4 px-6 md:px-7`}
+                            >
+                              <div className="flex-1 min-w-0">
+                                <div className="leading-relaxed p-primary text-black font-medium">
+                                  Terminvereinbarung
+                                </div>
+                                <div className="p-primary-small text-nest-gray leading-snug mt-1">
+                                  Dein Termin bei Nest
+                                </div>
+                              </div>
+                              <div className="leading-relaxed p-primary text-black font-medium">
+                                {(() => {
+                                  const appointmentSummary =
+                                    getAppointmentSummaryShort(sessionId);
+                                  const hasAppointmentFromOtherSession =
+                                    appointmentDetails &&
+                                    !isAppointmentFromCurrentSession(sessionId);
+
+                                  if (
+                                    appointmentSummary &&
+                                    isAppointmentInPast
+                                  ) {
+                                    return (
+                                      <button
+                                        onClick={() => {
+                                          const appointmentSection =
+                                            document.querySelector(
+                                              '[data-section="appointment-booking"]'
+                                            );
+                                          appointmentSection?.scrollIntoView({
+                                            behavior: "smooth",
+                                            block: "start",
+                                          });
+                                        }}
+                                        className="text-blue-600 text-sm hover:underline"
+                                      >
+                                        Neu vereinbaren
+                                      </button>
+                                    );
+                                  }
+
+                                  if (appointmentSummary) {
+                                    return (
+                                      <div className="flex items-start gap-2 justify-end">
+                                        <span className="p-primary text-gray-600 whitespace-pre-line text-right">
+                                          {appointmentSummary}
+                                        </span>
+                                        <span
+                                          aria-hidden
+                                          className="text-[#3D6CE1] flex-shrink-0"
+                                        >
+                                          ✓
+                                        </span>
+                                      </div>
+                                    );
+                                  } else if (
+                                    hasAppointmentFromOtherSession &&
+                                    isAppointmentInPast
+                                  ) {
+                                    return (
+                                      <button
+                                        onClick={() => {
+                                          const appointmentSection =
+                                            document.querySelector(
+                                              '[data-section="appointment-booking"]'
+                                            );
+                                          appointmentSection?.scrollIntoView({
+                                            behavior: "smooth",
+                                            block: "start",
+                                          });
+                                        }}
+                                        className="text-blue-600 p-primary hover:underline"
+                                      >
+                                        Neu vereinbaren
+                                      </button>
+                                    );
+                                  } else if (hasAppointmentFromOtherSession) {
+                                    return (
+                                      <div className="flex items-start gap-2 justify-end">
+                                        <span className="p-primary text-gray-600 text-right">
+                                          bereits vereinbart
+                                        </span>
+                                      </div>
+                                    );
+                                  } else {
+                                    return (
+                                      <button
+                                        onClick={() => {
+                                          const appointmentSection =
+                                            document.querySelector(
+                                              '[data-section="appointment-booking"]'
+                                            );
+                                          appointmentSection?.scrollIntoView({
+                                            behavior: "smooth",
+                                            block: "start",
+                                          });
+                                        }}
+                                        className="text-blue-600 p-primary hover:underline cursor-pointer"
+                                      >
+                                        Jetzt vereinbaren
+                                      </button>
+                                    );
+                                  }
+                                })()}
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                        <div className="border border-gray-300 rounded-2xl w-full overflow-hidden mt-3 md:mt-4">
+                          <div
+                            className={`flex items-center justify-between gap-4 py-3 md:py-4 px-6 md:px-7`}
+                          >
+                            <div className="flex-1 min-w-0">
+                              <div className="text-sm md:text-base lg:text-lg 2xl:text-xl font-normal text-gray-900 leading-relaxed">
+                                Konzept-Check
+                              </div>
+                              <div className="text-xs md:text-sm text-gray-500 leading-snug mt-1">
+                                Grundstücksanalyse und Entwurfsplan
+                              </div>
+                            </div>
+                            <div className="text-sm md:text-base lg:text-lg 2xl:text-xl font-normal text-gray-900 leading-relaxed">
+                              <div className="flex items-center gap-2 justify-end">
+                                <span className="text-gray-400 line-through">
+                                  3.000 €
+                                </span>
+                                <span>1.500 €</span>
+                              </div>
+                              <div className="text-xs text-gray-500 text-right mt-1">
+                                Preise inkl. MwSt.
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Konzept-Check Title - Below the Dein Überblick section */}
                 <div id="entwurf-formular" className="mb-16">
                   <div className="text-center mb-12 md:mb-16">
-                    <h2 className="h1-secondary text-black mb-2 md:mb-3">
+                    <h2 className="h1-secondary text-black mb-2 md:mb-3 mt-12">
                       Konzept-Check
                     </h2>
                     <h3 className="h3-secondary text-black mb-2">
@@ -2330,7 +2509,7 @@ export default function CheckoutStepper({
                     {/* LEFT COLUMN: Deine Daten + Grundstück + Info Text */}
                     <div className="space-y-6">
                       {/* Use GrundstueckCheckForm with all fields */}
-                      <div className="w-full">
+                      <div className="w-full md:pt-12">
                         <GrundstueckCheckForm
                           backgroundColor="white"
                           maxWidth={false}
@@ -2338,22 +2517,6 @@ export default function CheckoutStepper({
                           excludePersonalData={false}
                           showHeader={false}
                         />
-                      </div>
-
-                      {/* Info text at bottom */}
-                      <div className="text-center md:text-left pt-4">
-                        <p className="p-secondary mb-4">
-                          <span className="text-nest-gray">Mit dem </span>
-                          <span className="text-black font-medium">
-                            Konzept-Check
-                          </span>
-                          <span className="text-nest-gray"> erhältst du:</span>
-                        </p>
-                        <ul className="p-secondary mb-6 list-disc list-inside text-nest-gray space-y-2">
-                          <li>Grundstücksplanung</li>
-                          <li>Entwurfsplan</li>
-                          <li>Kostenplanung</li>
-                        </ul>
                       </div>
                     </div>
 
