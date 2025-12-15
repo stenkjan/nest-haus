@@ -2312,7 +2312,7 @@ export default function CheckoutStepper({
               // KONZEPT-CHECK MODE: Unified 2-column layout
               <>
                 {/* Text left + Dein Überblick right at top */}
-                <div className="mb-12">
+                <div className="mb-[96px]">
                   {/* Text left + Dein Überblick right - Same layout as Step 1 */}
                   <div className="flex flex-col md:grid md:grid-cols-2 gap-8 items-start mb-12">
                     {/* LEFT: Info text */}
@@ -2496,7 +2496,7 @@ export default function CheckoutStepper({
                 {/* Konzept-Check Title - Below the Dein Überblick section */}
                 <div id="entwurf-formular" className="mb-16">
                   <div className="text-center mb-12 md:mb-16">
-                    <h2 className="h1-secondary text-black mb-2 md:mb-3 mt-12">
+                    <h2 className="h1-secondary text-black mb-2 md:mb-3">
                       Konzept-Check
                     </h2>
                     <h3 className="h3-secondary text-black mb-2">
