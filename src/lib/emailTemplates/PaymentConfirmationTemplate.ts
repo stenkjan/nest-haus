@@ -122,8 +122,10 @@ function parseConfigurationForEmail(configData: unknown): ParsedConfiguration {
 /**
  * Format configuration price (stored in euros as integers)
  * Note: Configurator stores prices as integers in euros (e.g., 301086 = 301,086€)
+ * @deprecated Currently unused - kept for potential future use
  */
-function formatPrice(amountInEuros: number): string {
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+function _formatPrice(amountInEuros: number): string {
   return new Intl.NumberFormat('de-DE', {
     style: 'currency',
     currency: 'EUR',
@@ -170,7 +172,9 @@ export function generatePaymentConfirmationEmail(data: PaymentConfirmationEmailD
     year: 'numeric',
   });
 
-  const config = parseConfigurationForEmail(data.configurationData);
+  // Configuration data is stored but not displayed in the email
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const _config = parseConfigurationForEmail(data.configurationData);
 
   const subject = `Zahlungsbestätigung - ${formattedAmount} erhalten`;
 
