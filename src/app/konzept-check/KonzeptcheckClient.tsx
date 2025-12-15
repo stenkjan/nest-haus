@@ -83,7 +83,7 @@ export default function KonzeptcheckClient() {
             {/* Background Image */}
             <HybridBlobImage
               path={IMAGES.function.nestHausLinienplanDreier}
-              mobilePath={IMAGES.function.nestHausLinienplanDreier}
+              mobilePath={IMAGES.function.mobile.nestHausLinienplanDreier}
               alt="Konzept-Check"
               className="absolute inset-0 w-full h-full object-cover"
             />
@@ -94,26 +94,64 @@ export default function KonzeptcheckClient() {
               <div className="flex justify-center">
                 <SectionHeader
                   title="Der Konzept-Check"
-                  subtitle="Deine optimale Entscheidungsgrundlage in zwei Schritten"
                   mobileTitle="Der Konzept-Check"
-                  mobileSubtitle="Deine Entscheidungsgrundlage in zwei Schritten"
                   titleClassName="text-white"
                   subtitleClassName="text-white"
                 />
               </div>
 
-              {/* Buttons at Bottom */}
-              <div className="flex gap-4 justify-center">
+              {/* Button, Bullets, and Price Box at Bottom */}
+              <div className="flex flex-col items-center gap-6">
+                {/* Single Button */}
                 <Link href="/warenkorb?mode=konzept-check">
                   <Button variant="primary" size="xs">
                     Konzept-Check bestellen
                   </Button>
                 </Link>
-                <Link href="/kontakt">
-                  <Button variant="landing-secondary" size="xs">
-                    Termin
-                  </Button>
-                </Link>
+
+                {/* Bullets and Price Box - Side by side on desktop, stacked on mobile */}
+                <div className="flex flex-col md:flex-row gap-6 md:gap-12 w-full max-w-5xl items-center md:items-start justify-center">
+                  {/* Left side: Bullets */}
+                  <div className="text-white">
+                    <p className="p-secondary mb-3 text-center md:text-left">
+                      <span className="font-medium">
+                        Mit dem Konzept-Check erhältst du:
+                      </span>
+                    </p>
+                    <ul className="p-secondary list-disc list-inside space-y-2 text-left">
+                      <li>Grundstücksanalyse</li>
+                      <li>Entwurfsplan</li>
+                      <li>Kostenplanung</li>
+                    </ul>
+                  </div>
+
+                  {/* Right side: Price Box */}
+                  <div className="bg-white rounded-2xl border border-gray-300 overflow-hidden min-w-[280px] md:min-w-[320px]">
+                    <div className="p-4 md:p-6">
+                      <div className="flex justify-between items-start gap-4">
+                        <div className="flex-1 min-w-0">
+                          <div className="text-sm md:text-base lg:text-lg font-normal text-gray-900 leading-relaxed">
+                            Konzept-Check
+                          </div>
+                          <div className="text-xs md:text-sm text-gray-500 leading-snug mt-1">
+                            Grundstücksanalyse und Entwurfsplan
+                          </div>
+                        </div>
+                        <div className="text-sm md:text-base lg:text-lg font-normal text-gray-900 leading-relaxed">
+                          <div className="flex items-center gap-2 justify-end">
+                            <span className="text-gray-400 line-through">
+                              3.000 €
+                            </span>
+                            <span className="font-medium">1.500 €</span>
+                          </div>
+                          <div className="text-xs text-gray-500 text-right mt-1">
+                            Preise inkl. MwSt.
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
@@ -125,9 +163,9 @@ export default function KonzeptcheckClient() {
           className="w-full py-8 md:py-16 bg-white"
         >
           <SectionHeader
-            title="Schritt 1: Grundstücksanalyse"
+            title="Grundstücksanalyse"
             subtitle="Starte dein Bauvorhaben mit Rechtssicherheit"
-            mobileTitle="Schritt 1: Grundstücks-Analyse"
+            mobileTitle="Grundstücks-Analyse"
             wrapperMargin="mb-8 md:mb-12"
           />
 
@@ -138,7 +176,7 @@ export default function KonzeptcheckClient() {
             customData={[
               {
                 id: 1,
-                title: "Teil 1/2",
+                title: "Teil 1/3",
                 subtitle: "",
                 description:
                   "<span class='text-nest-gray'>Mit dem </span><span class='text-black font-medium'>Konzept-Check</span><span class='text-nest-gray'> erhältst du eine </span><span class='text-black font-medium'>Analyse deines Grundstücks</span><span class='text-nest-gray'>, welche dir einen Überblick und eine </span><span class='text-black font-medium'>rechtssichere Auskunft</span><span class='text-nest-gray'> über alle vorherrschenden </span><span class='text-black font-medium'>Vorschriften, Gesetze und Bebauungsmöglichkeiten</span><span class='text-nest-gray'> gibt. Diese Analyse ist die Grundlage für jedes Bauvorhaben und gibt dir eine klar strukturierte Übersicht über dein Baugrundstück.</span>\n\n<span class='text-nest-gray'>Solltest du dich nach dem </span><span class='text-black font-medium'>Konzept-Check</span><span class='text-nest-gray'> gegen unser Nest Haus entscheiden, dient dir diese </span><span class='text-black font-medium'>Analyse</span><span class='text-nest-gray'> auch als </span><span class='text-black font-medium'>Grundlage</span><span class='text-nest-gray'> für </span><span class='text-black font-medium'>alle anderen Bauvorhaben</span><span class='text-nest-gray'>.</span>",
@@ -163,26 +201,12 @@ export default function KonzeptcheckClient() {
           />
         </section>
 
-        {/* Video Examples Section */}
-        <section id="entdecken" className="w-full pb-8 md:pb-16">
-          <UnifiedContentCard
-            layout="overlay-text"
-            style="standard"
-            variant="responsive"
-            maxWidth={false}
-            showInstructions={false}
-            noPadding={true}
-            alignment="left"
-            customData={konzeptcheckVideoCards}
-          />
-        </section>
-
         {/* Grundstück Card - With Padding (TALL CARD) */}
         <section id="entwurfsplan" className="w-full py-8 md:py-16 bg-white">
           <SectionHeader
-            title="Schritt 2: Entwurfsplan"
+            title="Entwurfsplan"
             subtitle="Persönlich geplant, individuell gestaltet."
-            mobileTitle="Schritt 2: Entwurfsplan"
+            mobileTitle="Entwurfsplan"
             wrapperMargin="mb-8 md:mb-12"
           />
           <UnifiedContentCard
@@ -191,7 +215,7 @@ export default function KonzeptcheckClient() {
             customData={[
               {
                 id: 2,
-                title: "Teil 2/2",
+                title: "Teil 2/3",
                 subtitle: "",
                 description:
                   "<span class='text-nest-gray'>Nach der Analyse deines Grundstücks erstellen wir einen </span><span class='text-black font-medium'>individuell</span><span class='text-nest-gray'> für dich </span><span class='text-black font-medium'>maßgeschneiderten Entwurfsplan</span><span class='text-nest-gray'>, der dir eine </span><span class='text-black font-medium'>konkrete Vorstellung</span><span class='text-nest-gray'> davon gibt, wie </span><span class='text-black font-medium'>dein Nest Haus</span><span class='text-nest-gray'> auf </span><span class='text-black font-medium'>deinem Grundstück</span><span class='text-nest-gray'> aussehen könnte.</span>\n\n<span class='text-nest-gray'>Unser </span><span class='text-black font-medium'>Konfigurator</span><span class='text-nest-gray'> dient dafür, dass du ein </span><span class='text-black font-medium'>Preisgefühl</span><span class='text-nest-gray'> für </span><span class='text-black font-medium'>dein Nest</span><span class='text-nest-gray'> bekommst und hilft uns dabei, eine </span><span class='text-black font-medium'>Ausgangsbasis</span><span class='text-nest-gray'> für deinen </span><span class='text-black font-medium'>individuellen Entwurf</span><span class='text-nest-gray'> festzulegen.</span>",
@@ -200,13 +224,7 @@ export default function KonzeptcheckClient() {
                 imagePosition: "center" as const,
                 buttons: [
                   {
-                    text: "Konfigurator",
-                    variant: "primary",
-                    size: "xs",
-                    link: "/konfigurator",
-                  },
-                  {
-                    text: "Konzept-Check bestellen",
+                    text: "Ohne Konfigurator fortfahren",
                     variant: "landing-secondary-blue",
                     size: "xs",
                     link: "/warenkorb?mode=konzept-check",
@@ -231,6 +249,55 @@ export default function KonzeptcheckClient() {
             *Mit dem Konzept-Check erhältst du deine Grundstücksanalyse, deinen
             individuellen Entwurfsplan und eine konkrete Kostenplanung.
           </p>
+        </section>
+
+        {/* Kostenplanung Section - Teil 3/3 */}
+        <section id="kostenplanung" className="w-full py-8 md:py-16 bg-white">
+          <SectionHeader
+            title="Kostenplanung"
+            subtitle="Transparenz und Verlässlichkeit"
+            mobileTitle="Kostenplanung"
+            wrapperMargin="mb-8 md:mb-12"
+          />
+          <UnifiedContentCard
+            {...TALL_CARD_PROPS_WITH_PADDING}
+            noPadding={true}
+            customData={[
+              {
+                id: 3,
+                title: "Teil 3/3",
+                subtitle: "",
+                description:
+                  "<span class='text-nest-gray'>Da eine verlässliche Kostenplanung besonders wichtig ist, behalten wir die Kosten für dein Bauvorhaben jederzeit </span><span class='text-black font-medium'>transparent und nachvollziehbar</span><span class='text-nest-gray'> im Überblick.</span>\n\n<span class='text-nest-gray'>Mit dem </span><span class='text-black font-medium'>Grundstückscheck</span><span class='text-nest-gray'> und deiner </span><span class='text-black font-medium'>individuellen Entwurfsplanung</span><span class='text-nest-gray'> können wir eine </span><span class='text-black font-medium'>exakte Kostenplanung</span><span class='text-nest-gray'> für dich erstellen. So hast du den </span><span class='text-black font-medium'>Gesamtpreis stets klar im Blick</span><span class='text-nest-gray'>.</span>",
+                image: IMAGES.function.nestHausLinienplanDreier,
+                backgroundColor: "#F4F4F4",
+                imagePosition: "center" as const,
+              },
+            ]}
+          />
+
+          {/* Konfigurator Button below Kostenplanung */}
+          <div className="flex justify-center mt-8">
+            <Link href="/konfigurator">
+              <Button variant="primary" size="xs">
+                Konfigurator starten
+              </Button>
+            </Link>
+          </div>
+        </section>
+
+        {/* Video Examples Section */}
+        <section id="entdecken" className="w-full pb-8 md:pb-16">
+          <UnifiedContentCard
+            layout="overlay-text"
+            style="standard"
+            variant="responsive"
+            maxWidth={false}
+            showInstructions={false}
+            noPadding={true}
+            alignment="left"
+            customData={konzeptcheckVideoCards}
+          />
         </section>
 
         <section id="anleitung" className="w-full py-8 md:py-16 bg-white">

@@ -297,8 +297,12 @@ const AppointmentBooking = ({
     }
 
     // Validate required fields
-    if (!formData.name.trim() || !formData.email.trim()) {
-      alert("Bitte fülle Name und E-Mail aus.");
+    if (
+      !formData.name.trim() ||
+      !formData.email.trim() ||
+      !formData.phone.trim()
+    ) {
+      alert("Bitte fülle Name, Telefon und E-Mail aus.");
       return;
     }
 
@@ -513,7 +517,7 @@ const AppointmentBooking = ({
 
   if (submitSuccess) {
     return (
-      <div 
+      <div
         ref={successMessageRef}
         className="max-w-l mx-auto bg-white text-black px-8 md:px-12 lg:px-16 xl:px-18 2xl:px-20 py-10 md:py-14 xl:py-18 2xl:py-20 rounded-[35px] text-left shadow-[0_4px_20px_rgba(0,0,0,0.1)] flex items-center justify-center min-h-[330px] md:min-h-[400px] mt-18"
       >
@@ -529,7 +533,7 @@ const AppointmentBooking = ({
             geprüft und melden uns innerhalb der nächsten 24 Stunden per E-Mail
             bei dir, um den Termin zu bestätigen.
           </p>
-          <div className="flex flex-row gap-3 justify-start">
+          <div className="flex justify-start">
             <Button
               variant="landing-primary"
               size="xs"
@@ -537,16 +541,7 @@ const AppointmentBooking = ({
                 window.location.href = "/konfigurator";
               }}
             >
-              Konfigurieren
-            </Button>
-            <Button
-              variant="landing-secondary-blue"
-              size="xs"
-              onClick={() => {
-                window.location.href = "/warenkorb?mode=konzept-check";
-              }}
-            >
-              Konzept-Check bestellen
+              Jetzt konfigurieren
             </Button>
           </div>
         </div>

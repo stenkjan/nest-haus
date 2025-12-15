@@ -661,7 +661,7 @@ export const FULL_IMAGE_CARDS_CONTENT: ContentCardData[] = [
 export const VIDEO_BACKGROUND_CARDS_CONTENT: ContentCardData[] = [
     {
         id: 1,
-        title: "Entwurf und Grundstücksanalyse",
+        title: "Grundstücksanalyse und Entwurfsplan",
         subtitle: "",
         description: "Dein Konzept-Check",
         video: IMAGES.videos.videoCard01,

@@ -205,7 +205,8 @@ export const IMAGES = {
             nestHausSystemDeinPart: '15-NEST-Haus-System-Hausbau-Modulbau-dein-part-Innenausbau-moeblierung-personlisierung-mobile',
             nestHausInnenausbauFenster: '16-NEST-Haus-Innenausbau-Fenster-Tueren-Schema-Konzept-mobile',
             nestHausModulElektrikSanitaer: '35-NEST-Haus-Planung-Elektrik-Sanitaer-Einbau-Gebaeudetechnik-HKLS-Modul-liniengrafik-mobile',
-            nestHausErweiterungModulbau: '38-NEST-Haus-erweiterung-Modulbau-vergroessern-Leichtbau-Modul-flexibel-mobile'
+            nestHausErweiterungModulbau: '38-NEST-Haus-erweiterung-Modulbau-vergroessern-Leichtbau-Modul-flexibel-mobile',
+            nestHausLinienplanDreier: '221-nest-haus-entwurf-grundstueckscheck-baurecht-vorentwurf-erster-schritt-mobile'
         }
     },
 

@@ -1391,7 +1391,7 @@ export default function CheckoutStepper({
         case 0:
           return "Ein erster Einblick";
         case 1:
-          return "Entwurf- und Grundstücksanalyse";
+          return "Grundstücksanalyse und Entwurfsplan";
         case 2:
           return "Wähle aus 3 Paketen";
         case 3:
@@ -1462,7 +1462,7 @@ export default function CheckoutStepper({
                       deckst du die Kosten für
                     </span>{" "}
                     <span className="text-black font-medium">
-                      Grundstücksanalyse und Entwurf.
+                      Grundstücksanalyse und Entwurfsplan.
                     </span>{" "}
                     <span className="text-nest-gray">
                       Fahre fort und mache den ersten Schritt in Richtung
@@ -2312,9 +2312,9 @@ export default function CheckoutStepper({
         {stepIndex === (isOhneNestMode ? 0 : 1) && (
           <div className="space-y-4 pt-16 md:pt-16">
             {isOhneNestMode ? (
-              // KONZEPT-CHECK MODE: Grundstücksanalyse first, then Planen heißt Preise kennen, then Appointment
+              // KONZEPT-CHECK MODE: Unified 2-column layout
               <>
-                {/* Konzept-Check Title and Form */}
+                {/* Konzept-Check Title */}
                 <div id="entwurf-formular" className="mb-16">
                   <div className="text-center mb-12 md:mb-16">
                     <h2 className="h1-secondary text-black mb-2 md:mb-3">
@@ -2324,91 +2324,47 @@ export default function CheckoutStepper({
                       Der erste Schritt zu deinem Traumhaus
                     </h3>
                   </div>
-                  <div className="flex flex-col md:flex-row md:items-start md:justify-start gap-6">
-                    <div className="w-full md:w-1/2 text-center md:text-left md:mt-4 md:px-16 lg:px-24">
-                      <p className="p-secondary mb-4 mt-12">
-                        <span className="text-nest-gray">Mit dem </span>
-                        <span className="text-black font-medium">
-                          Konzept-Check
-                        </span>
-                        <span className="text-nest-gray"> erhältst du:</span>
-                      </p>
-                      <ul className="p-secondary mb-6 list-disc list-inside text-nest-gray space-y-2">
-                        <li>Grundstücksplanung</li>
-                        <li>Entwurfsplan</li>
-                        <li>Kostenplanung</li>
-                      </ul>
-                    </div>
 
-                    <div className="w-full md:w-1/2">
-                      <div className="w-full max-w-[520px] ml-auto mt-1 md:mt-2">
+                  {/* 2-Column Grid: Forms left, Calendar right */}
+                  <div className="flex flex-col md:grid md:grid-cols-2 gap-8">
+                    {/* LEFT COLUMN: Deine Daten + Grundstück + Info Text */}
+                    <div className="space-y-6">
+                      {/* Use GrundstueckCheckForm with all fields */}
+                      <div className="w-full">
                         <GrundstueckCheckForm
                           backgroundColor="white"
                           maxWidth={false}
                           padding="sm"
-                          excludePersonalData={true}
+                          excludePersonalData={false}
+                          showHeader={false}
                         />
                       </div>
-                    </div>
-                  </div>
-                </div>
 
-                {/* Appointment Booking Section */}
-                <div className="mb-12 md:mb-16">
-                  <div className="text-center mb-12 md:mb-16">
-                    <h2 className="h1-secondary text-black mb-2 md:mb-3">
-                      Vereinbare jetzt deinen Termin
-                    </h2>
-                    <h3 className="h3-secondary text-black mb-2">
-                      Wir helfen gerne
-                    </h3>
-                  </div>
-
-                  {/* Left text + right calendar layout (from Terminvereinbarung step 2) */}
-                  <div className="flex flex-col md:flex-row md:items-start md:justify-start gap-8">
-                    <div className="w-full md:w-1/2 text-center md:text-left md:px-16 lg:px-24 md:pt-12 md:mt-12">
-                      <p className="p-secondary mb-4 md:mb-6 md:pt-6 hidden md:block">
-                        <span className="text-nest-gray">
-                          Der Kauf deines Hauses ist ein großer Schritt –
-                          und{" "}
-                        </span>
-                        <span className="text-black font-medium">
-                          wir sind da, um dir dabei zu helfen.
-                        </span>
-                        <span className="text-nest-gray">
-                          {" "}
-                          Für mehr Sicherheit und Klarheit{" "}
-                        </span>
-                        <span className="text-black font-medium">
-                          stehen wir dir jederzeit persönlich zur Seite.
-                        </span>
-                        <span className="text-nest-gray">
-                          {" "}
-                          Ruf uns an, um dein{" "}
-                        </span>
-                        <span className="text-black font-medium">
-                          Beratungsgespräch
-                        </span>
-                        <span className="text-nest-gray">
-                          {" "}
-                          zu vereinbaren, oder buche deinen{" "}
-                        </span>
-                        <span className="text-black font-medium">
-                          Termin ganz einfach online.
-                        </span>
-                        <span className="text-nest-gray">
-                          {" "}
-                          Dein Weg zu deinem Traumhaus beginnt mit einem
-                          Gespräch.
-                        </span>
-                      </p>
+                      {/* Info text at bottom */}
+                      <div className="text-center md:text-left pt-4">
+                        <p className="p-secondary mb-4">
+                          <span className="text-nest-gray">Mit dem </span>
+                          <span className="text-black font-medium">
+                            Konzept-Check
+                          </span>
+                          <span className="text-nest-gray"> erhältst du:</span>
+                        </p>
+                        <ul className="p-secondary mb-6 list-disc list-inside text-nest-gray space-y-2">
+                          <li>Grundstücksplanung</li>
+                          <li>Entwurfsplan</li>
+                          <li>Kostenplanung</li>
+                        </ul>
+                      </div>
                     </div>
 
-                    <div
-                      className="w-full md:w-1/2"
-                      data-section="appointment-booking"
-                    >
-                      <AppointmentBooking showLeftSide={false} />
+                    {/* RIGHT COLUMN: Calendar (AppointmentBooking without showing form fields) */}
+                    <div className="w-full" data-section="appointment-booking">
+                      <div className="w-full max-w-[520px] md:ml-auto">
+                        <AppointmentBooking
+                          showLeftSide={false}
+                          showSubmitButton={true}
+                        />
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -3315,41 +3271,208 @@ export default function CheckoutStepper({
               </div>
             )}
 
-            {/* Konzept-Check Info Box - Only in step 1 (Abschluss) of konzept-check mode */}
+            {/* Konzept-Check Info Box + Dein Überblick - Step 1 (Abschluss) - 2 Column Layout */}
             {isOhneNestMode && stepIndex === 1 && (
-              <div className="text-center mb-2 md:mb-2">
-                <p className="p-secondary mb-4">
-                  <span className="text-nest-gray">Mit dem </span>
-                  <span className="text-black font-medium">Konzept-Check</span>
-                  <span className="text-nest-gray"> erhältst du:</span>
-                </p>
-                <ul className="p-secondary mb-6 list-disc list-inside text-nest-gray space-y-2 inline-block text-left">
-                  <li>Grundstücksplanung</li>
-                  <li>Entwurfsplan</li>
-                  <li>Kostenplanung</li>
-                </ul>
+              <div className="flex flex-col md:grid md:grid-cols-2 gap-8 items-start mb-12">
+                {/* LEFT: Info text */}
+                <div className="text-center md:text-left w-full md:px-16 lg:px-24 md:pt-12">
+                  <p className="p-secondary mb-4">
+                    <span className="text-nest-gray">Mit dem </span>
+                    <span className="text-black font-medium">
+                      Konzept-Check
+                    </span>
+                    <span className="text-nest-gray"> erhältst du:</span>
+                  </p>
+                  <ul className="p-secondary mb-6 list-disc list-inside text-nest-gray space-y-2">
+                    <li>Grundstücksplanung</li>
+                    <li>Entwurfsplan</li>
+                    <li>Kostenplanung</li>
+                  </ul>
+                </div>
+
+                {/* RIGHT: Dein Überblick box */}
+                <div className="w-full">
+                  <div className="w-full max-w-[520px] md:ml-auto">
+                    <h2 className="h2-title mb-3 text-center">
+                      <span className="text-black">Dein Überblick</span>
+                    </h2>
+                    <div className="border border-gray-300 rounded-2xl md:min-w-[260px] w-full overflow-hidden">
+                      <div>
+                        <div
+                          className={`flex items-center justify-between gap-4 py-3 md:py-4 px-6 md:px-7`}
+                        >
+                          <div className="flex-1 min-w-0">
+                            <div className="leading-relaxed p-primary text-black font-medium">
+                              Dein Nest Haus
+                            </div>
+                            <div className="p-primary-small text-nest-gray leading-snug mt-1">
+                              Konfiguriere dein Nest mit uns
+                            </div>
+                          </div>
+                          <div className="leading-relaxed p-primary text-black font-medium">
+                            -
+                          </div>
+                        </div>
+                        <div
+                          className={`flex items-center justify-between gap-4 py-3 md:py-4 px-6 md:px-7`}
+                        >
+                          <div className="flex-1 min-w-0">
+                            <div className="leading-relaxed p-primary text-black font-medium">
+                              Terminvereinbarung
+                            </div>
+                            <div className="p-primary-small text-nest-gray leading-snug mt-1">
+                              Dein Termin bei Nest
+                            </div>
+                          </div>
+                          <div className="leading-relaxed p-primary text-black font-medium">
+                            {(() => {
+                              const appointmentSummary =
+                                getAppointmentSummaryShort(sessionId);
+                              const hasAppointmentFromOtherSession =
+                                appointmentDetails &&
+                                !isAppointmentFromCurrentSession(sessionId);
+
+                              if (appointmentSummary && isAppointmentInPast) {
+                                return (
+                                  <button
+                                    onClick={() => {
+                                      const appointmentSection =
+                                        document.querySelector(
+                                          '[data-section="appointment-booking"]'
+                                        );
+                                      appointmentSection?.scrollIntoView({
+                                        behavior: "smooth",
+                                        block: "start",
+                                      });
+                                    }}
+                                    className="text-blue-600 text-sm hover:underline"
+                                  >
+                                    Neu vereinbaren
+                                  </button>
+                                );
+                              }
+
+                              if (appointmentSummary) {
+                                return (
+                                  <div className="flex items-start gap-2 justify-end">
+                                    <span className="p-primary text-gray-600 whitespace-pre-line text-right">
+                                      {appointmentSummary}
+                                    </span>
+                                    <span
+                                      aria-hidden
+                                      className="text-[#3D6CE1] flex-shrink-0"
+                                    >
+                                      ✓
+                                    </span>
+                                  </div>
+                                );
+                              } else if (
+                                hasAppointmentFromOtherSession &&
+                                isAppointmentInPast
+                              ) {
+                                return (
+                                  <button
+                                    onClick={() => {
+                                      const appointmentSection =
+                                        document.querySelector(
+                                          '[data-section="appointment-booking"]'
+                                        );
+                                      appointmentSection?.scrollIntoView({
+                                        behavior: "smooth",
+                                        block: "start",
+                                      });
+                                    }}
+                                    className="text-blue-600 p-primary hover:underline"
+                                  >
+                                    Neu vereinbaren
+                                  </button>
+                                );
+                              } else if (hasAppointmentFromOtherSession) {
+                                return (
+                                  <div className="flex items-start gap-2 justify-end">
+                                    <span className="p-primary text-gray-600 text-right">
+                                      bereits vereinbart
+                                    </span>
+                                  </div>
+                                );
+                              } else {
+                                return (
+                                  <button
+                                    onClick={() => {
+                                      const appointmentSection =
+                                        document.querySelector(
+                                          '[data-section="appointment-booking"]'
+                                        );
+                                      appointmentSection?.scrollIntoView({
+                                        behavior: "smooth",
+                                        block: "start",
+                                      });
+                                    }}
+                                    className="text-blue-600 p-primary hover:underline cursor-pointer"
+                                  >
+                                    Jetzt vereinbaren
+                                  </button>
+                                );
+                              }
+                            })()}
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div className="border border-gray-300 rounded-2xl w-full overflow-hidden mt-3 md:mt-4">
+                      <div
+                        className={`flex items-center justify-between gap-4 py-3 md:py-4 px-6 md:px-7`}
+                      >
+                        <div className="flex-1 min-w-0">
+                          <div className="text-sm md:text-base lg:text-lg 2xl:text-xl font-normal text-gray-900 leading-relaxed">
+                            Konzept-Check
+                          </div>
+                          <div className="text-xs md:text-sm text-gray-500 leading-snug mt-1">
+                            Grundstücksanalyse und Entwurfsplan
+                          </div>
+                        </div>
+                        <div className="text-sm md:text-base lg:text-lg 2xl:text-xl font-normal text-gray-900 leading-relaxed">
+                          <div className="flex items-center gap-2 justify-end">
+                            <span className="text-gray-400 line-through">
+                              3.000 €
+                            </span>
+                            <span>1.500 €</span>
+                          </div>
+                          <div className="text-xs text-gray-500 text-right mt-1">
+                            Preise inkl. MwSt.
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
               </div>
             )}
 
-            {/* So gehts danach weiter Section */}
-            <div className="text-center mb-12 pt-4 md:mb-8">
-              <h2 className="h2-title text-black mb-2">
-                {isPaymentCompleted
-                  ? "Vielen Dank"
-                  : isOhneNestMode
-                    ? "Gesamtsumme"
+            {/* Gesamtsumme Section - Only show title in konzept-check mode step 1 */}
+            {isOhneNestMode && stepIndex === 1 && (
+              <div className="text-center mb-12 pt-4 md:mb-8">
+                <h2 className="h2-title text-black mb-2">Gesamtsumme</h2>
+              </div>
+            )}
+
+            {/* So gehts danach weiter Section - Only in normal mode */}
+            {!isOhneNestMode && (
+              <div className="text-center mb-12 pt-4 md:mb-8">
+                <h2 className="h2-title text-black mb-2">
+                  {isPaymentCompleted
+                    ? "Vielen Dank"
                     : "So geht's danach weiter"}
-              </h2>
-              {!isOhneNestMode && (
+                </h2>
                 <p className="p-secondary text-black">
                   {isPaymentCompleted
                     ? "Deine Zahlung wurde bearbeitet"
                     : "Dein Preis im Überblick"}
                 </p>
-              )}
-            </div>
+              </div>
+            )}
 
-            {/* Left/Right Layout: Teilzahlungen (left) + Entwurf- und Grundstücksanalyse (right) */}
+            {/* Left/Right Layout: Teilzahlungen (left) + Grundstücksanalyse und Entwurfsplan (right) */}
             {!isOhneNestMode &&
               (() => {
                 // Calculate dynamic total (Dein Nest Haus price from Dein Preis Überblick)
@@ -3460,7 +3583,7 @@ export default function CheckoutStepper({
                                 <div className="text-sm text-gray-600 mt-1">
                                   Heute zu begleichen
                                   <br />
-                                  Grundstücksanalyse und Entwurf
+                                  Grundstücksanalyse und Entwurfsplan
                                 </div>
                               </div>
                               <div className="text-right">
@@ -3553,7 +3676,7 @@ export default function CheckoutStepper({
                         </div>
                       </div>
 
-                      {/* Right: Entwurf- und Grundstücksanalyse box - compact design per image */}
+                      {/* Right: Grundstücksanalyse und Entwurfsplan box - compact design per image */}
                       <div className="lg:sticky lg:top-4">
                         {/* Compact box with title/subtitle left, price right */}
                         <div className="border border-gray-300 rounded-2xl p-6 bg-white mb-6">
@@ -3569,7 +3692,7 @@ export default function CheckoutStepper({
                               <div className="text-sm text-gray-600">
                                 {isPaymentCompleted
                                   ? "Zahlung erfolgreich abgeschlossen"
-                                  : "Entwurf und Grundstücksanalyse"}
+                                  : "Grundstücksanalyse und Entwurfsplan"}
                               </div>
                             </div>
                             {!isPaymentCompleted ? (
@@ -3668,10 +3791,10 @@ export default function CheckoutStepper({
 
                         {/* Disclaimer text - centered below box with margin */}
                         <div className="text-sm text-gray-600 leading-relaxed text-center pt-2 mb-6 mx-5">
-                          Solltest du mit dem Entwurf nicht zufrieden sein,
+                          Solltest du mit dem Entwurfsplan nicht zufrieden sein,
                           kannst du vom Kauf deines Nest-Hauses zurücktreten. In
-                          diesem Fall zahlst du lediglich die Kosten für den
-                          Entwurf und Grundstücksanalyse.
+                          diesem Fall zahlst du lediglich die Kosten für die
+                          Grundstücksanalyse und den Entwurfsplan.
                         </div>
 
                         {/* Jetzt bezahlen button - centered below text - HIDDEN ON MOBILE */}
@@ -3695,7 +3818,7 @@ export default function CheckoutStepper({
             {/* Ohne-Nest Mode: Show simplified centered payment box */}
             {isOhneNestMode && (
               <div className="max-w-2xl mx-auto mb-12">
-                {/* Centered "Entwurf- und Grundstücksanalyse" box */}
+                {/* Centered "Grundstücksanalyse und Entwurfsplan" box */}
                 <div className="border border-gray-300 rounded-2xl p-6 bg-white mb-6">
                   <div className="flex items-start justify-between gap-4">
                     <div className="text-left min-w-0">
@@ -3704,7 +3827,7 @@ export default function CheckoutStepper({
                       >
                         {isPaymentCompleted
                           ? "Bezahlt"
-                          : "Entwurf- und Grundstücksanalyse"}
+                          : "Grundstücksanalyse und Entwurfsplan"}
                       </h3>
                       <div className="text-sm text-gray-600">
                         {isPaymentCompleted
@@ -4067,7 +4190,7 @@ export default function CheckoutStepper({
                     <div className="flex items-center justify-between gap-4 py-3 md:py-4 px-6 md:px-7">
                       <div className="flex-1 min-w-0">
                         <div className="text-sm md:text-base lg:text-lg 2xl:text-xl font-normal leading-relaxed text-gray-900">
-                          Entwurf & Grundstücksanalyse
+                          Grundstücksanalyse und Entwurfsplan
                         </div>
                         <div className="text-xs md:text-sm text-gray-500 leading-snug mt-1">
                           Der erste Schritt zu deinem Nest-Haus auf deinem
@@ -4209,7 +4332,7 @@ export default function CheckoutStepper({
               </div>
             </div>
 
-            {/* Moved: Entwurf- und Grundstücksanalyse section at the end */}
+            {/* Moved: Grundstücksanalyse und Entwurfsplan section at the end */}
             <div className="flex items-start justify-between gap-4 py-3">
               <div className="text-left">
                 <h2
@@ -4217,7 +4340,7 @@ export default function CheckoutStepper({
                 >
                   {isPaymentCompleted
                     ? "Bezahlt"
-                    : "Entwurf- und Grundstücksanalyse"}
+                    : "Grundstücksanalyse und Entwurfsplan"}
                 </h2>
                 <div className="text-sm md:text-base lg:text-lg 2xl:text-xl text-gray-700 leading-snug">
                   {isPaymentCompleted && (
@@ -4348,7 +4471,34 @@ export default function CheckoutStepper({
                 type="button"
                 disabled={isPaymentCompleted}
                 onClick={() => {
-                  // Check if contact form has been submitted
+                  // In konzept-check mode, skip appointment validation
+                  if (isOhneNestMode) {
+                    // Validate email exists
+                    if (!getUserData.email) {
+                      setContactWarning(
+                        "Bitte fülle zuerst das Formular mit deiner E-Mail-Adresse aus."
+                      );
+                      setTimeout(() => setContactWarning(null), 8000);
+                      return;
+                    }
+                    // Proceed directly to payment
+                    setContactWarning(null);
+                    setPaymentError(null);
+
+                    createInquiryWithCart().then((createdInquiryId) => {
+                      if (createdInquiryId) {
+                        setInquiryId(createdInquiryId);
+                        setIsPaymentModalOpen(true);
+                      } else {
+                        setPaymentError(
+                          "Fehler beim Erstellen der Anfrage. Bitte versuche es erneut."
+                        );
+                      }
+                    });
+                    return;
+                  }
+
+                  // Normal mode validation (requires appointment)
                   const contactSubmitted = localStorage.getItem(
                     "nest-haus-contact-submitted"
                   );
@@ -4414,8 +4564,8 @@ export default function CheckoutStepper({
             <div className="border border-gray-300 rounded-[19px] px-6 py-3 bg-white mt-12">
               <div className="text-sm md:text-base lg:text-lg 2xl:text-xl text-gray-700 leading-relaxed">
                 {isOhneNestMode
-                  ? "Du zahlst lediglich den Entwurf und die Grundstücksanalyse"
-                  : "Solltest du mit dem Entwurf nicht zufrieden sein, kannst du vom Kauf deines Nest-Hauses zurücktreten. In diesem Fall zahlst du lediglich die Kosten für den Entwurf und die Grundstücksanalyse."}
+                  ? "Du zahlst lediglich die Grundstücksanalyse und den Entwurfsplan"
+                  : "Solltest du mit dem Entwurfsplan nicht zufrieden sein, kannst du vom Kauf deines Nest-Hauses zurücktreten. In diesem Fall zahlst du lediglich die Kosten für die Grundstücksanalyse und den Entwurfsplan."}
               </div>
             </div>
 
@@ -4496,8 +4646,8 @@ export default function CheckoutStepper({
 
   // Helper functions for payment
   function getPaymentAmount(): number {
-    // Entwurf deposit: €1,500 (150000 cents) - Action price (50% discount from €3,000)
-    // This matches the "Entwurf- und Grundstücksanalyse" amount displayed in the checkout
+    // Konzept-Check deposit: €1,500 (150000 cents) - Action price (50% discount from €3,000)
+    // This matches the "Grundstücksanalyse und Entwurfsplan" amount displayed in the checkout
     return 150000; // 1,500 EUR in cents
   }
 
