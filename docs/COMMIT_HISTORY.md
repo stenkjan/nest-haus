@@ -4,6 +4,19 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [9fcfaa2a43fc97c5eed90df4a11c44c75d22a209] - Mon Dec 15 16:38:06 2025 +0100
+
+**Author**: stenkjan
+**Message**: `🔧 Refactor KonzeptcheckClient to integrate configurator button into the main section for improved user navigation  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/konzept-check/KonzeptcheckClient.tsx
+
+
+---
+
 ## [c6d1fd35e635dfa9f2019fae32ebe1809550c5cd] - Mon Dec 15 16:32:44 2025 +0100
 
 **Author**: stenkjan
