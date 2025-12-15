@@ -2312,7 +2312,7 @@ export default function CheckoutStepper({
               // KONZEPT-CHECK MODE: Unified 2-column layout
               <>
                 {/* Text left + Dein Überblick right at top */}
-                <div className="mb-[8vh]">
+                <div className="mb-24">
                   {/* Text left + Dein Überblick right - Same layout as Step 1 */}
                   <div className="flex flex-col md:grid md:grid-cols-2 gap-8 items-start mb-12">
                     {/* LEFT: Info text */}

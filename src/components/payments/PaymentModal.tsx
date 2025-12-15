@@ -48,8 +48,8 @@ function PaymentSuccess({
 
   // Format current date and time
   const now = new Date();
-  const formattedDate = `${now.getDate().toString().padStart(2, '0')}.${(now.getMonth() + 1).toString().padStart(2, '0')}.${now.getFullYear()}`;
-  const formattedTime = `${now.getHours().toString().padStart(2, '0')}:${now.getMinutes().toString().padStart(2, '0')}`;
+  const formattedDate = `${now.getDate().toString().padStart(2, "0")}.${(now.getMonth() + 1).toString().padStart(2, "0")}.${now.getFullYear()}`;
+  const formattedTime = `${now.getHours().toString().padStart(2, "0")}:${now.getMinutes().toString().padStart(2, "0")}`;
 
   return (
     <div className="text-center py-2">
@@ -59,23 +59,25 @@ function PaymentSuccess({
           <div className="flex justify-between items-center">
             <span className="text-gray-700 font-medium">Deine Nest ID:</span>
             <span className="font-mono text-sm bg-white px-3 py-1.5 rounded-lg border border-green-300">
-              {sessionId || 'nest-haus-' + paymentIntentId.substring(0, 10)}
+              {sessionId || "nest-haus-" + paymentIntentId.substring(0, 10)}
             </span>
           </div>
-          
+
           {/* Transaktion section with centered title */}
           <div className="space-y-2 pt-2">
             <div className="text-center">
               <span className="text-gray-700 font-semibold">Transaktion</span>
             </div>
             <div className="flex justify-between items-center gap-2">
-              <span className="text-gray-700 font-medium flex-shrink-0">ID:</span>
+              <span className="text-gray-700 font-medium flex-shrink-0">
+                ID:
+              </span>
               <span className="font-mono text-xs bg-white px-2 py-1.5 rounded-lg border border-green-300 break-all text-right">
                 {paymentIntentId}
               </span>
             </div>
           </div>
-          
+
           <div className="flex justify-between items-center">
             <span className="text-gray-700 font-medium">Betrag:</span>
             <span className="text-green-700 font-bold text-lg">
@@ -88,7 +90,9 @@ function PaymentSuccess({
           </div>
           <div className="flex justify-between items-center">
             <span className="text-gray-700 font-medium">Datum:</span>
-            <span className="text-gray-700">{formattedDate} | {formattedTime}</span>
+            <span className="text-gray-700">
+              {formattedDate} | {formattedTime}
+            </span>
           </div>
         </div>
       </div>
@@ -98,17 +102,34 @@ function PaymentSuccess({
         <h4 className="font-semibold text-gray-900 mb-4">Nächste Schritte:</h4>
         <div className="space-y-4 text-sm text-gray-700">
           <p>
-            <strong>Entwurf bestätigt</strong> - Sie erhalten eine Bestätigung per Mail sobald die Zahlung bei uns eingeht
+            <strong>Entwurf bestätigt</strong> - Sie erhalten eine Bestätigung
+            per Mail sobald die Zahlung bei uns eingeht
           </p>
           <p>
-            <strong>Wir melden uns Zeitnah</strong> - Unser Team kontaktiert Sie zum vereinbarten Termin
+            <strong>Wir melden uns Zeitnah</strong> - Unser Team kontaktiert Sie
+            zum vereinbarten Termin
           </p>
         </div>
       </div>
 
       {/* Contact info */}
       <div className="text-center text-sm text-gray-500">
-        <p>Noch Fragen? Mail: <a href="mailto:mail@nest-haus.at" className="text-blue-600 hover:text-blue-800">mail@nest-haus.at</a> | Tel: <a href="tel:+436643949605" className="text-blue-600 hover:text-blue-800">+43 664 3949605</a></p>
+        <p>
+          Noch Fragen? Mail:{" "}
+          <a
+            href="mailto:mail@nest-haus.at"
+            className="text-blue-600 hover:text-blue-800"
+          >
+            mail@nest-haus.at
+          </a>{" "}
+          | Tel:{" "}
+          <a
+            href="tel:+436643949605"
+            className="text-blue-600 hover:text-blue-800"
+          >
+            +43 664 3949605
+          </a>
+        </p>
       </div>
     </div>
   );
@@ -131,23 +152,38 @@ function PaymentMethodSelection({
       id: "card" as PaymentMethod,
       name: "Debit-oder Kreditkarte",
       icons: [
-        { src: "https://upload.wikimedia.org/wikipedia/commons/2/2a/Mastercard-logo.svg", alt: "Mastercard" },
-        { src: "https://upload.wikimedia.org/wikipedia/commons/5/5e/Visa_Inc._logo.svg", alt: "Visa" },
-        { src: "https://upload.wikimedia.org/wikipedia/commons/3/30/American_Express_logo.svg", alt: "American Express" },
-      ],
-    },
-    {
-      id: "klarna" as PaymentMethod,
-      name: "Klarna",
-      icons: [
-        { src: "https://upload.wikimedia.org/wikipedia/commons/4/40/Klarna_Payment_Badge.svg", alt: "Klarna" },
+        {
+          src: "https://upload.wikimedia.org/wikipedia/commons/2/2a/Mastercard-logo.svg",
+          alt: "Mastercard",
+        },
+        {
+          src: "https://upload.wikimedia.org/wikipedia/commons/5/5e/Visa_Inc._logo.svg",
+          alt: "Visa",
+        },
+        {
+          src: "https://upload.wikimedia.org/wikipedia/commons/3/30/American_Express_logo.svg",
+          alt: "American Express",
+        },
       ],
     },
     {
       id: "eps" as PaymentMethod,
       name: "EPS-Überweisung",
       icons: [
-        { src: "https://upload.wikimedia.org/wikipedia/commons/c/c5/Eps-%C3%9Cberweisung_Logo.svg", alt: "EPS" },
+        {
+          src: "https://upload.wikimedia.org/wikipedia/commons/c/c5/Eps-%C3%9Cberweisung_Logo.svg",
+          alt: "EPS",
+        },
+      ],
+    },
+    {
+      id: "klarna" as PaymentMethod,
+      name: "Klarna",
+      icons: [
+        {
+          src: "https://upload.wikimedia.org/wikipedia/commons/4/40/Klarna_Payment_Badge.svg",
+          alt: "Klarna",
+        },
       ],
     },
   ];
@@ -274,7 +310,7 @@ function PaymentError({ error, onRetry, onClose }: PaymentErrorProps) {
 }
 
 // Main payment modal component
-type PaymentMethod = "card" | "klarna" | "eps";
+type PaymentMethod = "card" | "eps" | "klarna";
 type PaymentStep = "method-selection" | "payment-details" | "success" | "error";
 
 export default function PaymentModal({
@@ -399,21 +435,17 @@ export default function PaymentModal({
           {/* Title and subtitle - outside the box, not blurred */}
           {paymentStep === "method-selection" && (
             <div className="mb-6 text-center relative z-50">
-              <h2 className="h2-title text-black mb-2">
-                Gleich geschafft
-              </h2>
+              <h2 className="h2-title text-black mb-2">Gleich geschafft</h2>
               <h3 className="h3-primary text-gray-700">
                 Wähle eine Zahlungsmethode
               </h3>
             </div>
           )}
-          
+
           {/* Title for payment details step - outside the box */}
           {paymentStep === "payment-details" && (
             <div className="mb-6 text-center relative z-50">
-              <h2 className="h2-title text-black mb-2">
-                Gleich geschafft
-              </h2>
+              <h2 className="h2-title text-black mb-2">Gleich geschafft</h2>
               <p className="h3-primary text-gray-700">
                 Fülle die Informationen aus
               </p>
@@ -431,7 +463,7 @@ export default function PaymentModal({
               </h2>
             </div>
           )}
-          
+
           <div
             className={`relative bg-[#F4F4F4] rounded-3xl shadow-2xl border border-gray-200/50 w-full max-h-[80vh] overflow-y-auto transform transition-all duration-300 ${
               isAnimating
@@ -440,7 +472,8 @@ export default function PaymentModal({
             }`}
           >
             {/* Close button - only show for method selection and payment details */}
-            {(paymentStep === "method-selection" || paymentStep === "payment-details") && (
+            {(paymentStep === "method-selection" ||
+              paymentStep === "payment-details") && (
               <button
                 onClick={handleClose}
                 className="absolute top-4 right-4 text-gray-400 hover:text-gray-600 transition-colors z-10"
@@ -528,7 +561,7 @@ export default function PaymentModal({
               )}
             </div>
           </div>
-          
+
           {/* Action buttons outside the box - only for method selection */}
           {paymentStep === "method-selection" && (
             <div className="flex gap-4 justify-center mt-6 relative z-50">
@@ -543,7 +576,9 @@ export default function PaymentModal({
                   // Skip payment-details for Klarna
                   if (selectedMethod === "klarna") {
                     // TODO: Implement direct payment flow for Klarna
-                    console.log(`Direct payment for ${selectedMethod} not yet implemented`);
+                    console.log(
+                      `Direct payment for ${selectedMethod} not yet implemented`
+                    );
                     // For now, show an alert
                     alert(`Klarna Integration wird in Kürze verfügbar sein.`);
                   } else {

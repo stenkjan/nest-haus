@@ -52,7 +52,7 @@ interface StripeCheckoutFormProps {
 
 // Payment element configuration
 const getPaymentElementOptions = (_selectedMethod?: string) => {
-  // In Step 2, we show card and EPS payment methods
+  // In Step 2, we show card, EPS, and Klarna payment methods
   // regardless of what was selected in Step 1. Users can change their mind.
 
   return {
@@ -69,7 +69,7 @@ const getPaymentElementOptions = (_selectedMethod?: string) => {
       applePay: "never" as const,
       googlePay: "never" as const,
     },
-    // Let Stripe show enabled payment methods (card, EPS)
+    // Let Stripe show enabled payment methods (card, EPS, Klarna)
     // Backend controls which methods are available via paymentMethodTypes
   };
 };
@@ -138,7 +138,7 @@ function PaymentForm({
           const result = await response.json();
 
           if (response.ok && result.success) {
-            console.log('✅ Payment confirmed and emails sent');
+            console.log("✅ Payment confirmed and emails sent");
             onSuccess(paymentIntent.id);
           } else {
             onError(
@@ -282,10 +282,10 @@ export default function StripeCheckoutForm({
   useEffect(() => {
     const createPaymentIntent = async () => {
       try {
-        // Step 2 always enables card and EPS payment methods
-        // Users can switch between card and EPS in the Stripe UI
+        // Step 2 always enables card, EPS, and Klarna payment methods
+        // Users can switch between card, EPS, and Klarna in the Stripe UI
         // selectedPaymentMethod from Step 1 is stored in metadata for tracking
-        const paymentMethodTypes = ["card", "eps"];
+        const paymentMethodTypes = ["card", "eps", "klarna"];
 
         const response = await fetch("/api/payments/create-payment-intent", {
           method: "POST",
