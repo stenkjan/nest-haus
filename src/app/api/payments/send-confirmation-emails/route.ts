@@ -61,10 +61,28 @@ export async function POST(request: NextRequest) {
         if (!inquiry) {
             console.log('📝 Creating new inquiry for payment intent:', paymentIntentId);
 
-            // Extract customer email from Stripe metadata or use provided email
-            const email = customerEmail ||
-                (paymentIntent.receipt_email) ||
-                'kunde@nest-haus.com';
+            // Extract customer email from multiple sources
+            let email = customerEmail || paymentIntent.receipt_email;
+            
+            // If still no email, try to get it from Stripe customer
+            if (!email && paymentIntent.customer) {
+                try {
+                    const customer = await stripe.customers.retrieve(paymentIntent.customer as string);
+                    if ('email' in customer && customer.email) {
+                        email = customer.email;
+                        console.log('📧 Retrieved email from Stripe customer:', email);
+                    }
+                } catch (customerError) {
+                    console.warn('⚠️ Failed to retrieve customer email:', customerError);
+                }
+            }
+            
+            // Final fallback
+            if (!email) {
+                email = 'kunde@nest-haus.com';
+                console.warn('⚠️ No email found - using fallback email');
+            }
+            
             const name = customerName || 'Kunde';
 
             try {

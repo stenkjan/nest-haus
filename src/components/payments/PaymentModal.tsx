@@ -56,15 +56,8 @@ function PaymentSuccess({
       {/* Green highlighted box with transaction details */}
       <div className="bg-green-50 border-2 border-green-500 rounded-2xl p-6 mb-6">
         <div className="space-y-3 text-left">
-          <div className="flex justify-between items-center">
-            <span className="text-gray-700 font-medium">Deine Nest ID:</span>
-            <span className="font-mono text-sm bg-white px-3 py-1.5 rounded-lg border border-green-300">
-              {sessionId || "nest-haus-" + paymentIntentId.substring(0, 10)}
-            </span>
-          </div>
-
-          {/* Transaktion section with centered title */}
-          <div className="space-y-2 pt-2">
+          {/* Transaktion section with centered title - AT TOP */}
+          <div className="space-y-2">
             <div className="text-center">
               <span className="text-gray-700 font-semibold">Transaktion</span>
             </div>
@@ -76,6 +69,13 @@ function PaymentSuccess({
                 {paymentIntentId}
               </span>
             </div>
+          </div>
+          
+          <div className="flex justify-between items-center">
+            <span className="text-gray-700 font-medium">Deine Nest ID:</span>
+            <span className="font-mono text-sm bg-white px-3 py-1.5 rounded-lg border border-green-300">
+              {sessionId || "nest-haus-" + paymentIntentId.substring(0, 10)}
+            </span>
           </div>
 
           <div className="flex justify-between items-center">
