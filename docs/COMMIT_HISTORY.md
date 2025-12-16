@@ -4,6 +4,20 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [f707b1b4515b48d8325533ee38c31097b57e96ef] - Tue Dec 16 16:22:18 2025 +0100
+
+**Author**: stenkjan
+**Message**: `🔧 Enhance email retrieval logic in payment confirmation process by adding fallback mechanisms to ensure customer email is sourced from multiple locations, improving reliability in communication. Additionally, adjust PaymentModal layout for better user experience by repositioning transaction details.  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/api/payments/send-confirmation-emails/route.ts
+- src/components/payments/PaymentModal.tsx
+
+
+---
+
 ## [7892aed750e27007db7c3739ac8578e34e3c4b3c] - Tue Dec 16 16:13:51 2025 +0100
 
 **Author**: stenkjan
