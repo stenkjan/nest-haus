@@ -16,9 +16,9 @@ export default function SimplifiedPreviewPanel({
 }: SimplifiedPreviewPanelProps) {
   // Get the appropriate image path based on selections
   const imagePath = useMemo(() => {
-    // Default to nest80 + trapezblech if nothing selected
+    // Default to nest80 + holzlattung if nothing selected
     const nestSize = selectedNest ? NEST_SIZE_MAPPING[selectedNest] : '75';
-    const facadeType = selectedFacade ? GEBAEUDE_EXTERIOR_MAPPING[selectedFacade] : 'trapezblech';
+    const facadeType = selectedFacade ? GEBAEUDE_EXTERIOR_MAPPING[selectedFacade] : 'holzlattung';
 
     // Build the image key for exterior view (images from images.ts line 228-251)
     const imageKey = `nest${nestSize}_${facadeType}` as keyof typeof IMAGES.configurations;

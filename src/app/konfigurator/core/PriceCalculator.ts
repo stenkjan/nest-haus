@@ -397,7 +397,7 @@ export class PriceCalculator {
 
     // Default selections for base comparison
     const defaultSelections = {
-      gebaeudehuelle: 'trapezblech',
+      gebaeudehuelle: 'holzlattung',
       innenverkleidung: 'ohne_innenverkleidung', // Standard baseline (no interior cladding)
       fussboden: 'ohne_belag'
     };
@@ -880,7 +880,7 @@ export class PriceCalculator {
         breakdown.modules = nestOption?.modules || 0;
 
         // Determine combination for breakdown
-        const gebaeudehuelle = selections.gebaeudehuelle?.value || 'trapezblech';
+        const gebaeudehuelle = selections.gebaeudehuelle?.value || 'holzlattung';
         const innenverkleidung = selections.innenverkleidung?.value || 'ohne_innenverkleidung';
         const fussboden = selections.fussboden?.value || 'ohne_belag';
 
