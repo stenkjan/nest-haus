@@ -360,8 +360,7 @@ export default function LandingPageClient() {
                         subtitle: "Finde heraus was Nest ausmacht",
                         description: "",
                         image:
-                          IMAGES.function
-                            .nestHausEntdeckenDeinNestErklaerungProdukt,
+                          IMAGES.function.nestHausEntdeckenDeinNestErklaerungProdukt,
                         backgroundColor: "#F4F4F4",
                         primaryAction: "Konfigurator",
                         primaryLink: "/konfigurator",
@@ -372,8 +371,7 @@ export default function LandingPageClient() {
                         subtitle: "Deine optimale Entscheidungsgrundlage",
                         description: "",
                         image:
-                          IMAGES.function
-                            .nestHausEntwurfVorentwurfCheckGrundstueckscheck,
+                          IMAGES.function.nestHausEntwurfVorentwurfCheckGrundstueckscheck,
                         backgroundColor: "#F4F4F4",
                         primaryAction: "Konzept-Check",
                         primaryLink: "/konzept-check",
@@ -384,8 +382,7 @@ export default function LandingPageClient() {
                         subtitle: "Melde dich, wir sind für dich da",
                         description: "",
                         image:
-                          IMAGES.function
-                            .nestHausTerminVereinbarungBuchenGespraechAnrufenEmail,
+                          IMAGES.function.nestHausTerminVereinbarungBuchenGespraechAnrufenEmail,
                         backgroundColor: "#F4F4F4",
                         primaryAction: "Termin sichern",
                         primaryLink: "/kontakt",
