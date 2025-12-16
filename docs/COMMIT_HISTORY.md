@@ -4,6 +4,19 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [05d88cc5e45ec3c6d9300fba5296c5af0ea7ba4b] - Tue Dec 16 16:30:07 2025 +0100
+
+**Author**: stenkjan
+**Message**: `🔧 Update PaymentModal state management to include a new 'verifying' status, enhancing feedback during payment processing transitions.  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/components/payments/PaymentModal.tsx
+
+
+---
+
 ## [f707b1b4515b48d8325533ee38c31097b57e96ef] - Tue Dec 16 16:22:18 2025 +0100
 
 **Author**: stenkjan
