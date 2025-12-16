@@ -504,6 +504,8 @@ export default function PaymentModal({
                     onSelectionChange={setSelectedMethod}
                     onMethodSelect={(method) => {
                       setSelectedMethod(method);
+                      // For all payment methods (card, EPS, Klarna), go to payment-details
+                      // Stripe will handle redirects automatically for EPS/Klarna
                       setPaymentStep("payment-details");
                     }}
                     onCancel={handleClose}
@@ -573,17 +575,9 @@ export default function PaymentModal({
               </button>
               <button
                 onClick={() => {
-                  // Skip payment-details for Klarna
-                  if (selectedMethod === "klarna") {
-                    // TODO: Implement direct payment flow for Klarna
-                    console.log(
-                      `Direct payment for ${selectedMethod} not yet implemented`
-                    );
-                    // For now, show an alert
-                    alert(`Klarna Integration wird in Kürze verfügbar sein.`);
-                  } else {
-                    setPaymentStep("payment-details");
-                  }
+                  // Proceed to payment details for all methods
+                  // Stripe handles redirects automatically for EPS/Klarna
+                  setPaymentStep("payment-details");
                 }}
                 className="rounded-full transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-offset-2 inline-flex items-center justify-center font-normal whitespace-nowrap bg-[#3D6CE1] border border-[#3D6CE1] text-white hover:bg-[#2E5BC7] hover:border-[#2E5BC7] focus:ring-[#3D6CE1] box-border px-4 py-1.5 text-sm xl:text-base 2xl:text-lg"
               >

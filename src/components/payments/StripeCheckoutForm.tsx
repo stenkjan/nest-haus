@@ -51,11 +51,16 @@ interface StripeCheckoutFormProps {
 }
 
 // Payment element configuration
-const getPaymentElementOptions = (_selectedMethod?: string) => {
-  // In Step 2, we show card, EPS, and Klarna payment methods
-  // regardless of what was selected in Step 1. Users can change their mind.
-
-  return {
+const getPaymentElementOptions = (selectedMethod?: string) => {
+  // Pre-select the payment method chosen in Step 1
+  // For EPS and Klarna, this will trigger automatic redirect when form loads
+  
+  const options: {
+    layout: { type: "tabs"; defaultCollapsed: boolean; radios: boolean; spacedAccordionItems: boolean };
+    fields: { billingDetails: "auto" };
+    wallets: { applePay: "never"; googlePay: "never" };
+    defaultValues?: { billingDetails?: { email?: string } };
+  } = {
     layout: {
       type: "tabs" as const,
       defaultCollapsed: false,
@@ -69,9 +74,9 @@ const getPaymentElementOptions = (_selectedMethod?: string) => {
       applePay: "never" as const,
       googlePay: "never" as const,
     },
-    // Let Stripe show enabled payment methods (card, EPS, Klarna)
-    // Backend controls which methods are available via paymentMethodTypes
   };
+
+  return options;
 };
 
 // Payment form component (inside Elements provider)

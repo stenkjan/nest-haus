@@ -148,6 +148,11 @@ export default function CheckoutStepper({
   const [_paymentError, setPaymentError] = useState<string | null>(null);
   const [contactWarning, setContactWarning] = useState<string | null>(null);
   const [inquiryId, setInquiryId] = useState<string | undefined>(undefined);
+  
+  // Email collection state
+  const [showEmailCollectionDialog, setShowEmailCollectionDialog] = useState(false);
+  const [collectedEmail, setCollectedEmail] = useState("");
+  const [collectedName, setCollectedName] = useState("");
 
   // Payment completion state
   const [isPaymentCompleted, setIsPaymentCompleted] = useState(false);
@@ -1911,12 +1916,20 @@ export default function CheckoutStepper({
       grundstueckData = userDataFromDb;
     }
 
-    // Merge data with priority: appointment data > grundstueck data > database data
+    // Check for collected email/name from payment dialog (sessionStorage)
+    let collectedEmailFromSession = "";
+    let collectedNameFromSession = "";
+    if (typeof window !== "undefined") {
+      collectedEmailFromSession = sessionStorage.getItem('nest-haus-user-email') || "";
+      collectedNameFromSession = sessionStorage.getItem('nest-haus-user-name') || "";
+    }
+
+    // Merge data with priority: appointment data > grundstueck data > collected data > database data
     return {
-      name: appointmentData?.name || grundstueckData?.name || "",
+      name: appointmentData?.name || grundstueckData?.name || collectedNameFromSession || "",
       lastName: appointmentData?.lastName || grundstueckData?.lastName || "",
       phone: appointmentData?.phone || grundstueckData?.phone || "",
-      email: appointmentData?.email || grundstueckData?.email || "",
+      email: appointmentData?.email || grundstueckData?.email || collectedEmailFromSession || "",
       address: grundstueckData?.address || "",
       addressLine2: grundstueckData?.addressLine2 || "",
       propertyNumber: grundstueckData?.propertyNumber || "",
@@ -4112,7 +4125,16 @@ export default function CheckoutStepper({
                 size="xs"
                 className="whitespace-nowrap"
                 onClick={() => {
-                  // Open payment modal directly - no appointment required
+                  // Check if email exists
+                  const userEmail = getUserData.email || collectedEmail;
+                  
+                  if (!userEmail) {
+                    // Show email collection dialog
+                    setShowEmailCollectionDialog(true);
+                    return;
+                  }
+                  
+                  // Email exists - proceed to payment
                   setIsPaymentModalOpen(true);
                 }}
                 disabled={isPaymentCompleted}
@@ -4670,8 +4692,17 @@ export default function CheckoutStepper({
                       onScrollToContact();
                     }
                   } else {
+                    // Check if email exists before proceeding to payment
+                    const userEmail = getUserData.email || collectedEmail;
+                    
+                    if (!userEmail) {
+                      // Show email collection dialog
+                      setShowEmailCollectionDialog(true);
+                      return;
+                    }
+                    
                     // Production flow: Create inquiry with cart data, then open Stripe payment modal
-                    // No appointment required - allow payment directly
+                    // Email exists - proceed to payment
                     setContactWarning(null);
                     setPaymentError(null);
 
@@ -4721,6 +4752,57 @@ export default function CheckoutStepper({
           </div>
         )}
       </div>
+
+      {/* Email Collection Dialog - Before Payment */}
+      {showEmailCollectionDialog && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
+          <div className="bg-white rounded-2xl p-8 max-w-md w-full mx-4">
+            <h2 className="text-2xl font-semibold mb-4 text-gray-900">
+              E-Mail für Zahlungsbestätigung
+            </h2>
+            <p className="text-gray-600 mb-6">
+              Wir benötigen deine E-Mail-Adresse, um dir die Zahlungsbestätigung zusenden zu können.
+            </p>
+            
+            <form onSubmit={(e) => {
+              e.preventDefault();
+              if (collectedEmail && collectedEmail.includes('@')) {
+                // Save to sessionStorage
+                sessionStorage.setItem('nest-haus-user-email', collectedEmail);
+                
+                // Close dialog and open payment
+                setShowEmailCollectionDialog(false);
+                setIsPaymentModalOpen(true);
+              }
+            }}>
+              <input
+                type="email"
+                required
+                value={collectedEmail}
+                onChange={(e) => setCollectedEmail(e.target.value)}
+                placeholder="deine@email.at"
+                className="w-full px-4 py-3 border border-gray-300 rounded-lg mb-6 focus:outline-none focus:ring-2 focus:ring-blue-500"
+              />
+              
+              <div className="flex gap-3">
+                <button
+                  type="button"
+                  onClick={() => setShowEmailCollectionDialog(false)}
+                  className="flex-1 px-4 py-3 border border-gray-300 rounded-full hover:bg-gray-50 transition-colors"
+                >
+                  Abbrechen
+                </button>
+                <button
+                  type="submit"
+                  className="flex-1 px-4 py-3 bg-blue-600 text-white rounded-full hover:bg-blue-700 transition-colors"
+                >
+                  Weiter zur Zahlung
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
 
       {/* Payment Modal */}
       {isPaymentModalOpen && (
@@ -4789,16 +4871,16 @@ export default function CheckoutStepper({
   }
 
   function getCustomerEmail(): string {
-    // Get email from user data (appointment or grundstueck form)
-    return getUserData.email || "";
+    // Priority: collected email state > user data (forms/storage)
+    return collectedEmail || getUserData.email || "";
   }
 
   function getCustomerName(): string {
-    // Get name from user data (appointment or grundstueck form)
+    // Get name from user data (appointment or grundstueck form) or collected name
     const fullName =
       getUserData.name && getUserData.lastName
         ? `${getUserData.name} ${getUserData.lastName}`
-        : getUserData.name || "";
+        : getUserData.name || collectedName || "";
     return fullName || "NEST-Haus Kunde";
   }
 
