@@ -473,10 +473,7 @@ export default function PaymentModal({
 
           {/* Title for success step - outside the box */}
           {paymentStep === "success" && (
-            <div className="mb-6 text-center relative z-50">
-              <h1 className="text-3xl md:text-4xl font-bold text-black mb-2">
-                Zahlung erfolgreich!
-              </h1>
+            <div className="mt-12 mb-6 text-center relative z-50">
               <h2 className="h2-title text-gray-700">
                 Vielen Dank! Ihre Zahlung wurde verarbeitet
               </h2>
