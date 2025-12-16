@@ -4,6 +4,20 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [aa3dfe348e091f80906947eb5ff34cce0ffaad45] - Tue Dec 16 16:07:32 2025 +0100
+
+**Author**: stenkjan
+**Message**: `🔧 Refactor WarenkorbClient and CheckoutStepper to improve step navigation logic and enhance payment modal handling by incorporating additional status checks for payment processing, ensuring a smoother user experience during checkout.  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/warenkorb/WarenkorbClient.tsx
+- src/app/warenkorb/components/CheckoutStepper.tsx
+
+
+---
+
 ## [2d92bd47b60f10c702e8f28bdd323fa75504f8cb] - Tue Dec 16 15:43:52 2025 +0100
 
 **Author**: stenkjan
