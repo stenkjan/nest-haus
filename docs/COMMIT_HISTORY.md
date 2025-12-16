@@ -4,6 +4,19 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [e997b96e71e80a65992293494e3f3eb5e992faef] - Tue Dec 16 13:43:36 2025 +0100
+
+**Author**: stenkjan
+**Message**: `🔧 Update image quality settings in next.config.ts to include 85 as an additional option for improved flexibility.  `
+
+### Changes Analysis
+
+#### 🔧 Configuration Changes
+- next.config.ts
+
+
+---
+
 ## [15e47149fe3b32a10b51de1b0a532ea0857d316b] - Tue Dec 16 13:32:45 2025 +0100
 
 **Author**: stenkjan
