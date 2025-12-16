@@ -23,7 +23,7 @@ import { SectionRouter } from "@/components/SectionRouter";
 const sections = [
   {
     id: "schritte",
-    title: "Konzept-Check & Grundstücksanalyse",
+    title: "Inhalt des Konzept-Checks",
     slug: "schritte",
   },
   {
@@ -105,53 +105,57 @@ export default function KonzeptcheckClient() {
                 />
               </div>
 
-              {/* Button, Bullets, and Price Box at Bottom */}
-              <div className="flex flex-col items-center gap-6">
-                {/* Single Button */}
+              {/* Button at Bottom */}
+              <div className="flex justify-center">
                 <Link href="/warenkorb?mode=konzept-check">
                   <Button variant="primary" size="xs">
                     Konzept-Check bestellen
                   </Button>
                 </Link>
+              </div>
+            </div>
+          </div>
 
-                {/* Bullets and Price Box - Side by side on desktop, stacked on mobile */}
-                <div className="flex flex-col md:flex-row gap-6 md:gap-12 w-full max-w-5xl items-center md:items-start justify-center">
-                  {/* Left side: Bullets */}
-                  <div className="text-white">
-                    <p className="p-secondary mb-3 text-center md:text-left">
-                      <span className="font-medium">
-                        Mit dem Konzept-Check erhältst du:
-                      </span>
-                    </p>
-                    <ul className="p-secondary list-disc list-inside space-y-2 text-left">
-                      <li>Grundstücksanalyse</li>
-                      <li>Entwurfsplan</li>
-                      <li>Kostenplanung</li>
-                    </ul>
-                  </div>
+          {/* Bullets and Price Box - Below image, side by side on desktop, stacked on mobile */}
+          <div className="w-full py-8 md:py-12 bg-white">
+            <div className="flex flex-col gap-6 w-full max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+              {/* Centered title above both columns */}
+              <p className="p-secondary text-center">
+                Mit dem Konzept-Check erhältst du
+              </p>
 
-                  {/* Right side: Price Box */}
-                  <div className="bg-white rounded-2xl border border-gray-300 overflow-hidden min-w-[280px] md:min-w-[320px]">
-                    <div className="p-4 md:p-6">
-                      <div className="flex justify-between items-start gap-4">
-                        <div className="flex-1 min-w-0">
-                          <div className="text-sm md:text-base lg:text-lg font-normal text-gray-900 leading-relaxed">
-                            Konzept-Check
-                          </div>
-                          <div className="text-xs md:text-sm text-gray-500 leading-snug mt-1">
-                            Grundstücksanalyse und Entwurfsplan
-                          </div>
-                        </div>
+              {/* Two columns: Bullets left, Price box right */}
+              <div className="flex flex-col md:flex-row gap-6 md:gap-12 items-center md:items-start justify-center">
+                {/* Left side: Bullets */}
+                <div className="text-black">
+                  <ul className="p-secondary list-disc list-inside space-y-1 text-left">
+                    <li>Grundstücksanalyse</li>
+                    <li>Entwurfsplan</li>
+                    <li>Kostenplanung</li>
+                  </ul>
+                </div>
+
+                {/* Right side: Price Box */}
+                <div className="bg-white rounded-2xl border border-gray-300 overflow-hidden min-w-[280px] md:min-w-[320px]">
+                  <div className="p-4 md:p-6">
+                    <div className="flex justify-between items-start gap-4">
+                      <div className="flex-1 min-w-0">
                         <div className="text-sm md:text-base lg:text-lg font-normal text-gray-900 leading-relaxed">
-                          <div className="flex items-center gap-2 justify-end">
-                            <span className="text-gray-400 line-through">
-                              3.000 €
-                            </span>
-                            <span className="font-medium">1.500 €</span>
-                          </div>
-                          <div className="text-xs text-gray-500 text-right mt-1">
-                            Preise inkl. MwSt.
-                          </div>
+                          Konzept-Check
+                        </div>
+                        <div className="text-xs md:text-sm text-gray-500 leading-snug mt-1">
+                          Grundstücksanalyse und Entwurfsplan
+                        </div>
+                      </div>
+                      <div className="text-sm md:text-base lg:text-lg font-normal text-gray-900 leading-relaxed">
+                        <div className="flex items-center gap-2 justify-end">
+                          <span className="text-gray-400 line-through">
+                            3.000 €
+                          </span>
+                          <span className="font-medium">1.500 €</span>
+                        </div>
+                        <div className="text-xs text-gray-500 text-right mt-1">
+                          Preise inkl. MwSt.
                         </div>
                       </div>
                     </div>
@@ -288,6 +292,17 @@ export default function KonzeptcheckClient() {
               },
             ]}
           />
+
+          {/* Mobile-only button underneath the card */}
+          {isMobile && (
+            <div className="flex justify-center mt-6">
+              <Link href="/konfigurator">
+                <Button variant="primary" size="xs">
+                  Konfigurator
+                </Button>
+              </Link>
+            </div>
+          )}
         </section>
 
         {/* Video Examples Section */}
