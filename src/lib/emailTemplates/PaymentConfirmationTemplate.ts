@@ -604,8 +604,7 @@ export function generatePaymentConfirmationEmail(data: PaymentConfirmationEmailD
           </div>
           
           <!-- Adresse Box -->
-          <div class="contact-box">
-
+          <div class="contact-box" style="margin-top: 16px;">
             <h3>Adresse</h3>
             <div class="contact-grid">
               <span class="contact-label">Straße:</span>
