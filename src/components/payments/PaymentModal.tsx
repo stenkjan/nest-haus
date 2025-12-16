@@ -336,7 +336,7 @@ export default function PaymentModal({
   );
   const [selectedMethod, setSelectedMethod] = useState<PaymentMethod>("card");
   const [paymentState, setPaymentState] = useState<
-    "form" | "success" | "error"
+    "form" | "verifying" | "success" | "error"
   >(initialPaymentState || "form");
   const [paymentIntentId, setPaymentIntentId] = useState<string>(
     initialPaymentIntentId || ""
