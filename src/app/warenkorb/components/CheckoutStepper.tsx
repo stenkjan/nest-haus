@@ -162,6 +162,7 @@ export default function CheckoutStepper({
   const [paymentCompletedDate, setPaymentCompletedDate] = useState<Date | null>(
     null
   );
+  const [showPaymentSuccessState, setShowPaymentSuccessState] = useState(false);
   const [showPlanungspaketeDetails, setShowPlanungspaketeDetails] =
     useState(false);
 
@@ -2520,12 +2521,12 @@ export default function CheckoutStepper({
                     </h3>
                   </div>
 
-                  {/* 2-Column Grid: Forms left, Calendar right */}
-                  <div className="flex flex-col md:grid md:grid-cols-2 gap-8">
+                  {/* 2-Column Grid: Forms left, Calendar right - Aligned button heights */}
+                  <div className="flex flex-col md:grid md:grid-cols-2 md:items-end gap-8">
                     {/* LEFT COLUMN: Deine Daten + Grundstück + Info Text */}
-                    <div className="space-y-6">
+                    <div className="w-full flex flex-col">
                       {/* Use GrundstueckCheckForm with all fields */}
-                      <div className="w-full md:pt-12">
+                      <div className="w-full md:pt-12 pb-4">
                         <GrundstueckCheckForm
                           backgroundColor="white"
                           maxWidth={false}
@@ -2537,8 +2538,11 @@ export default function CheckoutStepper({
                     </div>
 
                     {/* RIGHT COLUMN: Calendar (AppointmentBooking without showing form fields) */}
-                    <div className="w-full" data-section="appointment-booking">
-                      <div className="w-full max-w-[520px] md:ml-auto">
+                    <div
+                      className="w-full flex flex-col"
+                      data-section="appointment-booking"
+                    >
+                      <div className="w-full max-w-[520px] md:ml-auto pb-4">
                         <AppointmentBooking
                           showLeftSide={false}
                           showSubmitButton={true}
@@ -4861,7 +4865,10 @@ export default function CheckoutStepper({
       {isPaymentModalOpen && (
         <PaymentModal
           isOpen={isPaymentModalOpen}
-          onClose={() => setIsPaymentModalOpen(false)}
+          onClose={() => {
+            setIsPaymentModalOpen(false);
+            setShowPaymentSuccessState(false);
+          }}
           amount={paymentRedirectStatus?.amount || getPaymentAmount()}
           currency={paymentRedirectStatus?.currency || "eur"}
           customerEmail={getCustomerEmail()}
@@ -4870,10 +4877,14 @@ export default function CheckoutStepper({
           onSuccess={handlePaymentSuccess}
           onError={handlePaymentError}
           initialPaymentIntentId={
-            paymentRedirectStatus?.paymentIntentId || undefined
+            successfulPaymentIntentId ||
+            paymentRedirectStatus?.paymentIntentId ||
+            undefined
           }
           initialPaymentState={
-            paymentRedirectStatus?.success ? "success" : undefined
+            showPaymentSuccessState || paymentRedirectStatus?.success
+              ? "success"
+              : undefined
           }
         />
       )}
@@ -5019,6 +5030,7 @@ export default function CheckoutStepper({
     setIsPaymentCompleted(true); // Mark payment as completed
     setSuccessfulPaymentIntentId(paymentIntentId); // Store the payment intent ID
     setPaymentCompletedDate(new Date()); // Store the payment completion date
+    setShowPaymentSuccessState(true); // Track that we should show success
 
     // DON'T close the modal yet - let the user see the success message
     // The PaymentModal will show the success screen
@@ -5051,7 +5063,12 @@ export default function CheckoutStepper({
 
   async function sendPaymentConfirmationEmails(paymentIntentId: string) {
     try {
-      console.log("📧 Sending payment confirmation emails...");
+      console.log("📧 Sending payment confirmation emails...", {
+        paymentIntentId,
+        inquiryId,
+        customerEmail: getCustomerEmail(),
+        customerName: getCustomerName(),
+      });
 
       const response = await fetch("/api/payments/send-confirmation-emails", {
         method: "POST",
@@ -5071,18 +5088,21 @@ export default function CheckoutStepper({
             "✅ Payment confirmation emails already sent (idempotent)"
           );
         } else {
-          console.log("✅ Payment confirmation emails sent successfully");
+          console.log(
+            "✅ Payment confirmation emails sent successfully",
+            result
+          );
         }
       } else {
-        console.warn(
-          "⚠️ Failed to send confirmation emails (webhook will handle)"
+        const errorText = await response.text();
+        console.error(
+          "❌ Failed to send confirmation emails:",
+          response.status,
+          errorText
         );
       }
     } catch (error) {
-      console.warn(
-        "⚠️ Error sending confirmation emails (webhook will handle):",
-        error
-      );
+      console.error("❌ Error sending confirmation emails:", error);
     }
   }
 
