@@ -2787,17 +2787,7 @@ export default function CheckoutStepper({
 
         {stepIndex === 2 && (
           <div className="space-y-4 pt-16 md:pt-16">
-            {/* Show notification if redirected without booking appointment */}
-            {contactWarning && (
-              <div className="flex justify-center mb-6">
-                <div className="border-2 border-gray-300 rounded-xl px-6 py-4 max-w-2xl bg-white">
-                  <p className="text-black font-normal text-base text-center">
-                    Bitte buchen Sie einen Beratungstermin, um die Zahlung Ihres
-                    Entwurfs abzuschließen.
-                  </p>
-                </div>
-              </div>
-            )}
+            {/* Warning banner removed - appointments no longer required */}
             {/* Terminvereinbarung with centered title */}
             <div className="text-center mb-12 md:mb-16">
               <h2 className="h2-title text-black mb-2 md:mb-3">
@@ -4122,15 +4112,7 @@ export default function CheckoutStepper({
                 size="xs"
                 className="whitespace-nowrap"
                 onClick={() => {
-                  // Validate email exists before opening payment
-                  if (!getUserData.email) {
-                    setContactWarning(
-                      "Bitte fülle zuerst das Terminvereinbarungsformular aus, damit wir deine E-Mail-Adresse haben."
-                    );
-                    setStepIndex(3); // Navigate to Terminvereinbarung
-                    setTimeout(() => setContactWarning(null), 8000);
-                    return;
-                  }
+                  // Open payment modal directly - no appointment required
                   setIsPaymentModalOpen(true);
                 }}
                 disabled={isPaymentCompleted}
@@ -4687,17 +4669,9 @@ export default function CheckoutStepper({
                     if (onScrollToContact) {
                       onScrollToContact();
                     }
-                  } else if (!contactSubmitted) {
-                    // Production flow: Check if contact form was filled
-                    setContactWarning(
-                      "Bitte fülle zuerst das Terminvereinbarungsformular aus, damit wir dich kontaktieren können."
-                    );
-                    // Scroll to contact section (step 3: Terminvereinbarung)
-                    setStepIndex(3); // Navigate to Terminvereinbarung section (index 3)
-                    // Clear warning after 8 seconds
-                    setTimeout(() => setContactWarning(null), 8000);
                   } else {
                     // Production flow: Create inquiry with cart data, then open Stripe payment modal
+                    // No appointment required - allow payment directly
                     setContactWarning(null);
                     setPaymentError(null);
 

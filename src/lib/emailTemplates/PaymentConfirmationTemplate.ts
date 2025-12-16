@@ -659,7 +659,7 @@ ${data.paymentIntentId ? `- Transaktions-ID: ${data.paymentIntentId}` : ''}
 
 DIE NÄCHSTEN SCHRITTE:
 1. Bestätigung: Sie erhalten diese E-Mail als Zahlungsnachweis
-2. Kontaktaufnahme: Wir melden uns in Kürzebei Ihnen
+2. Kontaktaufnahme: Wir melden uns in Kürze bei Ihnen
 3. Planung: Gemeinsam besprechen wir die Details Ihres Nest-Haus Projekts
 4. Umsetzung: Wir starten mit der professionellen Planung und Ausführung
 
