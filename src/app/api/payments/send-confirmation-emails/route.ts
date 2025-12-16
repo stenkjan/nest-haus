@@ -95,15 +95,9 @@ export async function POST(request: NextRequest) {
             }
         }
 
-        // Check if emails already sent (idempotency check)
-        if (inquiry.emailsSent) {
-            console.log('✅ Emails already sent for this payment, skipping');
-            return NextResponse.json({
-                success: true,
-                alreadySent: true,
-                message: 'Emails already sent for this payment',
-            });
-        }
+        // Note: Removed emailsSent idempotency check
+        // Each payment intent is unique, so we always send emails when requested
+        // This allows the same customer to receive emails for multiple payments
 
         // Prepare email data
         const emailData = {

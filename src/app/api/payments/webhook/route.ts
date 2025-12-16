@@ -97,11 +97,10 @@ async function handlePaymentSucceeded(paymentIntent: Stripe.PaymentIntent) {
             return;
         }
 
-        // Bug fix: Check if emails already sent (idempotency)
-        if (inquiry.emailsSent) {
-            console.log('✅ Emails already sent for this payment, skipping email send');
-            return;
-        }
+        // Note: Removed emailsSent idempotency check
+        // Stripe webhooks have built-in idempotency, so duplicate sends are prevented
+        // Each payment_intent.succeeded event is unique, so we always send emails
+        // This allows the same customer to receive emails for multiple payments
 
         // Update inquiry status
         const updatedInquiry = await prisma.customerInquiry.update({

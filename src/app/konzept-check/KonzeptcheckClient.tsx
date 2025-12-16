@@ -65,9 +65,10 @@ export default function KonzeptcheckClient() {
   const konzeptcheckVideoCards = ENTWURF_VIDEO_CARDS_PRESET.cards;
 
   // Mobile detection for conditional button rendering
+  // Uses 1024px breakpoint to match UnifiedContentCard's button hiding behavior
   useEffect(() => {
     const checkDevice = () => {
-      const newIsMobile = window.innerWidth < 768;
+      const newIsMobile = window.innerWidth < 1024;
       setIsMobile(newIsMobile);
     };
 
@@ -234,7 +235,7 @@ export default function KonzeptcheckClient() {
                 buttons: [
                   {
                     text: "Ohne Konfigurator fortfahren",
-                    variant: "landing-secondary-blue",
+                    variant: "primary",
                     size: "xs",
                     link: "/warenkorb?mode=konzept-check",
                   },
@@ -246,9 +247,9 @@ export default function KonzeptcheckClient() {
           {/* Mobile-only button underneath the card */}
           {isMobile && (
             <div className="flex justify-center mt-6">
-              <Link href="/konfigurator">
+              <Link href="/warenkorb?mode=konzept-check">
                 <Button variant="primary" size="xs">
-                  Jetzt konfigurieren
+                  Ohne Konfigurator fortfahren
                 </Button>
               </Link>
             </div>
@@ -283,7 +284,7 @@ export default function KonzeptcheckClient() {
                 imagePosition: "center" as const,
                 buttons: [
                   {
-                    text: "Konfigurator",
+                    text: "Jetzt konfigurieren",
                     variant: "primary",
                     size: "xs",
                     link: "/konfigurator",
@@ -298,7 +299,7 @@ export default function KonzeptcheckClient() {
             <div className="flex justify-center mt-6">
               <Link href="/konfigurator">
                 <Button variant="primary" size="xs">
-                  Konfigurator
+                  Jetzt konfigurieren
                 </Button>
               </Link>
             </div>
