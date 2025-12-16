@@ -11,6 +11,7 @@ interface LandingImagesCarouselProps {
   backgroundColor?: "white" | "gray" | "black";
   maxWidth?: boolean;
   intervalMs?: number;
+  forceDesktopImages?: boolean;
 }
 
 interface _ImageDescription {
@@ -29,6 +30,7 @@ const LandingImagesCarousel: React.FC<LandingImagesCarouselProps> = ({
   maxWidth = true,
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   intervalMs = 5000,
+  forceDesktopImages = false,
 }) => {
   const [isMobile, setIsMobile] = useState(false);
 
@@ -297,7 +299,7 @@ const LandingImagesCarousel: React.FC<LandingImagesCarouselProps> = ({
                   className="flex-shrink-0 px-2"
                   style={{ width: `${imageWidth}px` }}
                 >
-                  {isMobile ? (
+                  {isMobile && !forceDesktopImages ? (
                     <Link
                       href={`/#${img.description.sectionSlug}`}
                       className="relative block w-full transition-transform duration-300 hover:scale-[1.02] hover:z-10"

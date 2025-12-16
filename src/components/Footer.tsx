@@ -79,7 +79,11 @@ export default function Footer() {
           Lass dich inspirieren und entdecke die Vielfalt unserer zahlreichen
           Konfigurationen
         </h3>
-        <LandingImagesCarousel backgroundColor="white" maxWidth={false} />
+        <LandingImagesCarousel 
+          backgroundColor="white" 
+          maxWidth={false} 
+          forceDesktopImages={true} 
+        />
       </div>
 
       {/* Main footer content */}
