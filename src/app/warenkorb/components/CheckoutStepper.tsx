@@ -4758,57 +4758,103 @@ export default function CheckoutStepper({
 
       {/* Email Collection Dialog - Before Payment */}
       {showEmailCollectionDialog && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
-          <div className="bg-white rounded-2xl p-8 max-w-md w-full mx-4">
-            <h2 className="text-2xl font-semibold mb-4 text-gray-900">
-              E-Mail für Zahlungsbestätigung
-            </h2>
-            <p className="text-gray-600 mb-6">
-              Wir benötigen deine E-Mail-Adresse, um dir die Zahlungsbestätigung
-              zusenden zu können.
-            </p>
+        <div className="fixed inset-0 z-50 overflow-y-auto">
+          {/* Backdrop with blur effect - matches PaymentModal */}
+          <div
+            className="fixed inset-0 bg-black/10 backdrop-blur-md transition-all duration-300"
+            onClick={() => setShowEmailCollectionDialog(false)}
+          />
 
-            <form
-              onSubmit={(e) => {
-                e.preventDefault();
-                if (collectedEmail && collectedEmail.includes("@")) {
-                  // Save to sessionStorage
-                  sessionStorage.setItem(
-                    "nest-haus-user-email",
-                    collectedEmail
-                  );
+          {/* Modal */}
+          <div className="flex min-h-full items-center justify-center p-4">
+            <div className="w-full max-w-2xl">
+              {/* Title and subtitle - outside the box, not blurred */}
+              <div className="mb-6 text-center relative z-50">
+                <h2 className="h2-title text-black mb-2">
+                  E-Mail für Zahlungsbestätigung
+                </h2>
+                <p className="h3-primary text-gray-700">
+                  Wir benötigen deine E-Mail-Adresse, um dir die
+                  Zahlungsbestätigung zusenden zu können
+                </p>
+              </div>
 
-                  // Close dialog and open payment
-                  setShowEmailCollectionDialog(false);
-                  setIsPaymentModalOpen(true);
-                }
-              }}
-            >
-              <input
-                type="email"
-                required
-                value={collectedEmail}
-                onChange={(e) => setCollectedEmail(e.target.value)}
-                placeholder="deine@email.at"
-                className="w-full px-4 py-3 border border-gray-300 rounded-lg mb-6 focus:outline-none focus:ring-2 focus:ring-blue-500"
-              />
-
-              <div className="flex gap-3">
+              <div className="relative bg-[#F4F4F4] rounded-3xl shadow-2xl border border-gray-200/50 w-full transform transition-all duration-300 scale-100 opacity-100 translate-y-0">
+                {/* Close button */}
                 <button
-                  type="button"
                   onClick={() => setShowEmailCollectionDialog(false)}
-                  className="flex-1 px-4 py-3 border border-gray-300 rounded-full hover:bg-gray-50 transition-colors"
+                  className="absolute top-4 right-4 text-gray-400 hover:text-gray-600 transition-colors z-10"
+                >
+                  <svg
+                    className="h-6 w-6"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M6 18L18 6M6 6l12 12"
+                    />
+                  </svg>
+                </button>
+
+                {/* Content */}
+                <div className="p-6 md:p-8">
+                  <form
+                    onSubmit={(e) => {
+                      e.preventDefault();
+                      if (collectedEmail && collectedEmail.includes("@")) {
+                        // Save to sessionStorage
+                        sessionStorage.setItem(
+                          "nest-haus-user-email",
+                          collectedEmail
+                        );
+
+                        // Close dialog and open payment
+                        setShowEmailCollectionDialog(false);
+                        setIsPaymentModalOpen(true);
+                      }
+                    }}
+                  >
+                    <input
+                      type="email"
+                      required
+                      value={collectedEmail}
+                      onChange={(e) => setCollectedEmail(e.target.value)}
+                      placeholder="deine@email.at"
+                      className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    />
+                  </form>
+                </div>
+              </div>
+
+              {/* Action buttons outside the box */}
+              <div className="flex gap-4 justify-center mt-6 relative z-50">
+                <button
+                  onClick={() => setShowEmailCollectionDialog(false)}
+                  className="rounded-full transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-offset-2 inline-flex items-center justify-center font-normal whitespace-nowrap bg-white border border-gray-300 text-gray-700 hover:bg-gray-50 hover:border-gray-400 focus:ring-gray-400 box-border px-4 py-1.5 text-sm xl:text-base 2xl:text-lg"
                 >
                   Abbrechen
                 </button>
                 <button
-                  type="submit"
-                  className="flex-1 px-4 py-3 bg-blue-600 text-white rounded-full hover:bg-blue-700 transition-colors"
+                  onClick={() => {
+                    if (collectedEmail && collectedEmail.includes("@")) {
+                      sessionStorage.setItem(
+                        "nest-haus-user-email",
+                        collectedEmail
+                      );
+                      setShowEmailCollectionDialog(false);
+                      setIsPaymentModalOpen(true);
+                    }
+                  }}
+                  className="rounded-full transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-offset-2 inline-flex items-center justify-center font-normal whitespace-nowrap bg-[#3D6CE1] border border-[#3D6CE1] text-white hover:bg-[#2E5BC7] hover:border-[#2E5BC7] focus:ring-[#3D6CE1] box-border px-4 py-1.5 text-sm xl:text-base 2xl:text-lg"
                 >
                   Weiter zur Zahlung
                 </button>
               </div>
-            </form>
+            </div>
           </div>
         </div>
       )}
