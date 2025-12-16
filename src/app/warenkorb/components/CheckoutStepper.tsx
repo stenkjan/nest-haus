@@ -153,7 +153,6 @@ export default function CheckoutStepper({
   const [showEmailCollectionDialog, setShowEmailCollectionDialog] =
     useState(false);
   const [collectedEmail, setCollectedEmail] = useState("");
-  const [collectedName, setCollectedName] = useState("");
 
   // Payment completion state
   const [isPaymentCompleted, setIsPaymentCompleted] = useState(false);
@@ -1917,23 +1916,16 @@ export default function CheckoutStepper({
       grundstueckData = userDataFromDb;
     }
 
-    // Check for collected email/name from payment dialog (sessionStorage)
+    // Check for collected email from payment dialog (sessionStorage)
     let collectedEmailFromSession = "";
-    let collectedNameFromSession = "";
     if (typeof window !== "undefined") {
       collectedEmailFromSession =
         sessionStorage.getItem("nest-haus-user-email") || "";
-      collectedNameFromSession =
-        sessionStorage.getItem("nest-haus-user-name") || "";
     }
 
     // Merge data with priority: appointment data > grundstueck data > collected data > database data
     return {
-      name:
-        appointmentData?.name ||
-        grundstueckData?.name ||
-        collectedNameFromSession ||
-        "",
+      name: appointmentData?.name || grundstueckData?.name || "",
       lastName: appointmentData?.lastName || grundstueckData?.lastName || "",
       phone: appointmentData?.phone || grundstueckData?.phone || "",
       email:
@@ -4893,11 +4885,11 @@ export default function CheckoutStepper({
   }
 
   function getCustomerName(): string {
-    // Get name from user data (appointment or grundstueck form) or collected name
+    // Get name from user data (appointment or grundstueck form)
     const fullName =
       getUserData.name && getUserData.lastName
         ? `${getUserData.name} ${getUserData.lastName}`
-        : getUserData.name || collectedName || "";
+        : getUserData.name || "";
     return fullName || "NEST-Haus Kunde";
   }
 
