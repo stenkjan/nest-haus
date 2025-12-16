@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useState, useEffect } from "react";
 
 interface ProtectedPhoneNumberProps {
   /** The phone number to display (e.g., "+43 664 3949605") */
@@ -38,9 +38,12 @@ export const ProtectedPhoneNumber: React.FC<ProtectedPhoneNumberProps> = ({
   const cleanNumber = number.replace(/[^\d+]/g, "");
   
   // Base64 encode the tel link to prevent simple scraping
-  const encodedTel = typeof window !== "undefined" 
-    ? btoa(`tel:${cleanNumber}`)
-    : "";
+  // Use state to avoid hydration mismatch - only set after client-side mount
+  const [encodedTel, setEncodedTel] = useState("");
+
+  useEffect(() => {
+    setEncodedTel(btoa(`tel:${cleanNumber}`));
+  }, [cleanNumber]);
 
   // Reverse the number for data attribute obfuscation
   const reversedNumber = number.split("").reverse().join("");

@@ -8,7 +8,6 @@ import { useDeviceDetect } from "@/hooks";
 import {
   ContactMap as _ContactMap,
   AppointmentBookingSection,
-  GrundstueckCheckForm,
   LandingImagesCarousel as _LandingImagesCarousel,
   SectionHeader,
 } from "@/components/sections";
@@ -20,11 +19,6 @@ const sections = [
     id: "terminvereinbarung",
     title: "Terminvereinbarung",
     slug: "terminvereinbarung",
-  },
-  {
-    id: "grundstueckscheck",
-    title: "Grundstück Check",
-    slug: "grundstueckscheck",
   },
   {
     id: "kontakt-karte",
@@ -66,29 +60,7 @@ export default function KontaktClient() {
           />
         </section>
 
-        {/* Section 2 - Dein Grundstück - Unser Check */}
-        <section
-          id="grundstueckscheck"
-          className="w-full py-8 md:py-16 bg-white"
-        >
-          <SectionHeader
-            title="Deine Grundstücksanalyse"
-            subtitle="Wir überprüfen für dich wie dein neues Haus auf ein Grundstück deiner Wahl passt"
-            titleClassName="text-black"
-            subtitleClassName="text-black"
-            mobileTitle="Deine Grundstücksanalyse"
-            wrapperMargin="mb-8 md:mb-12"
-          />
-          <GrundstueckCheckForm
-            backgroundColor="white"
-            maxWidth="max-w-[1536px]"
-            showHeader={false}
-            excludePersonalData={false}
-            useWrapper={false}
-          />
-        </section>
-
-        {/* Section 3 - Wo du uns findest */}
+        {/* Section 2 - Wo du uns findest */}
         <section id="kontakt-karte" className="w-full py-8 md:py-16">
           <SectionHeader
             title="Wo du uns findest"

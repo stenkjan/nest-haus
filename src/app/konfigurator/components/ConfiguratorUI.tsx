@@ -288,21 +288,29 @@ export default function ConfiguratorUI({ logic, rightPanelRef }: ConfiguratorUIP
                       )}
                     </>
                   )}
-
-                  {/* Facts Box */}
-                  {category.facts && (
-                    <FactsBox
-                      title={category.facts.title}
-                      facts={category.facts.content}
-                      links={category.facts.links}
-                    />
-                  )}
                 </>
               );
             })()}
           </CategorySection>
         </React.Fragment>
       ))}
+
+      {/* Energieausweis Facts Box - positioned after planungspaket and before summary */}
+      {(() => {
+        const nestCategory = configuratorData.find(cat => cat.id === "nest");
+        if (nestCategory?.facts) {
+          return (
+            <div className="px-[clamp(0.875rem,2.75vw,1.75rem)]">
+              <FactsBox
+                title={nestCategory.facts.title}
+                facts={nestCategory.facts.content}
+                links={nestCategory.facts.links}
+              />
+            </div>
+          );
+        }
+        return null;
+      })()}
 
       <SummaryPanel onInfoClick={handleInfoClick} onReset={resetLocalState} />
     </div>
