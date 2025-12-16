@@ -52,19 +52,14 @@ interface StripeCheckoutFormProps {
 
 // Payment element configuration
 const getPaymentElementOptions = (selectedMethod?: string) => {
-  // Pre-select the payment method chosen in Step 1
-  // For EPS and Klarna, this will trigger automatic redirect when form loads
+  // Configure PaymentElement with proper Stripe options
+  // Use accordion layout to support EPS/Klarna redirect behavior
   
-  const options: {
-    layout: { type: "tabs"; defaultCollapsed: boolean; radios: boolean; spacedAccordionItems: boolean };
-    fields: { billingDetails: "auto" };
-    wallets: { applePay: "never"; googlePay: "never" };
-    defaultValues?: { billingDetails?: { email?: string } };
-  } = {
+  return {
     layout: {
-      type: "tabs" as const,
+      type: "accordion" as const,
       defaultCollapsed: false,
-      radios: false,
+      radios: true,
       spacedAccordionItems: true,
     },
     fields: {
@@ -74,9 +69,11 @@ const getPaymentElementOptions = (selectedMethod?: string) => {
       applePay: "never" as const,
       googlePay: "never" as const,
     },
+    // Pre-select payment method if specified
+    ...(selectedMethod && selectedMethod !== "card" && {
+      paymentMethodOrder: [selectedMethod, "card"],
+    }),
   };
-
-  return options;
 };
 
 // Payment form component (inside Elements provider)

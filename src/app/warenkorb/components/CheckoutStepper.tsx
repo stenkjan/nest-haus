@@ -148,9 +148,10 @@ export default function CheckoutStepper({
   const [_paymentError, setPaymentError] = useState<string | null>(null);
   const [contactWarning, setContactWarning] = useState<string | null>(null);
   const [inquiryId, setInquiryId] = useState<string | undefined>(undefined);
-  
+
   // Email collection state
-  const [showEmailCollectionDialog, setShowEmailCollectionDialog] = useState(false);
+  const [showEmailCollectionDialog, setShowEmailCollectionDialog] =
+    useState(false);
   const [collectedEmail, setCollectedEmail] = useState("");
   const [collectedName, setCollectedName] = useState("");
 
@@ -1920,16 +1921,26 @@ export default function CheckoutStepper({
     let collectedEmailFromSession = "";
     let collectedNameFromSession = "";
     if (typeof window !== "undefined") {
-      collectedEmailFromSession = sessionStorage.getItem('nest-haus-user-email') || "";
-      collectedNameFromSession = sessionStorage.getItem('nest-haus-user-name') || "";
+      collectedEmailFromSession =
+        sessionStorage.getItem("nest-haus-user-email") || "";
+      collectedNameFromSession =
+        sessionStorage.getItem("nest-haus-user-name") || "";
     }
 
     // Merge data with priority: appointment data > grundstueck data > collected data > database data
     return {
-      name: appointmentData?.name || grundstueckData?.name || collectedNameFromSession || "",
+      name:
+        appointmentData?.name ||
+        grundstueckData?.name ||
+        collectedNameFromSession ||
+        "",
       lastName: appointmentData?.lastName || grundstueckData?.lastName || "",
       phone: appointmentData?.phone || grundstueckData?.phone || "",
-      email: appointmentData?.email || grundstueckData?.email || collectedEmailFromSession || "",
+      email:
+        appointmentData?.email ||
+        grundstueckData?.email ||
+        collectedEmailFromSession ||
+        "",
       address: grundstueckData?.address || "",
       addressLine2: grundstueckData?.addressLine2 || "",
       propertyNumber: grundstueckData?.propertyNumber || "",
@@ -4127,13 +4138,13 @@ export default function CheckoutStepper({
                 onClick={() => {
                   // Check if email exists
                   const userEmail = getUserData.email || collectedEmail;
-                  
+
                   if (!userEmail) {
                     // Show email collection dialog
                     setShowEmailCollectionDialog(true);
                     return;
                   }
-                  
+
                   // Email exists - proceed to payment
                   setIsPaymentModalOpen(true);
                 }}
@@ -4694,13 +4705,13 @@ export default function CheckoutStepper({
                   } else {
                     // Check if email exists before proceeding to payment
                     const userEmail = getUserData.email || collectedEmail;
-                    
+
                     if (!userEmail) {
                       // Show email collection dialog
                       setShowEmailCollectionDialog(true);
                       return;
                     }
-                    
+
                     // Production flow: Create inquiry with cart data, then open Stripe payment modal
                     // Email exists - proceed to payment
                     setContactWarning(null);
@@ -4761,20 +4772,26 @@ export default function CheckoutStepper({
               E-Mail für Zahlungsbestätigung
             </h2>
             <p className="text-gray-600 mb-6">
-              Wir benötigen deine E-Mail-Adresse, um dir die Zahlungsbestätigung zusenden zu können.
+              Wir benötigen deine E-Mail-Adresse, um dir die Zahlungsbestätigung
+              zusenden zu können.
             </p>
-            
-            <form onSubmit={(e) => {
-              e.preventDefault();
-              if (collectedEmail && collectedEmail.includes('@')) {
-                // Save to sessionStorage
-                sessionStorage.setItem('nest-haus-user-email', collectedEmail);
-                
-                // Close dialog and open payment
-                setShowEmailCollectionDialog(false);
-                setIsPaymentModalOpen(true);
-              }
-            }}>
+
+            <form
+              onSubmit={(e) => {
+                e.preventDefault();
+                if (collectedEmail && collectedEmail.includes("@")) {
+                  // Save to sessionStorage
+                  sessionStorage.setItem(
+                    "nest-haus-user-email",
+                    collectedEmail
+                  );
+
+                  // Close dialog and open payment
+                  setShowEmailCollectionDialog(false);
+                  setIsPaymentModalOpen(true);
+                }
+              }}
+            >
               <input
                 type="email"
                 required
@@ -4783,7 +4800,7 @@ export default function CheckoutStepper({
                 placeholder="deine@email.at"
                 className="w-full px-4 py-3 border border-gray-300 rounded-lg mb-6 focus:outline-none focus:ring-2 focus:ring-blue-500"
               />
-              
+
               <div className="flex gap-3">
                 <button
                   type="button"
