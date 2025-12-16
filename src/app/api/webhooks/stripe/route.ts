@@ -142,7 +142,7 @@ export async function POST(request: NextRequest) {
                         } catch (adminEmailError) {
                             console.error(`[Stripe Webhook] ❌ Failed to send admin email:`, adminEmailError);
                         }
-                        
+
                         // Bug fix: Only mark emails as sent if at least one email succeeded
                         if (customerEmailSent || adminEmailSent) {
                             try {
