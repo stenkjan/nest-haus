@@ -209,7 +209,10 @@ export default function WarenkorbClient() {
         });
 
         // Navigate to abschluss step immediately
-        const abschlussStep = getIsOhneNestMode() ? 1 : 4;
+        // Determine mode from URL params or cart state (mode hasn't been set yet)
+        const hasConfigInCart = items.some(item => "nest" in item && item.nest);
+        const isKonzeptCheck = mode !== "configuration" && !hasConfigInCart;
+        const abschlussStep = isKonzeptCheck ? 1 : 4;
         setStepIndex(abschlussStep);
         window.history.replaceState(null, "", `#abschluss`);
 

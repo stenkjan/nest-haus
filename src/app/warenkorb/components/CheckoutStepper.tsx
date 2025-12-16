@@ -181,9 +181,12 @@ export default function CheckoutStepper({
   // Handle payment redirect returns
   useEffect(() => {
     if (paymentRedirectStatus?.show) {
-      if (paymentRedirectStatus.status === "verifying") {
-        console.log("⏳ Payment redirect verifying, opening modal");
-        // Open modal immediately in verifying state
+      if (
+        paymentRedirectStatus.status === "verifying" ||
+        paymentRedirectStatus.status === "processing"
+      ) {
+        console.log("⏳ Payment redirect verifying/processing, opening modal");
+        // Open modal immediately in verifying state (processing also shows verifying UI)
         setIsPaymentModalOpen(true);
       } else if (
         paymentRedirectStatus.status === "succeeded" ||
