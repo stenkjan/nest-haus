@@ -282,7 +282,7 @@ export default function KonzeptcheckClient() {
                 subtitle: "",
                 description:
                   "<span class='text-nest-gray'>Da eine verlässliche Kostenplanung besonders wichtig ist, behalten wir die Kosten für dein Bauvorhaben jederzeit </span><span class='text-black font-medium'>transparent und nachvollziehbar</span><span class='text-nest-gray'> im Überblick.</span>\n\n<span class='text-nest-gray'>Mit dem </span><span class='text-black font-medium'>Grundstückscheck</span><span class='text-nest-gray'> und deiner </span><span class='text-black font-medium'>individuellen Entwurfsplanung</span><span class='text-nest-gray'> können wir eine </span><span class='text-black font-medium'>exakte Kostenplanung</span><span class='text-nest-gray'> für dich erstellen. So hast du den </span><span class='text-black font-medium'>Gesamtpreis stets klar im Blick</span><span class='text-nest-gray'>.</span>",
-                image: IMAGES.function.nestHausLinienplanDreier,
+                video: IMAGES.variantvideo.twelve,
                 backgroundColor: "#F4F4F4",
                 imagePosition: "center" as const,
                 buttons: [

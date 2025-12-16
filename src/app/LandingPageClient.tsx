@@ -346,6 +346,16 @@ export default function LandingPageClient() {
                     customData={[
                       {
                         id: 1,
+                        title: "Die Vision Nest",
+                        subtitle: "®Nest mit Verantwortung",
+                        description: "",
+                        image: IMAGES.function.nestHausCardsTeamVisionMission,
+                        backgroundColor: "#F4F4F4",
+                        primaryAction: "Unsere Mission",
+                        primaryLink: "/warum-wir",
+                      },
+                      {
+                        id: 2,
                         title: "Wir bauen Freiheit",
                         subtitle: "Finde heraus was Nest ausmacht",
                         description: "",
@@ -357,7 +367,7 @@ export default function LandingPageClient() {
                         primaryLink: "/konfigurator",
                       },
                       {
-                        id: 2,
+                        id: 3,
                         title: "Konzept-Check",
                         subtitle: "Deine optimale Entscheidungsgrundlage",
                         description: "",
@@ -367,18 +377,6 @@ export default function LandingPageClient() {
                         backgroundColor: "#F4F4F4",
                         primaryAction: "Konzept-Check",
                         primaryLink: "/konzept-check",
-                      },
-                      {
-                        id: 3,
-                        title: "Dein Zuhause aus Holz",
-                        subtitle: "®Nest mit Verantwortung",
-                        description: "",
-                        image:
-                          IMAGES.function
-                            .nestHausNachhaltigkeitUnserePhilosophieMission,
-                        backgroundColor: "#F4F4F4",
-                        primaryAction: "Unsere Mission",
-                        primaryLink: "/warum-wir",
                       },
                       {
                         id: 4,

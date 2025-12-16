@@ -191,6 +191,7 @@ export const IMAGES = {
         nestHausEntwurfVorentwurfCheckGrundstueckscheck: '308-nest-haus-entwurf-vorentwurf-check-grundstueckscheck',
         nestHausNachhaltigkeitUnserePhilosophieMission: '309-nest-haus-nachhaltigkeit-unsere-philosophie-mission',
         nestHausTerminVereinbarungBuchenGespraechAnrufenEmail: '310-nest-haus-termin-vereinbarung-buchen-gespraech-anrufen-email',
+        nestHausCardsTeamVisionMission: '348-nest-haus-cards-team-vision-mission',
         nestHausInteriorSteinplatten: '301-NEST-Haus-Innenperspektive-Schwarze-Steinplatten',
         // Desktop versions of images 13-16
         nestHausSystemModulbau: '13-NEST-Haus-System-Hausbau-Modulbau-Serienproduktion-Modulbau-flexibel-Holzbau-mobile',
