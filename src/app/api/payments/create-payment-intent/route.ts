@@ -107,6 +107,10 @@ export async function POST(request: NextRequest) {
                         paymentStatus: 'PROCESSING',
                         paymentAmount: amount,
                         paymentCurrency: currency.toLowerCase(),
+                        // Reset email flags for new payment intent
+                        // This ensures emails are sent for each unique payment
+                        emailsSent: false,
+                        emailsSentAt: null,
                     },
                 });
             } catch {

@@ -66,6 +66,7 @@ export async function POST(request: NextRequest) {
                             sessionId: true,
                             name: true,
                             email: true,
+                            paymentIntentId: true, // CRITICAL: Required for idempotency check
                             configurationData: true,
                             paymentAmount: true,
                             paymentCurrency: true,
@@ -80,10 +81,13 @@ export async function POST(request: NextRequest) {
                         break;
                     }
 
-                    // Note: Removed emailsSent idempotency check
-                    // Stripe webhooks have built-in idempotency, so duplicate sends are prevented
-                    // Each payment_intent.succeeded event is unique, so we always send emails
-                    // This allows the same customer to receive emails for multiple payments
+                    // Idempotency check: Only skip if emails were sent for THIS specific payment intent
+                    // Stripe retries webhooks, so we must prevent duplicate sends for the same payment
+                    // But allow emails for NEW payments from the same customer
+                    if (inquiry.emailsSent && inquiry.paymentIntentId === paymentIntent.id) {
+                        console.log('[Stripe Webhook] ✅ Emails already sent for this payment intent, skipping');
+                        break;
+                    }
 
                     if (inquiry.sessionId) {
                         // Update session status

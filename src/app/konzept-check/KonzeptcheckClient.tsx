@@ -65,7 +65,9 @@ export default function KonzeptcheckClient() {
   const konzeptcheckVideoCards = ENTWURF_VIDEO_CARDS_PRESET.cards;
 
   // Mobile detection for conditional button rendering
-  // Uses 1024px breakpoint to match UnifiedContentCard's button hiding behavior
+  // CRITICAL: Must use 1024px to match UnifiedContentCard video layout button hiding
+  // Video layout hides buttons at < 1024px, so mobile button must show at < 1024px
+  // Using 768px causes tablets (768-1023px) to have ZERO buttons
   useEffect(() => {
     const checkDevice = () => {
       const newIsMobile = window.innerWidth < 1024;

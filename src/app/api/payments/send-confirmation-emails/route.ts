@@ -60,11 +60,11 @@ export async function POST(request: NextRequest) {
 
         if (!inquiry) {
             console.log('📝 Creating new inquiry for payment intent:', paymentIntentId);
-            
+
             // Extract customer email from Stripe metadata or use provided email
-            const email = customerEmail || 
-                         (paymentIntent.receipt_email) || 
-                         'kunde@nest-haus.com';
+            const email = customerEmail ||
+                (paymentIntent.receipt_email) ||
+                'kunde@nest-haus.com';
             const name = customerName || 'Kunde';
 
             try {
@@ -187,4 +187,3 @@ export async function POST(request: NextRequest) {
         );
     }
 }
-
