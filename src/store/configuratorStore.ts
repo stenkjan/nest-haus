@@ -751,13 +751,13 @@ export const useConfiguratorStore = create<ConfiguratorState>()(
             price: 0, // Placeholder - calculated dynamically from Google Sheets
             description: '75m² Nutzfläche'
           },
-          // Trapezblech (new default)
+          // Holzlattung Lärche Natur (default)
           {
             category: 'gebaeudehuelle',
-            value: 'trapezblech',
-            name: 'Trapezblech',
+            value: 'holzlattung',
+            name: 'Holzlattung Lärche Natur',
             price: 0, // Placeholder - calculated dynamically from Google Sheets
-            description: 'RAL 9005 - 3000 x 1142 mm'
+            description: 'PEFC-Zertifiziert 5,0 x 4,0 cm\nNatürlich. Ökologisch.'
           },
           // Standard (ohne_innenverkleidung) - new default baseline
           {

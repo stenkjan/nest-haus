@@ -85,8 +85,8 @@ describe('ConfiguratorStore', () => {
       
       const materialSelection = {
         category: 'gebaeudehuelle' as const,
-        value: 'trapezblech',
-        name: 'Trapezblech',
+        value: 'holzlattung',
+        name: 'Holzlattung Lärche Natur',
         price: 0,
         description: 'Standard exterior material'
       }

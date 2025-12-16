@@ -480,7 +480,7 @@ export class PriceCalculator {
         if (selections.nest) {
           // ALWAYS use combination pricing with defaults for missing core selections
           // This ensures consistent pricing regardless of selection order
-          const gebaeudehuelle = selections.gebaeudehuelle?.value || 'trapezblech';
+          const gebaeudehuelle = selections.gebaeudehuelle?.value || 'holzlattung';
           const innenverkleidung = selections.innenverkleidung?.value || 'ohne_innenverkleidung';
           const fussboden = selections.fussboden?.value || 'ohne_belag';
 
