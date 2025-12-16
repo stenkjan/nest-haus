@@ -349,9 +349,14 @@ export default function PaymentModal({
     setMounted(true);
   }, []);
 
-  // Reset state when modal opens (but respect initial state for redirects)
+  // Track if modal was just opened to prevent unnecessary resets
+  const [wasOpen, setWasOpen] = useState(false);
+
+  // Reset state when modal first opens (but respect initial state for redirects)
   useEffect(() => {
-    if (isOpen) {
+    if (isOpen && !wasOpen) {
+      // Only reset when modal transitions from closed to open
+      setWasOpen(true);
       setPaymentState(initialPaymentState || "form");
       setPaymentStep(
         initialPaymentState === "success" 
@@ -362,12 +367,16 @@ export default function PaymentModal({
       );
       setPaymentIntentId(initialPaymentIntentId || "");
       setErrorMessage("");
+    } else if (!isOpen && wasOpen) {
+      // Reset tracking when modal closes
+      setWasOpen(false);
     }
-  }, [isOpen, initialPaymentState, initialPaymentIntentId]);
+  }, [isOpen, wasOpen, initialPaymentState, initialPaymentIntentId]);
 
   // Watch for initialPaymentState changes (verifying → success transition)
   useEffect(() => {
     if (initialPaymentState === "success" && paymentStep === "verifying") {
+      console.log("🔄 Transitioning from verifying to success");
       setPaymentStep("success");
       setPaymentState("success");
     }
