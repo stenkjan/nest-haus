@@ -4,6 +4,15 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [a0badbe0ee398124c27b9400b0c0818ddf7a0a70] - Tue Dec 16 13:54:07 2025 +0100
+
+**Author**: stenkjan
+**Message**: `🔧 Update payment confirmation email template for clearer communication regarding contact timing.  `
+
+### Changes Analysis
+
+---
+
 ## [e997b96e71e80a65992293494e3f3eb5e992faef] - Tue Dec 16 13:43:36 2025 +0100
 
 **Author**: stenkjan
