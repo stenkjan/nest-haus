@@ -4,6 +4,19 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [7892aed750e27007db7c3739ac8578e34e3c4b3c] - Tue Dec 16 16:13:51 2025 +0100
+
+**Author**: stenkjan
+**Message**: `🔧 Improve PaymentModal state management by introducing a tracking mechanism for modal open state, preventing unnecessary resets and enhancing user experience during payment transitions.  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/components/payments/PaymentModal.tsx
+
+
+---
+
 ## [aa3dfe348e091f80906947eb5ff34cce0ffaad45] - Tue Dec 16 16:07:32 2025 +0100
 
 **Author**: stenkjan
