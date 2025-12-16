@@ -575,7 +575,7 @@ export function generatePaymentConfirmationEmail(data: PaymentConfirmationEmailD
         <h2>Die nächsten Schritte</h2>
         <p>
           <strong>1. Bestätigung:</strong> Sie erhalten diese E-Mail als Zahlungsnachweis<br><br>
-          <strong>2. Kontaktaufnahme:</strong> Wir melden uns innerhalb von 24 Stunden bei Ihnen<br><br>
+          <strong>2. Kontaktaufnahme:</strong> Wir melden uns in Kürze bei Ihnen<br><br>
           <strong>3. Planung:</strong> Gemeinsam besprechen wir die Details Ihres Nest-Haus Projekts<br><br>
           <strong>4. Umsetzung:</strong> Wir starten mit der professionellen Planung und Ausführung
         </p>
@@ -659,7 +659,7 @@ ${data.paymentIntentId ? `- Transaktions-ID: ${data.paymentIntentId}` : ''}
 
 DIE NÄCHSTEN SCHRITTE:
 1. Bestätigung: Sie erhalten diese E-Mail als Zahlungsnachweis
-2. Kontaktaufnahme: Wir melden uns innerhalb von 24 Stunden bei Ihnen
+2. Kontaktaufnahme: Wir melden uns in Kürzebei Ihnen
 3. Planung: Gemeinsam besprechen wir die Details Ihres Nest-Haus Projekts
 4. Umsetzung: Wir starten mit der professionellen Planung und Ausführung
 
