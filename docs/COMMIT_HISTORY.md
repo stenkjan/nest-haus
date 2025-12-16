@@ -4,6 +4,20 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [ec7336bc3ffb2886fa9aeb3ae9a51a40a7a00f3f] - Tue Dec 16 16:47:42 2025 +0100
+
+**Author**: stenkjan
+**Message**: `🔧 Add forceDesktopImages prop to LandingImagesCarousel for enhanced image handling in Footer component.  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/components/Footer.tsx
+- src/components/sections/LandingImagesCarousel.tsx
+
+
+---
+
 ## [1f3341cd26eb7078e699e8cc2b4b888664822e93] - Tue Dec 16 16:38:30 2025 +0100
 
 **Author**: stenkjan
