@@ -4643,8 +4643,8 @@ export default function CheckoutStepper({
                     return;
                   }
 
-                  // Normal mode validation (requires appointment)
-                  const contactSubmitted = localStorage.getItem(
+                  // Appointment no longer required - variable kept for potential future use
+                  const _contactSubmitted = localStorage.getItem(
                     "nest-haus-contact-submitted"
                   );
 
