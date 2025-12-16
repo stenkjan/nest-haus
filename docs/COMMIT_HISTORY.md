@@ -4,6 +4,21 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [8fbf58935406f0ebf1ef36c4cf92473902789849] - Tue Dec 16 14:49:36 2025 +0100
+
+**Author**: stenkjan
+**Message**: `🔧 Enhance CheckoutStepper to include email collection dialog before payment, ensuring user email is captured for confirmation.  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/warenkorb/components/CheckoutStepper.tsx
+- src/components/payments/PaymentModal.tsx
+- src/components/payments/StripeCheckoutForm.tsx
+
+
+---
+
 ## [4e60af2694b37f226a68fb1915da060e0dee030a] - Tue Dec 16 14:13:09 2025 +0100
 
 **Author**: stenkjan
