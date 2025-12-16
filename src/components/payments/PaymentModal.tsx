@@ -16,7 +16,7 @@ interface PaymentModalProps {
   onSuccess: (paymentIntentId: string) => void;
   onError: (error: string) => void;
   initialPaymentIntentId?: string; // For redirect returns
-  initialPaymentState?: "form" | "success" | "error"; // For redirect returns
+  initialPaymentState?: "form" | "verifying" | "success" | "error"; // For redirect returns
 }
 
 interface PaymentSuccessProps {
@@ -311,7 +311,7 @@ function PaymentError({ error, onRetry, onClose }: PaymentErrorProps) {
 
 // Main payment modal component
 type PaymentMethod = "card" | "eps" | "klarna";
-type PaymentStep = "method-selection" | "payment-details" | "success" | "error";
+type PaymentStep = "method-selection" | "payment-details" | "verifying" | "success" | "error";
 
 export default function PaymentModal({
   isOpen,
@@ -326,9 +326,13 @@ export default function PaymentModal({
   initialPaymentIntentId,
   initialPaymentState,
 }: PaymentModalProps) {
-  // Payment step state (3-step flow)
+  // Payment step state (3-step flow + verifying)
   const [paymentStep, setPaymentStep] = useState<PaymentStep>(
-    initialPaymentState === "success" ? "success" : "method-selection"
+    initialPaymentState === "success" 
+      ? "success" 
+      : initialPaymentState === "verifying"
+      ? "verifying"
+      : "method-selection"
   );
   const [selectedMethod, setSelectedMethod] = useState<PaymentMethod>("card");
   const [paymentState, setPaymentState] = useState<
@@ -350,12 +354,24 @@ export default function PaymentModal({
     if (isOpen) {
       setPaymentState(initialPaymentState || "form");
       setPaymentStep(
-        initialPaymentState === "success" ? "success" : "method-selection"
+        initialPaymentState === "success" 
+          ? "success" 
+          : initialPaymentState === "verifying"
+          ? "verifying"
+          : "method-selection"
       );
       setPaymentIntentId(initialPaymentIntentId || "");
       setErrorMessage("");
     }
   }, [isOpen, initialPaymentState, initialPaymentIntentId]);
+
+  // Watch for initialPaymentState changes (verifying → success transition)
+  useEffect(() => {
+    if (initialPaymentState === "success" && paymentStep === "verifying") {
+      setPaymentStep("success");
+      setPaymentState("success");
+    }
+  }, [initialPaymentState, paymentStep]);
 
   // Handle successful payment
   const _handlePaymentSuccess = (intentId: string) => {
@@ -539,6 +555,21 @@ export default function PaymentModal({
                       onCancel={() => setPaymentStep("method-selection")}
                     />
                   </PaymentErrorBoundary>
+                </div>
+              )}
+
+              {/* Verifying State - During redirect payment verification */}
+              {paymentStep === "verifying" && (
+                <div className="text-center py-12">
+                  <div className="flex justify-center mb-6">
+                    <div className="animate-spin rounded-full h-16 w-16 border-b-4 border-blue-600"></div>
+                  </div>
+                  <h3 className="text-2xl font-semibold text-gray-900 mb-3">
+                    Zahlung wird überprüft...
+                  </h3>
+                  <p className="text-gray-600 text-lg">
+                    Bitte warten Sie, während wir Ihre Zahlung bestätigen.
+                  </p>
                 </div>
               )}
 

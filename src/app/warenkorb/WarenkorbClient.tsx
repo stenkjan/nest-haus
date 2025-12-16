@@ -173,6 +173,7 @@ export default function WarenkorbClient() {
   const [paymentRedirectStatus, setPaymentRedirectStatus] = useState<{
     show: boolean;
     success: boolean;
+    status?: "verifying" | "processing" | "succeeded" | "failed";
     paymentIntentId: string | null;
     amount: number;
     currency: string;
@@ -189,7 +190,7 @@ export default function WarenkorbClient() {
       const paymentIntent = urlParams.get("payment_intent");
       const redirectStatus = urlParams.get("redirect_status");
 
-      // Handle payment redirect return (EPS, SOFORT, etc.)
+      // Handle payment redirect return (EPS, Klarna, etc.)
       if (paymentIntent && redirectStatus) {
         console.log(
           "💳 Payment redirect detected:",
@@ -197,7 +198,22 @@ export default function WarenkorbClient() {
           redirectStatus
         );
 
-        // Verify payment status with backend
+        // IMMEDIATELY set verifying state and navigate to abschluss
+        setPaymentRedirectStatus({
+          show: true,
+          success: false,
+          status: "verifying",
+          paymentIntentId: paymentIntent,
+          amount: 150000, // Will be updated when verified
+          currency: "eur",
+        });
+
+        // Navigate to abschluss step immediately
+        const abschlussStep = getIsOhneNestMode() ? 1 : 4;
+        setStepIndex(abschlussStep);
+        window.history.replaceState(null, "", `#abschluss`);
+
+        // THEN verify payment status with backend
         fetch(`/api/payments/verify-redirect?payment_intent=${paymentIntent}`)
           .then((res) => res.json())
           .then((data) => {
@@ -218,26 +234,37 @@ export default function WarenkorbClient() {
                 );
               });
 
+              // Update to success state
               setPaymentRedirectStatus({
                 show: true,
                 success: true,
+                status: "succeeded",
                 paymentIntentId: data.paymentIntentId,
                 amount: data.amount,
                 currency: data.currency,
               });
             } else if (data.status === "processing") {
               console.log("⏳ Payment is still processing");
-              // Show processing state
+              // Update to processing state
               setPaymentRedirectStatus({
                 show: true,
                 success: false,
+                status: "processing",
                 paymentIntentId: data.paymentIntentId,
                 amount: data.amount,
                 currency: data.currency,
               });
             } else {
               console.error("❌ Payment redirect failed or canceled");
-              // Could show error modal here
+              // Update to failed state
+              setPaymentRedirectStatus({
+                show: true,
+                success: false,
+                status: "failed",
+                paymentIntentId: data.paymentIntentId,
+                amount: data.amount || 150000,
+                currency: data.currency || "eur",
+              });
             }
 
             // Clean up URL parameters
@@ -249,6 +276,15 @@ export default function WarenkorbClient() {
           })
           .catch((error) => {
             console.error("❌ Failed to verify payment redirect:", error);
+            // Update to error state
+            setPaymentRedirectStatus({
+              show: true,
+              success: false,
+              status: "failed",
+              paymentIntentId: paymentIntent,
+              amount: 150000,
+              currency: "eur",
+            });
           });
       }
 

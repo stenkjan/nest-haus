@@ -50,6 +50,7 @@ interface CheckoutStepperProps {
   paymentRedirectStatus?: {
     show: boolean;
     success: boolean;
+    status?: "verifying" | "processing" | "succeeded" | "failed";
     paymentIntentId: string | null;
     amount: number;
     currency: string;
@@ -179,17 +180,32 @@ export default function CheckoutStepper({
 
   // Handle payment redirect returns
   useEffect(() => {
-    if (paymentRedirectStatus?.show && paymentRedirectStatus?.success) {
-      console.log("✅ Payment redirect success detected, showing modal");
-      setIsPaymentCompleted(true);
-      setIsPaymentModalOpen(true);
+    if (paymentRedirectStatus?.show) {
+      if (paymentRedirectStatus.status === "verifying") {
+        console.log("⏳ Payment redirect verifying, opening modal");
+        // Open modal immediately in verifying state
+        setIsPaymentModalOpen(true);
+      } else if (
+        paymentRedirectStatus.status === "succeeded" ||
+        paymentRedirectStatus.success
+      ) {
+        console.log("✅ Payment redirect verified as successful");
+        // Update to success state
+        if (paymentRedirectStatus.paymentIntentId) {
+          setSuccessfulPaymentIntentId(paymentRedirectStatus.paymentIntentId);
+        }
+        setIsPaymentCompleted(true);
+        setIsPaymentModalOpen(true);
 
-      // Mark as completed after showing modal
-      if (onPaymentRedirectHandled) {
-        // Wait a bit to let modal render
-        setTimeout(() => {
-          onPaymentRedirectHandled();
-        }, 100);
+        // Mark as completed after showing modal
+        if (onPaymentRedirectHandled) {
+          setTimeout(() => {
+            onPaymentRedirectHandled();
+          }, 100);
+        }
+      } else if (paymentRedirectStatus.status === "failed") {
+        console.error("❌ Payment redirect failed");
+        setPaymentError("Zahlung fehlgeschlagen oder abgebrochen");
       }
     }
   }, [paymentRedirectStatus, onPaymentRedirectHandled]);
@@ -4882,9 +4898,11 @@ export default function CheckoutStepper({
             undefined
           }
           initialPaymentState={
-            showPaymentSuccessState || paymentRedirectStatus?.success
-              ? "success"
-              : undefined
+            paymentRedirectStatus?.status === "verifying"
+              ? "verifying"
+              : showPaymentSuccessState || paymentRedirectStatus?.success
+                ? "success"
+                : undefined
           }
         />
       )}
