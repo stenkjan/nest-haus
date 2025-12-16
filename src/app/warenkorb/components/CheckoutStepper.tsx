@@ -4801,44 +4801,42 @@ export default function CheckoutStepper({
                 </button>
 
                 {/* Content */}
-                <div className="p-6 md:p-8">
-                  <form
-                    onSubmit={(e) => {
-                      e.preventDefault();
-                      if (collectedEmail && collectedEmail.includes("@")) {
-                        // Save to sessionStorage
-                        sessionStorage.setItem(
-                          "nest-haus-user-email",
-                          collectedEmail
-                        );
-
-                        // Close dialog and open payment
-                        setShowEmailCollectionDialog(false);
-                        setIsPaymentModalOpen(true);
+                <div className="p-6 md:p-8 pr-12 md:pr-16">
+                  <input
+                    type="email"
+                    required
+                    value={collectedEmail}
+                    onChange={(e) => setCollectedEmail(e.target.value)}
+                    placeholder="deine@email.at"
+                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    onKeyDown={(e) => {
+                      if (e.key === "Enter") {
+                        e.preventDefault();
+                        if (collectedEmail && collectedEmail.includes("@")) {
+                          sessionStorage.setItem(
+                            "nest-haus-user-email",
+                            collectedEmail
+                          );
+                          setShowEmailCollectionDialog(false);
+                          setIsPaymentModalOpen(true);
+                        }
                       }
                     }}
-                  >
-                    <input
-                      type="email"
-                      required
-                      value={collectedEmail}
-                      onChange={(e) => setCollectedEmail(e.target.value)}
-                      placeholder="deine@email.at"
-                      className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                    />
-                  </form>
+                  />
                 </div>
               </div>
 
               {/* Action buttons outside the box */}
               <div className="flex gap-4 justify-center mt-6 relative z-50">
                 <button
+                  type="button"
                   onClick={() => setShowEmailCollectionDialog(false)}
                   className="rounded-full transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-offset-2 inline-flex items-center justify-center font-normal whitespace-nowrap bg-white border border-gray-300 text-gray-700 hover:bg-gray-50 hover:border-gray-400 focus:ring-gray-400 box-border px-4 py-1.5 text-sm xl:text-base 2xl:text-lg"
                 >
                   Abbrechen
                 </button>
                 <button
+                  type="button"
                   onClick={() => {
                     if (collectedEmail && collectedEmail.includes("@")) {
                       sessionStorage.setItem(
