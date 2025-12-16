@@ -92,6 +92,7 @@ export default function KonzeptcheckClient() {
             <HybridBlobImage
               path={IMAGES.function.nestHausLinienplanDreier}
               mobilePath={IMAGES.function.mobile.nestHausLinienplanDreier}
+              enableMobileDetection={true}
               alt="Konzept-Check"
               className="absolute inset-0 w-full h-full object-cover"
             />
