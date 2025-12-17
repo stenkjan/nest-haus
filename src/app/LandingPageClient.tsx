@@ -106,7 +106,7 @@ const sectionsContent = [
     imagePath: IMAGES.hero.nestHaus7,
     h1: "Wohnen ohne Grenzen",
     h3: "Wo Effizienz auf Architektur trifft",
-    modelName: "Nest 140",
+    modelName: "Hoam 140",
     configuration: "Fassadenplatten Schwarz",
     button1: "Konzept-Check",
     button2: "Dein ®Hoam",
