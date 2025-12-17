@@ -20,7 +20,7 @@ export default async function AlphaTestsPage() {
 
   if (adminPassword) {
     const cookieStore = await cookies();
-    const authCookie = cookieStore.get("nest-haus-admin-auth");
+    const authCookie = cookieStore.get("hoam-admin-auth");
 
     if (!authCookie || authCookie.value !== adminPassword) {
       redirect(

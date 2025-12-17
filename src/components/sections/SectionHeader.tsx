@@ -30,9 +30,9 @@ import React from "react";
  *
  * // With mobile variants (different text for mobile)
  * <SectionHeader
- *   title="Konfiguriere dein ®Nest Haus"
+ *   title="Konfiguriere dein ®Hoam Haus"
  *   subtitle="Durch serielle Fertigung zu transparenten Bestpreisen"
- *   mobileTitle="Konfiguriere dein\n®Nest Haus"
+ *   mobileTitle="Konfiguriere dein\n®Hoam Haus"
  *   mobileSubtitle="Durch serielle Fertigung\nzu transparenten Bestpreisen"
  * />
  *

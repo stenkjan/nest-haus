@@ -25,7 +25,7 @@ const LandingImagesCarousel: React.FC<LandingImagesCarouselProps> = ({
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   title = "Bildergalerie",
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  subtitle = "Einblicke in NEST-Haus",
+  subtitle = "Einblicke ins Hoam",
   backgroundColor = "white",
   maxWidth = true,
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -49,17 +49,17 @@ const LandingImagesCarousel: React.FC<LandingImagesCarouselProps> = ({
       {
         path: IMAGES.hero.nestHaus1,
         mobilePath: IMAGES.hero.mobile.nestHaus1,
-        alt: "NEST-Haus Bild 1",
+        alt: "Hoam Bild 1",
         description: {
           title: "Nest 140",
           subtitle: "Fassadenplatten Weiss",
-          sectionSlug: "dein-nest-haus", // Use slug instead of sectionId
+          sectionSlug: "dein-Hoam", // Use slug instead of sectionId
         },
       },
       {
         path: IMAGES.hero.nestHaus2,
         mobilePath: IMAGES.hero.mobile.nestHaus2,
-        alt: "NEST-Haus Bild 2",
+        alt: "Hoam Bild 2",
         description: {
           title: "Nest 100",
           subtitle: "Mediterrane Ansicht",
@@ -69,7 +69,7 @@ const LandingImagesCarousel: React.FC<LandingImagesCarouselProps> = ({
       {
         path: IMAGES.hero.nestHaus3,
         mobilePath: IMAGES.hero.mobile.nestHaus3,
-        alt: "NEST-Haus Bild 3",
+        alt: "Hoam Bild 3",
         description: {
           title: "Nest Interior",
           subtitle: "Kalkstein Verglasung",
@@ -79,7 +79,7 @@ const LandingImagesCarousel: React.FC<LandingImagesCarouselProps> = ({
       {
         path: IMAGES.hero.nestHaus4,
         mobilePath: IMAGES.hero.mobile.nestHaus4,
-        alt: "NEST-Haus Bild 4",
+        alt: "Hoam Bild 4",
         description: {
           title: "Nest 140",
           subtitle: "Vogelperspektive Holzlattung",
@@ -89,7 +89,7 @@ const LandingImagesCarousel: React.FC<LandingImagesCarouselProps> = ({
       {
         path: IMAGES.hero.nestHaus5,
         mobilePath: IMAGES.hero.mobile.nestHaus5,
-        alt: "NEST-Haus Bild 5",
+        alt: "Hoam Bild 5",
         description: {
           title: "Nest 80",
           subtitle: "Stirnseite Trapezblech",
@@ -99,7 +99,7 @@ const LandingImagesCarousel: React.FC<LandingImagesCarouselProps> = ({
       {
         path: IMAGES.hero.nestHaus6,
         mobilePath: IMAGES.hero.mobile.nestHaus6,
-        alt: "NEST-Haus Bild 6",
+        alt: "Hoam Bild 6",
         description: {
           title: "Nest Interior",
           subtitle: "Innenverkleidung Fichte, Parkett Eiche",
@@ -109,7 +109,7 @@ const LandingImagesCarousel: React.FC<LandingImagesCarouselProps> = ({
       {
         path: IMAGES.hero.nestHaus7,
         mobilePath: IMAGES.hero.mobile.nestHaus7,
-        alt: "NEST-Haus Bild 7",
+        alt: "Hoam Bild 7",
         description: {
           title: "Nest 140",
           subtitle: "Wald Ansicht Schwarz",

@@ -4,6 +4,19 @@ import { NextRequest, NextResponse } from 'next/server';
 export function middleware(request: NextRequest) {
     const pathname = request.nextUrl.pathname;
 
+    // 301 Redirects for rebranding: nest → hoam
+    if (pathname.startsWith('/dein-nest')) {
+        const url = request.nextUrl.clone();
+        url.pathname = pathname.replace('/dein-nest', '/dein-hoam');
+        return NextResponse.redirect(url, { status: 301 });
+    }
+    
+    if (pathname.startsWith('/nest-system')) {
+        const url = request.nextUrl.clone();
+        url.pathname = pathname.replace('/nest-system', '/hoam-system');
+        return NextResponse.redirect(url, { status: 301 });
+    }
+
     // Only protect admin routes - all other routes pass through freely
     if (pathname.startsWith('/admin') || pathname.startsWith('/api/admin')) {
         // Skip auth check for admin auth page itself and API routes
@@ -23,7 +36,7 @@ export function middleware(request: NextRequest) {
         }
 
         // Check if user has admin authentication
-        const adminAuthCookie = request.cookies.get('nest-haus-admin-auth');
+        const adminAuthCookie = request.cookies.get('hoam-admin-auth');
         console.log('[MIDDLEWARE] Admin auth cookie exists:', !!adminAuthCookie);
 
         // If authenticated, allow access
@@ -55,6 +68,9 @@ export function middleware(request: NextRequest) {
 
 export const config = {
     matcher: [
+        // Match old routes for redirects
+        '/dein-nest/:path*',
+        '/nest-system/:path*',
         // Only match admin routes and admin API routes
         '/admin/:path*',
         '/api/admin/:path*',

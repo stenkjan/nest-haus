@@ -32,19 +32,19 @@ const cookieCategories: CookieCategory[] = [
         name: "nest-haus-session",
         purpose: "Speichert Ihre Konfiguration im Haus-Konfigurator",
         duration: "Session (bis Browser geschlossen wird)",
-        provider: "NEST-Haus",
+        provider: "®Hoam",
       },
       {
         name: "nest-haus-cookie-consent",
         purpose: "Speichert Ihre Cookie-Einstellungen",
         duration: "1 Jahr",
-        provider: "NEST-Haus",
+        provider: "®Hoam",
       },
       {
         name: "csrf-token",
         purpose: "Schutz vor Cross-Site-Request-Forgery-Angriffen",
         duration: "Session",
-        provider: "NEST-Haus",
+        provider: "®Hoam",
       },
     ],
   },
@@ -77,20 +77,20 @@ const cookieCategories: CookieCategory[] = [
         name: "nest-analytics",
         purpose: "Erfasst anonyme Nutzungsstatistiken und Seitenaufrufe",
         duration: "30 Tage",
-        provider: "NEST-Haus",
+        provider: "®Hoam",
       },
       {
         name: "configurator-analytics",
         purpose:
           "Analysiert die Nutzung des Haus-Konfigurators zur Verbesserung",
         duration: "30 Tage",
-        provider: "NEST-Haus",
+        provider: "®Hoam",
       },
       {
         name: "performance-metrics",
         purpose: "Misst Ladezeiten und technische Performance",
         duration: "7 Tage",
-        provider: "NEST-Haus",
+        provider: "®Hoam",
       },
     ],
   },
@@ -105,13 +105,13 @@ const cookieCategories: CookieCategory[] = [
         name: "user-preferences",
         purpose: "Speichert Ihre bevorzugten Einstellungen (Sprache, Region)",
         duration: "1 Jahr",
-        provider: "NEST-Haus",
+        provider: "®Hoam",
       },
       {
         name: "saved-configurations",
         purpose: "Speichert Ihre gespeicherten Haus-Konfigurationen",
         duration: "6 Monate",
-        provider: "NEST-Haus",
+        provider: "®Hoam",
       },
     ],
   },
@@ -133,13 +133,13 @@ const cookieCategories: CookieCategory[] = [
         purpose:
           "Verfolgt, über welche Kanäle Besucher auf unsere Website gelangen",
         duration: "90 Tage",
-        provider: "NEST-Haus",
+        provider: "®Hoam",
       },
       {
         name: "campaign-tracking",
         purpose: "Misst die Effektivität von Werbekampagnen",
         duration: "30 Tage",
-        provider: "NEST-Haus",
+        provider: "®Hoam",
       },
     ],
   },
@@ -364,10 +364,10 @@ export default function CookieEinstellungenClient() {
                 Bei Fragen zu Cookies und Datenschutz kontaktieren Sie uns
                 unter:{" "}
                 <a
-                  href="mailto:datenschutz@nest-haus.at"
+                  href="mailto:datenschutz@hoam.at"
                   className="text-[#3D6CE1] hover:text-[#2855d6] underline"
                 >
-                  datenschutz@nest-haus.at
+                  datenschutz@hoam.at
                 </a>
               </p>
             </div>

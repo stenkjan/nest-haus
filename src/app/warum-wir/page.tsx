@@ -31,7 +31,8 @@ const warumWirSchema = {
 // Company Mission Schema
 const missionSchema = generatePageAboutSchema({
   foundingDate: "2020",
-  mission: "Revolutionierung des Hausbaus durch modulare, nachhaltige und individuelle Lösungen",
+  mission:
+    "Revolutionierung des Hausbaus durch modulare, nachhaltige und individuelle Lösungen",
   values: [
     "Nachhaltigkeit",
     "Innovation",
@@ -43,7 +44,7 @@ const missionSchema = generatePageAboutSchema({
 
 // Video Schema for YouTube embed
 const videoSchema = generatePageVideoSchema({
-  name: "Nest Haus Vision - Die ®Nest Vision",
+  name: "Nest Haus Vision - Die ®Hoam Vision",
   description:
     "Erfahren Sie mehr über die Vision von NEST-Haus: Modulare, nachhaltige Häuser, die mit Ihnen wachsen und sich bewegen. Ein Zuhause, das Freiraum schafft.",
   thumbnailUrl: "https://i.ytimg.com/vi/Z05jRVentdc/maxresdefault.jpg",

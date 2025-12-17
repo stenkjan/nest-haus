@@ -107,13 +107,13 @@ export default function ImpressumClient() {
                     <div>
                       <h4 className="font-medium mb-2">E-Mail</h4>
                       <p>
-                        <a href="mailto:mail@nest-haus.at">mail@nest-haus.at</a>
+                        <a href="mailto:mail@hoam.at">mail@hoam.at</a>
                       </p>
                     </div>
 
                     <div>
                       <h4 className="font-medium mb-2">Website</h4>
-                      <p>www.nest-haus.at</p>
+                      <p>www.hoam.at</p>
                     </div>
 
                     <div>
@@ -135,28 +135,28 @@ export default function ImpressumClient() {
                   <div>
                     <h4 className="font-medium mb-2">Beratung & Planung</h4>
                     <p>
-                      <a href="mailto:mail@nest-haus.at">mail@nest-haus.at</a>
+                      <a href="mailto:mail@hoam.at">mail@hoam.at</a>
                     </p>
                   </div>
 
                   <div>
                     <h4 className="font-medium mb-2">Kundenservice</h4>
                     <p>
-                      <a href="mailto:mail@nest-haus.at">mail@nest-haus.at</a>
+                      <a href="mailto:mail@hoam.at">mail@hoam.at</a>
                     </p>
                   </div>
 
                   <div>
                     <h4 className="font-medium mb-2">Datenschutz</h4>
                     <p>
-                      <a href="mailto:mail@nest-haus.at">mail@nest-haus.at</a>
+                      <a href="mailto:mail@hoam.at">mail@hoam.at</a>
                     </p>
                   </div>
 
                   <div>
                     <h4 className="font-medium mb-2">Presse & Medien</h4>
                     <p>
-                      <a href="mailto:mail@nest-haus.at">mail@nest-haus.at</a>
+                      <a href="mailto:mail@hoam.at">mail@hoam.at</a>
                     </p>
                   </div>
                 </div>
@@ -335,7 +335,7 @@ export default function ImpressumClient() {
                   Bei Fragen zu diesem Impressum wenden Sie sich bitte an:
                 </p>
                 <p className="text-xl font-medium">
-                  <a href="mailto:mail@nest-haus.at">mail@nest-haus.at</a>
+                  <a href="mailto:mail@hoam.at">mail@hoam.at</a>
                 </p>
               </div>
             </div>

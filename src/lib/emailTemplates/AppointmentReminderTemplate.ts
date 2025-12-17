@@ -37,7 +37,7 @@ export function generateAppointmentReminderEmail(data: AppointmentReminderData):
   const hoursRemaining = Math.floor(timeRemaining / 60);
   const minutesRemaining = timeRemaining % 60;
 
-  const subject = `Erinnerung: Termin läuft in ${hoursRemaining}h ${minutesRemaining}min ab - NEST-Haus`;
+  const subject = `Erinnerung: Termin läuft in ${hoursRemaining}h ${minutesRemaining}min ab - ®Hoam`;
 
   const html = `
 <!DOCTYPE html>
@@ -223,7 +223,7 @@ export function generateAppointmentReminderEmail(data: AppointmentReminderData):
       </p>
       
       <p style="font-size: 15px; color: #6b7280; line-height: 1.6;">
-        Dies ist eine freundliche Erinnerung: Ihre Terminanfrage bei NEST-Haus muss innerhalb der nächsten Stunde bestätigt werden, andernfalls wird der reservierte Zeitslot automatisch freigegeben.
+        Dies ist eine freundliche Erinnerung: Ihre Terminanfrage bei ®Hoam muss innerhalb der nächsten Stunde bestätigt werden, andernfalls wird der reservierte Zeitslot automatisch freigegeben.
       </p>
       
       <div class="appointment-details">
@@ -263,10 +263,10 @@ export function generateAppointmentReminderEmail(data: AppointmentReminderData):
     </div>
     
     <div class="footer">
-      <p><strong>Nest-Haus</strong><br>Modulares Wohnen. Nachhaltig. Österreichisch.</p>
+      <p><strong>®Hoam</strong><br>Modulares Wohnen. Nachhaltig. Österreichisch.</p>
       <p style="margin-top: 12px;">
-        <a href="https://nest-haus.at">Website</a> ·
-        <a href="mailto:mail@nest-haus.at">E-Mail</a> ·
+        <a href="https://hoam.at">Website</a> ·
+        <a href="mailto:mail@hoam.at">E-Mail</a> ·
         <a href="tel:+436643949605">Telefon</a>
       </p>
     </div>
@@ -276,13 +276,13 @@ export function generateAppointmentReminderEmail(data: AppointmentReminderData):
   `;
 
   const text = `
-NEST-Haus - Terminbestätigung läuft bald ab
+®Hoam - Terminbestätigung läuft bald ab
 
 Ihr Termin läuft in ${hoursRemaining}h ${minutesRemaining}min ab
 
 Hallo ${data.name},
 
-Dies ist eine freundliche Erinnerung: Ihre Terminanfrage bei NEST-Haus muss innerhalb der nächsten Stunde bestätigt werden, andernfalls wird der reservierte Zeitslot automatisch freigegeben.
+Dies ist eine freundliche Erinnerung: Ihre Terminanfrage bei ®Hoam muss innerhalb der nächsten Stunde bestätigt werden, andernfalls wird der reservierte Zeitslot automatisch freigegeben.
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 IHR RESERVIERTER TERMIN
@@ -301,11 +301,11 @@ SO BESTÄTIGEN SIE IHREN TERMIN:
 Hinweis: Wenn Sie die Kalendereinladung nicht finden, überprüfen Sie bitte Ihren Spam-Ordner oder antworten Sie direkt auf diese E-Mail.
 
 --
-NEST-Haus
+®Hoam
 Modulares Wohnen. Nachhaltig. Österreichisch.
 
-Website: https://nest-haus.at
-E-Mail: mail@nest-haus.at
+Website: https://hoam.at
+E-Mail: mail@hoam.at
 Telefon: +43 664 3949605
   `;
 

@@ -13,7 +13,7 @@ import LaunchFireworks from "@/components/effects/LaunchFireworks";
 
 // Define sections for landing page
 const sections = [
-  { id: "dein-nest-haus", title: "Dein Nest Haus", slug: "dein-nest-haus" },
+  { id: "dein-hoam-haus", title: "Dein ®Hoam", slug: "dein-hoam-haus" },
   {
     id: "design-im-freistil",
     title: "Dein Design im Freistil",
@@ -40,9 +40,9 @@ const sections = [
     slug: "keine-lebensentscheidung",
   },
   {
-    id: "nest-entdecken",
-    title: "Nest Entdecken",
-    slug: "nest-entdecken",
+    id: "hoam-entdecken",
+    title: "®Hoam Entdecken",
+    slug: "hoam-entdecken",
   },
 ];
 
@@ -66,14 +66,14 @@ const getMobileImagePath = (section: { imagePath: string }): string => {
 const sectionsContent = [
   {
     id: 1,
-    sectionId: "dein-nest-haus",
+    sectionId: "dein-hoam-haus",
     imagePath: IMAGES.hero.nestHaus1,
-    h1: "®Nest Haus",
+    h1: "®Hoam Haus",
     h3: "Wohne wie du willst",
-    modelName: "Nest 140",
+    modelName: "Hoam 140",
     configuration: "Fassadenplatten Weiß",
     button1: "Konzept-Check",
-    button2: "Dein Nest",
+    button2: "Dein ®Hoam",
     secondaryButtonVariant: "landing-secondary-blue" as const, // Will be overridden by getSecondaryButtonVariant
   },
   {
@@ -82,10 +82,10 @@ const sectionsContent = [
     imagePath: IMAGES.hero.nestHaus2,
     h1: "Dein Design im Freistil",
     h3: "So individuell wie du",
-    modelName: "Nest 100",
+    modelName: "Hoam 100",
     configuration: "Holzlattung Lärche Natur",
     button1: "Konzept-Check",
-    button2: "Dein Nest",
+    button2: "Dein ®Hoam",
     secondaryButtonVariant: "landing-secondary" as const,
   },
   {
@@ -97,7 +97,7 @@ const sectionsContent = [
     modelName: "Belichtungspaket Bright",
     configuration: "Innenverkleidung Fichte, Steinbelag hell",
     button1: "Konzept-Check",
-    button2: "Dein Nest",
+    button2: "Dein ®Hoam",
     secondaryButtonVariant: "landing-secondary" as const,
   },
   {
@@ -109,7 +109,7 @@ const sectionsContent = [
     modelName: "Nest 140",
     configuration: "Fassadenplatten Schwarz",
     button1: "Konzept-Check",
-    button2: "Dein Nest",
+    button2: "Dein ®Hoam",
     secondaryButtonVariant: "landing-secondary" as const,
   },
   {
@@ -121,7 +121,7 @@ const sectionsContent = [
     modelName: "Belichtungspaket Medium",
     configuration: "Innenverkleidung Fichte, Parkett Eiche",
     button1: "Konzept-Check",
-    button2: "Dein Nest",
+    button2: "Dein ®Hoam",
     secondaryButtonVariant: "landing-secondary" as const,
   },
   {
@@ -129,18 +129,18 @@ const sectionsContent = [
     sectionId: "keine-lebensentscheidung",
     imagePath: IMAGES.hero.nestHaus5,
     h1: "Keine Lebensentscheidung",
-    h3: "Mit Nest bleibt kein Ort unerreichbar",
-    modelName: "Nest 80",
+    h3: "Mit ®Hoam bleibt kein Ort unerreichbar",
+    modelName: "Hoam 80",
     configuration: "Trapezblech",
     button1: "Konzept-Check",
-    button2: "Dein Nest",
+    button2: "Dein ®Hoam",
     secondaryButtonVariant: "landing-secondary" as const,
   },
 ];
 
 // ImageCaption Component - Bottom-left overlay for image descriptions
 interface ImageCaptionProps {
-  modelName: string; // e.g., "Nest 80"
+  modelName: string; // e.g., "Hoam 80"
   configuration: string; // e.g., "Holzlattung Lärche Natur"
 }
 
@@ -153,7 +153,7 @@ const ImageCaption = ({ modelName, configuration }: ImageCaptionProps) => (
 
 export default function LandingPageClient() {
   const [_currentSectionId, setCurrentSectionId] =
-    useState<string>("dein-nest-haus");
+    useState<string>("dein-hoam-haus");
   const [showFireworks, setShowFireworks] = useState(false);
   const { isMobile } = useDeviceDetect();
 
@@ -318,7 +318,7 @@ export default function LandingPageClient() {
                           {section.button1}
                         </Button>
                       </Link>
-                      <Link href="/dein-nest">
+                      <Link href="/dein-hoam">
                         <Button
                           variant={getSecondaryButtonVariant(section.id)}
                           size="xs"
@@ -346,8 +346,8 @@ export default function LandingPageClient() {
                     customData={[
                       {
                         id: 1,
-                        title: "Die Vision Nest",
-                        subtitle: "®Nest mit Verantwortung",
+                        title: "Die Vision ®Hoam",
+                        subtitle: "®Hoam mit Verantwortung",
                         description: "",
                         image: IMAGES.function.nestHausCardsTeamVisionMission,
                         backgroundColor: "#F4F4F4",
@@ -357,10 +357,11 @@ export default function LandingPageClient() {
                       {
                         id: 2,
                         title: "Wir bauen Freiheit",
-                        subtitle: "Finde heraus was Nest ausmacht",
+                        subtitle: "Finde heraus was ®Hoam ausmacht",
                         description: "",
                         image:
-                          IMAGES.function.nestHausEntdeckenDeinNestErklaerungProdukt,
+                          IMAGES.function
+                            .nestHausEntdeckenDeinNestErklaerungProdukt,
                         backgroundColor: "#F4F4F4",
                         primaryAction: "Konfigurator",
                         primaryLink: "/konfigurator",
@@ -371,7 +372,8 @@ export default function LandingPageClient() {
                         subtitle: "Deine optimale Entscheidungsgrundlage",
                         description: "",
                         image:
-                          IMAGES.function.nestHausEntwurfVorentwurfCheckGrundstueckscheck,
+                          IMAGES.function
+                            .nestHausEntwurfVorentwurfCheckGrundstueckscheck,
                         backgroundColor: "#F4F4F4",
                         primaryAction: "Konzept-Check",
                         primaryLink: "/konzept-check",
@@ -382,7 +384,8 @@ export default function LandingPageClient() {
                         subtitle: "Melde dich, wir sind für dich da",
                         description: "",
                         image:
-                          IMAGES.function.nestHausTerminVereinbarungBuchenGespraechAnrufenEmail,
+                          IMAGES.function
+                            .nestHausTerminVereinbarungBuchenGespraechAnrufenEmail,
                         backgroundColor: "#F4F4F4",
                         primaryAction: "Termin sichern",
                         primaryLink: "/kontakt",

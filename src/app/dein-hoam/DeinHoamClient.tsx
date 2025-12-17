@@ -36,14 +36,14 @@ interface PricingData {
 // Define sections with proper structure for entdecken page
 const sections = [
   {
-    id: "dein-nest-preise",
+    id: "dein-hoam-preise",
     title: "Design für dich gemacht",
     slug: "preise",
   },
   {
-    id: "intro-nest",
+    id: "intro-hoam",
     title: "Video Segment",
-    slug: "intro-nest",
+    slug: "intro-hoam",
   },
   {
     id: "transport",
@@ -66,9 +66,9 @@ const sections = [
     slug: "haus-konfiguration",
   },
   {
-    id: "vorteile-nest",
-    title: "Warum Nest Sinn macht?",
-    slug: "vorteile-nest",
+    id: "vorteile-hoam",
+    title: "Warum ®Hoam Sinn macht?",
+    slug: "vorteile-hoam",
   },
   {
     id: "planungspakete",
@@ -82,9 +82,9 @@ const sections = [
   },
 ];
 
-export default function DeinNestClient() {
+export default function DeinHoamClient() {
   const [_currentSectionId, setCurrentSectionId] =
-    useState<string>("dein-nest-preise");
+    useState<string>("dein-hoam-preise");
   const [isMobile, setIsMobile] = useState(false);
   const [pricingData, setPricingData] = useState<PricingData | null>(null);
   const {
@@ -133,13 +133,13 @@ export default function DeinNestClient() {
     >
       <SectionRouter sections={sections} onSectionChange={setCurrentSectionId}>
         {/* Section 1 - Hero with Image and Overlay Text */}
-        <section id="dein-nest-preise" className="w-full">
+        <section id="dein-hoam-preise" className="w-full">
           <div className="relative w-full h-[400px] sm:h-[500px] md:h-[600px] lg:h-[700px] xl:h-[800px] 2xl:h-[900px]">
             {/* Background Image */}
             <HybridBlobImage
               path={IMAGES.hero.nestHaus3}
               mobilePath={IMAGES.hero.mobile.nestHaus3}
-              alt="NEST-Haus Design - Dein Design im Freistil"
+              alt="®Hoam Design - Dein Design im Freistil"
               className="absolute inset-0 w-full h-full object-cover"
               enableMobileDetection={true}
               isAboveFold={true}
@@ -151,7 +151,7 @@ export default function DeinNestClient() {
               {/* Header at Top */}
               <div className="flex justify-center">
                 <SectionHeader
-                  title="Dein ®Nest"
+                  title="Dein ®Hoam"
                   subtitle="Hausbau muss nicht immer kompliziert sein"
                   titleClassName="text-white"
                   subtitleClassName="text-white"
@@ -166,7 +166,7 @@ export default function DeinNestClient() {
                     {/* Left Text Block */}
                     <div className="text-center">
                       <h2 className="h2-title font-bold text-white drop-shadow-lg">
-                        Nest 80
+                        Hoam 80
                       </h2>
                       <h3 className="p-primary text-white drop-shadow-lg">
                         75m² ab €{" "}
@@ -177,7 +177,7 @@ export default function DeinNestClient() {
                     {/* Center Text Block */}
                     <div className="text-center">
                       <h2 className="h2-title font-bold text-white drop-shadow-lg">
-                        Nest 120
+                        Hoam 120
                       </h2>
                       <h3 className="p-primary text-white drop-shadow-lg">
                         115m² ab €{" "}
@@ -188,7 +188,7 @@ export default function DeinNestClient() {
                     {/* Right Text Block */}
                     <div className="text-center">
                       <h2 className="h2-title font-bold text-white drop-shadow-lg">
-                        Nest 160
+                        Hoam 160
                       </h2>
                       <h3 className="p-primary text-white drop-shadow-lg">
                         155m² ab €{" "}
@@ -218,7 +218,7 @@ export default function DeinNestClient() {
           </div>
         </section>
         {/* Section 2 - Text Content Below Hero */}
-        <section id="intro-nest" className="w-full relative bg-white">
+        <section id="intro-hoam" className="w-full relative bg-white">
           {/* Text Content Below Video */}
           <div className="max-w-[1440px] 2xl:max-w-[1440px] px-4 sm:px-8 md:px-16 lg:px-24 xl:px-32 2xl:px-32 mx-auto pt-8 md:pt-16">
             <h2
@@ -266,14 +266,14 @@ export default function DeinNestClient() {
             <div className="pt-8">
               {/* Button combination */}
               <div className="flex flex-wrap gap-4 justify-center">
-                <Link href="/nest-system">
+                <Link href="/hoam-system">
                   <Button variant="primary" size="xs">
-                    Nest-System
+                    Hoam System
                   </Button>
                 </Link>
                 <Link href="/warum-wir">
                   <Button variant="landing-secondary-blue" size="xs">
-                    Warum mit Nest?
+                    Warum mit ®Hoam?
                   </Button>
                 </Link>
               </div>
@@ -294,9 +294,9 @@ export default function DeinNestClient() {
           className="w-full py-8 md:py-16 bg-white"
         >
           <SectionHeader
-            title="Konfiguriere dein ®Nest-Haus"
+            title="Konfiguriere dein ®Hoam-Haus"
             subtitle="Gestalten heißt verstehen"
-            mobileTitle="Konfiguriere dein ®Nest-Haus"
+            mobileTitle="Konfiguriere dein ®Hoam-Haus"
             wrapperMargin="mb-8 md:mb-12"
           />
 
@@ -313,7 +313,7 @@ export default function DeinNestClient() {
                 title: "Dein Stil. Dein Zuhause.",
                 subtitle: "",
                 description:
-                  "<span class='text-nest-gray'>Im Nest Konfigurator gestaltest du </span><span class='text-black font-medium'>dein Zuhause Schritt für Schritt</span><span class='text-nest-gray'> und behältst den Preis stets im Überblick.</span><br/><br/><span class='text-nest-gray'>Entdecke unsere </span><span class='text-black font-medium'>vielfältigen Möglichkeiten</span><span class='text-nest-gray'> und konfiguriere deine Basis für dein individuelles </span><span class='text-black font-medium'>Nest-Haus</span><span class='text-nest-gray'>.</span>",
+                  "<span class='text-nest-gray'>Im ®Hoam Konfigurator gestaltest du </span><span class='text-black font-medium'>dein Zuhause Schritt für Schritt</span><span class='text-nest-gray'> und behältst den Preis stets im Überblick.</span><br/><br/><span class='text-nest-gray'>Entdecke unsere </span><span class='text-black font-medium'>vielfältigen Möglichkeiten</span><span class='text-nest-gray'> und konfiguriere deine Basis für dein individuelles </span><span class='text-black font-medium'>®Hoam-Haus</span><span class='text-nest-gray'>.</span>",
                 video: IMAGES.variantvideo.twelve,
                 backgroundColor: "#F4F4F4",
                 playbackRate: 0.5,
@@ -347,9 +347,9 @@ export default function DeinNestClient() {
           )}
         </section>
         {/* Section 6 - Video Background Cards */}
-        <section id="vorteile-nest" className="w-full py-8 md:py-16 bg-white">
+        <section id="vorteile-hoam" className="w-full py-8 md:py-16 bg-white">
           <SectionHeader
-            title="Warum Nest Sinn macht?"
+            title="Warum ®Hoam Sinn macht?"
             subtitle="Weil bauen nicht immer kompliziert sein muss."
             wrapperMargin="mb-8 md:mb-12"
           />
@@ -403,7 +403,7 @@ export default function DeinNestClient() {
                     text: "Unsere Technik",
                     variant: "landing-secondary-blue",
                     size: "xs",
-                    link: "/nest-system",
+                    link: "/hoam-system",
                   },
                 ],
               },
@@ -442,3 +442,4 @@ export default function DeinNestClient() {
     </div>
   );
 }
+

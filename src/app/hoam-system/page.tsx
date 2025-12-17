@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import NestSystemClient from "./NestSystemClient";
+import HoamSystemClient from "./HoamSystemClient";
 import {
   generatePageMetadata,
   generateStructuredData,
@@ -7,24 +7,24 @@ import {
   generateBreadcrumbSchema,
 } from "@/lib/seo/generateMetadata";
 
-// Enhanced SEO metadata for the nest-system page
-export const metadata: Metadata = generatePageMetadata("nest-system");
+// Enhanced SEO metadata for the hoam-system page
+export const metadata: Metadata = generatePageMetadata("hoam-system");
 
-// Structured Data for the Nest System page
-const nestSystemSchema = generateStructuredData("nest-system");
+// Structured Data for the Hoam System page
+const hoamSystemSchema = generateStructuredData("hoam-system");
 
 // Service Schema for modular building system
 const buildingSystemSchema = generatePageServiceSchema({
-  name: "NEST-System Modulbau",
+  name: "Hoam System Modulbau",
   description: "Modulares Bausystem für individuelle, nachhaltige und flexible Häuser",
   serviceType: "Modulbau und Bausystem",
 });
 
 // Breadcrumb Schema
-const breadcrumbSchema = generateBreadcrumbSchema("nest-system");
+const breadcrumbSchema = generateBreadcrumbSchema("hoam-system");
 
 // Server Component - Can handle SEO, metadata, and structured data
-export default function NestSystemPage() {
+export default function HoamSystemPage() {
   return (
     <>
       <script
@@ -36,7 +36,7 @@ export default function NestSystemPage() {
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{
-          __html: JSON.stringify(nestSystemSchema),
+          __html: JSON.stringify(hoamSystemSchema),
         }}
       />
       <script
@@ -45,7 +45,8 @@ export default function NestSystemPage() {
           __html: JSON.stringify(buildingSystemSchema),
         }}
       />
-      <NestSystemClient />
+      <HoamSystemClient />
     </>
   );
 }
+

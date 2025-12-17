@@ -29,7 +29,7 @@ export function generateCustomerConfirmationEmail(data: CustomerConfirmationData
 
   const subject = isAppointment
     ? `Terminanfrage bestätigt - ${formattedDate}`
-    : 'Kontaktanfrage bestätigt - Nest-Haus';
+    : 'Kontaktanfrage bestätigt - ®Hoam';
 
   const html = `
 <!DOCTYPE html>
@@ -236,7 +236,7 @@ export function generateCustomerConfirmationEmail(data: CustomerConfirmationData
       <div class="glass-card">
         <h2>Die nächsten Schritte</h2>
         <p>${isAppointment
-      ? '1. <strong>Kalendereinladung:</strong> Sie erhalten eine Kalendereinladung per E-Mail<br>2. <strong>Vorbereitung:</strong> Notieren Sie sich Ihre Fragen und Wünsche<br>3. <strong>Gespräch:</strong> Wir besprechen Ihr Nest-Haus-Projekt im Detail'
+      ? '1. <strong>Kalendereinladung:</strong> Sie erhalten eine Kalendereinladung per E-Mail<br>2. <strong>Vorbereitung:</strong> Notieren Sie sich Ihre Fragen und Wünsche<br>3. <strong>Gespräch:</strong> Wir besprechen Ihr ®Hoam-Projekt im Detail'
       : '1. <strong>Rückmeldung:</strong> Wir melden uns innerhalb von 2 Werktagen bei Ihnen<br>2. <strong>Beratung:</strong> Gemeinsam besprechen wir Ihre individuellen Anforderungen<br>3. <strong>Planung:</strong> Wir entwickeln eine maßgeschneiderte Lösung für Sie'
     }</p>
         ${isPhoneAppointment ? `
@@ -260,7 +260,7 @@ export function generateCustomerConfirmationEmail(data: CustomerConfirmationData
           </div>
           <div class="info-item" style="border-radius:0 !important">
             <div class="info-label">Email</div>
-            <div class="info-value">mail@nest-haus.at</div>
+            <div class="info-value">mail@hoam.at</div>
           </div>
         </div>
       </div>
@@ -297,7 +297,7 @@ export function generateCustomerConfirmationEmail(data: CustomerConfirmationData
           <h2>Planen heißt Preise kennen</h2>
           <p>Wenn du dein Nest schon jetzt konfigurierst, erhältst du volle Klarheit über Preis, Umfang und Möglichkeiten. Deine Auswahl bleibt dabei flexibel und kann jederzeit angepasst werden, falls sich deine Wünsche im Laufe der Planung verändern.</p>
           <div style="text-align: center; margin-top: 24px;">
-            <a href="https://nest-haus.at/konfigurator" class="btn-primary">
+            <a href="https://hoam.at/konfigurator" class="btn-primary">
               Jetzt konfigurieren
             </a>
           </div>
@@ -308,13 +308,13 @@ export function generateCustomerConfirmationEmail(data: CustomerConfirmationData
     <!-- Footer -->
     <div class="footer">
       <p>
-        <strong>Nest-Haus</strong><br>
+        <strong>®Hoam</strong><br>
         Dein Stil. Dein Zuhause.
       </p>
       <p style="margin-top: 16px;">
-        <a href="https://nest-haus.at">Website</a> ·
-        <a href="https://nest-haus.at/impressum">Impressum</a> ·
-        <a href="https://nest-haus.at/datenschutz">Datenschutz</a>
+        <a href="https://hoam.at">Website</a> ·
+        <a href="https://hoam.at/impressum">Impressum</a> ·
+        <a href="https://hoam.at/datenschutz">Datenschutz</a>
       </p>
     </div>
   </div>
@@ -323,7 +323,7 @@ export function generateCustomerConfirmationEmail(data: CustomerConfirmationData
   `;
 
   const text = `
-Nest-Haus - ${isAppointment ? 'Terminanfrage bestätigt' : 'Kontaktanfrage bestätigt'}
+®Hoam - ${isAppointment ? 'Terminanfrage bestätigt' : 'Kontaktanfrage bestätigt'}
 
 Hallo ${data.name},
 
@@ -342,7 +342,7 @@ Sie finden eine Kalendereinladung (.ics-Datei) im Anhang dieser E-Mail, die Sie 
 DIE NÄCHSTEN SCHRITTE
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 ${isAppointment
-      ? '1. Kalendereinladung: Sie erhalten eine Kalendereinladung per E-Mail\n2. Vorbereitung: Notieren Sie sich Ihre Fragen und Wünsche\n3. Gespräch: Wir besprechen Ihr Nest-Haus-Projekt im Detail'
+      ? '1. Kalendereinladung: Sie erhalten eine Kalendereinladung per E-Mail\n2. Vorbereitung: Notieren Sie sich Ihre Fragen und Wünsche\n3. Gespräch: Wir besprechen Ihr ®Hoam-Projekt im Detail'
       : '1. Rückmeldung: Wir melden uns innerhalb von 2 Werktagen bei Ihnen\n2. Beratung: Gemeinsam besprechen wir Ihre individuellen Anforderungen\n3. Planung: Wir entwickeln eine maßgeschneiderte Lösung für Sie'
     }${isPhoneAppointment ? '\n\nSie können sich auch jederzeit früher für Rückfragen bei uns bei der unten angeführten Telefonnummer melden. Wir freuen uns auf Ihren Anruf!' : ''}
 
@@ -351,7 +351,7 @@ KONTAKT - Melde dich!
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 Telefon: +43 (0) 660 5649683
 Mobil: +43 (0) 664 3949605
-Email: mail@nest-haus.at
+Email: mail@hoam.at
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 ADRESSE - Komm vorbei!
@@ -365,15 +365,15 @@ PLANEN HEIẞT PREISE KENNEN
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 Wenn du dein Nest schon jetzt konfigurierst, erhältst du volle Klarheit über Preis, Umfang und Möglichkeiten. Deine Auswahl bleibt dabei flexibel und kann jederzeit angepasst werden, falls sich deine Wünsche im Laufe der Planung verändern.
 
-Jetzt konfigurieren: https://nest-haus.at/konfigurator
+Jetzt konfigurieren: https://hoam.at/konfigurator
 
 --
-Nest-Haus
+®Hoam
 Modulares Wohnen. Nachhaltig. Österreichisch.
 
-Website: https://nest-haus.at
-Impressum: https://nest-haus.at/impressum
-Datenschutz: https://nest-haus.at/datenschutz
+Website: https://hoam.at
+Impressum: https://hoam.at/impressum
+Datenschutz: https://hoam.at/datenschutz
   `;
 
   return { subject, html, text };

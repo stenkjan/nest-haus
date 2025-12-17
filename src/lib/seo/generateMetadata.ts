@@ -3,14 +3,14 @@ import type { Metadata } from "next";
 // Base configuration for SEO
 export const SEO_CONFIG = {
     baseUrl: "https://nest-haus.at",
-    siteName: "Nest-Haus",
-    defaultTitle: "Nest-Haus | Wohne wie du willst",
-    defaultDescription: "Entdecken Sie Nest-Haus modulare Bausysteme. Nachhaltig, energieeffizient und individuell konfigurierbar.",
+    siteName: "®Hoam",
+    defaultTitle: "®Hoam | Wohne wie du willst",
+    defaultDescription: "Entdecken Sie ®Hoam modulare Bausysteme. Nachhaltig, energieeffizient und individuell konfigurierbar.",
     defaultKeywords: "modulhaus, fertighaus, nachhaltiges bauen, energieeffizient, Österreich, hausbau konfigurator",
     locale: "de_DE",
-    twitterHandle: "@nest-haus",
+    twitterHandle: "@hoam",
     organization: {
-        name: "Nest-Haus",
+        name: "®Hoam",
         description: "Weil nur du weißt, wie du richtig wohnst.",
         logo: "https://nest-haus.at/logo.png",
         contactPoint: {
@@ -26,7 +26,7 @@ export const SEO_CONFIG = {
 // Page-specific SEO configurations
 export const PAGE_SEO_CONFIG = {
     home: {
-        title: "®Nest-Haus | Wohne wie du willst",
+        title: "®Hoam-Haus | Wohne wie du willst",
         description: "Das erste Haus der Welt, welches sich an dein Leben anpasst, nicht umgekehrt. Deine Atmosphäre, deine Vorstellungen. Weil nur du weißt, wie du richtig wohnst.",
         keywords: "modulhaus, fertighaus, nachhaltiges bauen, energieeffizient, Österreich, hausbau konfigurator, modulare häuser, nachhaltig wohnen",
         priority: 1.0,
@@ -35,9 +35,9 @@ export const PAGE_SEO_CONFIG = {
         twitterImage: "/images/7-NEST-Haus-Innenperspektive-Kalkstein-Holz-Verglasung-Stirnseite-og.jpg",
     },
     konfigurator: {
-        title: "Konfigurator | Nest-Haus online konfigurieren & Preis berechnen",
-        description: "Dein Nest Haus online konfigurieren: Interaktiver Konfigurator mit Echtzeit-Preisberechnung. Module wählen, Fassade gestalten, Ausstattung planen. Jetzt starten!",
-        keywords: "haus konfigurator online, modulhaus konfigurieren, preis berechnen, interaktiver konfigurator, modulhaus planen, nest haus konfigurator, hausbau planer österreich, echtzeit preise",
+        title: "Konfigurator | ®Hoam online konfigurieren & Preis berechnen",
+        description: "Dein ®Hoam online konfigurieren: Interaktiver Konfigurator mit Echtzeit-Preisberechnung. Module wählen, Fassade gestalten, Ausstattung planen. Jetzt starten!",
+        keywords: "haus konfigurator online, modulhaus konfigurieren, preis berechnen, interaktiver konfigurator, modulhaus planen, hoam konfigurator, hausbau planer österreich, echtzeit preise",
         priority: 0.9,
         changeFrequency: "weekly" as const,
         ogImage: "/images/6-NEST-Haus-4-Module-Ansicht-Meer-Mediteran-Stirnseite-Holzlattung-Laerche.png",
@@ -45,8 +45,8 @@ export const PAGE_SEO_CONFIG = {
     },
     warenkorb: {
         title: "Warenkorb | Konzept-Check bestellen & Konfiguration einreichen",
-        description: "Deine Nest-Haus Konfiguration überprüfen und Konzept-Check bestellen. Planungspakete wählen, Termin vereinbaren, Bestellung abschließen. Jetzt starten!",
-        keywords: "konzept-check bestellen, planungspaket wählen, konfiguration überprüfen, nest haus warenkorb, bestellung abschließen, modulhaus bestellen, hausbau bestellung österreich",
+        description: "Deine ®Hoam Konfiguration überprüfen und Konzept-Check bestellen. Planungspakete wählen, Termin vereinbaren, Bestellung abschließen. Jetzt starten!",
+        keywords: "konzept-check bestellen, planungspaket wählen, konfiguration überprüfen, hoam warenkorb, bestellung abschließen, modulhaus bestellen, hausbau bestellung österreich",
         priority: 0.7,
         changeFrequency: "weekly" as const,
         ogImage: "/images/2-NEST-Haus-7-Module-Ansicht-Weisse-Fassadenplatten.png",
@@ -70,19 +70,19 @@ export const PAGE_SEO_CONFIG = {
         ogImage: "/images/335-nest-haus-team-markus-schmoltner.png",
         twitterImage: "/images/335-nest-haus-team-markus-schmoltner.png",
     },
-    "dein-nest": {
-        title: "Dein Nest | Was ist Nest-Haus?",
-        description: "Nest 80 ab €213.000, Nest 120 ab €296.000, Nest 160 ab €380.000. Individuell konfigurierbar, transportabel und erweiterbar. Dein modulares Traumhaus.",
-        keywords: "nest haus preise, nest 80, nest 120, nest 160, modulhaus kosten, individuell konfigurierbar, transportabel, modulhaus österreich, haus erweitern",
+    "dein-hoam": {
+        title: "Dein ®Hoam | Was ist ®Hoam?",
+        description: "Hoam 80 ab €213.000, Hoam 120 ab €296.000, Hoam 160 ab €380.000. Individuell konfigurierbar, transportabel und erweiterbar. Dein modulares Traumhaus.",
+        keywords: "hoam preise, hoam 80, hoam 120, hoam 160, modulhaus kosten, individuell konfigurierbar, transportabel, modulhaus österreich, haus erweitern",
         priority: 0.8,
         changeFrequency: "monthly" as const,
         ogImage: "/images/7-NEST-Haus-Innenperspektive-Kalkstein-Holz-Verglasung-Stirnseite.jpg",
         twitterImage: "/images/7-NEST-Haus-Innenperspektive-Kalkstein-Holz-Verglasung-Stirnseite.jpg",
     },
-    "nest-system": {
-        title: "Nest System | Modulares bauen",
+    "hoam-system": {
+        title: "Hoam System | Modulares bauen",
         description: "Das NEST-System: Module bis 6m hoch, 8m breit, beliebig erweiterbar. Nachhaltige Materialien, individuelle Fenster & Türen, flexible Haustechnik. Modulbau neu gedacht.",
-        keywords: "nest system, modulares bausystem, 6 meter hoch, 8 meter breit, modulhaus materialien, fenster türen individuell, haustechnik, modulbau österreich, nachhaltige materialien",
+        keywords: "hoam system, modulares bausystem, 6 meter hoch, 8 meter breit, modulhaus materialien, fenster türen individuell, haustechnik, modulbau österreich, nachhaltige materialien",
         priority: 0.7,
         changeFrequency: "monthly" as const,
         ogImage: "/images/13-NEST-Haus-System-Hausbau-Modulbau-Serienproduktion-Modulbau-flexibel-Holzbau.png",
@@ -90,7 +90,7 @@ export const PAGE_SEO_CONFIG = {
     },
     "konzept-check": {
         title: "Konzept-Check | Grundstücksanalyse & Entwurf",
-        description: "Konzept-Check für dein Nest Haus: Rechtssichere Grundstücksanalyse, Bebauungsmöglichkeiten, individueller Entwurf. Fertig in 4-6 Wochen. Jetzt bestellen.",
+        description: "Konzept-Check für Dein ®Hoam: Rechtssichere Grundstücksanalyse, Bebauungsmöglichkeiten, individueller Entwurf. Fertig in 4-6 Wochen. Jetzt bestellen.",
         keywords: "konzept-check, grundstücksanalyse, rechtssicher bauen, bebauungsmöglichkeiten, konzept-check 3000 euro, nest haus planung, grundstück check, bauvorhaben analyse",
         priority: 0.8,
         changeFrequency: "monthly" as const,
@@ -501,7 +501,7 @@ export interface VideoSchemaConfig {
     duration: string;
 }
 
-// Helper: Generate Product Schema for pages like dein-nest, nest-system
+// Helper: Generate Product Schema for pages like dein-hoam, hoam-system
 export function generatePageProductSchema(config: ProductSchemaConfig): object {
     return {
         "@context": "https://schema.org",
@@ -525,7 +525,7 @@ export function generatePageProductSchema(config: ProductSchemaConfig): object {
     };
 }
 
-// Helper: Generate Service Schema for pages like konzept-check, nest-system
+// Helper: Generate Service Schema for pages like konzept-check, hoam-system
 export function generatePageServiceSchema(config: ServiceSchemaConfig): object {
     const baseConfig = SEO_CONFIG;
 

@@ -28,14 +28,14 @@ const inter = Inter({
 const GA_MEASUREMENT_ID = process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID || "";
 
 export const metadata: Metadata = {
-  title: "Nest-Haus | Weil nur du weißt, wie du wohnen willst",
+  title: "®Hoam | Weil nur du weißt, wie du wohnen willst",
   description:
-    "Entdecken Sie NEST-Haus modulare Bausysteme. Nachhaltig, energieeffizient und individuell konfigurierbar. Jetzt kostenlos beraten lassen!",
+    "Entdecken Sie ®Hoam modulare Bausysteme. Nachhaltig, energieeffizient und individuell konfigurierbar. Jetzt kostenlos beraten lassen!",
   keywords:
     "modulhaus, fertighaus, nachhaltiges bauen, energieeffizient, Deutschland, hausbau konfigurator",
-  authors: [{ name: "NEST-Haus" }],
-  creator: "NEST-Haus",
-  publisher: "NEST-Haus",
+  authors: [{ name: "®Hoam" }],
+  creator: "®Hoam",
+  publisher: "®Hoam",
   formatDetection: {
     email: false,
     address: false,
@@ -57,11 +57,11 @@ export const metadata: Metadata = {
     // ],
   },
   openGraph: {
-    title: "Nest-Haus | Weil nur du weißt, wie du wohnen willst",
+    title: "®Hoam | Weil nur du weißt, wie du wohnen willst",
     description:
-      "Entdecken Sie NEST-Haus modulare Bausysteme. Nachhaltig, energieeffizient und individuell konfigurierbar.",
+      "Entdecken Sie ®Hoam modulare Bausysteme. Nachhaltig, energieeffizient und individuell konfigurierbar.",
     url: "https://www.nest-haus.at",
-    siteName: "NEST-Haus",
+    siteName: "®Hoam",
     locale: "de_DE",
     type: "website",
     images: [
@@ -71,16 +71,16 @@ export const metadata: Metadata = {
           "https://www.nest-haus.at/api/images/6-NEST-Haus-4-Module-Ansicht-Meer-Mediteran-Stirnseite-Holzlattung-Laerche.jpg",
         width: 1200,
         height: 630,
-        alt: "Nest-Haus | Weil nur du weißt, wie du wohnen willst",
+        alt: "®Hoam | Weil nur du weißt, wie du wohnen willst",
         type: "image/jpeg",
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "Nest-Haus | Weil nur du weißt, wie du wohnen willst",
+    title: "®Hoam | Weil nur du weißt, wie du wohnen willst",
     description:
-      "Entdecken Sie NEST-Haus modulare Bausysteme. Nachhaltig, energieeffizient und individuell konfigurierbar.",
+      "Entdecken Sie ®Hoam modulare Bausysteme. Nachhaltig, energieeffizient und individuell konfigurierbar.",
     images: [
       "https://www.nest-haus.at/api/images/6-NEST-Haus-4-Module-Ansicht-Meer-Mediteran-Stirnseite-Holzlattung-Laerche.jpg",
     ],
@@ -179,7 +179,7 @@ export default function RootLayout({
             }}
             imageProtectionConfig={{
               enableWatermark: true,
-              watermarkText: "© NEST-Haus",
+              watermarkText: "© ®Hoam",
               protectionLevel: "standard",
             }}
           />

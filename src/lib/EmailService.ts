@@ -65,13 +65,13 @@ export interface AdminAppointmentNotificationData {
 }
 
 export class EmailService {
-  private static readonly FROM_EMAIL = process.env.RESEND_FROM_EMAIL || 'mail@nest-haus.at';
-  private static readonly REPLY_TO_EMAIL = process.env.REPLY_TO_EMAIL || 'mail@nest-haus.at';
-  private static readonly ADMIN_EMAIL = process.env.ADMIN_EMAIL || 'mail@nest-haus.at';
-  private static readonly SALES_EMAIL = process.env.SALES_EMAIL || 'mail@nest-haus.at';
+  private static readonly FROM_EMAIL = process.env.RESEND_FROM_EMAIL || 'mail@hoam.at';
+  private static readonly REPLY_TO_EMAIL = process.env.REPLY_TO_EMAIL || 'mail@hoam.at';
+  private static readonly ADMIN_EMAIL = process.env.ADMIN_EMAIL || 'mail@hoam.at';
+  private static readonly SALES_EMAIL = process.env.SALES_EMAIL || 'mail@hoam.at';
 
   // From name for better email presentation
-  private static readonly FROM_NAME = 'NEST-Haus Team';
+  private static readonly FROM_NAME = '®Hoam Team';
 
   /**
    * Send confirmation email to customer
@@ -119,7 +119,7 @@ export class EmailService {
           customerEmail: data.email,
           appointmentDateTime: new Date(data.appointmentDateTime),
           durationMinutes: 60,
-          location: 'Nest-Haus Office, Zösenberg 51, 8045 Weinitzen, Austria',
+          location: '®Hoam Office, Zösenberg 51, 8045 Weinitzen, Austria',
           description: data.message,
           organizerEmail: this.ADMIN_EMAIL,
           organizerName: this.FROM_NAME,
@@ -193,7 +193,7 @@ export class EmailService {
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>NEST-Haus Bestätigung</title>
+  <title>®Hoam Bestätigung</title>
   <style>
     /* Base styles matching website design system */
     * {

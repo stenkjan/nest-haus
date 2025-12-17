@@ -69,7 +69,7 @@ const boxesData = [
   {
     id: 3,
     label: "Für Vorrausdenker",
-    title: "Dein ®Nest Haus",
+    title: "Dein ®Hoam Haus",
     hasButton: true,
     hasBorder: true,
     items: [

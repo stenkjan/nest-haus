@@ -27,7 +27,7 @@ interface GrundstueckCheckSectionProps {
   title?: string;
   /**
    * Custom subtitle
-   * @default "Wir überprüfen für dich, wie dein Nest Haus auf ein Grundstück deiner Wahl passt."
+   * @default "Wir überprüfen für dich, wie Dein ®Hoam auf ein Grundstück deiner Wahl passt."
    */
   subtitle?: string;
   /**
@@ -54,7 +54,7 @@ interface GrundstueckCheckSectionProps {
 export function GrundstueckCheckSection({
   id = "grundstueck-check",
   title = "Dein Grundstück - Unser Check",
-  subtitle = "Wir überprüfen für dich, wie dein Nest Haus auf ein Grundstück deiner Wahl passt.",
+  subtitle = "Wir überprüfen für dich, wie Dein ®Hoam auf ein Grundstück deiner Wahl passt.",
   backgroundColor = "white",
   className = "",
   showCards = true,

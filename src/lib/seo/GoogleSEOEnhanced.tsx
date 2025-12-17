@@ -88,8 +88,8 @@ export function generateEnhancedOrganizationSchema(): OrganizationSchema {
   return {
     "@context": "https://schema.org",
     "@type": "Organization",
-    "name": "NEST-Haus",
-    "alternateName": "Nest-Haus Modulhaus",
+    "name": "®Hoam",
+    "alternateName": "Hoam Modulhaus",
     "url": "https://www.nest-haus.at",
     "logo": "https://www.nest-haus.at/api/images/0-homebutton-nest-haus.svg",
     "description": "Nachhaltige, energieeffiziente Modulhäuser aus Österreich. Individuell konfigurierbar mit modernem Design.",
@@ -105,7 +105,7 @@ export function generateEnhancedOrganizationSchema(): OrganizationSchema {
       "@type": "ContactPoint",
       "telephone": "+43", // Add actual phone
       "contactType": "Kundenservice",
-      "email": "mail@nest-haus.com",
+      "email": "mail@hoam.at",
       "availableLanguage": ["de", "en"]
     },
     "sameAs": [
@@ -125,7 +125,7 @@ export function generateWebSiteSchema() {
   return {
     "@context": "https://schema.org",
     "@type": "WebSite",
-    "name": "NEST-Haus",
+    "name": "®Hoam",
     "url": "https://www.nest-haus.at",
     "potentialAction": {
       "@type": "SearchAction",
@@ -162,11 +162,11 @@ export function generateModulhausProductSchema(config: {
   return {
     "@context": "https://schema.org",
     "@type": "Product",
-    "name": `NEST-Haus ${config.nestType}`,
+    "name": `®Hoam ${config.nestType}`,
     "description": config.description,
     "brand": {
       "@type": "Brand",
-      "name": "NEST-Haus"
+      "name": "®Hoam"
     },
     "offers": {
       "@type": "Offer",
@@ -177,7 +177,7 @@ export function generateModulhausProductSchema(config: {
       "availability": "https://schema.org/InStock",
       "seller": {
         "@type": "Organization",
-        "name": "NEST-Haus"
+        "name": "®Hoam"
       }
     },
     "aggregateRating": {

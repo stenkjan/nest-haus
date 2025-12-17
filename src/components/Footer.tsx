@@ -16,7 +16,7 @@ export default function Footer() {
     {
       title: "Überblick",
       items: [
-        { text: "Home", href: "/#dein-nest-haus" },
+        { text: "Home", href: "/#dein-hoam-haus" },
         { text: "Kontakt", href: "/kontakt" },
         { text: "Konfigurator", href: "/konfigurator" },
         { text: "Warenkorb", href: "/warenkorb?mode=konzept-check" },
@@ -24,13 +24,13 @@ export default function Footer() {
       ],
     },
     {
-      title: "Dein Nest",
+      title: "Dein ®Hoam",
       items: [
-        { text: "Preise", href: "/dein-nest#preise" },
-        { text: "Position am Markt", href: "/dein-nest#position-am-markt" },
-        { text: "Haus Konfigurator", href: "/dein-nest#haus-konfiguraton" },
-        { text: "Vorteile", href: "/dein-nest#vorteile-nest" },
-        { text: "Transportabilität", href: "/dein-nest#transport" },
+        { text: "Preise", href: "/dein-hoam#preise" },
+        { text: "Position am Markt", href: "/dein-hoam#position-am-markt" },
+        { text: "Haus Konfigurator", href: "/dein-hoam#haus-konfiguraton" },
+        { text: "Vorteile", href: "/dein-hoam#vorteile-hoam" },
+        { text: "Transportabilität", href: "/dein-hoam#transport" },
       ],
     },
     {
@@ -47,19 +47,19 @@ export default function Footer() {
       ],
     },
     {
-      title: "Nest System",
+      title: "Hoam System",
       items: [
-        { text: "Unsere Technik", href: "/nest-system#unsere-technik" },
-        { text: "Materialien", href: "/nest-system#materialien" },
-        { text: "Fenster & Türen", href: "/nest-system#fenster-tueren" },
-        { text: "Individualisierung", href: "/nest-system#individualisierung" },
-        { text: "Modulerweiterung", href: "/nest-system#modulerweiterung" },
+        { text: "Unsere Technik", href: "/hoam-system#unsere-technik" },
+        { text: "Materialien", href: "/hoam-system#materialien" },
+        { text: "Fenster & Türen", href: "/hoam-system#fenster-tueren" },
+        { text: "Individualisierung", href: "/hoam-system#individualisierung" },
+        { text: "Modulerweiterung", href: "/hoam-system#modulerweiterung" },
       ],
     },
     {
       title: "Warum Wir?",
       items: [
-        { text: "Wir sind Nest", href: "/warum-wir#wir-sind-nest" },
+        { text: "Wir sind ®Hoam", href: "/warum-wir#wir-sind-hoam" },
         { text: "Verlässlichkeit", href: "/warum-wir#verlaesslichkeit" },
         { text: "Unser Team", href: "/warum-wir#unser-team" },
         { text: "Unsere Partner", href: "/warum-wir#unsere-partner" },

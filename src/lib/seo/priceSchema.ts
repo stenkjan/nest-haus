@@ -24,15 +24,15 @@ export function generateProductPriceSchema(
     const baseSchema = {
         "@context": "https://schema.org",
         "@type": "Product",
-        name: "NEST-Haus Modulares Bausystem",
+        name: "®Hoam Modulares Bausystem",
         description: "Individuell konfigurierbare modulare Häuser für nachhaltiges Wohnen",
         brand: {
             "@type": "Brand",
-            name: "NEST-Haus",
+            name: "®Hoam",
         },
         manufacturer: {
             "@type": "Organization",
-            name: "NEST-Haus",
+            name: "®Hoam",
             url: "https://nest-haus.at",
         },
         category: "Modular Housing",
@@ -58,7 +58,7 @@ export function generateProductPriceSchema(
                 .split("T")[0],
             seller: {
                 "@type": "Organization",
-                name: "NEST-Haus",
+                name: "®Hoam",
                 url: "https://nest-haus.at",
             },
             additionalProperty: [
@@ -143,7 +143,7 @@ export function generateShoppingCartSchema(
             "@type": "Product",
             name: "totalPrice" in item && item.nest
                 ? `${item.nest.name} Konfiguration`
-                : "name" in item ? item.name : "NEST-Haus Konfiguration",
+                : "name" in item ? item.name : "®Hoam Konfiguration",
             offers: {
                 "@type": "Offer",
                 price: price.toString(),
@@ -157,7 +157,7 @@ export function generateShoppingCartSchema(
     return {
         "@context": "https://schema.org",
         "@type": "ShoppingCart",
-        name: "NEST-Haus Warenkorb",
+        name: "®Hoam Warenkorb",
         description: "Modulhaus Konfiguration Warenkorb",
         url: "https://nest-haus.at/warenkorb",
         totalPrice: totalPrice.toString(),
@@ -174,7 +174,7 @@ export function generateConfiguratorSchema(currentPrice?: number): object {
     return {
         "@context": "https://schema.org",
         "@type": "SoftwareApplication",
-        name: "NEST-Haus Konfigurator",
+        name: "®Hoam Konfigurator",
         description: "Interaktiver Konfigurator für modulare Häuser",
         applicationCategory: "DesignApplication",
         operatingSystem: "Web Browser",

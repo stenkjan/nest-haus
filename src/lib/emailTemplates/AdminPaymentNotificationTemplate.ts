@@ -313,7 +313,7 @@ export function generateAdminPaymentNotificationEmail(
     <!-- Header -->
     <div class="header">
       <h1>Zahlung erfolgreich eingegangen</h1>
-      <p style="margin: 8px 0 0 0; opacity: 0.95; font-size: 15px;">NEST-Haus Konfiguration</p>
+      <p style="margin: 8px 0 0 0; opacity: 0.95; font-size: 15px;">®Hoam Konfiguration</p>
     </div>
     
     <!-- Content -->
@@ -402,7 +402,7 @@ export function generateAdminPaymentNotificationEmail(
       
       <!-- Action Buttons -->
       <div style="text-align: center; margin: 30px 0 20px 0;">
-        <a href="https://nest-haus.at/admin/customer-inquiries/${data.inquiryId}" class="btn-primary">
+        <a href="https://hoam.at/admin/customer-inquiries/${data.inquiryId}" class="btn-primary">
           Anfrage öffnen
         </a>
         <a href="mailto:${data.email}" class="btn-primary btn-secondary">
@@ -416,7 +416,7 @@ export function generateAdminPaymentNotificationEmail(
     
     <!-- Footer -->
     <div class="footer">
-      <p>Automatische Benachrichtigung vom NEST-Haus System</p>
+      <p>Automatische Benachrichtigung vom ®Hoam System</p>
       <p style="margin-top: 8px;">Zeitstempel: ${new Date().toLocaleString('de-DE')}</p>
     </div>
   </div>
@@ -425,7 +425,7 @@ export function generateAdminPaymentNotificationEmail(
   `;
 
   const text = `
-NEST-Haus - Zahlung erfolgreich eingegangen
+®Hoam - Zahlung erfolgreich eingegangen
 
 Zahlung erhalten: ${formattedAmount}
 
@@ -456,12 +456,12 @@ ${data.userAgent ? `- Browser: ${data.userAgent}` : ''}
 }
 
 AKTIONEN:
-- Anfrage öffnen: https://nest-haus.at/admin/customer-inquiries/${data.inquiryId}
+- Anfrage öffnen: https://hoam.at/admin/customer-inquiries/${data.inquiryId}
 - Kunde kontaktieren: ${data.email}
 - Stripe öffnen: https://dashboard.stripe.com/payments/${data.paymentIntentId}
 
 --
-Automatische Benachrichtigung vom NEST-Haus System
+Automatische Benachrichtigung vom ®Hoam System
 Zeitstempel: ${new Date().toLocaleString('de-DE')}
   `;
 

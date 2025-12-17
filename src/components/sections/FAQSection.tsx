@@ -21,7 +21,8 @@ interface FAQSectionProps {
 const defaultFAQItems: FAQItem[] = [
   {
     id: 1,
-    question: "Was genau ist ein Nest Haus und wie unterscheidet es sich von einem Fertigteilhaus, Tiny House oder Architektenhaus?",
+    question:
+      "Was genau ist ein Nest Haus und wie unterscheidet es sich von einem Fertigteilhaus, Tiny House oder Architektenhaus?",
     answer:
       "Das Nest Haus versucht durch optimierte Produktionsbedingungen eine enorm hohe Qualität – vergleichbar mit Luxus-Architektenhäusern – leistbar zu machen. Darüber hinaus ermöglichen wir trotz Standardisierung weiterhin individuelle Gestaltungsmöglichkeiten bei der Raumaufteilung und Grundrissplanung. Die hochpräzise Produktion macht es uns möglich, die Module so passgenau zu fertigen, dass sie mehrmals zusammen- und wieder auseinandergebaut werden können. Dadurch entsteht eine Flexibilität ähnlich wie bei einem Tiny House: Du kannst flexibel bleiben und dein Haus mitnehmen, erweitern oder verkaufen. Das Grundstück bleibt dabei stets unabhängig vom Haus.",
   },
@@ -33,7 +34,8 @@ const defaultFAQItems: FAQItem[] = [
   },
   {
     id: 3,
-    question: "Fenster und Türen – warum sind keine Fenster im Konfigurator zu sehen?",
+    question:
+      "Fenster und Türen – warum sind keine Fenster im Konfigurator zu sehen?",
     answer:
       "Alle Fenster und Türen werden bei uns individuell mit dir gemeinsam und passend zu deinem Grundriss gestaltet. Wir positionieren diese perfekt nach den örtlichen Gegebenheiten, idealer Himmelsausrichtung, Belichtungssituation und deinen persönlichen Präferenzen.",
   },
@@ -41,7 +43,7 @@ const defaultFAQItems: FAQItem[] = [
     id: 4,
     question: "Was kostet ein Nest Haus?",
     answer:
-      "Der exakte Preis ist abhängig von deinem individuellen Nest-Entwurf. Diesen arbeiten wir gemeinsam im Konzept-Check aus. Danach erhältst du ein konkretes Angebot für dein Nest Haus.",
+      "Der exakte Preis ist abhängig von deinem individuellen Nest-Entwurf. Diesen arbeiten wir gemeinsam im Konzept-Check aus. Danach erhältst du ein konkretes Angebot für Dein ®Hoam.",
   },
 ];
 

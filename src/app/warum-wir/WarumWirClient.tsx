@@ -18,7 +18,7 @@ import Footer from "@/components/Footer";
 // Define sections
 const sections = [
   {
-    id: "wir-sind-nest",
+    id: "wir-sind-hoam",
     title: "Die Nest Vision",
     slug: "wir-sind-nest",
   },
@@ -63,7 +63,7 @@ export default function WarumWirClient() {
         >
           <div className="w-full">
             <SectionHeader
-              title="Die ®Nest Vision"
+              title="Die ®Hoam Vision"
               subtitle="Eine Welt, in der Effizienz auf Architektur trifft"
               titleClassName="text-white"
               subtitleClassName="text-white"
@@ -213,7 +213,7 @@ export default function WarumWirClient() {
                       text: "Das Nest System",
                       variant: "primary",
                       size: "xs",
-                      link: "/nest-system",
+                      link: "/hoam-system",
                     },
                   ],
                 },
@@ -253,7 +253,7 @@ export default function WarumWirClient() {
                       text: "Das Nest System",
                       variant: "primary",
                       size: "xs",
-                      link: "/nest-system",
+                      link: "/hoam-system",
                     },
                   ],
                 },

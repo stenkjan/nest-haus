@@ -71,7 +71,7 @@ import { IMAGES } from "@/constants/images";
 
 ## 2. Konfigurationen
 
-**What it is:** "Konfiguriere dein ®Nest Haus" section with configurator video  
+**What it is:** "Konfiguriere dein ®Hoam Haus" section with configurator video  
 **Content:** Header + VideoCard showing configurator options  
 **Currently used on:** `/entdecken` (Section 5)
 
@@ -88,7 +88,7 @@ import { IMAGES } from "@/constants/images";
 ```tsx
 <section id="konfigurieren" className="w-full py-8 md:py-16 bg-white">
   <SectionHeader
-    title="Konfiguriere dein ®Nest Haus"
+    title="Konfiguriere dein ®Hoam Haus"
     subtitle="Individualisiert, wo es Freiheit braucht. Standardisiert, wo es Effizienz schafft."
     wrapperMargin="mb-12"
   />
@@ -164,7 +164,7 @@ import { IMAGES } from "@/constants/images";
       customData={[
         {
           id: 1,
-          title: "Das ®Nest System",
+          title: "Das ®Hoam System",
           subtitle: "Effizient. Präzise. Leistbar.",
           description: "Dein Raum. Deine Ideen.",
           image: IMAGES.function.nestHausSystemModulbau,

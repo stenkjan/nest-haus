@@ -38,7 +38,7 @@ export default function AgbClient() {
               Allgemeine Geschäftsbedingungen
             </h1>
             <h2 className="h2-subtitle tracking-[-0.015em] leading-8 max-w-3xl mx-auto text-center text-black">
-              Nest-Haus - Modulare Häuser
+              ®Hoam - Modulare Häuser
             </h2>
 
             <div className="max-w-4xl mx-auto space-y-12 text-gray-700">
@@ -50,13 +50,13 @@ export default function AgbClient() {
                   <p className="leading-relaxed">
                     Diese Allgemeinen Geschäftsbedingungen (AGB) gelten für alle
                     Verträge zwischen der Eco Chalets GmbH (nachfolgend
-                    &quot;Nest-Haus&quot; oder &quot;Anbieter&quot;) und ihren
+                    &quot;®Hoam&quot; oder &quot;Anbieter&quot;) und ihren
                     Kunden über die Planung, Lieferung und Montage modularer
                     Häuser.
                   </p>
                   <p className="leading-relaxed">
                     Abweichende Bedingungen des Kunden werden nicht anerkannt,
-                    es sei denn, Nest-Haus stimmt ihrer Geltung ausdrücklich
+                    es sei denn, ®Hoam stimmt ihrer Geltung ausdrücklich
                     schriftlich zu.
                   </p>
                 </div>
@@ -93,7 +93,7 @@ export default function AgbClient() {
                   Anwendbares Recht
                 </h3>
                 <p className="leading-relaxed">
-                  Für alle Rechtsbeziehungen zwischen Nest-Haus und dem Kunden
+                  Für alle Rechtsbeziehungen zwischen ®Hoam und dem Kunden
                   gilt ausschließlich österreichisches Recht unter Ausschluss
                   des UN-Kaufrechts. Bei Verbrauchern gelten zusätzlich die
                   zwingenden Bestimmungen des Konsumentenschutzgesetzes (KSchG)
@@ -134,7 +134,7 @@ export default function AgbClient() {
                     ab.
                   </p>
                   <p className="leading-relaxed">
-                    Nest-Haus kann die Bestellung binnen 14 Tagen nach Eingang
+                    ®Hoam kann die Bestellung binnen 14 Tagen nach Eingang
                     annehmen oder ablehnen.
                   </p>
                 </div>
@@ -147,7 +147,7 @@ export default function AgbClient() {
                 <div className="space-y-4">
                   <p className="leading-relaxed">
                     Der Vertrag kommt durch die schriftliche Auftragsbestätigung
-                    von Nest-Haus zustande.
+                    von ®Hoam zustande.
                   </p>
                   <p className="leading-relaxed">
                     Die Auftragsbestätigung enthält alle wesentlichen
@@ -177,7 +177,7 @@ export default function AgbClient() {
                     Vertragssprache ist Deutsch.
                   </p>
                   <p className="leading-relaxed">
-                    Nest-Haus speichert den Vertragstext und sendet dem Kunden
+                    ®Hoam speichert den Vertragstext und sendet dem Kunden
                     die Bestelldaten und AGB per E-Mail zu.
                   </p>
                 </div>
@@ -200,7 +200,7 @@ export default function AgbClient() {
                 </h3>
                 <div className="space-y-4">
                   <p className="leading-relaxed">
-                    Nest-Haus erbringt folgende Leistungen:
+                    ®Hoam erbringt folgende Leistungen:
                   </p>
                   <ul className="list-disc list-inside space-y-2 ml-4">
                     <li>Planung und Konstruktion des modularen Hauses</li>
@@ -357,7 +357,7 @@ export default function AgbClient() {
                 <div className="space-y-4">
                   <p className="leading-relaxed">
                     Die Montage wird durch qualifizierte Fachkräfte von
-                    Nest-Haus durchgeführt.
+                    ®Hoam durchgeführt.
                   </p>
                   <p className="leading-relaxed">
                     Montagedauer: In der Regel 2-5 Arbeitstage je nach
@@ -425,7 +425,7 @@ export default function AgbClient() {
                     <p>Zösenberg 51</p>
                     <p>8045 Weinitzen</p>
                     <p>Österreich</p>
-                    <p>E-Mail: mail@nest-haus.at</p>
+                    <p>E-Mail: mail@hoam.at</p>
                   </div>
                 </div>
               </div>
@@ -455,7 +455,7 @@ export default function AgbClient() {
                   <div className="bg-[#F4F4F4] p-4 rounded-2xl text-sm">
                     <p className="mb-2">
                       An: Eco Chalets GmbH, Zösenberg 51, 8045 Weinitzen,
-                      widerruf@nest-haus.at
+                      widerruf@hoam.at
                     </p>
                     <p className="mb-2">
                       Hiermit widerrufe(n) ich/wir (*) den von mir/uns (*)
@@ -498,7 +498,7 @@ export default function AgbClient() {
                 <div className="space-y-4">
                   <p className="leading-relaxed">
                     Für alle Streitigkeiten aus diesem Vertragsverhältnis ist
-                    das sachlich zuständige Gericht am Sitz von Nest-Haus
+                    das sachlich zuständige Gericht am Sitz von ®Hoam
                     zuständig.
                   </p>
                   <p className="leading-relaxed">
@@ -533,7 +533,7 @@ export default function AgbClient() {
                 </h3>
                 <div className="space-y-4">
                   <p className="leading-relaxed">
-                    Nest-Haus behält sich vor, diese AGB zu ändern. Kunden
+                    ®Hoam behält sich vor, diese AGB zu ändern. Kunden
                     werden über Änderungen rechtzeitig informiert.
                   </p>
                   <p className="leading-relaxed">
@@ -561,7 +561,7 @@ export default function AgbClient() {
                     </a>
                   </p>
                   <p className="leading-relaxed">
-                    Nest-Haus ist nicht verpflichtet, an
+                    ®Hoam ist nicht verpflichtet, an
                     Streitbeilegungsverfahren vor Verbraucherschlichtungsstellen
                     teilzunehmen.
                   </p>
@@ -570,13 +570,13 @@ export default function AgbClient() {
 
               <div className="text-center border-t border-gray-300 pt-8 mt-12">
                 <p className="text-lg font-medium text-black mb-4">
-                  Nest-Haus | Eco Chalets GmbH
+                  ®Hoam | Eco Chalets GmbH
                 </p>
                 <p className="text-sm text-gray-600 mb-2">
                   Stand: {new Date().toLocaleDateString("de-AT")} | Version 1.0
                 </p>
                 <p className="text-sm text-gray-600">
-                  Bei Fragen zu diesen AGB wenden Sie sich an: info@nest-haus.at
+                  Bei Fragen zu diesen AGB wenden Sie sich an: info@hoam.at
                 </p>
               </div>
             </div>

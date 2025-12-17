@@ -164,7 +164,7 @@ export function generateAdminNotificationEmail(data: AdminNotificationData): {
   <div class="email-container">
     <div class="header">
       <h1>${isAppointment ? 'Neue Terminanfrage' : 'Neue Kontaktanfrage'}</h1>
-      <p style="margin: 8px 0 0 0; opacity: 0.9;">NEST-Haus Admin Notification</p>
+      <p style="margin: 8px 0 0 0; opacity: 0.9;">®Hoam Admin Notification</p>
     </div>
     
     <div class="content">
@@ -233,7 +233,7 @@ export function generateAdminNotificationEmail(data: AdminNotificationData): {
         </ol>
         
         <div style="margin-top: 20px;">
-          <a href="https://nest-haus.at/admin/customer-inquiries" class="btn btn-primary">
+          <a href="https://hoam.at/admin/customer-inquiries" class="btn btn-primary">
             Admin-Panel öffnen
           </a>
           <a href="mailto:${data.email}" class="btn btn-secondary">
@@ -262,7 +262,7 @@ export function generateAdminNotificationEmail(data: AdminNotificationData): {
   `;
 
   const text = `
-NEST-Haus - ${isAppointment ? 'Neue Terminanfrage' : 'Neue Kontaktanfrage'}
+®Hoam - ${isAppointment ? 'Neue Terminanfrage' : 'Neue Kontaktanfrage'}
 
 ${isAppointment ? `
 Gewünschter Termin: ${formattedDate}
@@ -295,7 +295,7 @@ ${isAppointment ? `
 3. Anfrage im Admin-Panel als "CONTACTED" markieren
 `}
 
-Admin-Panel: https://nest-haus.at/admin/customer-inquiries
+Admin-Panel: https://hoam.at/admin/customer-inquiries
 E-Mail senden: mailto:${data.email}
 ${data.phone ? `Anrufen: tel:${data.phone}\n` : ''}
 ---

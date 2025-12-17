@@ -24,11 +24,11 @@ import type { SectionDefinition } from "@/types";
 import { IMAGES } from "@/constants/images";
 import Footer from "@/components/Footer";
 
-// Define sections for nest-system page
+// Define sections for hoam-system page
 const sections: SectionDefinition[] = [
   {
     id: "unsere-technik",
-    title: "Dein Nest System",
+    title: "Dein Hoam System",
     slug: "unsere-technik",
   },
   {
@@ -72,7 +72,7 @@ const getMobileVideoPath = (desktopPath: string): string => {
   return desktopPath;
 };
 
-export default function NestSystemClient() {
+export default function HoamSystemClient() {
   const [currentSectionId, setCurrentSectionId] =
     useState<string>("unsere-technik");
   const [isMobile, setIsMobile] = useState(false);
@@ -120,10 +120,10 @@ export default function NestSystemClient() {
           sections={sections}
           onSectionChange={setCurrentSectionId}
         >
-          {/* Section 1 - Dein Nest System */}
+          {/* Section 1 - Dein Hoam System */}
           <section id="unsere-technik" className="bg-black pt-12 pb-8 md:pb-16">
             <SectionHeader
-              title="Dein ®Nest System"
+              title="Dein Hoam System"
               subtitle="Individualisiert, wo es Freiheit braucht. Standardisiert, wo es Effizienz schafft."
               titleClassName="text-white"
               subtitleClassName="text-white"
@@ -159,7 +159,7 @@ export default function NestSystemClient() {
                   />
                   {/* Barrierefreiheit - Beschreibung für Screenreader */}
                   <span className="sr-only">
-                    Video-Demonstration des NEST-Haus modularen Bausystems zeigt
+                    Video-Demonstration des ®Hoam modularen Bausystems zeigt
                     architektonische Komponenten und Montageprozess
                   </span>
                 </div>
@@ -183,8 +183,8 @@ export default function NestSystemClient() {
               maxWidth={false}
               image1={IMAGES.function.nestHausModulKonzept}
               image2={IMAGES.function.nestHausModulLiniengrafik}
-              image1Description="NEST-Haus Modul Stirnseite Ansicht Schema Konzept"
-              image2Description="NEST-Haus Modul Holz Schema Konzept"
+              image1Description="®Hoam Modul Stirnseite Ansicht Schema Konzept"
+              image2Description="®Hoam Modul Holz Schema Konzept"
               textWrapperClassName="mt-8 md:mt-0"
             />
 
@@ -250,14 +250,14 @@ export default function NestSystemClient() {
             />
             <ThreeByOneAdaptiveHeight
               backgroundColor="black"
-              imageDescription="NEST-Haus Expertise und professionelle Beratung"
+              imageDescription="®Hoam Expertise und professionelle Beratung"
               maxWidth={false}
             />
 
             {/* ThreeByOneGrid - Left Position (Bottom Section) */}
             <ThreeByOneGrid
               backgroundColor="black"
-              text="<p class='p-secondary text-white'><span class='text-nest-gray'>Unser</span> <span class='text-white font-medium'>Nest System</span> <span class='text-nest-gray'>bietet dir an den</span> <span class='text-white font-medium'>Seitenwänden</span> <span class='text-nest-gray'>und an der</span> <span class='text-white font-medium'>Giebelseite</span> <span class='text-nest-gray'>volle Gestaltungsfreiheit.</span> <span class='text-nest-gray'> Hier kannst du deine</span> <span class='text-white font-medium'>Fenster und Türen</span> <span class='text-nest-gray'>so platzieren, wie es zu dir und deinem Zuhause passt. Gemeinsam mit uns definierst du</span> <span class='text-white font-medium'>Größe und Position</span> <span class='text-nest-gray'>individuell nach</span> <span class='text-white font-medium'>deinen Wünschen</span> <span class='text-nest-gray'>und Anforderungen.</span></p>"
+              text="<p class='p-secondary text-white'><span class='text-nest-gray'>Unser</span> <span class='text-white font-medium'>Hoam System</span> <span class='text-nest-gray'>bietet dir an den</span> <span class='text-white font-medium'>Seitenwänden</span> <span class='text-nest-gray'>und an der</span> <span class='text-white font-medium'>Giebelseite</span> <span class='text-nest-gray'>volle Gestaltungsfreiheit.</span> <span class='text-nest-gray'> Hier kannst du deine</span> <span class='text-white font-medium'>Fenster und Türen</span> <span class='text-nest-gray'>so platzieren, wie es zu dir und deinem Zuhause passt. Gemeinsam mit uns definierst du</span> <span class='text-white font-medium'>Größe und Position</span> <span class='text-nest-gray'>individuell nach</span> <span class='text-white font-medium'>deinen Wünschen</span> <span class='text-nest-gray'>und Anforderungen.</span></p>"
               textPosition="left"
               maxWidth={false}
               image1={IMAGES.function.nestHausFensterTuerenStirnseite}
@@ -305,7 +305,7 @@ export default function NestSystemClient() {
                 <div className="w-full max-w-6xl overflow-hidden">
                   <HybridBlobImage
                     path={IMAGES.function.nestHausGrundrissSchema}
-                    alt="NEST-Haus Grundriss Schema - Individualisierung und Planung"
+                    alt="®Hoam Grundriss Schema - Individualisierung und Planung"
                     width={1536}
                     height={809}
                     className="w-full md:w-4/5 h-auto object-contain md:mx-auto"
@@ -325,7 +325,7 @@ export default function NestSystemClient() {
             <div className="py-8 md:py-16">
               <FullWidthTextGrid
                 backgroundColor="black"
-                textBox1="<p class='p-secondary text-white'><span class='text-nest-gray'>Mit Nest hast du die</span> <span class='text-white font-medium'>Freiheit, deinen Grundriss so zu gestalten,</span> <span class='text-nest-gray'>wie es zu deinem Leben passt. Kein Schema, kein Standard. Nur Räume, die sich anfühlen wie du selbst.</span> <span class='text-white font-medium'>Denn richtig wohnen bedeutet mehr als Fläche und Funktion.</span> <span class='text-nest-gray'>Es ist Persönlichkeit, Ausdruck und Alltag der von dir in Einklang gebracht wird.</span></p>"
+                textBox1="<p class='p-secondary text-white'><span class='text-nest-gray'>Mit ®Hoam hast du die</span> <span class='text-white font-medium'>Freiheit, deinen Grundriss so zu gestalten,</span> <span class='text-nest-gray'>wie es zu deinem Leben passt. Kein Schema, kein Standard. Nur Räume, die sich anfühlen wie du selbst.</span> <span class='text-white font-medium'>Denn richtig wohnen bedeutet mehr als Fläche und Funktion.</span> <span class='text-nest-gray'>Es ist Persönlichkeit, Ausdruck und Alltag der von dir in Einklang gebracht wird.</span></p>"
                 textBox2="<p class='p-secondary text-white'><span class='text-nest-gray'>Wenn du auf dem Weg dorthin</span> Unterstützung <span class='text-nest-gray'>möchtest, begleiten wir dich Schritt für Schritt. Unsere</span> Planungspakete <span class='text-nest-gray'>führen dich</span> von der Einreichplanung bis zur Gestaltung des Innenraums. <span class='text-nest-gray'>Individuell, durchdacht und auf deine Vorstellungen abgestimmt. So entsteht aus einer Idee</span> <span class='text-white font-medium'>ein Zuhause, das wirklich zu dir passt.</span></p>"
                 maxWidth={false}
               />
@@ -379,7 +379,7 @@ export default function NestSystemClient() {
               backgroundColor="black"
               image={IMAGES.function.nestHausModulElektrikSanitaer}
               mobileImage={IMAGES.function.mobile.nestHausModulElektrikSanitaer}
-              imageDescription="NEST-Haus Modulansicht für deinen Part"
+              imageDescription="®Hoam Modulansicht für deinen Part"
               textCellTitle1="Die Installationsebene"
               textCell1="Alle unsere Gebäude werden mit einer Installationsebene ausgeführt und sind so konzipiert, dass ein unkompliziertes Demontieren der Interior-Platten möglich ist. Im Anschluss können sämltiche Elektro-, & Installationsarbeiten durchgeführt werden. 
 Nach Abschluss dieser Arbeiten können die Interior-Platten wieder montiert werden. Dies ermöglicht eine stetigen Zugang zu sämtlichen im Gebäude verlegten Leitungen und ermöglicht auch eine unkomplizierte Erweiterung, Montage & Wartung."
@@ -406,11 +406,11 @@ Nach Abschluss dieser Arbeiten können die Interior-Platten wieder montiert werd
               wrapperMargin="mb-12 2xl:mb-24"
             />
             <ThreeByOneGrid
-              text="<p class='p-secondary text-white'>Mehr Raum, wenn du ihn brauchst. <span class='text-nest-gray'>Dein Nest Haus wächst mit. Dank durchdachter Konstruktion kannst du</span> jederzeit eine Zwischendecke einziehen <span class='text-nest-gray'>und dein Zuhause ganz einfach in ein zweigeschoßiges Raumwunder verwandeln.</span></p>"
+              text="<p class='p-secondary text-white'>Mehr Raum, wenn du ihn brauchst. <span class='text-nest-gray'>Dein ®Hoam wächst mit. Dank durchdachter Konstruktion kannst du</span> jederzeit eine Zwischendecke einziehen <span class='text-nest-gray'>und dein Zuhause ganz einfach in ein zweigeschoßiges Raumwunder verwandeln.</span></p>"
               image1={IMAGES.function.nestHausPlattenFundament}
               image2={IMAGES.function.nestHausFundamentStreifenfundament}
-              image1Description="NEST-Haus Planung Innenausbau mit Zwischendecke - Leichtbau Modul"
-              image2Description="NEST-Haus Fundament Streifenfundament für Zwischendecke - Leichtbau Modul"
+              image1Description="®Hoam Planung Innenausbau mit Zwischendecke - Leichtbau Modul"
+              image2Description="®Hoam Fundament Streifenfundament für Zwischendecke - Leichtbau Modul"
               textPosition="left"
               backgroundColor="black"
               maxWidth={false}
@@ -420,17 +420,17 @@ Nach Abschluss dieser Arbeiten können die Interior-Platten wieder montiert werd
             <div className="w-full pt-16 md:pt-32">
               <SectionHeader
                 title="Haus erweitern?"
-                subtitle="Dein Nest bleibt flexibel und lässt sich an deine Lebensumstände anpassen"
+                subtitle="Dein ®Hoam bleibt flexibel und lässt sich an deine Lebensumstände anpassen"
                 titleClassName="text-white"
                 subtitleClassName="text-nest-gray"
                 wrapperMargin="mb-12 2xl:mb-24"
               />
               <ThreeByOneGrid
-                text="<p class='p-secondary text-white'><span class='text-nest-gray'>Durch intelligente</span> Standardisierung <span class='text-nest-gray'> und innovative </span> Modulschnittstellen <span class='text-nest-gray'>garantieren wir</span> höchste Flexibilität, Langlebigkeit und Nachhaltigkeit zum besten Preis. <span class='text-nest-gray'>Mit </span> Nest <span class='text-nest-gray'> wohnst du </span> immer so</span> <span class='text-nest-gray'> wie</span> du es willst.</p>"
+                text="<p class='p-secondary text-white'><span class='text-nest-gray'>Durch intelligente</span> Standardisierung <span class='text-nest-gray'> und innovative </span> Modulschnittstellen <span class='text-nest-gray'>garantieren wir</span> höchste Flexibilität, Langlebigkeit und Nachhaltigkeit zum besten Preis. <span class='text-nest-gray'>Mit </span> ®Hoam <span class='text-nest-gray'> wohnst du </span> immer so</span> <span class='text-nest-gray'> wie</span> du es willst.</p>"
                 image1={IMAGES.function.nestHausFundamentPunktfundament}
                 image2={IMAGES.function.nestHausFlexibilitaetErweiterung}
-                image1Description="NEST-Haus Erweiterung Modulbau vergrößern Leichtbau Modul flexibel"
-                image2Description="NEST-Haus Flexibilität Erweiterung Modulbau"
+                image1Description="®Hoam Erweiterung Modulbau vergrößern Leichtbau Modul flexibel"
+                image2Description="®Hoam Flexibilität Erweiterung Modulbau"
                 textPosition="right"
                 backgroundColor="black"
                 maxWidth={false}
@@ -459,3 +459,4 @@ Nach Abschluss dieser Arbeiten können die Interior-Platten wieder montiert werd
     </div>
   );
 }
+

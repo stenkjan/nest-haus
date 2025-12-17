@@ -17,7 +17,7 @@ export async function validateAdminAuth(request: NextRequest): Promise<boolean> 
     }
 
     // Check for admin authentication cookie
-    const adminAuthCookie = request.cookies.get('nest-haus-admin-auth');
+    const adminAuthCookie = request.cookies.get('hoam-admin-auth');
 
     if (!adminAuthCookie) {
         console.warn('[Admin Auth] No auth cookie present');
@@ -73,7 +73,7 @@ export async function validateAdminAuthFromCookies(): Promise<boolean> {
     }
 
     const cookieStore = await cookies();
-    const adminAuthCookie = cookieStore.get('nest-haus-admin-auth');
+    const adminAuthCookie = cookieStore.get('hoam-admin-auth');
 
     if (!adminAuthCookie) {
         console.warn('[Admin Auth] No auth cookie present');

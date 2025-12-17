@@ -576,12 +576,12 @@ export function generatePaymentConfirmationEmail(data: PaymentConfirmationEmailD
         <p>
           <strong>1. Bestätigung:</strong> Sie erhalten diese E-Mail als Zahlungsnachweis<br><br>
           <strong>2. Kontaktaufnahme:</strong> Wir melden uns in Kürze bei Ihnen<br><br>
-          <strong>3. Planung:</strong> Gemeinsam besprechen wir die Details Ihres Nest-Haus Projekts<br><br>
+          <strong>3. Planung:</strong> Gemeinsam besprechen wir die Details Ihres Hoam Projekts<br><br>
           <strong>4. Umsetzung:</strong> Wir starten mit der professionellen Planung und Ausführung
         </p>
         
         <div class="button-center">
-          <a href="https://nest-haus.at/konfigurator" class="btn-primary">
+          <a href="https://da-hoam.at/konfigurator" class="btn-primary">
             Jetzt konfigurieren
           </a>
         </div>
@@ -599,7 +599,7 @@ export function generatePaymentConfirmationEmail(data: PaymentConfirmationEmailD
               <span class="contact-label">Telefon 2:</span>
               <span class="contact-value">+43 (0) 660 5649683</span>
               <span class="contact-label">Email:</span>
-              <span class="contact-value">mail@nest-haus.at</span>
+              <span class="contact-value">mail@hoam.at</span>
             </div>
           </div>
           
@@ -624,13 +624,13 @@ export function generatePaymentConfirmationEmail(data: PaymentConfirmationEmailD
     <!-- Footer -->
     <div class="footer">
       <p>
-        <strong>Nest-Haus Team</strong><br>
+        <strong>®Hoam Team</strong><br>
         Dein Stil. Dein Zuhause.
       </p>
       <p style="margin-top: 16px;">
-        <a href="https://nest-haus.at">Website</a> ·
-        <a href="https://nest-haus.at/impressum">Impressum</a> ·
-        <a href="https://nest-haus.at/datenschutz">Datenschutz</a>
+        <a href="https://da-hoam.at">Website</a> ·
+        <a href="https://da-hoam.at/impressum">Impressum</a> ·
+        <a href="https://da-hoam.at/datenschutz">Datenschutz</a>
       </p>
     </div>
     
@@ -644,7 +644,7 @@ export function generatePaymentConfirmationEmail(data: PaymentConfirmationEmailD
   `;
 
   const text = `
-Nest-Haus - Zahlungsbestätigung
+®Hoam - Zahlungsbestätigung
 
 Konzept-Check bestellt
 
@@ -659,24 +659,24 @@ ${data.paymentIntentId ? `- Transaktions-ID: ${data.paymentIntentId}` : ''}
 DIE NÄCHSTEN SCHRITTE:
 1. Bestätigung: Sie erhalten diese E-Mail als Zahlungsnachweis
 2. Kontaktaufnahme: Wir melden uns in Kürze bei Ihnen
-3. Planung: Gemeinsam besprechen wir die Details Ihres Nest-Haus Projekts
+3. Planung: Gemeinsam besprechen wir die Details Ihres ®Hoam Projekts
 4. Umsetzung: Wir starten mit der professionellen Planung und Ausführung
 
 KONTAKT:
 Telefon 1: +43 (0) 664 3949605
 Telefon 2: +43 (0) 660 5649683
-E-Mail: mail@nest-haus.at
-Website: nest-haus.at
+E-Mail: mail@hoam.at
+Website: da-hoam.at
 
 Anfrage-ID: ${data.inquiryId}
 
 --
-Nest-Haus
+®Hoam
 Modulares Wohnen. Nachhaltig. Österreichisch.
 
-Website: https://nest-haus.at
-Impressum: https://nest-haus.at/impressum
-Datenschutz: https://nest-haus.at/datenschutz
+Website: https://da-hoam.at
+Impressum: https://da-hoam.at/impressum
+Datenschutz: https://da-hoam.at/datenschutz
   `;
 
   return { subject, html, text };

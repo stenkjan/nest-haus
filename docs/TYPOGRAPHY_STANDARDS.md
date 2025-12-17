@@ -641,7 +641,7 @@ import { SectionHeader } from "@/components/sections";
     <div className="text-center mb-12">
       <h1 className="h1-secondary mb-2 md:mb-3">
         <span className="block md:inline">Konfiguriere dein</span>
-        <span className="block md:inline"> ®Nest Haus</span>
+        <span className="block md:inline"> ®Hoam Haus</span>
       </h1>
       <h3 className="h3-secondary text-black mb-8">
         Individualisiert, wo es Freiheit braucht. Standardisiert, wo es
@@ -664,7 +664,7 @@ import { SectionHeader } from "@/components/sections";
     title={
       <>
         <span className="block md:inline">Konfiguriere dein</span>
-        <span className="block md:inline"> ®Nest Haus</span>
+        <span className="block md:inline"> ®Hoam Haus</span>
       </>
     }
     subtitle="Individualisiert, wo es Freiheit braucht. Standardisiert, wo es Effizienz schafft."

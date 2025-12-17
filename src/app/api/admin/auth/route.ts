@@ -16,7 +16,7 @@ export async function POST(request: NextRequest) {
             const response = NextResponse.json({ success: true });
 
             // Set authentication cookie
-            response.cookies.set('nest-haus-admin-auth', password, {
+            response.cookies.set('hoam-admin-auth', password, {
                 httpOnly: false, // Allow client-side access for middleware
                 secure: process.env.NODE_ENV === 'production',
                 sameSite: 'strict',
