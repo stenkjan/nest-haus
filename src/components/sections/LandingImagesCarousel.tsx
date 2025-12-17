@@ -353,7 +353,9 @@ const LandingImagesCarousel: React.FC<LandingImagesCarouselProps> = ({
                       />
 
                       {/* Desktop Description Overlay - Full version */}
-                      <div className="hidden md:block absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent p-3 sm:p-4 lg:p-6">
+                      <div
+                        className={`${forceDesktopImages ? "block" : "hidden md:block"} absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent p-3 sm:p-4 lg:p-6`}
+                      >
                         {/* Flex container for positioning */}
                         <div className="flex justify-between items-end">
                           {/* Left side - Title and Subtitle */}
