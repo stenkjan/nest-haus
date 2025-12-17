@@ -4,6 +4,19 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [e6eaa40d5dfafc7b0137d6951b43c2e67ae0d5a4] - Tue Dec 16 16:58:11 2025 +0100
+
+**Author**: stenkjan
+**Message**: `🔧 Refactor LandingImagesCarousel to improve image handling by consolidating mobile and desktop image logic, enhancing readability and maintainability of the component.  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/components/sections/LandingImagesCarousel.tsx
+
+
+---
+
 ## [ec7336bc3ffb2886fa9aeb3ae9a51a40a7a00f3f] - Tue Dec 16 16:47:42 2025 +0100
 
 **Author**: stenkjan
