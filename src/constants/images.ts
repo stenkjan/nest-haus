@@ -420,7 +420,7 @@ export const IMAGES = {
         markusKrampl: '342-nest-haus-partner-kooperation-markus-krampl-creative-videography-fotograf',
         zarnhofer: '343-nest-haus-partner-kooperation-zarnhofer-holzbau-meister-betrieb',
         bpElektrotechnik: '344-nest-haus-partner-kooperation-bp-elektrotechnik-gmbh-haustechnik',
-        philHoffelner: '346-nest-haus-partner-kooperation-werbeagentur-phil-hoffelner',
+        dasbadbinIch: '346-nest-haus-partner-kooperation-werbeagentur-phil-hoffelner',
         baumeisterGuetesiegel: '347-nest-haus-baumeister-guetesiegel-meister-betrieb',
         kollaborationPartner: '289-nest-haus-icon-kollaboration-partner'
     },

@@ -102,11 +102,11 @@ const partners: Partner[] = [
     link: "https://www.bp-elektrotechnik.at",
   },
   {
-    id: "phil-hoffelner",
-    name: "Phil Hoffelner",
-    path: IMAGES.partners.philHoffelner,
-    description: "Werbeagentur",
-    link: "https://philhoffelner.com/",
+    id: "dasbadbinich",
+    name: "Das Bad bin ich GmbH",
+    path: IMAGES.partners.dasbadbinIch,
+    description: "Komplettbäder & Badsanierung",
+    link: "https://www.dasbadbinich.at/",
   },
 ];
 

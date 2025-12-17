@@ -293,114 +293,107 @@ const LandingImagesCarousel: React.FC<LandingImagesCarouselProps> = ({
         >
           <div className="relative w-screen -ml-[calc((100vw-100%)/2)] -mr-[calc((100vw-100%)/2)]">
             <div className="flex items-center" style={trackStyle}>
-              {infiniteImages.map((img, idx) => {
-                // Determine which image to use based on mobile state and forceDesktopImages
-                const useDesktopImage = !isMobile || forceDesktopImages;
-                const imagePath = useDesktopImage ? img.path : img.mobilePath;
-                const aspectRatio = useDesktopImage ? 0.5625 : 1.333; // 16:9 desktop, 3:4 mobile
+              {infiniteImages.map((img, idx) => (
+                <div
+                  key={idx}
+                  className="flex-shrink-0 px-2"
+                  style={{ width: `${imageWidth}px` }}
+                >
+                  {isMobile && !forceDesktopImages ? (
+                    <Link
+                      href={`/#${img.description.sectionSlug}`}
+                      className="relative block w-full transition-transform duration-300 hover:scale-[1.02] hover:z-10"
+                    >
+                      <HybridBlobImage
+                        path={img.mobilePath}
+                        alt={img.alt}
+                        strategy="client"
+                        isInteractive={true}
+                        enableCache={true}
+                        width={imageWidth}
+                        height={Math.round(imageWidth * 1.333)} // 3:4 on mobile (4/3)
+                        className="object-cover"
+                        sizes={`${imageWidth}px`}
+                        priority={idx === 0}
+                      />
 
-                return (
-                  <div
-                    key={idx}
-                    className="flex-shrink-0 px-2"
-                    style={{ width: `${imageWidth}px` }}
-                  >
-                    {isMobile ? (
-                      // Mobile Layout: Clickable image with simple overlay (title + "Beispiele")
-                      <Link
-                        href={`/#${img.description.sectionSlug}`}
-                        className="relative block w-full transition-transform duration-300 hover:scale-[1.02] hover:z-10"
-                      >
-                        <HybridBlobImage
-                          path={imagePath}
-                          alt={img.alt}
-                          strategy="client"
-                          isInteractive={true}
-                          enableCache={true}
-                          width={imageWidth}
-                          height={Math.round(imageWidth * aspectRatio)}
-                          className="object-cover"
-                          sizes={`${imageWidth}px`}
-                          priority={idx === 0}
-                        />
-
-                        {/* Mobile Description Overlay - Title left, "Beispiele" right */}
-                        <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent p-3">
-                          <div className="flex justify-between items-end">
-                            {/* Left side - Title only */}
-                            <div className="text-white flex-1 pr-4">
-                              <h3 className="p-primary-small text-white">
-                                {img.description.title}
-                              </h3>
-                            </div>
-
-                            {/* Right side - "Beispiele" label */}
-                            <div className="flex-shrink-0">
-                              <span className="p-primary-small2 text-white hover:text-gray-200 transition-colors duration-200 whitespace-nowrap underline">
-                                Beispiele
-                              </span>
-                            </div>
+                      {/* Mobile Description Overlay - Only title and "Beispiele" */}
+                      <div className="md:hidden absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent p-3">
+                        <div className="flex justify-between items-end">
+                          {/* Left side - Title only */}
+                          <div className="text-white flex-1 pr-4">
+                            <h3 className="p-primary-small text-white">
+                              {img.description.title}
+                            </h3>
                           </div>
-                        </div>
-                      </Link>
-                    ) : (
-                      // Desktop Layout: Image with full overlay (title + subtitle + link)
-                      <div className="relative w-full transition-transform duration-300 hover:scale-[1.02] hover:z-10">
-                        <HybridBlobImage
-                          path={imagePath}
-                          alt={img.alt}
-                          strategy="client"
-                          isInteractive={true}
-                          enableCache={true}
-                          width={imageWidth}
-                          height={Math.round(imageWidth * aspectRatio)}
-                          className="object-cover"
-                          sizes={`${imageWidth}px`}
-                          priority={idx === 0}
-                        />
 
-                        {/* Desktop Description Overlay - Full version */}
-                        <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent p-3 sm:p-4 lg:p-6">
-                          <div className="flex justify-between items-end">
-                            {/* Left side - Title and Subtitle */}
-                            <div className="text-white flex-1 pr-4">
-                              <h3 className="p-primary-small text-white">
-                                {img.description.title}
-                              </h3>
-                              <p className="p-primary-small2 text-gray-200">
-                                {img.description.subtitle}
-                              </p>
-                            </div>
-
-                            {/* Right side - Link */}
-                            <div className="flex-shrink-0">
-                              <Link
-                                href={`/#${img.description.sectionSlug}`}
-                                className="inline-flex items-center p-primary-small2 text-white hover:text-gray-200 transition-colors duration-200 group whitespace-nowrap underline"
-                              >
-                                Weitere Beispiele entdecken
-                                <svg
-                                  className="ml-2 w-4 h-4 transform transition-transform group-hover:translate-x-1"
-                                  fill="none"
-                                  stroke="currentColor"
-                                  viewBox="0 0 24 24"
-                                >
-                                  <path
-                                    strokeLinecap="round"
-                                    strokeLinejoin="round"
-                                    strokeWidth={2}
-                                    d="M9 5l7 7-7 7"
-                                  />
-                                </svg>
-                              </Link>
-                            </div>
+                          {/* Right side - "Beispiele" label (container is clickable) */}
+                          <div className="flex-shrink-0">
+                            <span className="p-primary-small2 text-white hover:text-gray-200 transition-colors duration-200 whitespace-nowrap underline">
+                              Beispiele
+                            </span>
                           </div>
                         </div>
                       </div>
-                    )}
-                  </div>
-                );
-              })}
+                    </Link>
+                  ) : (
+                    <div className="relative w-full transition-transform duration-300 hover:scale-[1.02] hover:z-10">
+                      {/* Desktop: Image without link wrapper (text overlay has link) */}
+                      <HybridBlobImage
+                        path={img.path}
+                        alt={img.alt}
+                        strategy="client"
+                        isInteractive={true}
+                        enableCache={true}
+                        width={imageWidth}
+                        height={Math.round(imageWidth * 0.5625)} // 16:9 on desktop (9/16)
+                        className="object-cover"
+                        sizes={`${imageWidth}px`}
+                        priority={idx === 0}
+                      />
+
+                      {/* Desktop Description Overlay - Full version */}
+                      <div className="hidden md:block absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent p-3 sm:p-4 lg:p-6">
+                        {/* Flex container for positioning */}
+                        <div className="flex justify-between items-end">
+                          {/* Left side - Title and Subtitle */}
+                          <div className="text-white flex-1 pr-4">
+                            <h3 className="p-primary-small text-white">
+                              {img.description.title}
+                            </h3>
+                            <p className="p-primary-small2 text-gray-200">
+                              {img.description.subtitle}
+                            </p>
+                          </div>
+
+                          {/* Right side - Link */}
+                          <div className="flex-shrink-0">
+                            <Link
+                              href={`/#${img.description.sectionSlug}`}
+                              className="inline-flex items-center p-primary-small2 text-white hover:text-gray-200 transition-colors duration-200 group whitespace-nowrap underline"
+                            >
+                              Weitere Beispiele entdecken
+                              <svg
+                                className="ml-2 w-4 h-4 transform transition-transform group-hover:translate-x-1"
+                                fill="none"
+                                stroke="currentColor"
+                                viewBox="0 0 24 24"
+                              >
+                                <path
+                                  strokeLinecap="round"
+                                  strokeLinejoin="round"
+                                  strokeWidth={2}
+                                  d="M9 5l7 7-7 7"
+                                />
+                              </svg>
+                            </Link>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  )}
+                </div>
+              ))}
             </div>
           </div>
 
