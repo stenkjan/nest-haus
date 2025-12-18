@@ -4,6 +4,19 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [fe088215020ac7d36ba4a3843d6b4da5b6ed2903] - Thu Dec 18 10:33:40 2025 +0100
+
+**Author**: stenkjan
+**Message**: `Merge 774f0b485ce0ddc21747e97f3c6df4224b28276c into 7251cd6b5e16123236b4abd3582b317477fb97fc  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/LandingPageClient.tsx
+
+
+---
+
 ## [f26b3c0d585fe06f5c1409a68c42a8b329d15ec8] - Wed Dec 17 15:53:47 2025 +0100
 
 **Author**: stenkjan
