@@ -317,23 +317,11 @@ const LandingImagesCarousel: React.FC<LandingImagesCarouselProps> = ({
                         priority={idx === 0}
                       />
 
-                      {/* Mobile Description Overlay - Only title and "Beispiele" */}
-                      <div className="md:hidden absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent p-3">
-                        <div className="flex justify-between items-end">
-                          {/* Left side - Title only */}
-                          <div className="text-white flex-1 pr-4">
-                            <h3 className="p-primary-small text-white">
-                              {img.description.title}
-                            </h3>
-                          </div>
-
-                          {/* Right side - "Beispiele" label (container is clickable) */}
-                          <div className="flex-shrink-0">
-                            <span className="p-primary-small2 text-white hover:text-gray-200 transition-colors duration-200 whitespace-nowrap underline">
-                              Beispiele
-                            </span>
-                          </div>
-                        </div>
+                      {/* Mobile Description Overlay - Title only (top-left) */}
+                      <div className="md:hidden absolute top-0 left-0 p-3">
+                        <h3 className="p-primary-small text-white drop-shadow-lg">
+                          {img.description.title}
+                        </h3>
                       </div>
                     </Link>
                   ) : (
@@ -352,13 +340,19 @@ const LandingImagesCarousel: React.FC<LandingImagesCarouselProps> = ({
                         priority={idx === 0}
                       />
 
-                      {/* Desktop Description Overlay - Full version */}
-                      <div
-                        className={`${forceDesktopImages ? "block" : "hidden md:block"} absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent p-3 sm:p-4 lg:p-6`}
-                      >
-                        {/* Flex container for positioning */}
+                      {/* Mobile overlay (when using desktop images): title-only top-left, keep link */}
+                      <div className="md:hidden absolute top-0 left-0 p-3">
+                        <Link
+                          href={`/#${img.description.sectionSlug}`}
+                          className="p-primary-small text-white drop-shadow-lg underline underline-offset-2"
+                        >
+                          {img.description.title}
+                        </Link>
+                      </div>
+
+                      {/* Desktop Description Overlay - Title + Subtitle */}
+                      <div className="hidden md:block absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent p-3 sm:p-4 lg:p-6">
                         <div className="flex justify-between items-end">
-                          {/* Left side - Title and Subtitle */}
                           <div className="text-white flex-1 pr-4">
                             <h3 className="p-primary-small text-white">
                               {img.description.title}
@@ -368,7 +362,6 @@ const LandingImagesCarousel: React.FC<LandingImagesCarouselProps> = ({
                             </p>
                           </div>
 
-                          {/* Right side - Link */}
                           <div className="flex-shrink-0">
                             <Link
                               href={`/#${img.description.sectionSlug}`}
