@@ -68,7 +68,7 @@ const sectionsContent = [
     id: 1,
     sectionId: "dein-hoam-haus",
     imagePath: IMAGES.hero.nestHaus1,
-    h1: "®Hoam Haus",
+    h1: "Dein ®Hoam",
     h3: "Wohne wie du willst",
     modelName: "Hoam 140",
     configuration: "Fassadenplatten Weiß",
