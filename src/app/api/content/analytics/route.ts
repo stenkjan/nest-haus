@@ -12,14 +12,14 @@ import { z } from 'zod';
 
 // Validation schemas
 const analyticsQuerySchema = z.object({
-    pageType: z.enum(['warenkorb', 'kontakt', 'dein-nest', 'entwurf', 'nest-system', 'warum-wir']).optional(),
+    pageType: z.enum(['warenkorb', 'kontakt', 'dein-hoam', 'entwurf', 'hoam-system', 'warum-wir']).optional(),
     timeRange: z.enum(['7d', '30d', '90d']).default('30d'),
     metric: z.enum(['overview', 'real-time', 'conversions', 'sections']).default('overview'),
 });
 
 const trackingSchema = z.object({
     sessionId: z.string().min(1),
-    pageType: z.enum(['warenkorb', 'kontakt', 'dein-nest', 'entwurf', 'nest-system', 'warum-wir']),
+    pageType: z.enum(['warenkorb', 'kontakt', 'dein-hoam', 'entwurf', 'hoam-system', 'warum-wir']),
     interaction: z.object({
         type: z.enum(['click', 'hover', 'scroll', 'form_start', 'form_submit', 'section_view', 'cta_click']),
         elementId: z.string(),
@@ -78,7 +78,7 @@ async function handleGetAnalytics(request: NextRequest): Promise<NextResponse> {
             case 'overview':
                 if (!pageType) {
                     // Get overview for all pages
-                    const allPages = ['warenkorb', 'kontakt', 'dein-nest', 'entwurf', 'nest-system', 'warum-wir'];
+                    const allPages = ['warenkorb', 'kontakt', 'dein-hoam', 'entwurf', 'hoam-system', 'warum-wir'];
                     const overviewData = await Promise.all(
                         allPages.map(async (page) => ({
                             pageType: page,

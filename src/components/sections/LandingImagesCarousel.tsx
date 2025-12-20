@@ -83,7 +83,7 @@ const LandingImagesCarousel: React.FC<LandingImagesCarouselProps> = ({
         description: {
           title: "Nest 140",
           subtitle: "Vogelperspektive Holzlattung",
-          sectionSlug: "dein-nest-haus",
+          sectionSlug: "dein-hoam-haus",
         },
       },
       {

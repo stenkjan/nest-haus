@@ -444,7 +444,7 @@ export const VIDEO_BACKGROUND_CARDS_PRESET = {
  * 
  * COMPARISON TO STANDARD VIDEO CARD:
  * -----------------------------------
- * Standard video card (like on /dein-nest):
+ * Standard video card (like on /dein-hoam):
  *   - Heights: 510px (1280px), 548px (1380px), 630px (1536px)
  *   - Buttons: Shown on desktop, hidden on mobile
  *   - Image: Centered (object-center)

@@ -174,7 +174,7 @@ import { IMAGES } from "@/constants/images";
           secondaryAction: "Jetzt bauen",
           primaryButtonVariant: "landing-primary",
           secondaryButtonVariant: "landing-secondary",
-          primaryLink: "/dein-part#nest-system",
+          primaryLink: "/hoam-system",
           secondaryLink: "/konfigurator",
         },
         {
