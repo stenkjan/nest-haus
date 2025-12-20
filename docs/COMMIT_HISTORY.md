@@ -4,6 +4,20 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [1b3c8feee69e95e2fd6653bb6d3506b9c4cb074a] - Sat Dec 20 14:00:06 2025 +0100
+
+**Author**: stenkjan
+**Message**: `🔧 Refactor image path handling in PreviewPanel to use a ref for previous image tracking, improving performance and preventing unnecessary re-renders.  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/LandingPageClient.tsx
+- src/app/konfigurator/components/PreviewPanel.tsx
+
+
+---
+
 ## [fe088215020ac7d36ba4a3843d6b4da5b6ed2903] - Thu Dec 18 10:33:40 2025 +0100
 
 **Author**: stenkjan
