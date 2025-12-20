@@ -187,9 +187,10 @@ export default function PreviewPanel({
 
   // PERFORMANCE FIX: Create a stable key for the image to prevent loading stale images
   const imageKey = useMemo(() => {
-    // Create a unique key that changes when the configuration changes
+    // Create a unique key that changes when the view or configuration changes
     // This ensures HybridBlobImage completely re-renders with the new path
-    return `${currentImagePath}-${JSON.stringify({
+    // CRITICAL: Include activeView explicitly to ensure view changes trigger re-render
+    return `${activeView}-${currentImagePath}-${JSON.stringify({
       nest: configuration?.nest?.value,
       gebaeudehuelle: configuration?.gebaeudehuelle?.value,
       innenverkleidung: configuration?.innenverkleidung?.value,
@@ -197,7 +198,7 @@ export default function PreviewPanel({
       pvanlage: configuration?.pvanlage?.value,
       fenster: configuration?.fenster?.value,
     })}`;
-  }, [currentImagePath, configuration]);
+  }, [activeView, currentImagePath, configuration]);
 
   // Listen for view switching signals from the store (manual navigation)
   useEffect(() => {
@@ -231,23 +232,19 @@ export default function PreviewPanel({
     }
   }, [availableViews, activeView]);
 
-  // Navigation handlers
+  // Navigation handlers - immediate state updates (no startTransition to avoid delayed rendering)
   const handlePrevView = useCallback(() => {
-    startTransition(() => {
-      const currentIndex = availableViews.indexOf(activeView);
-      const prevIndex =
-        currentIndex > 0 ? currentIndex - 1 : availableViews.length - 1;
-      setActiveView(availableViews[prevIndex]);
-    });
+    const currentIndex = availableViews.indexOf(activeView);
+    const prevIndex =
+      currentIndex > 0 ? currentIndex - 1 : availableViews.length - 1;
+    setActiveView(availableViews[prevIndex]);
   }, [availableViews, activeView]);
 
   const handleNextView = useCallback(() => {
-    startTransition(() => {
-      const currentIndex = availableViews.indexOf(activeView);
-      const nextIndex =
-        currentIndex < availableViews.length - 1 ? currentIndex + 1 : 0;
-      setActiveView(availableViews[nextIndex]);
-    });
+    const currentIndex = availableViews.indexOf(activeView);
+    const nextIndex =
+      currentIndex < availableViews.length - 1 ? currentIndex + 1 : 0;
+    setActiveView(availableViews[nextIndex]);
   }, [availableViews, activeView]);
 
   // Preload images for the current configuration, immediate
