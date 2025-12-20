@@ -151,16 +151,25 @@ export default function PreviewPanel({
   }, [configuration, activeView, availableViews]);
 
   // Handle image path changes - keep previous image visible until new one loads
+  // Use a ref to track the actual previous path without causing re-renders
+  const lastImagePathRef = useRef<string>("");
+  
   useEffect(() => {
-    if (currentImagePath && currentImagePath !== previousImagePath) {
+    if (currentImagePath && currentImagePath !== lastImagePathRef.current) {
+      // Save the old path before updating
+      const oldPath = lastImagePathRef.current;
+      
       // New image is loading, keep previous image visible
-      if (previousImagePath) {
+      if (oldPath) {
+        setPreviousImagePath(oldPath);
         setShowPreviousImage(true);
       }
       setIsMainImageLoaded(false);
-      setPreviousImagePath(currentImagePath);
+      
+      // Update the ref to track the new current path
+      lastImagePathRef.current = currentImagePath;
     }
-  }, [currentImagePath, previousImagePath]);
+  }, [currentImagePath]);
 
   // Handle main image load completion
   const handleMainImageLoad = useCallback(() => {
