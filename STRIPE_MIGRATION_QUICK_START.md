@@ -17,7 +17,7 @@ Copy: pk_live_... and sk_live_...
 ### 2️⃣ Setup Webhook (10 min)
 ```
 Stripe Dashboard (Live) → Developers → Webhooks → Add endpoint
-URL: https://nest-haus.at/api/webhooks/stripe
+URL: https://www.nest-haus.at/api/webhooks/stripe ⚠️ Must use www
 Events: payment_intent.succeeded, payment_intent.payment_failed, 
         payment_intent.canceled, payment_intent.processing, charge.refunded
 Copy: whsec_... (signing secret)

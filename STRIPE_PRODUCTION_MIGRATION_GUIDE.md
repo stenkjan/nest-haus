@@ -43,8 +43,12 @@ Your codebase is already fully configured and properly structured. The migration
 2. Click **"Add endpoint"**
 3. Enter your production URL:
    ```
-   https://nest-haus.at/api/webhooks/stripe
+   https://www.nest-haus.at/api/webhooks/stripe
    ```
+   ⚠️ **CRITICAL:** Must use `www.nest-haus.at` subdomain
+   - Why: Domain redirects `nest-haus.at` → `www.nest-haus.at` (HTTP 301)
+   - Stripe security: Never follows redirects
+   - Solution: Use final URL directly
 
 4. Click **"Select events"** and choose these 5 events:
    - ✅ `payment_intent.succeeded`
@@ -344,7 +348,7 @@ The code automatically uses:
 3. Check response codes (should be 200)
 
 **Common Fixes**:
-- Ensure webhook URL is correct: `https://nest-haus.at/api/webhooks/stripe`
+- Ensure webhook URL is correct: `https://www.nest-haus.at/api/webhooks/stripe` (must use www subdomain)
 - Verify webhook secret is correct
 - Check server logs for errors in webhook processing
 
