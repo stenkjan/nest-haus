@@ -4,6 +4,25 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [34a47883a7abc7d12ab998ec34eea18c64e06e9b] - Sun Dec 21 20:49:58 2025 +0100
+
+**Author**: stenkjan
+**Message**: `Merge 570adfb0ecdf8d4b27c40a92d68695a00d7283c9 into 061d5658ecdbee73f0a2a05525582b4c492d6aba  `
+
+### Changes Analysis
+
+#### 📚 Documentation Changes
+- STRIPE_MIGRATION_CHECKLIST.md
+- STRIPE_MIGRATION_QUICK_START.md
+- STRIPE_PRODUCTION_MIGRATION_GUIDE.md
+- STRIPE_WEBHOOK_INVESTIGATION_REPORT.md
+- STRIPE_WEBHOOK_INVESTIGATION_SUMMARY.md
+- STRIPE_WEBHOOK_QUICK_FIX.md
+- docs/WEBHOOK_VERIFICATION_GUIDE.md
+
+
+---
+
 ## [d035df53ccfead9bea7c0819ee3fbc80ef5b1af4] - Sun Dec 21 14:10:22 2025 +0100
 
 **Author**: stenkjan
