@@ -4,6 +4,19 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [d035df53ccfead9bea7c0819ee3fbc80ef5b1af4] - Sun Dec 21 14:10:22 2025 +0100
+
+**Author**: stenkjan
+**Message**: `Merge 7755277dcab9cce1b4478bda1c94b787b77ec0d6 into 1f2628d70ffa3a9d6e59ca5b7eda1bc831d2bfe6  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/warenkorb/components/CheckoutStepper.tsx
+
+
+---
+
 ## [f13b9d782c73b8bbced92c1b4ca441869ac1960a] - Sat Dec 20 14:13:36 2025 +0100
 
 **Author**: stenkjan
