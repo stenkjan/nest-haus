@@ -39,7 +39,7 @@
 
 - [ ] In Stripe Dashboard (Live Mode), go to **Developers → Webhooks**
 - [ ] Click **"Add endpoint"** button
-- [ ] Enter endpoint URL: `https://nest-haus.at/api/webhooks/stripe`
+- [ ] Enter endpoint URL: `https://www.nest-haus.at/api/webhooks/stripe` ⚠️ **Must use www subdomain**
 - [ ] Enter description: "Production payment webhooks for NEST-Haus configurator"
 
 ### Select Events:

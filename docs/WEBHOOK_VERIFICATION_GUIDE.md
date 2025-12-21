@@ -10,7 +10,7 @@
 ### **Stripe Dashboard Settings**
 
 - ✅ Endpoint Name: `nest-payment`
-- ✅ Endpoint URL: `https://nest-haus.at/api/webhooks/stripe`
+- ✅ Endpoint URL: `https://www.nest-haus.at/api/webhooks/stripe` ⚠️ **Must use www subdomain**
 - ✅ Events Selected: 6 events
   1. `payment_intent.succeeded`
   2. `payment_intent.payment_failed`
@@ -210,7 +210,9 @@ https://dashboard.stripe.com/test/webhooks
    STRIPE_WEBHOOK_SECRET=whsec_7q82UaLdklfg8i4Y7ymEU5HQNQHzbvvX
    ```
 2. Restart server: `npm run dev`
-3. Verify URL in Stripe Dashboard matches: `https://nest-haus.at/api/webhooks/stripe`
+3. ⚠️ **IMPORTANT:** Verify URL in Stripe Dashboard uses www subdomain: `https://www.nest-haus.at/api/webhooks/stripe`
+   - ❌ Wrong: `https://nest-haus.at/api/webhooks/stripe` (causes 301 redirect, Stripe won't follow)
+   - ✅ Correct: `https://www.nest-haus.at/api/webhooks/stripe` (direct response, works)
 
 ### **Issue: "Updated 0 inquiries"**
 
