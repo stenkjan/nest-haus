@@ -2361,7 +2361,7 @@ export default function CheckoutStepper({
                         <span className="text-nest-gray"> erhältst du:</span>
                       </p>
                       <ul className="p-secondary mb-6 list-disc list-inside text-nest-gray space-y-2">
-                        <li>Grundstücksplanung</li>
+                        <li>Grundstücksanalyse</li>
                         <li>Entwurfsplan</li>
                         <li>Kostenplanung</li>
                       </ul>
@@ -3476,7 +3476,7 @@ export default function CheckoutStepper({
                     <span className="text-nest-gray"> erhältst du:</span>
                   </p>
                   <ul className="p-secondary mb-6 list-disc list-inside text-nest-gray space-y-2">
-                    <li>Grundstücksplanung</li>
+                    <li>Grundstücksanalyse</li>
                     <li>Entwurfsplan</li>
                     <li>Kostenplanung</li>
                   </ul>
