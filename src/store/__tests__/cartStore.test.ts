@@ -26,7 +26,7 @@ describe('CartStore', () => {
   describe('Initial State', () => {
     it('should initialize with empty cart', () => {
       const { result } = renderHook(() => useCartStore())
-      
+
       expect(result.current.items).toEqual([])
       expect(result.current.total).toBe(0)
       expect(result.current.itemCount).toBe(0)
@@ -34,7 +34,7 @@ describe('CartStore', () => {
 
     it('should have all required methods defined', () => {
       const { result } = renderHook(() => useCartStore())
-      
+
       expect(typeof result.current.addItem).toBe('function')
       expect(typeof result.current.removeItem).toBe('function')
       expect(typeof result.current.updateQuantity).toBe('function')
@@ -46,13 +46,13 @@ describe('CartStore', () => {
   describe('Adding Items', () => {
     it('should add item to cart correctly', () => {
       const { result } = renderHook(() => useCartStore())
-      
+
       const testItem = {
         id: 'nest80',
-        name: 'NEST 80',
+        name: 'Hoam 80',
         price: 89000,
         category: 'nest',
-        description: '80m² NEST House',
+        description: '80m² Hoam House',
         quantity: 1
       }
 
@@ -68,13 +68,13 @@ describe('CartStore', () => {
 
     it('should update quantity when adding existing item', () => {
       const { result } = renderHook(() => useCartStore())
-      
+
       const testItem = {
         id: 'nest80',
-        name: 'NEST 80',
+        name: 'Hoam 80',
         price: 89000,
         category: 'nest',
-        description: '80m² NEST House',
+        description: '80m² Hoam House',
         quantity: 1
       }
 
@@ -94,14 +94,14 @@ describe('CartStore', () => {
 
     it('should handle multiple different items', () => {
       const { result } = renderHook(() => useCartStore())
-      
+
       const items = [
         {
           id: 'nest80',
-          name: 'NEST 80',
+          name: 'Hoam 80',
           price: 89000,
           category: 'nest',
-          description: '80m² NEST House',
+          description: '80m² Hoam House',
           quantity: 1
         },
         {
@@ -127,13 +127,13 @@ describe('CartStore', () => {
   describe('Removing Items', () => {
     it('should remove item from cart', () => {
       const { result } = renderHook(() => useCartStore())
-      
+
       const testItem = {
         id: 'nest80',
-        name: 'NEST 80',
+        name: 'Hoam 80',
         price: 89000,
         category: 'nest',
-        description: '80m² NEST House',
+        description: '80m² Hoam House',
         quantity: 1
       }
 
@@ -149,7 +149,7 @@ describe('CartStore', () => {
 
     it('should handle removing non-existent item gracefully', () => {
       const { result } = renderHook(() => useCartStore())
-      
+
       act(() => {
         result.current.removeItem('non-existent-id')
       })
@@ -162,13 +162,13 @@ describe('CartStore', () => {
   describe('Quantity Updates', () => {
     it('should update item quantity correctly', () => {
       const { result } = renderHook(() => useCartStore())
-      
+
       const testItem = {
         id: 'nest80',
-        name: 'NEST 80',
+        name: 'Hoam 80',
         price: 89000,
         category: 'nest',
-        description: '80m² NEST House',
+        description: '80m² Hoam House',
         quantity: 1
       }
 
@@ -187,13 +187,13 @@ describe('CartStore', () => {
 
     it('should remove item when quantity is set to 0', () => {
       const { result } = renderHook(() => useCartStore())
-      
+
       const testItem = {
         id: 'nest80',
-        name: 'NEST 80',
+        name: 'Hoam 80',
         price: 89000,
         category: 'nest',
-        description: '80m² NEST House',
+        description: '80m² Hoam House',
         quantity: 1
       }
 
@@ -208,13 +208,13 @@ describe('CartStore', () => {
 
     it('should handle negative quantities gracefully', () => {
       const { result } = renderHook(() => useCartStore())
-      
+
       const testItem = {
         id: 'nest80',
-        name: 'NEST 80',
+        name: 'Hoam 80',
         price: 89000,
         category: 'nest',
-        description: '80m² NEST House',
+        description: '80m² Hoam House',
         quantity: 1
       }
 
@@ -231,14 +231,14 @@ describe('CartStore', () => {
   describe('Cart Operations', () => {
     it('should clear cart completely', () => {
       const { result } = renderHook(() => useCartStore())
-      
+
       const items = [
         {
           id: 'nest80',
-          name: 'NEST 80',
+          name: 'Hoam 80',
           price: 89000,
           category: 'nest',
-          description: '80m² NEST House',
+          description: '80m² Hoam House',
           quantity: 1
         },
         {
@@ -263,13 +263,13 @@ describe('CartStore', () => {
 
     it('should find item by ID correctly', () => {
       const { result } = renderHook(() => useCartStore())
-      
+
       const testItem = {
         id: 'nest80',
-        name: 'NEST 80',
+        name: 'Hoam 80',
         price: 89000,
         category: 'nest',
-        description: '80m² NEST House',
+        description: '80m² Hoam House',
         quantity: 1
       }
 
@@ -288,14 +288,14 @@ describe('CartStore', () => {
   describe('Price Calculations', () => {
     it('should calculate total correctly with multiple items', () => {
       const { result } = renderHook(() => useCartStore())
-      
+
       const items = [
         {
           id: 'nest80',
-          name: 'NEST 80',
+          name: 'Hoam 80',
           price: 89000,
           category: 'nest',
-          description: '80m² NEST House',
+          description: '80m² Hoam House',
           quantity: 1
         },
         {
@@ -327,7 +327,7 @@ describe('CartStore', () => {
 
     it('should handle zero-price items correctly', () => {
       const { result } = renderHook(() => useCartStore())
-      
+
       const freeItem = {
         id: 'free-item',
         name: 'Free Item',
@@ -349,7 +349,7 @@ describe('CartStore', () => {
   describe('Error Handling', () => {
     it('should handle malformed items gracefully', () => {
       const { result } = renderHook(() => useCartStore())
-      
+
       const malformedItem = {
         id: '',
         name: '',
@@ -371,7 +371,7 @@ describe('CartStore', () => {
 
     it('should validate item data before adding', () => {
       const { result } = renderHook(() => useCartStore())
-      
+
       const invalidItems = [
         // Test various invalid CartItem objects directly
         { id: '', name: 'Test', price: 100, category: 'test', description: 'Test', quantity: 1 }, // Empty ID
@@ -387,7 +387,7 @@ describe('CartStore', () => {
             result.current.addItem(item)
           })
         }).not.toThrow()
-        
+
         // Should not add invalid items - length should remain the same
         expect(result.current.items).toHaveLength(initialLength)
       })
@@ -400,9 +400,9 @@ describe('CartStore', () => {
   describe('Performance', () => {
     it('should handle large numbers of items efficiently', () => {
       const { result } = renderHook(() => useCartStore())
-      
+
       const startTime = performance.now()
-      
+
       // Add many items
       for (let i = 0; i < 100; i++) {
         const item = {
@@ -413,17 +413,17 @@ describe('CartStore', () => {
           description: `Test item ${i}`,
           quantity: 1
         }
-        
+
         act(() => {
           result.current.addItem(item)
         })
       }
-      
+
       const endTime = performance.now()
       const duration = endTime - startTime
-      
+
       console.log(`⚡ Added 100 items in ${duration.toFixed(2)}ms`)
-      
+
       expect(result.current.items).toHaveLength(100)
       expect(result.current.itemCount).toBe(100)
       expect(duration).toBeLessThan(1000) // Should complete within 1 second
@@ -431,7 +431,7 @@ describe('CartStore', () => {
 
     it('should handle rapid state updates efficiently', () => {
       const { result } = renderHook(() => useCartStore())
-      
+
       const testItem = {
         id: 'test-item',
         name: 'Test Item',
@@ -446,19 +446,19 @@ describe('CartStore', () => {
       })
 
       const startTime = performance.now()
-      
+
       // Rapid quantity updates
       for (let i = 1; i <= 50; i++) {
         act(() => {
           result.current.updateQuantity('test-item', i)
         })
       }
-      
+
       const endTime = performance.now()
       const duration = endTime - startTime
-      
+
       console.log(`⚡ 50 quantity updates in ${duration.toFixed(2)}ms`)
-      
+
       const item = result.current.items[0]
       if ('quantity' in item) {
         expect(item.quantity).toBe(50)
@@ -470,13 +470,13 @@ describe('CartStore', () => {
   describe('Persistence', () => {
     it('should attempt to save to localStorage', () => {
       const { result } = renderHook(() => useCartStore())
-      
+
       const testItem = {
         id: 'nest80',
-        name: 'NEST 80',
+        name: 'Hoam 80',
         price: 89000,
         category: 'nest',
-        description: '80m² NEST House',
+        description: '80m² Hoam House',
         quantity: 1
       }
 
@@ -490,18 +490,18 @@ describe('CartStore', () => {
 
     it('should handle localStorage errors gracefully', () => {
       const { result } = renderHook(() => useCartStore())
-      
+
       // Mock localStorage to throw error
       localStorageMock.setItem.mockImplementationOnce(() => {
         throw new Error('Storage quota exceeded')
       })
-      
+
       const testItem = {
         id: 'nest80',
-        name: 'NEST 80',
+        name: 'Hoam 80',
         price: 89000,
         category: 'nest',
-        description: '80m² NEST House',
+        description: '80m² Hoam House',
         quantity: 1
       }
 

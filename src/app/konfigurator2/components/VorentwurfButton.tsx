@@ -18,7 +18,7 @@ export default function VorentwurfButton({
   const { setOhneNestMode } = useCartStore();
 
   const handleClick = useCallback(async () => {
-    // Activate ohne nest mode
+    // Activate ohne Hoam mode
     setOhneNestMode(true);
 
     // Optionally save minimal configuration to session
@@ -38,7 +38,7 @@ export default function VorentwurfButton({
       >
         Direkt zum Vorentwurf
       </Button>
-      
+
       {(!selectedNest || !selectedFacade) && (
         <p className="text-sm text-gray-500 mt-2 text-center">
           Hinweis: Bitte wähle Größe und Fassade für eine bessere Beratung

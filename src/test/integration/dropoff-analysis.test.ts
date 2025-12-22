@@ -116,7 +116,7 @@ describe('Drop-off Analysis Tests', () => {
                 body: JSON.stringify({
                     sessionId,
                     category: 'nest',
-                    selection: 'NEST 100',
+                    selection: 'Hoam 100',
                 }),
             });
 
@@ -212,7 +212,7 @@ describe('Drop-off Analysis Tests', () => {
                 body: JSON.stringify({
                     sessionId,
                     category: 'nest',
-                    selection: 'NEST 100',
+                    selection: 'Hoam 100',
                 }),
             });
 
@@ -222,8 +222,8 @@ describe('Drop-off Analysis Tests', () => {
                 body: JSON.stringify({
                     sessionId,
                     category: 'nest',
-                    selection: 'NEST 150', // Changed selection
-                    previousSelection: 'NEST 100',
+                    selection: 'Hoam 150', // Changed selection
+                    previousSelection: 'Hoam 100',
                 }),
             });
 
@@ -235,7 +235,7 @@ describe('Drop-off Analysis Tests', () => {
             });
 
             expect(events.length).toBeGreaterThanOrEqual(2);
-            expect(events[1].previousSelection).toBe('NEST 100');
+            expect(events[1].previousSelection).toBe('Hoam 100');
 
             await cleanupTestData(sessionId);
         });
@@ -410,7 +410,7 @@ async function reconstructUserJourney(sessionId: string) {
 async function analyzeConversionFunnel(sessionIds: string[]) {
     const stages = [
         { name: 'Started', count: sessionIds.length },
-        { name: 'Nest Selected', count: 0 },
+        { name: 'Hoam Selected', count: 0 },
         { name: 'Gebäudehülle Selected', count: 0 },
         { name: 'Completed', count: 0 },
     ];
@@ -420,7 +420,7 @@ async function analyzeConversionFunnel(sessionIds: string[]) {
             where: { sessionId },
         });
 
-        const hasNest = events.some(e => e.category === 'nest');
+        const hasHoam = events.some(e => e.category === 'nest');
         const hasGebaeude = events.some(e => e.category === 'gebaeudehuelle');
 
         if (hasNest) stages[1].count++;

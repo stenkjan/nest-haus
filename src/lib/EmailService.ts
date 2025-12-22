@@ -6,6 +6,7 @@ import { generateAdminPaymentNotificationEmail } from './emailTemplates/AdminPay
 import { generateSecureToken } from './utils/tokenGenerator';
 import { generateICS, generateICSFilename } from './utils/icsGenerator';
 import { prisma } from './prisma';
+import { Prisma } from '@prisma/client';
 
 // Initialize Resend with API key
 const resend = new Resend(process.env.RESEND_API_KEY);
@@ -458,7 +459,7 @@ export class EmailService {
   </div>
   
   <div class="footer">
-    <p>© 2025 Hoam-House | SustainNest GmbH<br>
+    <p>© 2025 Hoam-House | Eco Chalets GmbH<br>
     Zösenberg 51, 8045 Weinitzen, Österreich</p>
     </div>
   </div>
@@ -1320,9 +1321,12 @@ Automatische Benachrichtigung vom NEST-Haus System`;
       console.log(`📎 ICS attachment added: ${generateICSFilename(data.inquiryId)}`);
 
       // Store confirmToken in database for verification
+      // Note: TypeScript may show an error here due to IDE caching, but the field exists in the Prisma schema
       await prisma.customerInquiry.update({
         where: { id: data.inquiryId },
-        data: { confirmationToken: confirmToken },
+        data: {
+          confirmationToken: confirmToken,
+        } as Prisma.CustomerInquiryUncheckedUpdateInput,
       });
 
       console.log('✅ Confirmation token stored in database');

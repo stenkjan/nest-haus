@@ -230,7 +230,7 @@ export const useConfiguratorStore = create<ConfiguratorState>()(
         let newHasPart3BeenActive = state.hasPart3BeenActive;
 
         if (item.category === 'nest' || item.category === 'gebaeudehuelle') {
-          // When selecting nest modules or building envelope, switch to exterior view to show modules
+          // When selecting Hoam modules or building envelope, switch to exterior view to show modules
           shouldSwitchToView = 'exterior';
         } else if (item.category === 'innenverkleidung' || item.category === 'fussboden') {
           // Activate Part 2 and switch to interior view to show the selection
@@ -676,12 +676,12 @@ export const useConfiguratorStore = create<ConfiguratorState>()(
           return 'interior'
         }
 
-        // 2. If nest module or gebäudehülle is selected, show stirnseite as secondary view
+        // 2. If Hoam module or gebäudehülle is selected, show stirnseite as secondary view
         if (config.nest || config.gebaeudehuelle) {
           return 'stirnseite'
         }
 
-        // 3. Default to exterior view (always available and shows nest + gebäudehülle)
+        // 3. Default to exterior view (always available and shows Hoam + gebäudehülle)
         return 'exterior'
       },
 
@@ -928,7 +928,7 @@ export const useConfiguratorStore = create<ConfiguratorState>()(
       isConfigurationComplete: () => {
         const state = get()
 
-        // Configuration is complete if nest module is selected
+        // Configuration is complete if Hoam module is selected
         // This allows checkout once a module is chosen
         return !!state.configuration.nest
       }

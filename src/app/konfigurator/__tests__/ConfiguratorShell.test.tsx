@@ -14,13 +14,13 @@ vi.mock('../data/configuratorData', () => ({
   configuratorData: [
     {
       id: 'nest',
-      title: 'NEST Modell',
+      title: 'Hoam Modell',
       options: [
         {
           id: 'nest80',
-          name: 'NEST 80',
+          name: 'Hoam 80',
           price: { amount: 89000 },
-          description: '80m² NEST House'
+          description: '80m² Hoam House'
         }
       ]
     },
@@ -93,9 +93,9 @@ describe('ConfiguratorShell Integration Tests', () => {
 
     it('should display configurator sections', () => {
       render(<ConfiguratorShell />)
-      
+
       // Check actual content that exists in new architecture
-      expect(screen.getByText('NEST 80')).toBeInTheDocument()
+      expect(screen.getByText('Hoam 80')).toBeInTheDocument()
       expect(screen.getByText('Trapezblech')).toBeInTheDocument()
     })
 
@@ -126,7 +126,7 @@ describe('ConfiguratorShell Integration Tests', () => {
       })
 
       render(<ConfiguratorShell />)
-      
+
       // Look for price display in single layout architecture
       expect(screen.getAllByText(/89.000/)).toHaveLength(1) // Single layout with one price display
     })
@@ -136,8 +136,8 @@ describe('ConfiguratorShell Integration Tests', () => {
     it('should handle option selection', async () => {
       const _user = userEvent.setup()
       render(<ConfiguratorShell />)
-      
-      const nest80Options = screen.getAllByRole('button', { name: /nest 80/i })
+
+      const nest80Options = screen.getAllByRole('button', { name: /Hoam 80/i })
       await _user.click(nest80Options[0]) // Click the first one (mobile version)
 
       await waitFor(() => {
@@ -145,7 +145,7 @@ describe('ConfiguratorShell Integration Tests', () => {
           expect.objectContaining({
             category: 'nest',
             value: 'nest80',
-            name: 'NEST 80',
+            name: 'Hoam 80',
             price: 89000
           })
         )
@@ -155,7 +155,7 @@ describe('ConfiguratorShell Integration Tests', () => {
     it('should update UI when selection changes', async () => {
       // Initial render
       const { rerender } = render(<ConfiguratorShell />)
-      
+
       // Update store to simulate selection
       vi.mocked(useConfiguratorStore).mockReturnValue({
         configuration: {
@@ -163,9 +163,9 @@ describe('ConfiguratorShell Integration Tests', () => {
           nest: {
             category: 'nest',
             value: 'nest80',
-            name: 'NEST 80',
+            name: 'Hoam 80',
             price: 89000,
-            description: '80m² NEST House'
+            description: '80m² Hoam House'
           }
         },
         currentPrice: 89000,
@@ -190,10 +190,10 @@ describe('ConfiguratorShell Integration Tests', () => {
         shouldSwitchToView: null,
         lastSelectionCategory: null,
       })
-      
+
       // Re-render with updated state
       rerender(<ConfiguratorShell />)
-      
+
       // Should show updated price in single layout architecture
       expect(screen.getAllByText(/89.000/)).toHaveLength(1) // Single layout with one price display
     })
@@ -202,16 +202,16 @@ describe('ConfiguratorShell Integration Tests', () => {
   describe('Session Management', () => {
     it('should initialize session on mount', () => {
       render(<ConfiguratorShell />)
-      
+
       // Session initialization is handled by the store, not directly by the component
-      expect(screen.getByText('NEST 80')).toBeInTheDocument()
+      expect(screen.getByText('Hoam 80')).toBeInTheDocument()
     })
 
     it('should finalize session on unmount', () => {
       const { unmount } = render(<ConfiguratorShell />)
-      
+
       unmount()
-      
+
       // Session finalization is handled by the store, not directly by the component
       expect(true).toBe(true) // Component should unmount without errors
     })
@@ -219,20 +219,20 @@ describe('ConfiguratorShell Integration Tests', () => {
 
   describe('Error Handling', () => {
     it('should handle API errors gracefully', async () => {
-      const consoleSpy = vi.spyOn(console, 'error').mockImplementation(() => {})
-      
+      const consoleSpy = vi.spyOn(console, 'error').mockImplementation(() => { })
+
       // Mock updateSelection to reject
       mockUpdateSelection.mockRejectedValueOnce(new Error('API Error'))
-      
+
       const _user = userEvent.setup()
       render(<ConfiguratorShell />)
-      
-      const nest80Options = screen.getAllByRole('button', { name: /nest 80/i })
+
+      const nest80Options = screen.getAllByRole('button', { name: /Hoam 80/i })
       await _user.click(nest80Options[0]) // Click the first one (mobile version)
 
       // Should not crash the component
       await waitFor(() => {
-        expect(screen.getAllByRole('button', { name: /nest 80/i })).toHaveLength(1)
+        expect(screen.getAllByRole('button', { name: /Hoam 80/i })).toHaveLength(1)
       })
 
       consoleSpy.mockRestore()
@@ -254,31 +254,31 @@ describe('ConfiguratorShell Integration Tests', () => {
     it('should handle rapid selections efficiently', async () => {
       const _user = userEvent.setup()
       render(<ConfiguratorShell />)
-      
+
       const startTime = performance.now()
-      
-            // Rapid clicks
-      const nest80Options = screen.getAllByRole('button', { name: /nest 80/i })
+
+      // Rapid clicks
+      const nest80Options = screen.getAllByRole('button', { name: /Hoam 80/i })
 
       for (let i = 0; i < 5; i++) {
         await _user.click(nest80Options[0]) // Always click the first one
       }
-      
+
       const endTime = performance.now()
       const duration = endTime - startTime
-      
+
       // Should handle rapid interactions within reasonable time
       expect(duration).toBeLessThan(1000) // 1 second
     })
 
     it('should not cause memory leaks with repeated renders', () => {
       const { rerender, unmount } = render(<ConfiguratorShell />)
-      
+
       // Multiple re-renders
       for (let i = 0; i < 10; i++) {
         rerender(<ConfiguratorShell />)
       }
-      
+
       // Should unmount cleanly
       expect(() => {
         unmount()
@@ -296,40 +296,40 @@ describe('ConfiguratorShell Integration Tests', () => {
       })
 
       render(<ConfiguratorShell />)
-      
+
       // Should render mobile-optimized layout
       // New architecture renders single layout based on viewport
-      expect(screen.getByText('NEST 80')).toBeInTheDocument() // Check actual rendered content
+      expect(screen.getByText('Hoam 80')).toBeInTheDocument() // Check actual rendered content
     })
 
     it('should handle viewport changes', () => {
       const { rerender } = render(<ConfiguratorShell />)
-      
+
       // Simulate viewport change
       Object.defineProperty(window, 'innerWidth', {
         writable: true,
         configurable: true,
         value: 1024,
       })
-      
+
       // Trigger resize event
       fireEvent(window, new Event('resize'))
-      
+
       rerender(<ConfiguratorShell />)
-      
+
       // Should adapt to desktop layout
-      expect(screen.getByText('NEST 80')).toBeInTheDocument() // Check actual rendered content
+      expect(screen.getByText('Hoam 80')).toBeInTheDocument() // Check actual rendered content
     })
   })
 
   describe('Accessibility', () => {
     it('should have proper ARIA attributes', () => {
       render(<ConfiguratorShell />)
-      
+
       // Check for proper roles and labels
       const buttons = screen.getAllByRole('button')
       expect(buttons.length).toBeGreaterThan(0)
-      
+
       // Each button should have accessible text (some have aria-label, others have accessible text content)
       buttons.forEach(button => {
         const hasAriaLabel = button.hasAttribute('aria-label')
@@ -341,10 +341,10 @@ describe('ConfiguratorShell Integration Tests', () => {
     it('should support keyboard navigation', async () => {
       const _user = userEvent.setup()
       render(<ConfiguratorShell />)
-      
+
       // Tab to first interactive element
       await _user.tab()
-      
+
       // Should focus on an interactive element
       expect(document.activeElement).toBeInstanceOf(HTMLElement)
       expect(document.activeElement?.tagName).toMatch(/BUTTON|INPUT|SELECT/)
@@ -352,11 +352,11 @@ describe('ConfiguratorShell Integration Tests', () => {
 
     it('should have proper heading hierarchy', () => {
       render(<ConfiguratorShell />)
-      
+
       // Check for proper heading structure
       const headings = screen.getAllByRole('heading')
       expect(headings.length).toBeGreaterThan(0)
-      
+
       // First heading should be h1, h2, or h3 (configurator uses h3)
       const firstHeading = headings[0]
       expect(firstHeading.tagName).toMatch(/H[1-3]/)
@@ -366,9 +366,9 @@ describe('ConfiguratorShell Integration Tests', () => {
   describe('Data Flow', () => {
     it('should pass correct props to child components', () => {
       render(<ConfiguratorShell />)
-      
+
       // Verify that configurator data is displayed
-      expect(screen.getAllByRole('button', { name: /nest 80/i })).toHaveLength(1) // Single layout architecture
+      expect(screen.getAllByRole('button', { name: /Hoam 80/i })).toHaveLength(1) // Single layout architecture
       expect(screen.getAllByRole('button', { name: /trapezblech/i })).toHaveLength(1) // Single layout architecture
     })
 
@@ -380,9 +380,9 @@ describe('ConfiguratorShell Integration Tests', () => {
           nest: {
             category: 'nest',
             value: 'nest80',
-            name: 'NEST 80',
+            name: 'Hoam 80',
             price: 89000,
-            description: '80m² NEST House'
+            description: '80m² Hoam House'
           },
           material: {
             category: 'material',
@@ -392,7 +392,7 @@ describe('ConfiguratorShell Integration Tests', () => {
             description: 'Standard material'
           }
         },
-        currentPrice: 89000, // nest + material
+        currentPrice: 89000, // Hoam + material
         priceBreakdown: null,
         updateSelection: mockUpdateSelection,
         initializeSession: mockInitializeSession,
@@ -416,7 +416,7 @@ describe('ConfiguratorShell Integration Tests', () => {
       })
 
       render(<ConfiguratorShell />)
-      
+
       // Should display total price correctly (single layout architecture)
       expect(screen.getAllByText(/89.000/)).toHaveLength(2) // Price displays in summary panel
     })

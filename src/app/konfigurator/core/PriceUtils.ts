@@ -70,8 +70,8 @@ export class PriceUtils {
   }
 
   /**
-   * Get adjusted nutzfläche for Nest models (matches configuratorData.ts descriptions)
-   * @param nestModel - The nest model (nest80, nest100, etc.)
+   * Get adjusted nutzfläche for Hoam models (matches configuratorData.ts descriptions)
+   * @param nestModel - The Hoam model (nest80, nest100, etc.)
    * @param geschossdeckeQuantity - Optional quantity of Geschossdecke (adds 6.5m² per unit)
    */
   static getAdjustedNutzflaeche(nestModel: string, geschossdeckeQuantity?: number): number {
@@ -92,7 +92,7 @@ export class PriceUtils {
   /**
    * Calculate and format price per square meter
    * @param totalPrice - Total price to calculate per m²
-   * @param nestModel - The nest model (nest80, nest100, etc.)
+   * @param nestModel - The Hoam model (nest80, nest100, etc.)
    * @param geschossdeckeQuantity - Optional quantity of Geschossdecke (adds 6.5m² per unit)
    */
   static calculatePricePerSquareMeter(totalPrice: number, nestModel: string, geschossdeckeQuantity?: number): string {
@@ -104,7 +104,7 @@ export class PriceUtils {
   }
 
   /**
-   * Get parkett price based on nest size
+   * Get parkett price based on Hoam size
    * Pricing: nest80=3800€, nest100=5000€, nest120=6200€, nest140=7400€, nest160=8600€
    */
   static getParkettPrice(nestModel: string): number {
@@ -142,24 +142,24 @@ export class PriceUtils {
 
   /**
 * Calculate and format price per m² for individual options
-* For NEST modules: uses the option's own FULL price and area (not dynamic price difference)
+* For Hoam modules: uses the option's own FULL price and area (not dynamic price difference)
 * For other options: calculates dynamically based on current module size
 * @param price - The price of the option
-* @param nestModel - The nest model (nest80, nest100, etc.)
+* @param nestModel - The Hoam model (nest80, nest100, etc.)
 * @param categoryId - The category of the option
 * @param optionId - The option ID
 * @param geschossdeckeQuantity - Optional quantity of Geschossdecke (adds 7.5m² per unit)
 */
   static calculateOptionPricePerSquareMeter(price: number, nestModel: string, categoryId?: string, optionId?: string, geschossdeckeQuantity?: number): string {
-    // For NEST modules themselves, ALWAYS use the full module price from constants
+    // For Hoam modules themselves, ALWAYS use the full module price from constants
     if (categoryId === 'nest' && optionId) {
-      // Find the specific nest option to get its full price
+      // Find the specific Hoam option to get its full price
       const nestOption = NEST_OPTIONS.find((option: { id: string; price: number; modules: number }) => option.id === optionId);
       if (!nestOption) {
         return ''; // No pricing data available
       }
 
-      // Use the full nest price (not the dynamic price difference)
+      // Use the full Hoam price (not the dynamic price difference)
       const fullNestPrice = nestOption.price;
       const adjustedNutzflaeche = this.getAdjustedNutzflaeche(optionId, geschossdeckeQuantity);
       if (adjustedNutzflaeche === 0) return '';
@@ -168,7 +168,7 @@ export class PriceUtils {
       return `${this.formatPrice(pricePerSqm)} /m²`;
     }
 
-    // For geschossdecke: calculate price per m² based on TOTAL area (nest size + geschossdecke area)
+    // For geschossdecke: calculate price per m² based on TOTAL area (Hoam size + geschossdecke area)
     // When geschossdecke is selected, its m² calculation should include the total adjusted area
     if (categoryId === 'geschossdecke') {
       const adjustedNutzflaeche = this.getAdjustedNutzflaeche(nestModel, geschossdeckeQuantity);
@@ -214,7 +214,7 @@ export class PriceUtils {
 
   /**
    * Sort configuration entries for consistent display
-   * Order: nest module first, regular items (including planungspaket after bodenaufbau) in middle, grundstueckscheck at bottom
+   * Order: Hoam module first, regular items (including planungspaket after bodenaufbau) in middle, grundstueckscheck at bottom
    */
   static sortConfigurationEntries<T>(
     entries: [string, T][]

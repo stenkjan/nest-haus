@@ -24,7 +24,7 @@ export async function GET(request: Request) {
     // Mock configuration data
     const mockConfigData = {
       nest: {
-        name: 'Nest Tiny House 25m²',
+        name: 'Hoam Tiny House 25m²',
         price: 45000,
       },
       gebaeudehuelle: {

@@ -114,9 +114,8 @@ function StatusBadge({ status }: { status: string }) {
 
   return (
     <span
-      className={`inline-flex items-center px-2 py-0.5 rounded text-xs font-medium ${
-        styles[status as keyof typeof styles] || "bg-gray-100 text-gray-800"
-      }`}
+      className={`inline-flex items-center px-2 py-0.5 rounded text-xs font-medium ${styles[status as keyof typeof styles] || "bg-gray-100 text-gray-800"
+        }`}
     >
       {status}
     </span>
@@ -137,9 +136,8 @@ function PaymentStatusBadge({ status }: { status: string | null }) {
 
   return (
     <span
-      className={`inline-flex items-center px-2 py-0.5 rounded text-xs font-medium ${
-        styles[status as keyof typeof styles] || "bg-gray-100 text-gray-800"
-      }`}
+      className={`inline-flex items-center px-2 py-0.5 rounded text-xs font-medium ${styles[status as keyof typeof styles] || "bg-gray-100 text-gray-800"
+        }`}
     >
       {status}
     </span>
@@ -329,7 +327,7 @@ function ConfigurationModal({
           {/* Detailed Configuration - Like "Dein Nest Überblick" */}
           <div className="bg-white border border-gray-200 rounded-lg p-4">
             <h3 className="text-lg font-semibold text-gray-900 mb-3">
-              🏠 Dein Nest Überblick
+              🏠 Dein Hoam Überblick
             </h3>
             <div className="space-y-3">
               {/* Nest Type */}
@@ -369,13 +367,13 @@ function ConfigurationModal({
                       </h5>
                       {config.detailedConfiguration.gebaeudehuelle
                         .description && (
-                        <p className="text-xs text-gray-600 mt-1">
-                          {
-                            config.detailedConfiguration.gebaeudehuelle
-                              .description
-                          }
-                        </p>
-                      )}
+                          <p className="text-xs text-gray-600 mt-1">
+                            {
+                              config.detailedConfiguration.gebaeudehuelle
+                                .description
+                            }
+                          </p>
+                        )}
                     </div>
                     <span className="font-bold text-gray-900 ml-4 whitespace-nowrap">
                       €
@@ -395,13 +393,13 @@ function ConfigurationModal({
                       </h5>
                       {config.detailedConfiguration.innenverkleidung
                         .description && (
-                        <p className="text-xs text-gray-600 mt-1">
-                          {
-                            config.detailedConfiguration.innenverkleidung
-                              .description
-                          }
-                        </p>
-                      )}
+                          <p className="text-xs text-gray-600 mt-1">
+                            {
+                              config.detailedConfiguration.innenverkleidung
+                                .description
+                            }
+                          </p>
+                        )}
                     </div>
                     <span className="font-bold text-gray-900 ml-4 whitespace-nowrap">
                       €
@@ -445,13 +443,13 @@ function ConfigurationModal({
                         </h5>
                         {config.detailedConfiguration.geschossdecke
                           .description && (
-                          <p className="text-xs text-gray-600 mt-1">
-                            {
-                              config.detailedConfiguration.geschossdecke
-                                .description
-                            }
-                          </p>
-                        )}
+                            <p className="text-xs text-gray-600 mt-1">
+                              {
+                                config.detailedConfiguration.geschossdecke
+                                  .description
+                              }
+                            </p>
+                          )}
                       </div>
                       <span className="font-bold text-gray-900 ml-4 whitespace-nowrap">
                         €
@@ -471,13 +469,13 @@ function ConfigurationModal({
                       </h5>
                       {config.detailedConfiguration.belichtungspaket
                         .description && (
-                        <p className="text-xs text-gray-600 mt-1">
-                          {
-                            config.detailedConfiguration.belichtungspaket
-                              .description
-                          }
-                        </p>
-                      )}
+                          <p className="text-xs text-gray-600 mt-1">
+                            {
+                              config.detailedConfiguration.belichtungspaket
+                                .description
+                            }
+                          </p>
+                        )}
                       {/* Show fenster details as sub-item since it's included in belichtungspaket price */}
                       {config.detailedConfiguration.fenster && (
                         <div className="mt-2 pt-2 border-t border-blue-200">
@@ -491,14 +489,14 @@ function ConfigurationModal({
                           )}
                           {config.detailedConfiguration.fenster
                             .squareMeters && (
-                            <p className="text-xs text-blue-700 font-medium">
-                              {
-                                config.detailedConfiguration.fenster
-                                  .squareMeters
-                              }{" "}
-                              m²
-                            </p>
-                          )}
+                              <p className="text-xs text-blue-700 font-medium">
+                                {
+                                  config.detailedConfiguration.fenster
+                                    .squareMeters
+                                }{" "}
+                                m²
+                              </p>
+                            )}
                         </div>
                       )}
                     </div>
@@ -556,13 +554,13 @@ function ConfigurationModal({
                       </h5>
                       {config.detailedConfiguration.planungspaket
                         .description && (
-                        <p className="text-xs text-gray-600 mt-1">
-                          {
-                            config.detailedConfiguration.planungspaket
-                              .description
-                          }
-                        </p>
-                      )}
+                          <p className="text-xs text-gray-600 mt-1">
+                            {
+                              config.detailedConfiguration.planungspaket
+                                .description
+                            }
+                          </p>
+                        )}
                     </div>
                     <span className="font-bold text-purple-700 ml-4 whitespace-nowrap">
                       €
@@ -897,11 +895,11 @@ export default function AllConfigurations() {
       ? configurations
       : filter === "WITH_CONFIG"
         ? configurations.filter(
-            (c) => !c.isOhneNestMode && c.configuration.nestType !== "Unknown"
-          )
+          (c) => !c.isOhneNestMode && c.configuration.nestType !== "Unknown"
+        )
         : configurations.filter(
-            (c) => c.isOhneNestMode || c.configuration.nestType === "Unknown"
-          );
+          (c) => c.isOhneNestMode || c.configuration.nestType === "Unknown"
+        );
 
   if (loading) {
     return (
@@ -964,11 +962,10 @@ export default function AllConfigurations() {
             <button
               key={tab.key}
               onClick={() => setFilter(tab.key)}
-              className={`px-4 py-2 text-sm font-medium border-b-2 transition-colors whitespace-nowrap ${
-                filter === tab.key
+              className={`px-4 py-2 text-sm font-medium border-b-2 transition-colors whitespace-nowrap ${filter === tab.key
                   ? "border-blue-600 text-blue-600"
                   : "border-transparent text-gray-600 hover:text-gray-900"
-              }`}
+                }`}
             >
               {tab.label}
               <span className="ml-2 text-xs bg-gray-200 px-2 py-0.5 rounded">
@@ -976,15 +973,15 @@ export default function AllConfigurations() {
                   ? configurations.length
                   : tab.key === "WITH_CONFIG"
                     ? configurations.filter(
-                        (c) =>
-                          !c.isOhneNestMode &&
-                          c.configuration.nestType !== "Unknown"
-                      ).length
+                      (c) =>
+                        !c.isOhneNestMode &&
+                        c.configuration.nestType !== "Unknown"
+                    ).length
                     : configurations.filter(
-                        (c) =>
-                          c.isOhneNestMode ||
-                          c.configuration.nestType === "Unknown"
-                      ).length}
+                      (c) =>
+                        c.isOhneNestMode ||
+                        c.configuration.nestType === "Unknown"
+                    ).length}
               </span>
             </button>
           ))}

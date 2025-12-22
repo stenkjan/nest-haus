@@ -7,7 +7,7 @@ import { describe, it, expect } from 'vitest'
 describe('House Configurator', () => {
     describe('Configuration Selection', () => {
         it('should handle house type selection', () => {
-            // Test NEST selection (NEST 100, NEST 150, etc.)
+            // Test Hoam selection (Hoam 100, Hoam 150, etc.)
             expect(true).toBe(true) // Placeholder - implement actual test
         })
 

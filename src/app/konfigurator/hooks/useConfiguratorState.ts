@@ -9,11 +9,11 @@
  */
 
 import { useState, useEffect, useCallback } from 'react';
-import type { 
-  Selections, 
-  SelectionOption, 
-  ViewType, 
-  ConfiguratorState 
+import type {
+  Selections,
+  SelectionOption,
+  ViewType,
+  ConfiguratorState
 } from '../types/configurator.types';
 
 // Import core business logic
@@ -28,12 +28,12 @@ export interface ConfiguratorStateHook {
   isLoading: boolean;
   hasPart2BeenActive: boolean;
   hasPart3BeenActive: boolean;
-  
+
   // Actions
   updateSelection: (option: SelectionOption) => void;
   setActiveView: (view: ViewType) => void;
   resetConfiguration: () => void;
-  
+
   // Computed
   availableViews: ViewType[];
   isValid: boolean;
@@ -52,7 +52,7 @@ export function useConfiguratorState(initialModel: string = 'nest80'): Configura
 
   // TODO: Initialize with default selections
   useEffect(() => {
-    // Initialize with default nest selection
+    // Initialize with default Hoam selection
     // const defaultSelections = getDefaultSelections(initialModel);
     // setState(prev => ({ ...prev, selections: defaultSelections }));
   }, [initialModel]);
@@ -65,10 +65,10 @@ export function useConfiguratorState(initialModel: string = 'nest80'): Configura
         ...prev.selections,
         [option.category]: option
       };
-      
+
       // TODO: Calculate new price optimistically
       // const newPrice = PriceCalculator.calculateTotalPrice({ selections: newSelections });
-      
+
       return {
         ...prev,
         selections: newSelections,

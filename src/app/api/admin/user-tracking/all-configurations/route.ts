@@ -163,7 +163,7 @@ function extractDetailedItem(field: unknown): DetailedItem | null {
 }
 
 /**
- * Calculate belichtungspaket price based on nest size and fenster material
+ * Calculate belichtungspaket price based on Hoam size and fenster material
  * Same logic as PriceCalculator.calculateBelichtungspaketPrice
  */
 function calculateBelichtungspaketPrice(
@@ -172,7 +172,7 @@ function calculateBelichtungspaketPrice(
     fensterValue: string
 ): number {
     try {
-        // Get nest size in square meters
+        // Get Hoam size in square meters
         const nestSizeMap: Record<string, number> = {
             'nest80': 80,
             'nest100': 100,

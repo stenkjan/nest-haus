@@ -161,7 +161,7 @@ class UserTrackingService {
 
             // Helper to extract value from both old and new formats
             const extractValue = (field: unknown, fallbackKey?: string): string | undefined => {
-                // New format: { category: 'nest', value: 'nest80', name: 'Nest 80', price: 95000 }
+                // New format: { category: 'nest', value: 'nest80', name: 'Hoam 80', price: 95000 }
                 if (field && typeof field === 'object' && 'value' in field) {
                     const obj = field as { value?: unknown };
                     return typeof obj.value === 'string' ? obj.value : undefined;
@@ -600,11 +600,11 @@ class UserTrackingService {
             // Basic mapping - could be enhanced with database lookup
             const nameMap: Record<string, Record<string, string>> = {
                 nest: {
-                    'nest80': 'Nest 80',
-                    'nest100': 'Nest 100',
-                    'nest120': 'Nest 120',
-                    'nest140': 'Nest 140',
-                    'nest160': 'Nest 160'
+                    'nest80': 'Hoam 80',
+                    'nest100': 'Hoam 100',
+                    'nest120': 'Hoam 120',
+                    'nest140': 'Hoam 140',
+                    'nest160': 'Hoam 160'
                 },
                 gebaeudehuelle: {
                     'trapezblech': 'Trapezblech',

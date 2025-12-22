@@ -113,7 +113,7 @@ describe('Session Tracking Tests', () => {
             const selection = {
                 sessionId: testSessionId,
                 category: 'nest',
-                selection: 'NEST 100',
+                selection: 'Hoam 100',
                 previousSelection: null,
                 priceChange: 10000000,
                 totalPrice: 10000000,
@@ -136,7 +136,7 @@ describe('Session Tracking Tests', () => {
 
             if (typeof redisData === 'string') {
                 const sessionData = JSON.parse(redisData);
-                expect(sessionData.selections.nest).toBe('NEST 100');
+                expect(sessionData.selections.nest).toBe('Hoam 100');
                 expect(sessionData.totalPrice).toBe(10000000);
             }
 
@@ -150,7 +150,7 @@ describe('Session Tracking Tests', () => {
             });
 
             expect(selectionEvent).toBeDefined();
-            expect(selectionEvent?.selection).toBe('NEST 100');
+            expect(selectionEvent?.selection).toBe('Hoam 100');
             expect(selectionEvent?.totalPrice).toBe(10000000);
         });
 
@@ -159,7 +159,7 @@ describe('Session Tracking Tests', () => {
                 {
                     sessionId: testSessionId,
                     category: 'nest',
-                    selection: 'NEST 100',
+                    selection: 'Hoam 100',
                     totalPrice: 10000000,
                 },
                 {
@@ -203,7 +203,7 @@ describe('Session Tracking Tests', () => {
             const selection = {
                 sessionId: nonExistentSession,
                 category: 'nest',
-                selection: 'NEST 100',
+                selection: 'Hoam 100',
                 totalPrice: 10000000,
             };
 
@@ -247,7 +247,7 @@ describe('Session Tracking Tests', () => {
                     eventType: 'click',
                     category: 'nest',
                     elementId: 'nest-100-card',
-                    selectionValue: 'NEST 100',
+                    selectionValue: 'Hoam 100',
                     previousValue: null,
                     timeSpent: 5000,
                     deviceInfo: {
@@ -382,7 +382,7 @@ describe('Session Tracking Tests', () => {
                 body: JSON.stringify({
                     sessionId,
                     category: 'nest',
-                    selection: 'NEST 100',
+                    selection: 'Hoam 100',
                     totalPrice: 10000000,
                 }),
             });
@@ -395,7 +395,7 @@ describe('Session Tracking Tests', () => {
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
                     sessionId,
-                    config: { nest: { name: 'NEST 100' } }, // Incomplete
+                    config: { nest: { name: 'Hoam 100' } }, // Incomplete
                 }),
             });
 
@@ -414,7 +414,7 @@ describe('Session Tracking Tests', () => {
             });
 
             expect(events).toHaveLength(1);
-            expect(events[0].category).toBe('nest'); // Dropped off after nest selection
+            expect(events[0].category).toBe('nest'); // Dropped off after Hoam selection
         });
     });
 
@@ -425,7 +425,7 @@ describe('Session Tracking Tests', () => {
             const invalidSession = {
                 sessionId: '', // Invalid to potentially cause error
                 category: 'nest',
-                selection: 'NEST 100',
+                selection: 'Hoam 100',
                 totalPrice: 10000000,
             };
 

@@ -1,6 +1,6 @@
 /**
  * PriceCalculator - Updated with MODULAR pricing system from Excel data
- * Uses base price (Nest 80) + (modules × per-module cost) logic
+ * Uses base price (Hoam 80) + (modules × per-module cost) logic
  * CLIENT-SIDE ONLY - for efficient state management without API calls
  * 
  * ENHANCED: Added caching and race condition prevention for optimal performance
@@ -318,12 +318,12 @@ export class PriceCalculator {
    * Calculate the EXACT modular price using Google Sheets data
    * 
    * PRICING MODEL (ALL PRICES ARE RELATIVE TO BASELINES):
-   * - Nest base price: Raw construction only (e.g., 188,619€ for Nest 80)
+   * - Hoam base price: Raw construction only (e.g., 188,619€ for Hoam 80)
    * - Gebäudehülle: Exterior material (Trapezblech = 0€ baseline, others are upgrades)
    * - Innenverkleidung: Interior cladding (ohne_innenverkleidung = 0€ baseline, Fichte/Lärche/Eiche are upgrades)
    * - Bodenbelag: Flooring (ohne_belag = 0€ baseline, others are upgrades)
    * 
-   * TOTAL = Nest base + Gebäudehülle relative + Innenverkleidung relative + Bodenbelag relative + other options
+   * TOTAL = Hoam base + Gebäudehülle relative + Innenverkleidung relative + Bodenbelag relative + other options
    * 
    * CLIENT-SIDE calculation for efficiency with memoization
    * HANDLES -1 (PRICE ON REQUEST): If any component is -1, returns -1
@@ -341,7 +341,7 @@ export class PriceCalculator {
       try {
         const nestSize = nestType as NestSize;
 
-        // Get nest base price (raw construction only)
+        // Get Hoam base price (raw construction only)
         const nestPrice = pricingData.nest[nestSize]?.price || 0;
 
         // Get gebaeudehuelle price (relative to trapezblech = 0)
@@ -359,7 +359,7 @@ export class PriceCalculator {
         const ohneBelagPrice = pricingData.bodenbelag.ohne_belag?.[nestSize] || 0;
         const bodenbelagRelative = bodenbelagPrice - ohneBelagPrice;
 
-        // TOTAL = Nest base + Gebäudehülle relative + Innenverkleidung relative + Bodenbelag relative
+        // TOTAL = Hoam base + Gebäudehülle relative + Innenverkleidung relative + Bodenbelag relative
         // Treat -1 (price on request) as 0 for calculation, so we still show sum of known prices
         return this.normalizePriceForCalculation(nestPrice) +
           this.normalizePriceForCalculation(gebaeudehuelleRelative) +
@@ -372,7 +372,7 @@ export class PriceCalculator {
     }
 
     // Fallback prices when pricing data is not available yet (still loading)
-    // These are the base nest prices from Google Sheets (updated December 2024)
+    // These are the base Hoam prices from Google Sheets (updated December 2024)
     const nestFallbackPrices: Record<string, number> = {
       nest80: 213032,
       nest100: 254731,
@@ -385,7 +385,7 @@ export class PriceCalculator {
   }
 
   /**
-   * Get dynamic upgrade price for a selection based on current nest size
+   * Get dynamic upgrade price for a selection based on current Hoam size
    * This calculates the price difference between combinations
    */
   static getUpgradePrice(
@@ -438,7 +438,7 @@ export class PriceCalculator {
    * This ensures consistent pricing regardless of current selections
    * 
    * ENHANCED: Added caching and error handling for optimal performance
-   * RESTORED: Material upgrade prices scale with nest size as intended
+   * RESTORED: Material upgrade prices scale with Hoam size as intended
    */
   static getOptionDisplayPrice(
     _nestType: string,
@@ -464,7 +464,7 @@ export class PriceCalculator {
 
   /**
    * Calculate total price - PROGRESSIVE pricing with immediate feedback
-   * Uses MODULAR PRICING for accurate scaling with nest size
+   * Uses MODULAR PRICING for accurate scaling with Hoam size
    * CLIENT-SIDE calculation to avoid unnecessary API calls with memoization
    * HANDLES -1 (PRICE ON REQUEST): If ANY component is -1, total returns -1
    */
@@ -476,7 +476,7 @@ export class PriceCalculator {
       try {
         let totalPrice = 0;
 
-        // Calculate nest module combination price if selected
+        // Calculate Hoam module combination price if selected
         if (selections.nest) {
           // ALWAYS use combination pricing with defaults for missing core selections
           // This ensures consistent pricing regardless of selection order
@@ -495,7 +495,7 @@ export class PriceCalculator {
           // If combination price is -1 (price on request), it will be normalized to 0 at the end
         }
 
-        // Add additional components (these work regardless of nest selection)
+        // Add additional components (these work regardless of Hoam selection)
         let additionalPrice = 0;
 
         // Add PV price
@@ -513,7 +513,7 @@ export class PriceCalculator {
           // If data not loaded, price will be 0 until loaded
         }
 
-        // Add belichtungspaket price (calculated based on nest size and fenster material)
+        // Add belichtungspaket price (calculated based on Hoam size and fenster material)
         if (selections.belichtungspaket && selections.nest) {
           const belichtungspaketPrice = this.calculateBelichtungspaketPrice(
             selections.belichtungspaket,
@@ -526,7 +526,7 @@ export class PriceCalculator {
           }
         }
 
-        // Add bodenaufbau price (calculated based on nest size)
+        // Add bodenaufbau price (calculated based on Hoam size)
         if (selections.bodenaufbau && selections.nest) {
           const bodenaufbauPrice = this.calculateBodenaufbauPrice(
             selections.bodenaufbau,
@@ -538,7 +538,7 @@ export class PriceCalculator {
           }
         }
 
-        // Add geschossdecke price (calculated based on nest size and quantity)
+        // Add geschossdecke price (calculated based on Hoam size and quantity)
         if (selections.geschossdecke && selections.nest) {
           const geschossdeckePrice = this.calculateGeschossdeckePrice(
             selections.geschossdecke,
@@ -623,7 +623,7 @@ export class PriceCalculator {
         // Planning package and Grundstückscheck removed - handled in separate cart logic
 
         // Always return the sum of known prices, treating -1 (price on request) as 0
-        // This ensures we show "Nest + Belichtungspaket + other known prices" even if some items are "auf Anfrage"
+        // This ensures we show "Hoam + Belichtungspaket + other known prices" even if some items are "auf Anfrage"
         return this.normalizePriceForCalculation(totalPrice) + this.normalizePriceForCalculation(additionalPrice);
       } catch (error) {
         console.error('💰 PriceCalculator: Error calculating price:', error);
@@ -633,7 +633,7 @@ export class PriceCalculator {
   }
 
   /**
-   * Calculate belichtungspaket price based on nest size, belichtungspaket option, and fenster material
+   * Calculate belichtungspaket price based on Hoam size, belichtungspaket option, and fenster material
    * Uses combination prices from Google Sheets (F70-N78)
    * Formula: combination_price = price_per_sqm × nest_size (from sheet)
    * HANDLES -1 (PRICE ON REQUEST): Returns -1 if the combination is marked as price on request
@@ -670,7 +670,7 @@ export class PriceCalculator {
   }
 
   /**
-   * Calculate bodenaufbau price based on nest size
+   * Calculate bodenaufbau price based on Hoam size
    * Uses Google Sheets pricing data
    * HANDLES -1 (PRICE ON REQUEST): Returns -1 if the option is marked as price on request
    */
@@ -717,13 +717,13 @@ export class PriceCalculator {
   }
 
   /**
-   * Calculate geschossdecke price based on nest size and quantity
+   * Calculate geschossdecke price based on Hoam size and quantity
    * Uses Google Sheets base price (D7) × quantity
    * HANDLES -1 (PRICE ON REQUEST): Returns -1 if basePrice is -1, but area calculation still works
    */
   static calculateGeschossdeckePrice(
     geschossdecke: SelectionOption,
-    _nest: SelectionOption // Renamed to _nest to mark as intentionally unused
+    _nest: SelectionOption // Renamed to _Hoam to mark as intentionally unused
   ): number {
     try {
       const quantity = geschossdecke.quantity || 1;
@@ -786,7 +786,7 @@ export class PriceCalculator {
   }
 
   /**
-   * Get base price for a nest option (calculated with default selections)
+   * Get base price for a Hoam option (calculated with default selections)
    */
   static getBasePrice(nestType: string): number {
     // Default selections (Trapezblech + Standard/Ohne Innenverkleidung + Standard/Ohne Belag)
@@ -873,9 +873,9 @@ export class PriceCalculator {
     }
 
     try {
-      // Handle nest module breakdown if selected
+      // Handle Hoam module breakdown if selected
       if (selections.nest) {
-        // Get nest module information
+        // Get Hoam module information
         const nestOption = NEST_OPTIONS.find(option => option.id === selections.nest!.value);
         breakdown.modules = nestOption?.modules || 0;
 
@@ -897,7 +897,7 @@ export class PriceCalculator {
         breakdown.basePrice = combinationPrice;
       }
 
-      // Add additional options (works for both nest and grundstückscheck-only)
+      // Add additional options (works for both Hoam and grundstückscheck-only)
       if (selections.pvanlage && selections.pvanlage.quantity) {
         breakdown.options.pvanlage = {
           name: `${selections.pvanlage.name} (${selections.pvanlage.quantity}x)`,
@@ -1054,7 +1054,7 @@ export class PriceCalculator {
   }
 
   /**
-   * Get all valid combinations for a given nest type
+   * Get all valid combinations for a given Hoam type
    */
   static getValidCombinations(_nestType: string): CombinationKey[] {
     return Object.keys(MODULAR_PRICING.combinations) as CombinationKey[];
@@ -1081,7 +1081,7 @@ export class PriceCalculator {
       if (fensterPricing && fensterPricing[nestSize]) {
         const totalPrice = fensterPricing[nestSize][belichtungKey];
         if (totalPrice !== undefined && totalPrice !== -1) {
-          // Nest size numeric values (from base area)
+          // Hoam size numeric values (from base area)
           const nestSizeNumeric: Record<string, number> = {
             'nest80': 75,
             'nest100': 95,
@@ -1089,17 +1089,17 @@ export class PriceCalculator {
             'nest140': 135,
             'nest160': 155,
           };
-          
+
           // Belichtungspaket percentages
           const belichtungPercentage: Record<string, number> = {
             'light': 0.15,   // 15%
             'medium': 0.22,  // 22%
             'bright': 0.28,  // 28%
           };
-          
+
           const baseArea = nestSizeNumeric[nestValue] || 75;
           const percentage = belichtungPercentage[belichtungspaketValue] || 0.15;
-          
+
           // Formula: total_price / (nest_size * belichtung_percentage)
           // Example: 15107 / (75 * 0.15) = 15107 / 11.25 = 1343€/m²
           const effectiveArea = baseArea * percentage;
@@ -1113,7 +1113,7 @@ export class PriceCalculator {
   }
 
   /**
-   * Get max geschossdecke amount for a nest size
+   * Get max geschossdecke amount for a Hoam size
    */
   static getMaxGeschossdecke(nestValue: string): number {
     const pricingData = this.getPricingData();
@@ -1134,7 +1134,7 @@ export class PriceCalculator {
   }
 
   /**
-   * Get max PV-Anlage modules for a nest size
+   * Get max PV-Anlage modules for a Hoam size
    */
   static getMaxPvModules(nestValue: string): number {
     const pricingData = this.getPricingData();

@@ -57,7 +57,7 @@ interface CartState {
   // Cart items
   items: (CartItem | ConfigurationCartItem)[]
 
-  // Ohne Nest mode state
+  // Ohne Hoam mode state
   isOhneNestMode: boolean
 
   // Appointment state
@@ -81,7 +81,7 @@ interface CartState {
   clearCart: () => void
   getItemById: (itemId: string) => CartItem | ConfigurationCartItem | undefined
 
-  // Ohne Nest mode actions
+  // Ohne Hoam mode actions
   setOhneNestMode: (isOhneNest: boolean) => void
   getIsOhneNestMode: () => boolean
 
@@ -295,13 +295,13 @@ export const useCartStore = create<CartState>()(
         }, 50)
       },
 
-      // Set ohne nest mode
+      // Set ohne Hoam mode
       setOhneNestMode: (isOhneNest: boolean) => {
-        console.log("🏠 CartStore: Setting ohne nest mode:", isOhneNest)
+        console.log("🏠 CartStore: Setting ohne Hoam mode:", isOhneNest)
         set({ isOhneNestMode: isOhneNest })
       },
 
-      // Get ohne nest mode
+      // Get ohne Hoam mode
       getIsOhneNestMode: () => {
         return get().isOhneNestMode
       },
@@ -322,13 +322,13 @@ export const useCartStore = create<CartState>()(
       isAppointmentFromCurrentSession: (currentSessionId?: string | null) => {
         const state = get()
         if (!state.appointmentDetails) return false
-        
+
         // If no sessionId stored with appointment, treat as old appointment (from previous session)
         if (!state.appointmentDetails.sessionId) return false
-        
+
         // If no current sessionId provided, can't verify - treat as different session
         if (!currentSessionId) return false
-        
+
         // Check if sessionIds match
         return state.appointmentDetails.sessionId === currentSessionId
       },
@@ -337,7 +337,7 @@ export const useCartStore = create<CartState>()(
       getAppointmentSummary: (currentSessionId?: string | null) => {
         const state = get()
         if (!state.appointmentDetails) return null
-        
+
         // Only return summary if appointment belongs to current session
         if (!get().isAppointmentFromCurrentSession(currentSessionId)) return null
 
@@ -356,7 +356,7 @@ export const useCartStore = create<CartState>()(
       getAppointmentSummaryShort: (currentSessionId?: string | null) => {
         const state = get()
         if (!state.appointmentDetails) return null
-        
+
         // Only return summary if appointment belongs to current session
         if (!get().isAppointmentFromCurrentSession(currentSessionId)) return null
 
@@ -374,7 +374,7 @@ export const useCartStore = create<CartState>()(
       getDeliveryDate: (currentSessionId?: string | null) => {
         const state = get()
         if (!state.appointmentDetails) return null
-        
+
         // Only return delivery date if appointment belongs to current session
         if (!get().isAppointmentFromCurrentSession(currentSessionId)) return null
 

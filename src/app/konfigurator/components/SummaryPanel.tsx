@@ -41,7 +41,7 @@ export default function SummaryPanel({
 
   // Enhanced item price calculation with dynamic pricing from Google Sheets
   const getItemPrice = (key: string, selection: ConfigurationItem): number => {
-    // For nest, return the RAW nest base price from PriceCalculator
+    // For nest, return the RAW Hoam base price from PriceCalculator
     if (key === "nest" && configuration?.nest) {
       try {
         const pricingData = PriceCalculator.getPricingData();
@@ -146,7 +146,7 @@ export default function SummaryPanel({
       }
     }
 
-    // For gebäudehülle and fussboden, calculate dynamic price based on nest size
+    // For gebäudehülle and fussboden, calculate dynamic price based on Hoam size
     if (
       (key === "gebaeudehuelle" || key === "fussboden") &&
       configuration?.nest
@@ -262,7 +262,7 @@ export default function SummaryPanel({
             | "nest160";
           const price =
             pricingData.pvanlage.pricesByQuantity[nestSize]?.[
-              selection.quantity
+            selection.quantity
             ];
           if (price === -1) return -1; // Return -1 for dash prices
           if (price !== undefined) return price;
@@ -463,8 +463,8 @@ export default function SummaryPanel({
                               "belichtungspaket",
                               "stirnseite",
                             ].includes(key) && (
-                              <div className="mb-1 text-black text-[clamp(12px,2.5vw,14px)]"></div>
-                            )}
+                                <div className="mb-1 text-black text-[clamp(12px,2.5vw,14px)]"></div>
+                              )}
                             <div className="text-black text-[clamp(13px,3vw,15px)] font-medium">
                               {PriceUtils.formatPrice(itemPrice)}
                             </div>
@@ -492,9 +492,9 @@ export default function SummaryPanel({
                         <div className="font-medium text-[clamp(14px,3vw,16px)] tracking-[0.02em] leading-[1.25] text-black break-words">
                           {key === "belichtungspaket"
                             ? getBelichtungspaketDisplayName(
-                                selection,
-                                configuration?.fenster ?? null
-                              )
+                              selection,
+                              configuration?.fenster ?? null
+                            )
                             : key === "fenster"
                               ? getFensterDisplayName(selection, true)
                               : selection.name === "Kaminschachtvorbereitung"
@@ -523,8 +523,8 @@ export default function SummaryPanel({
                               "pvanlage",
                               "grundstueckscheck",
                             ].includes(key) && (
-                              <div className="mb-1 text-black text-[clamp(12px,2.5vw,14px)]"></div>
-                            )}
+                                <div className="mb-1 text-black text-[clamp(12px,2.5vw,14px)]"></div>
+                              )}
                             <div className="text-black text-[clamp(13px,3vw,15px)] font-medium">
                               {PriceUtils.formatPrice(itemPrice)}
                             </div>
@@ -544,7 +544,7 @@ export default function SummaryPanel({
 
               return (
                 <>
-                  {/* Top items (nest module) */}
+                  {/* Top items (Hoam module) */}
                   {topItems.map(renderConfigurationItem)}
 
                   {/* Middle items (regular selections) */}
@@ -589,34 +589,34 @@ export default function SummaryPanel({
                 ? "Genauer Preis auf Anfrage"
                 : configuration?.nest
                   ? (() => {
-                      const price = currentPrice;
-                      const nestModel = configuration.nest.value;
-                      const geschossdeckeQty =
-                        configuration.geschossdecke?.quantity || 0;
-                      console.log("🏠 CONFIGURATOR PANEL m² calculation:", {
-                        price,
+                    const price = currentPrice;
+                    const nestModel = configuration.nest.value;
+                    const geschossdeckeQty =
+                      configuration.geschossdecke?.quantity || 0;
+                    console.log("🏠 CONFIGURATOR PANEL m² calculation:", {
+                      price,
+                      nestModel,
+                      geschossdeckeQty,
+                      baseArea: PriceUtils.getAdjustedNutzflaeche(
                         nestModel,
-                        geschossdeckeQty,
-                        baseArea: PriceUtils.getAdjustedNutzflaeche(
-                          nestModel,
-                          0
-                        ),
-                        adjustedArea: PriceUtils.getAdjustedNutzflaeche(
-                          nestModel,
-                          geschossdeckeQty
-                        ),
-                        result: PriceUtils.calculatePricePerSquareMeter(
-                          price,
-                          nestModel,
-                          geschossdeckeQty
-                        ),
-                      });
-                      return `${PriceUtils.calculatePricePerSquareMeter(
+                        0
+                      ),
+                      adjustedArea: PriceUtils.getAdjustedNutzflaeche(
+                        nestModel,
+                        geschossdeckeQty
+                      ),
+                      result: PriceUtils.calculatePricePerSquareMeter(
                         price,
                         nestModel,
                         geschossdeckeQty
-                      )} inkl. MwSt.`;
-                    })()
+                      ),
+                    });
+                    return `${PriceUtils.calculatePricePerSquareMeter(
+                      price,
+                      nestModel,
+                      geschossdeckeQty
+                    )} inkl. MwSt.`;
+                  })()
                   : ""}
             </p>
           </div>
@@ -637,7 +637,7 @@ export default function SummaryPanel({
             <div className="flex flex-col gap-2 w-full items-center">
               <button
                 onClick={() => {
-                  // Navigate to warenkorb with ohne-nest flag
+                  // Navigate to warenkorb with ohne-Hoam flag
                   window.location.href = "/warenkorb?mode=konzept-check";
                 }}
                 className="w-full max-w-[280px] bg-white text-[#3D6CE1] border-2 border-[#3D6CE1] rounded-full font-medium text-[clamp(0.875rem,1.2vw,1rem)] px-[clamp(1.5rem,3vw,2rem)] py-[clamp(0.5rem,1vw,0.75rem)] transition-all hover:bg-[#3D6CE1] hover:text-white min-h-[48px] flex items-center justify-center touch-manipulation cursor-pointer shadow-sm hover:shadow-md"

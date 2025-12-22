@@ -119,7 +119,7 @@ export class ImageManager {
       this.sanitizeConfigValue(configuration.fussboden?.value) || 'parkett',
       this.sanitizeConfigValue(configuration.pvanlage?.value) || 'none'
       // NOTE: fenster is intentionally excluded - it doesn't affect which combination picture is shown
-      // Only nest size and gebäudehülle determine exterior view
+      // Only Hoam size and gebäudehülle determine exterior view
       // Only gebäudehülle, innenverkleidung, and fussboden determine interior view
     ];
 
@@ -140,12 +140,12 @@ export class ImageManager {
    * CLIENT-SIDE calculation for efficiency
    */
   static getExteriorImage(configuration: Configuration): string {
-    // If no nest selection, use fallback
+    // If no Hoam selection, use fallback
     if (!configuration?.nest?.value) {
       return IMAGE_FALLBACKS.exterior;
     }
 
-    // Map nest value to image size
+    // Map Hoam value to image size
     const nestType = configuration.nest.value;
     // Use default gebaeudehuelle if not selected yet
     const gebaeudehuelle = configuration.gebaeudehuelle?.value || 'holzlattung';
@@ -344,7 +344,7 @@ export class ImageManager {
       views.push('interior');
     }
 
-    // Add stirnseite view last when nest or gebäudehülle is configured
+    // Add stirnseite view last when Hoam or gebäudehülle is configured
     if (configuration.nest || configuration.gebaeudehuelle) {
       views.push('stirnseite');
     }
@@ -402,7 +402,7 @@ export class ImageManager {
     // Always preload exterior (most common view)
     images.push(this.getPreviewImage(configuration, 'exterior'));
 
-    // If nest is selected, preload stirnseite (common next view)
+    // If Hoam is selected, preload stirnseite (common next view)
     if (configuration.nest) {
       images.push(this.getPreviewImage(configuration, 'stirnseite'));
     }
@@ -419,7 +419,7 @@ export class ImageManager {
 
     // Fenster preloading removed - no longer showing fenster view
 
-    // PREDICTIVE: If only nest selected, preload likely next configurations
+    // PREDICTIVE: If only Hoam selected, preload likely next configurations
     if (configuration.nest && !configuration.gebaeudehuelle) {
       // Preload most common exterior materials for current nest
       const commonMaterials = ['trapezblech', 'holzverkleidung', 'putz'];

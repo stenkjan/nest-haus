@@ -19,8 +19,8 @@ import Footer from "@/components/Footer";
 const sections = [
   {
     id: "wir-sind-hoam",
-    title: "Die Nest Vision",
-    slug: "wir-sind-nest",
+    title: "®Hoam Vision",
+    slug: "wir-sind-hoam",
   },
   {
     id: "verlaesslichkeit",
@@ -56,7 +56,7 @@ export default function WarumWirClient() {
   return (
     <div className="min-h-screen pt-12 bg-white">
       <SectionRouter sections={sections} onSectionChange={setCurrentSectionId}>
-        {/* Section 1 - Wir sind Nest (includes video) */}
+        {/* Section 1 - Wir sind Hoam (includes video) */}
         <section
           id="wir-sind-nest"
           className="w-full bg-black pt-12 flex items-center"
@@ -104,7 +104,7 @@ export default function WarumWirClient() {
                 className="h2-title text-white text-center"
                 dangerouslySetInnerHTML={{
                   __html:
-                    "<span class='text-nest-gray'>Dein Nest ist</span> <span class='text-white font-medium'>mehr als ein Gebäude.</span> <span class='text-nest-gray'>Es ist </span> <span class='text-white font-medium'>eine neue Art zu leben.</span> <span class='text-nest-gray'>Ein</span> <span class='text-white font-medium'>Zuhause,</span> <span class='text-nest-gray'>das mit dir wächst, sich bewegt und</span> <span class='text-white font-medium'>Freiraum</span> <span class='text-nest-gray'>schafft.</span>",
+                    "<span class='text-nest-gray'>Dein Hoam ist</span> <span class='text-white font-medium'>mehr als ein Gebäude.</span> <span class='text-nest-gray'>Es ist </span> <span class='text-white font-medium'>eine neue Art zu leben.</span> <span class='text-nest-gray'>Ein</span> <span class='text-white font-medium'>Zuhause,</span> <span class='text-nest-gray'>das mit dir wächst, sich bewegt und</span> <span class='text-white font-medium'>Freiraum</span> <span class='text-nest-gray'>schafft.</span>",
                 }}
               />
 
@@ -210,7 +210,7 @@ export default function WarumWirClient() {
                   backgroundColor: "#F4F4F4",
                   buttons: [
                     {
-                      text: "Das Nest System",
+                      text: "Das Hoam System",
                       variant: "primary",
                       size: "xs",
                       link: "/hoam-system",
@@ -222,7 +222,7 @@ export default function WarumWirClient() {
                   title: "Wohnen, dass mit dir wächst",
                   subtitle: "",
                   description:
-                    "<span class='text-nest-gray'>Das Leben verändert sich, dein Zuhause sollte das auch können. Mit dem </span><span class='text-black font-medium'>modularen Aufbau</span><span class='text-nest-gray'> von Nest wächst oder schrumpft dein Raum, zieht mit dir um oder bleibt dort, wo du Wurzeln schlägst. So wird </span><span class='text-black font-medium'>Wohnen flexibel</span><span class='text-nest-gray'>, frei und zukunftsfähig. Wir glauben an ein </span><span class='text-black font-medium'>Zuhause ohne Kompromisse.</span>",
+                    "<span class='text-nest-gray'>Das Leben verändert sich, dein Zuhause sollte das auch können. Mit dem </span><span class='text-black font-medium'>modularen Aufbau</span><span class='text-nest-gray'> von Hoam wächst oder schrumpft dein Raum, zieht mit dir um oder bleibt dort, wo du Wurzeln schlägst. So wird </span><span class='text-black font-medium'>Wohnen flexibel</span><span class='text-nest-gray'>, frei und zukunftsfähig. Wir glauben an ein </span><span class='text-black font-medium'>Zuhause ohne Kompromisse.</span>",
                   video: IMAGES.variantvideo.ten,
                   backgroundColor: "#F4F4F4",
                   buttons: [
@@ -245,12 +245,12 @@ export default function WarumWirClient() {
                   title: "Wohnen im Kreislauf",
                   subtitle: "",
                   description:
-                    "<span class='text-nest-gray'>Holz ist </span><span class='text-black font-medium'>mehr als ein Baustoff</span><span class='text-nest-gray'>, es ist ein Versprechen an die </span><span class='text-black font-medium'>Zukunft.</span><span class='text-nest-gray'> Als nachwachsender Rohstoff </span><span class='text-black font-medium'>speichert</span><span class='text-nest-gray'> es CO₂, </span><span class='text-black font-medium'>reguliert</span><span class='text-nest-gray'> das Raumklima und schafft eine </span><span class='text-black font-medium'>Atmosphäre</span><span class='text-nest-gray'>, die natürlich wirkt und sich echt anfühlt. Mit moderner Fertigungstechnik macht Nest aus einem natürlichen Material eine </span><span class='text-black font-medium'>zukunftsfähige Bauweise.</span>",
+                    "<span class='text-nest-gray'>Holz ist </span><span class='text-black font-medium'>mehr als ein Baustoff</span><span class='text-nest-gray'>, es ist ein Versprechen an die </span><span class='text-black font-medium'>Zukunft.</span><span class='text-nest-gray'> Als nachwachsender Rohstoff </span><span class='text-black font-medium'>speichert</span><span class='text-nest-gray'> es CO₂, </span><span class='text-black font-medium'>reguliert</span><span class='text-nest-gray'> das Raumklima und schafft eine </span><span class='text-black font-medium'>Atmosphäre</span><span class='text-nest-gray'>, die natürlich wirkt und sich echt anfühlt. Mit moderner Fertigungstechnik macht Hoam aus einem natürlichen Material eine </span><span class='text-black font-medium'>zukunftsfähige Bauweise.</span>",
                   image: IMAGES.flooring.eicheParkett,
                   backgroundColor: "#F4F4F4",
                   buttons: [
                     {
-                      text: "Das Nest System",
+                      text: "Das Hoam System",
                       variant: "primary",
                       size: "xs",
                       link: "/hoam-system",

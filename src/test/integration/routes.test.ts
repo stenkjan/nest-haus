@@ -95,8 +95,8 @@ describe('🚀 Route Integration Tests', () => {
       console.log('✅ Warum-wir page endpoint exists')
     })
 
-    it('should redirect dein-nest to hoam (301)', async () => {
-      console.log('🔍 Testing dein-nest redirect...')
+    it('should redirect dein-Hoam to hoam (301)', async () => {
+      console.log('🔍 Testing dein-Hoam redirect...')
 
       const response = await fetch(`${BASE_URL}/dein-nest`, {
         method: 'GET',
@@ -109,7 +109,7 @@ describe('🚀 Route Integration Tests', () => {
       // Should be a 301 permanent redirect
       expect(response.status).toBe(301)
       expect(response.headers.get('location')).toContain('/hoam')
-      console.log('✅ Dein-nest redirects to hoam correctly')
+      console.log('✅ Dein-Hoam redirects to hoam correctly')
     })
 
     it('should redirect dein-hoam to hoam (301)', async () => {

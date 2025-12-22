@@ -12,7 +12,7 @@ async function main() {
 
   // ===== HOUSE OPTIONS - EXACT PRICES FROM OLD CONFIGURATOR =====
 
-  // Nest Types - ORIGINAL PRICES
+  // Hoam Types - ORIGINAL PRICES
   await prisma.houseOption.createMany({
     data: [
       {

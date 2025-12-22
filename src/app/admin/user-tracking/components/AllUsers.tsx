@@ -128,9 +128,8 @@ function StatusBadge({ status }: { status: string }) {
 
   return (
     <span
-      className={`inline-flex items-center px-2 py-0.5 rounded text-xs font-medium ${
-        styles[status as keyof typeof styles] || "bg-gray-100 text-gray-800"
-      }`}
+      className={`inline-flex items-center px-2 py-0.5 rounded text-xs font-medium ${styles[status as keyof typeof styles] || "bg-gray-100 text-gray-800"
+        }`}
     >
       {status}
     </span>
@@ -151,9 +150,8 @@ function PaymentStatusBadge({ status }: { status: string | null }) {
 
   return (
     <span
-      className={`inline-flex items-center px-2 py-0.5 rounded text-xs font-medium ${
-        styles[status as keyof typeof styles] || "bg-gray-100 text-gray-800"
-      }`}
+      className={`inline-flex items-center px-2 py-0.5 rounded text-xs font-medium ${styles[status as keyof typeof styles] || "bg-gray-100 text-gray-800"
+        }`}
     >
       {status}
     </span>
@@ -248,7 +246,7 @@ function UserCard({
       <div className="text-sm space-y-1">
         <p className="text-gray-600 font-medium mb-1">Configuration:</p>
         <div className="flex justify-between">
-          <span className="text-gray-600">Nest Type:</span>
+          <span className="text-gray-600">Hoam Type:</span>
           <span className="font-medium text-gray-900">
             {config.configuration.nestType}
           </span>
@@ -381,13 +379,13 @@ function ConfigurationModal({
             </div>
           </div>
 
-          {/* Detailed Configuration - Like "Dein Nest Überblick" */}
+          {/* Detailed Configuration - Like "Dein Hoam Überblick" */}
           <div className="bg-white border border-gray-200 rounded-lg p-4">
             <h3 className="text-lg font-semibold text-gray-900 mb-3">
-              🏠 Dein Nest Überblick
+              🏠 Dein Hoam Überblick
             </h3>
             <div className="space-y-3">
-              {/* Nest Type */}
+              {/* Hoam Type */}
               {config.detailedConfiguration.nest && (
                 <div className="p-4 bg-gradient-to-r from-blue-50 to-blue-100 rounded-lg border border-blue-200">
                   <div className="flex justify-between items-start">
@@ -424,13 +422,13 @@ function ConfigurationModal({
                       </h5>
                       {config.detailedConfiguration.gebaeudehuelle
                         .description && (
-                        <p className="text-xs text-gray-600 mt-1">
-                          {
-                            config.detailedConfiguration.gebaeudehuelle
-                              .description
-                          }
-                        </p>
-                      )}
+                          <p className="text-xs text-gray-600 mt-1">
+                            {
+                              config.detailedConfiguration.gebaeudehuelle
+                                .description
+                            }
+                          </p>
+                        )}
                     </div>
                     <span className="font-bold text-gray-900 ml-4 whitespace-nowrap">
                       €
@@ -450,13 +448,13 @@ function ConfigurationModal({
                       </h5>
                       {config.detailedConfiguration.innenverkleidung
                         .description && (
-                        <p className="text-xs text-gray-600 mt-1">
-                          {
-                            config.detailedConfiguration.innenverkleidung
-                              .description
-                          }
-                        </p>
-                      )}
+                          <p className="text-xs text-gray-600 mt-1">
+                            {
+                              config.detailedConfiguration.innenverkleidung
+                                .description
+                            }
+                          </p>
+                        )}
                     </div>
                     <span className="font-bold text-gray-900 ml-4 whitespace-nowrap">
                       €
@@ -500,13 +498,13 @@ function ConfigurationModal({
                         </h5>
                         {config.detailedConfiguration.geschossdecke
                           .description && (
-                          <p className="text-xs text-gray-600 mt-1">
-                            {
-                              config.detailedConfiguration.geschossdecke
-                                .description
-                            }
-                          </p>
-                        )}
+                            <p className="text-xs text-gray-600 mt-1">
+                              {
+                                config.detailedConfiguration.geschossdecke
+                                  .description
+                              }
+                            </p>
+                          )}
                       </div>
                       <span className="font-bold text-gray-900 ml-4 whitespace-nowrap">
                         €
@@ -526,13 +524,13 @@ function ConfigurationModal({
                       </h5>
                       {config.detailedConfiguration.belichtungspaket
                         .description && (
-                        <p className="text-xs text-gray-600 mt-1">
-                          {
-                            config.detailedConfiguration.belichtungspaket
-                              .description
-                          }
-                        </p>
-                      )}
+                          <p className="text-xs text-gray-600 mt-1">
+                            {
+                              config.detailedConfiguration.belichtungspaket
+                                .description
+                            }
+                          </p>
+                        )}
                       {/* Show fenster details as sub-item since it's included in belichtungspaket price */}
                       {config.detailedConfiguration.fenster && (
                         <div className="mt-2 pt-2 border-t border-blue-200">
@@ -546,14 +544,14 @@ function ConfigurationModal({
                           )}
                           {config.detailedConfiguration.fenster
                             .squareMeters && (
-                            <p className="text-xs text-blue-700 font-medium">
-                              {
-                                config.detailedConfiguration.fenster
-                                  .squareMeters
-                              }{" "}
-                              m²
-                            </p>
-                          )}
+                              <p className="text-xs text-blue-700 font-medium">
+                                {
+                                  config.detailedConfiguration.fenster
+                                    .squareMeters
+                                }{" "}
+                                m²
+                              </p>
+                            )}
                         </div>
                       )}
                     </div>
@@ -606,13 +604,13 @@ function ConfigurationModal({
                       </h5>
                       {config.detailedConfiguration.planungspaket
                         .description && (
-                        <p className="text-xs text-gray-600 mt-1">
-                          {
-                            config.detailedConfiguration.planungspaket
-                              .description
-                          }
-                        </p>
-                      )}
+                          <p className="text-xs text-gray-600 mt-1">
+                            {
+                              config.detailedConfiguration.planungspaket
+                                .description
+                            }
+                          </p>
+                        )}
                     </div>
                     <span className="font-bold text-purple-700 ml-4 whitespace-nowrap">
                       €

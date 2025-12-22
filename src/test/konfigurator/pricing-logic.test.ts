@@ -270,13 +270,13 @@ describe('Konfigurator Pricing Logic Tests', () => {
       const pvcLightNest80 = mockPricingData.fenster.totalPrices.pvc_fenster.nest80.light;
       const nestSize = 75; // nest80 base area
       const lightPercentage = 0.15;
-      
+
       // WITHOUT geschossdecke
       const areaWithout = nestSize * lightPercentage; // 11.25m²
       const pricePerSqmWithout = Math.round(pvcLightNest80 / areaWithout);
-      
+
       // WITH geschossdecke (should be same!)
-      // Note: geschossdecke adds 6.5m² to nest area, but NOT to fenster calculation
+      // Note: geschossdecke adds 6.5m² to Hoam area, but NOT to fenster calculation
       const areaWith = nestSize * lightPercentage; // Still 11.25m² (geschossdecke ignored)
       const pricePerSqmWith = Math.round(pvcLightNest80 / areaWith);
 
@@ -360,11 +360,11 @@ describe('Konfigurator Pricing Logic Tests', () => {
 
     test('Gebäudehülle m² should include geschossdecke', () => {
       const holzlattungPrice = mockPricingData.gebaeudehuelle.holzlattung.nest80;
-      
+
       // Without geschossdecke
       const areaWithout = PriceUtils.getAdjustedNutzflaeche('nest80', 0);
       const pricePerSqmWithout = Math.round(holzlattungPrice / areaWithout);
-      
+
       // With 1 geschossdecke
       const areaWith1 = PriceUtils.getAdjustedNutzflaeche('nest80', 1);
       const pricePerSqmWith1 = Math.round(holzlattungPrice / areaWith1);
@@ -376,7 +376,7 @@ describe('Konfigurator Pricing Logic Tests', () => {
 
     test('Fenster m² should NOT include geschossdecke', () => {
       const pvcLightPrice = mockPricingData.fenster.totalPrices.pvc_fenster.nest80.light;
-      
+
       // Calculate using fenster formula (NOT affected by geschossdecke)
       const nestSize = 75;
       const lightPercentage = 0.15;
@@ -384,7 +384,7 @@ describe('Konfigurator Pricing Logic Tests', () => {
       const pricePerSqm = Math.round(pvcLightPrice / effectiveArea);
 
       expect(pricePerSqm).toBe(1343); // Always 1343 regardless of geschossdecke
-      
+
       // Verify with PriceCalculator
       const calculatorResult = PriceCalculator.getFensterPricePerSqm(
         'pvc_fenster',
@@ -392,7 +392,7 @@ describe('Konfigurator Pricing Logic Tests', () => {
         'light',
         5 // Even with 5 geschossdecke, result should be same
       );
-      
+
       expect(calculatorResult).toBe(1343);
     });
   });
@@ -400,7 +400,7 @@ describe('Konfigurator Pricing Logic Tests', () => {
   describe('8. Integration Tests', () => {
     test('complete configuration calculation (nest80 + PVC + light)', () => {
       const config = {
-        nest: { category: 'nest', value: 'nest80', name: 'Nest 80', price: 213032 },
+        nest: { category: 'nest', value: 'nest80', name: 'Hoam 80', price: 213032 },
         gebaeudehuelle: { category: 'gebaeudehuelle', value: 'trapezblech', name: 'Trapezblech', price: 0 },
         innenverkleidung: { category: 'innenverkleidung', value: 'ohne_innenverkleidung', name: 'Standard', price: 0 },
         fussboden: { category: 'fussboden', value: 'ohne_belag', name: 'Standard', price: 0 },
@@ -421,10 +421,10 @@ describe('Konfigurator Pricing Logic Tests', () => {
       // Test that changing one category doesn't affect relative pricing in another
       const belichtungDiff = 19357 - 15107; // medium - light for PVC
       const fensterDiff = 21378 - 15107;    // holz - PVC for light
-      
+
       expect(belichtungDiff).toBe(4250);
       expect(fensterDiff).toBe(6271);
-      
+
       // These should be independent
       expect(belichtungDiff).not.toBe(fensterDiff);
     });
@@ -445,7 +445,7 @@ describe('Edge Cases and Error Handling', () => {
     // When calculating totals with -1 prices, they should be treated as 0
     const price1 = 10000;
     const price2 = -1; // dash price
-    
+
     const normalized = price2 === -1 ? 0 : price2;
     const total = price1 + normalized;
 

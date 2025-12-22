@@ -182,7 +182,7 @@ export default function WarenkorbClient() {
   // Set default hash after component mounts to avoid setState during render
   useEffect(() => {
     if (typeof window !== "undefined") {
-      // Check for ohne-nest mode from URL params
+      // Check for ohne-Hoam mode from URL params
       const urlParams = new URLSearchParams(window.location.search);
       const mode = urlParams.get("mode");
 

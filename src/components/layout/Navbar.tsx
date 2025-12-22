@@ -222,7 +222,7 @@ export default function Navbar() {
         <Link href="/" className="flex items-center pl-4">
           <Image
             src="/0-homebutton-nest-haus.svg"
-            alt="NEST Home"
+            alt="Hoam Home"
             className="h-4 w-4"
             width={16}
             height={16}
@@ -240,9 +240,8 @@ export default function Navbar() {
               <Link
                 key={item.path}
                 href={item.path}
-                className={`text-sm font-medium transition-all duration-200 leading-none ${
-                  isActive ? "text-gray-500" : "text-black hover:text-gray-500"
-                }`}
+                className={`text-sm font-medium transition-all duration-200 leading-none ${isActive ? "text-gray-500" : "text-black hover:text-gray-500"
+                  }`}
               >
                 {item.name}
               </Link>
@@ -256,11 +255,10 @@ export default function Navbar() {
         >
           <Link
             href="/konfigurator"
-            className={`focus:outline-none flex items-center p-1.5 min-w-[44px] min-h-[44px] justify-center transition-all duration-200 ${
-              pathname === "/konfigurator"
+            className={`focus:outline-none flex items-center p-1.5 min-w-[44px] min-h-[44px] justify-center transition-all duration-200 ${pathname === "/konfigurator"
                 ? "opacity-50"
                 : "opacity-100 hover:opacity-70"
-            }`}
+              }`}
             aria-label="Konfigurator"
           >
             <ClientBlobImage
@@ -278,11 +276,10 @@ export default function Navbar() {
           {/* Shopping Cart Icon with Zustand integration */}
           <Link
             href="/warenkorb"
-            className={`focus:outline-none relative flex items-center p-1.5 min-w-[44px] min-h-[44px] justify-center transition-all duration-200 ${
-              pathname === "/warenkorb"
+            className={`focus:outline-none relative flex items-center p-1.5 min-w-[44px] min-h-[44px] justify-center transition-all duration-200 ${pathname === "/warenkorb"
                 ? "opacity-50"
                 : "opacity-100 hover:opacity-70"
-            }`}
+              }`}
             aria-label={`Warenkorb - ${cartSummary}`}
             title={cartCount > 0 ? cartSummary : "Warenkorb leer"}
           >
@@ -309,9 +306,8 @@ export default function Navbar() {
             </div>
             {cartCount > 0 && (
               <span
-                className={`absolute top-3 rounded-full w-2 h-2 flex items-center justify-center ${
-                  pathname === "/warenkorb" ? "bg-yellow-500" : "bg-black"
-                }`}
+                className={`absolute top-3 rounded-full w-2 h-2 flex items-center justify-center ${pathname === "/warenkorb" ? "bg-yellow-500" : "bg-black"
+                  }`}
               >
                 <span className="w-0.5 h-0.5 bg-white rounded-full"></span>
               </span>
@@ -354,11 +350,10 @@ export default function Navbar() {
             {/* Startseite Link */}
             <Link
               href="/"
-              className={`text-sm font-medium transition-all duration-200 py-2 ${
-                pathname === "/"
+              className={`text-sm font-medium transition-all duration-200 py-2 ${pathname === "/"
                   ? "text-gray-500"
                   : "text-black hover:text-gray-500"
-              }`}
+                }`}
               onClick={() => setMobileMenuOpen(false)}
             >
               Startseite
@@ -370,11 +365,10 @@ export default function Navbar() {
                 <Link
                   key={item.path}
                   href={item.path}
-                  className={`text-sm font-medium transition-all duration-200 py-2 ${
-                    isActive
+                  className={`text-sm font-medium transition-all duration-200 py-2 ${isActive
                       ? "text-gray-500"
                       : "text-black hover:text-gray-500"
-                  }`}
+                    }`}
                   onClick={() => setMobileMenuOpen(false)}
                 >
                   {item.name}
@@ -385,11 +379,10 @@ export default function Navbar() {
             {/* Mobile Menu - Konfigurator Link */}
             <Link
               href="/konfigurator"
-              className={`text-sm font-medium transition-all duration-200 py-2 flex items-center gap-2 ${
-                pathname === "/konfigurator"
+              className={`text-sm font-medium transition-all duration-200 py-2 flex items-center gap-2 ${pathname === "/konfigurator"
                   ? "opacity-50"
                   : "opacity-100 hover:opacity-70"
-              }`}
+                }`}
               onClick={() => setMobileMenuOpen(false)}
             >
               <ClientBlobImage
@@ -408,11 +401,10 @@ export default function Navbar() {
             {/* Mobile Menu - Shopping Cart Link */}
             <Link
               href="/warenkorb"
-              className={`text-sm font-medium transition-all duration-200 py-2 flex items-center gap-2 relative ${
-                pathname === "/warenkorb"
+              className={`text-sm font-medium transition-all duration-200 py-2 flex items-center gap-2 relative ${pathname === "/warenkorb"
                   ? "opacity-50"
                   : "opacity-100 hover:opacity-70"
-              }`}
+                }`}
               onClick={() => setMobileMenuOpen(false)}
             >
               <div className="relative flex items-end h-[18px]">
@@ -437,9 +429,8 @@ export default function Navbar() {
                 />
                 {cartCount > 0 && (
                   <span
-                    className={`absolute top-3 rounded-full w-2 h-2 flex items-center justify-center ${
-                      pathname === "/warenkorb" ? "bg-yellow-500" : "bg-black"
-                    }`}
+                    className={`absolute top-3 rounded-full w-2 h-2 flex items-center justify-center ${pathname === "/warenkorb" ? "bg-yellow-500" : "bg-black"
+                      }`}
                   >
                     <span className="w-0.5 h-0.5 bg-white rounded-full"></span>
                   </span>

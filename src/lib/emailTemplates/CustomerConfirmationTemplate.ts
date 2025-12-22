@@ -295,7 +295,7 @@ export function generateCustomerConfirmationEmail(data: CustomerConfirmationData
       <div class="cta-content">
         <div class="cta-text">
           <h2>Planen heißt Preise kennen</h2>
-          <p>Wenn du dein Nest schon jetzt konfigurierst, erhältst du volle Klarheit über Preis, Umfang und Möglichkeiten. Deine Auswahl bleibt dabei flexibel und kann jederzeit angepasst werden, falls sich deine Wünsche im Laufe der Planung verändern.</p>
+          <p>Wenn du dein Hoam schon jetzt konfigurierst, erhältst du volle Klarheit über Preis, Umfang und Möglichkeiten. Deine Auswahl bleibt dabei flexibel und kann jederzeit angepasst werden, falls sich deine Wünsche im Laufe der Planung verändern.</p>
           <div style="text-align: center; margin-top: 24px;">
             <a href="https://hoam.at/konfigurator" class="btn-primary">
               Jetzt konfigurieren
@@ -363,7 +363,7 @@ Land: Österreich
 ${data.inquiryId ? `Anfrage-ID: ${data.inquiryId}\n\n` : '\n'}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 PLANEN HEIẞT PREISE KENNEN
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-Wenn du dein Nest schon jetzt konfigurierst, erhältst du volle Klarheit über Preis, Umfang und Möglichkeiten. Deine Auswahl bleibt dabei flexibel und kann jederzeit angepasst werden, falls sich deine Wünsche im Laufe der Planung verändern.
+Wenn du dein Hoam schon jetzt konfigurierst, erhältst du volle Klarheit über Preis, Umfang und Möglichkeiten. Deine Auswahl bleibt dabei flexibel und kann jederzeit angepasst werden, falls sich deine Wünsche im Laufe der Planung verändern.
 
 Jetzt konfigurieren: https://hoam.at/konfigurator
 

@@ -429,10 +429,10 @@ export default function CheckoutStepper({
     const target = PLANNING_PACKAGES.find((p) => p.value === value);
     if (!target) return;
 
-    // Handle ohne nest mode - update configurator store only
+    // Handle ohne Hoam mode - update configurator store only
     if (isOhneNestMode || !configItem) {
       console.log(
-        "🔄 CheckoutStepper: Ohne nest mode - updating configurator store only"
+        "🔄 CheckoutStepper: Ohne Hoam mode - updating configurator store only"
       );
       const { updateSelection } = useConfiguratorStore.getState();
       updateSelection({
@@ -537,7 +537,7 @@ export default function CheckoutStepper({
         // Ensure we have valid selection data
         if (!selection.value || !cartItemConfig.nest.value) {
           console.warn(
-            "Invalid belichtungspaket or nest data, using base price"
+            "Invalid belichtungspaket or Hoam data, using base price"
           );
           return selection.price || 0;
         }
@@ -581,7 +581,7 @@ export default function CheckoutStepper({
       }
     }
 
-    // For bodenaufbau and fundament, calculate dynamic price based on nest size
+    // For bodenaufbau and fundament, calculate dynamic price based on Hoam size
     if (
       (key === "bodenaufbau" || key === "fundament") &&
       cartItemConfig?.nest
@@ -614,7 +614,7 @@ export default function CheckoutStepper({
       }
     }
 
-    // For nest, get RAW nest base price from pricing data
+    // For nest, get RAW Hoam base price from pricing data
     if (key === "nest" && cartItemConfig?.nest) {
       try {
         const pricingData = PriceCalculator.getPricingData();
@@ -1392,7 +1392,7 @@ export default function CheckoutStepper({
     const _terminDone = false; // Integrate with AppointmentBooking state if available
 
     // Use local selection if available so summary reflects user choice immediately
-    // In ohne nest mode, default to "basis" if nothing is selected
+    // In ohne Hoam mode, default to "basis" if nothing is selected
     const selectedPlanValue =
       localSelectedPlan ??
       configItem?.planungspaket?.value ??
@@ -1570,7 +1570,7 @@ export default function CheckoutStepper({
                 </h2>
                 <div className="border border-gray-300 rounded-2xl md:min-w-[260px] w-full overflow-hidden">
                   <div>
-                    {/* Show house configuration only if NOT in ohne nest mode */}
+                    {/* Show house configuration only if NOT in ohne Hoam mode */}
                     {!isOhneNestMode && (
                       <div className={rowWrapperClass}>
                         <div className="flex-1 min-w-0">
@@ -1604,7 +1604,7 @@ export default function CheckoutStepper({
                       </div>
                     )}
 
-                    {/* In ohne nest mode, show modified title */}
+                    {/* In ohne Hoam mode, show modified title */}
                     {isOhneNestMode && (
                       <div className={rowWrapperClass}>
                         <div className="flex-1 min-w-0">
@@ -1631,7 +1631,7 @@ export default function CheckoutStepper({
                           </div>
                         </div>
                         <div className={`leading-relaxed ${rowTextClass(2)}`}>
-                          {/* Show plan details in both normal and ohne nest mode */}
+                          {/* Show plan details in both normal and ohne Hoam mode */}
                           <span className="inline-flex items-center gap-2">
                             {selectedPlanName}
                             {isPlanSelected && (
@@ -1749,7 +1749,7 @@ export default function CheckoutStepper({
                         })()}
                       </div>
                     </div>
-                    {/* Show delivery date only if NOT in ohne nest mode */}
+                    {/* Show delivery date only if NOT in ohne Hoam mode */}
                     {!isOhneNestMode && (
                       <div className={rowWrapperClass}>
                         <div className="flex-1 min-w-0">
@@ -2045,7 +2045,7 @@ export default function CheckoutStepper({
           <div className="space-y-6 pt-8">
             {/* Overview grid: cart on left, summary/upgrade on right */}
             <div className="flex flex-col lg:flex-row gap-8 items-start lg:items-stretch">
-              {/* Show house configuration section only if not in ohne nest mode */}
+              {/* Show house configuration section only if not in ohne Hoam mode */}
               {!isOhneNestMode && (
                 <div className="contents">
                   <div className="space-y-6 w-full max-w-[520px] lg:flex-none lg:flex lg:flex-col">
@@ -2069,7 +2069,7 @@ export default function CheckoutStepper({
                             </div>
                             <div className="text-xs md:text-sm text-gray-500 leading-snug mt-1">
                               {(() => {
-                                // For configuration items with nest, show NEST MODULE price per m² (not total)
+                                // For configuration items with nest, show Hoam MODULE price per m² (not total)
                                 if (
                                   "totalPrice" in item &&
                                   (item as ConfigurationCartItem).nest
@@ -2079,7 +2079,7 @@ export default function CheckoutStepper({
                                   const nestModel =
                                     configItem.nest?.value || "";
 
-                                  // Show only NEST MODULE price per m² (relative price)
+                                  // Show only Hoam MODULE price per m² (relative price)
                                   const nestPrice = configItem.nest
                                     ? getItemPrice(
                                       "nest",
@@ -2111,7 +2111,7 @@ export default function CheckoutStepper({
                           <div className="text-sm md:text-base lg:text-lg 2xl:text-xl text-gray-900 leading-relaxed min-w-0">
                             {(() => {
                               const price = (() => {
-                                // For nest configuration, show ONLY the nest base price (not total house price)
+                                // For Hoam configuration, show ONLY the Hoam base price (not total house price)
                                 if (
                                   "totalPrice" in item &&
                                   (item as ConfigurationCartItem).nest
@@ -2737,7 +2737,7 @@ export default function CheckoutStepper({
           </div>
         )}
 
-        {/* Step 3: Planungspakete - Show when there's a configuration OR not in ohne-nest mode */}
+        {/* Step 3: Planungspakete - Show when there's a configuration OR not in ohne-Hoam mode */}
         {stepIndex === 3 && (!isOhneNestMode || configItem) && (
           <div className="space-y-4 pt-16">
             {(() => {
@@ -2939,7 +2939,7 @@ export default function CheckoutStepper({
 
         {stepIndex === (isOhneNestMode ? 1 : 4) && (
           <div className="space-y-6 pt-16 md:pt-16">
-            {/* Title before Dein Nest sections */}
+            {/* Title before Dein Hoam sections */}
             {!isOhneNestMode && (
               <div className="text-center mb-12 md:mb-16">
                 <h2 className="h2-title text-black mb-2">
@@ -3040,7 +3040,7 @@ export default function CheckoutStepper({
                         <div className="text-sm md:text-base lg:text-lg 2xl:text-xl text-gray-900 leading-relaxed min-w-0">
                           {PriceUtils.formatPrice(
                             (() => {
-                              // For nest configuration, show ONLY the nest base price (not total house price)
+                              // For Hoam configuration, show ONLY the Hoam base price (not total house price)
                               if (
                                 "totalPrice" in item &&
                                 (item as ConfigurationCartItem).nest
@@ -3762,7 +3762,7 @@ export default function CheckoutStepper({
                 return (
                   <div className="max-w-6xl mx-auto mb-12">
                     <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-start">
-                      {/* Left: Dein Nest - Deine Konfiguration with Teilzahlungen */}
+                      {/* Left: Dein Hoam - Deine Konfiguration with Teilzahlungen */}
                       <div className="border border-gray-300 rounded-2xl p-6 bg-white">
                         <div className="space-y-4">
                           {/* 1. Teilzahlung */}
@@ -4007,7 +4007,7 @@ export default function CheckoutStepper({
                 );
               })()}
 
-            {/* Ohne-Nest Mode: Show simplified centered payment box */}
+            {/* Ohne-Hoam Mode: Show simplified centered payment box */}
             {isOhneNestMode && (
               <div className="max-w-2xl mx-auto mb-12">
                 {/* Centered "Grundstücksanalyse und Entwurfsplan" box */}
@@ -4131,7 +4131,7 @@ export default function CheckoutStepper({
                   Grundstücksanalyse.
                 </div>
 
-                {/* Note: "Jetzt bezahlen" button is hidden for ohne nest mode by not rendering it here */}
+                {/* Note: "Jetzt bezahlen" button is hidden for ohne Hoam mode by not rendering it here */}
               </div>
             )}
 
@@ -4357,7 +4357,7 @@ export default function CheckoutStepper({
               )}
             </div>
 
-            {/* Teilzahlungen Title - only show when NOT in ohne nest mode */}
+            {/* Teilzahlungen Title - only show when NOT in ohne Hoam mode */}
             {!isOhneNestMode && (
               <h2 className="h2-title text-black mb-3">Teilzahlungen</h2>
             )}
