@@ -135,8 +135,8 @@ export default function CheckoutStepper({
       const configuratorPlan = configuration?.planungspaket?.value;
       const cartPlan = (
         items.find((it) => "nest" in it && it.nest) as
-          | ConfigurationCartItem
-          | undefined
+        | ConfigurationCartItem
+        | undefined
       )?.planungspaket?.value;
       const selectedPlan = configuratorPlan ?? cartPlan ?? "basis"; // Default to basis if nothing selected
 
@@ -511,7 +511,7 @@ export default function CheckoutStepper({
             | "nest160";
           const price =
             pricingData.pvanlage.pricesByQuantity[nestSize]?.[
-              selection.quantity
+            selection.quantity
             ];
           if (price === -1) return -1; // Return -1 for dash prices
           if (price !== undefined) return price;
@@ -1266,44 +1266,44 @@ export default function CheckoutStepper({
     subtitle: string;
     description: string;
   }> = [
-    {
-      title: "Bereit für dein neues Zuhause?",
-      subtitle:
-        "In wenigen Schritten zu deinem neuen Zuhause - ganz ohne Verpflichtungen!",
-      description:
-        "Du hast dich für dein Hoam-House entschieden. In den nächsten Schritten klären wir gemeinsam, was wir von dir benötigen und was wir für dich übernehmen, damit dein Zuhause genau so wird, wie du es dir wünschst. \n\n Wir kümmern uns um die Rahmenbedingungen und rechtlichen Schritte. Bis dahin zahlst du nur für unseren Service – keine Verpflichtung, falls etwas nicht passt.",
-    },
-    {
-      title: "Der Ablauf",
-      subtitle: "Schritt für Schritt",
-      description:
-        "Damit aus deinem Entwurf **ein Zuhause wird,** begleiten wir dich durch den gesamten Bauprozess. **Schritt für Schritt** gehen wir mit dir alle Phasen durch: von der **Einreichplanung und dem Baubescheid** über die Vorbereitung deines Grundstücks und den Bau des **Fundaments** bis hin zur **Lieferung und Montage** deines Hoam-House.\n\nNach der **Lieferung** deines Hoam-Housees kannst du die **Haustechnik** und den **Innenausbau** entweder selbst übernehmen oder auf das Know-how unserer erfahrenen **Partnerbetriebe** zurückgreifen. Dabei stehen wir dir jederzeit **beratend zur Seite,** damit dein Zuhause genau so wird, wie du es dir wünschst.",
-    },
-    {
-      title: "Wir freuen uns auf dich",
-      subtitle: "Vereinbare dein Entwurfsgespräch mit dem Nest Team",
-      description:
-        "Buche deinen **Termin** für ein persönliches **Startgespräch**, in dem wir deine **individuellen Wünsche** aufnehmen und die Grundlage für deinen **Entwurf** erarbeiten. \n\n  Durch die Angaben zu deinem **Grundstück** können wir uns bestmöglich vorbereiten und dir bereits **erste Ideen** und konkrete Ansätze vorstellen. So entsteht **Schritt für Schritt** ein Entwurf, der genau zu deinen Bedürfnissen passt.**",
-    },
-    {
-      title: "Unterstützung gefällig?",
-      subtitle: "Unsere Planungspakete helfen auf deinem Weg zum Haus",
-      description:
-        "Unsere **drei Planungspakete** geben dir Sicherheit für dein Hoam-House. Mit dem **Basis-Paket** erhältst du eine genehmigungsfähige **Einreichplanung** und alle technischen **Grundlagen.** Das **Plus-Paket** erweitert dies um die komplette **Haustechnik- und Innenausbauplanung.**\n\nIm **Pro-Paket** entwickeln wir zusätzlich ein umfassendes **Interiorkonzept,** das Raumgefühl, Farben, Materialien und Licht vereint. Die Umsetzung kannst du **selbst übernehmen** oder mit unseren erfahrenen **Partnerfirmen realisieren.**",
-    },
-    {
-      title: "Bereit für Vorfreude?",
-      subtitle: "Dein Garantierter Liefertermin steht fest",
-      description:
-        "Hier findest du **alle Details deiner Auswahl** inklusive transparenter Preise. Nutze diesen Moment, um **alle Angaben** in Ruhe zu **überprüfen**. Nach dem Absenden erhältst du eine **schriftliche Bestätigung,** und wir beginnen mit der Ausarbeitung deines Entwurfowie der Überprüfung deines Grundstücks.",
-    },
-    {
-      title: "®Hoam",
-      subtitle: "Weil nur du weißt, wie du wohnen willst",
-      description:
-        "**Die Bestellung deines Hoam-Housees. Alles beginnt mit dem Entwurf und der Grundstücksanalyse. Sobald du dein Hoam-House bestellst und die erste Teilzahlung leistest, erhältst du von uns deinen verbindlich garantierten Liefertermin. Transparent, planbar und verlässlich.**",
-    },
-  ];
+      {
+        title: "Bereit für dein neues Zuhause?",
+        subtitle:
+          "In wenigen Schritten zu deinem neuen Zuhause - ganz ohne Verpflichtungen!",
+        description:
+          "Du hast dich für dein Hoam-House entschieden. In den nächsten Schritten klären wir gemeinsam, was wir von dir benötigen und was wir für dich übernehmen, damit dein Zuhause genau so wird, wie du es dir wünschst. \n\n Wir kümmern uns um die Rahmenbedingungen und rechtlichen Schritte. Bis dahin zahlst du nur für unseren Service – keine Verpflichtung, falls etwas nicht passt.",
+      },
+      {
+        title: "Der Ablauf",
+        subtitle: "Schritt für Schritt",
+        description:
+          "Damit aus deinem Entwurf **ein Zuhause wird,** begleiten wir dich durch den gesamten Bauprozess. **Schritt für Schritt** gehen wir mit dir alle Phasen durch: von der **Einreichplanung und dem Baubescheid** über die Vorbereitung deines Grundstücks und den Bau des **Fundaments** bis hin zur **Lieferung und Montage** deines Hoam-House.\n\nNach der **Lieferung** deines Hoam-Housees kannst du die **Haustechnik** und den **Innenausbau** entweder selbst übernehmen oder auf das Know-how unserer erfahrenen **Partnerbetriebe** zurückgreifen. Dabei stehen wir dir jederzeit **beratend zur Seite,** damit dein Zuhause genau so wird, wie du es dir wünschst.",
+      },
+      {
+        title: "Wir freuen uns auf dich",
+        subtitle: "Vereinbare dein Entwurfsgespräch mit dem Nest Team",
+        description:
+          "Buche deinen **Termin** für ein persönliches **Startgespräch**, in dem wir deine **individuellen Wünsche** aufnehmen und die Grundlage für deinen **Entwurf** erarbeiten. \n\n  Durch die Angaben zu deinem **Grundstück** können wir uns bestmöglich vorbereiten und dir bereits **erste Ideen** und konkrete Ansätze vorstellen. So entsteht **Schritt für Schritt** ein Entwurf, der genau zu deinen Bedürfnissen passt.**",
+      },
+      {
+        title: "Unterstützung gefällig?",
+        subtitle: "Unsere Planungspakete helfen auf deinem Weg zum Haus",
+        description:
+          "Unsere **drei Planungspakete** geben dir Sicherheit für dein Hoam-House. Mit dem **Basis-Paket** erhältst du eine genehmigungsfähige **Einreichplanung** und alle technischen **Grundlagen.** Das **Plus-Paket** erweitert dies um die komplette **Haustechnik- und Innenausbauplanung.**\n\nIm **Pro-Paket** entwickeln wir zusätzlich ein umfassendes **Interiorkonzept,** das Raumgefühl, Farben, Materialien und Licht vereint. Die Umsetzung kannst du **selbst übernehmen** oder mit unseren erfahrenen **Partnerfirmen realisieren.**",
+      },
+      {
+        title: "Bereit für Vorfreude?",
+        subtitle: "Dein Garantierter Liefertermin steht fest",
+        description:
+          "Hier findest du **alle Details deiner Auswahl** inklusive transparenter Preise. Nutze diesen Moment, um **alle Angaben** in Ruhe zu **überprüfen**. Nach dem Absenden erhältst du eine **schriftliche Bestätigung,** und wir beginnen mit der Ausarbeitung deines Entwurfowie der Überprüfung deines Grundstücks.",
+      },
+      {
+        title: "®Hoam",
+        subtitle: "Weil nur du weißt, wie du wohnen willst",
+        description:
+          "**Die Bestellung deines Hoam-Housees. Alles beginnt mit dem Entwurf und der Grundstücksanalyse. Sobald du dein Hoam-House bestellst und die erste Teilzahlung leistest, erhältst du von uns deinen verbindlich garantierten Liefertermin. Transparent, planbar und verlässlich.**",
+      },
+    ];
 
   // Helper: parse euro-formatted strings like "€10.900" into integer euros (10900)
   const parseEuro = (s: string): number => {
@@ -1582,17 +1582,17 @@ export default function CheckoutStepper({
                               ? "Genauer Preis auf Anfrage"
                               : configItem?.nest
                                 ? (() => {
-                                    // Show m² price for "®Hoam" (total house price / area)
-                                    const nestModel =
-                                      configItem.nest.value || "";
-                                    const geschossdeckeQty =
-                                      configItem.geschossdecke?.quantity || 0;
-                                    return `${PriceUtils.calculatePricePerSquareMeter(
-                                      total,
-                                      nestModel,
-                                      geschossdeckeQty
-                                    )} inkl. MwSt.`;
-                                  })()
+                                  // Show m² price for "®Hoam" (total house price / area)
+                                  const nestModel =
+                                    configItem.nest.value || "";
+                                  const geschossdeckeQty =
+                                    configItem.geschossdecke?.quantity || 0;
+                                  return `${PriceUtils.calculatePricePerSquareMeter(
+                                    total,
+                                    nestModel,
+                                    geschossdeckeQty
+                                  )} inkl. MwSt.`;
+                                })()
                                 : getRowSubtitle(0)}
                           </div>
                         </div>
@@ -1612,7 +1612,7 @@ export default function CheckoutStepper({
                             ®Hoam
                           </div>
                           <div className={rowSubtitleClass}>
-                            Konfiguriere dein Nest
+                            Konfiguriere dein Hoam
                           </div>
                         </div>
                         <div className={`leading-relaxed ${rowTextClass(0)}`}>
@@ -2082,10 +2082,10 @@ export default function CheckoutStepper({
                                   // Show only NEST MODULE price per m² (relative price)
                                   const nestPrice = configItem.nest
                                     ? getItemPrice(
-                                        "nest",
-                                        configItem.nest,
-                                        configItem
-                                      )
+                                      "nest",
+                                      configItem.nest,
+                                      configItem
+                                    )
                                     : 0;
 
                                   const geschossdeckeQuantity =
@@ -2250,11 +2250,11 @@ export default function CheckoutStepper({
                             <PvModuleOverlay
                               nestSize={
                                 sourceConfig.nest.value as
-                                  | "nest80"
-                                  | "nest100"
-                                  | "nest120"
-                                  | "nest140"
-                                  | "nest160"
+                                | "nest80"
+                                | "nest100"
+                                | "nest120"
+                                | "nest140"
+                                | "nest160"
                               }
                               moduleCount={sourceConfig.pvanlage.quantity}
                               isVisible={true}
@@ -2383,7 +2383,7 @@ export default function CheckoutStepper({
                                   ®Hoam
                                 </div>
                                 <div className="p-primary-small text-nest-gray leading-snug mt-1">
-                                  Konfiguriere dein Nest mit uns
+                                  Konfiguriere dein Hoam mit uns
                                 </div>
                               </div>
                               <div className="leading-relaxed p-primary text-black font-medium">
@@ -2398,7 +2398,7 @@ export default function CheckoutStepper({
                                   Terminvereinbarung
                                 </div>
                                 <div className="p-primary-small text-nest-gray leading-snug mt-1">
-                                  Dein Termin bei Nest
+                                  Dein Termin bei Hoam
                                 </div>
                               </div>
                               <div className="leading-relaxed p-primary text-black font-medium">
@@ -3179,11 +3179,11 @@ export default function CheckoutStepper({
                           <PvModuleOverlay
                             nestSize={
                               sourceConfig.nest.value as
-                                | "nest80"
-                                | "nest100"
-                                | "nest120"
-                                | "nest140"
-                                | "nest160"
+                              | "nest80"
+                              | "nest100"
+                              | "nest120"
+                              | "nest140"
+                              | "nest160"
                             }
                             moduleCount={sourceConfig.pvanlage.quantity}
                             isVisible={true}
@@ -3343,12 +3343,12 @@ export default function CheckoutStepper({
                             <div className="text-xl font-bold text-gray-900">
                               {appointmentDetails?.date
                                 ? new Date(
-                                    appointmentDetails.date
-                                  ).toLocaleDateString("de-DE", {
-                                    day: "2-digit",
-                                    month: "2-digit",
-                                    year: "numeric",
-                                  })
+                                  appointmentDetails.date
+                                ).toLocaleDateString("de-DE", {
+                                  day: "2-digit",
+                                  month: "2-digit",
+                                  year: "numeric",
+                                })
                                 : "—"}
                             </div>
                             {appointmentDetails?.time && (
@@ -3498,7 +3498,7 @@ export default function CheckoutStepper({
                               ®Hoam
                             </div>
                             <div className="p-primary-small text-nest-gray leading-snug mt-1">
-                              Konfiguriere dein Nest mit uns
+                              Konfiguriere dein Hoam mit uns
                             </div>
                           </div>
                           <div className="leading-relaxed p-primary text-black font-medium">
@@ -3513,7 +3513,7 @@ export default function CheckoutStepper({
                               Terminvereinbarung
                             </div>
                             <div className="p-primary-small text-nest-gray leading-snug mt-1">
-                              Dein Termin bei Nest
+                              Dein Termin bei Hoam
                             </div>
                           </div>
                           <div className="leading-relaxed p-primary text-black font-medium">
@@ -4214,15 +4214,15 @@ export default function CheckoutStepper({
                                     </div>
                                     <div className="text-sm md:text-base lg:text-lg 2xl:text-xl font-normal leading-relaxed text-gray-900">
                                       {detail.isIncluded ||
-                                      (detail.price && detail.price === 0)
+                                        (detail.price && detail.price === 0)
                                         ? "Standard"
                                         : PriceUtils.isPriceOnRequest(
-                                              detail.price || 0
-                                            )
+                                          detail.price || 0
+                                        )
                                           ? "-"
                                           : PriceUtils.formatPrice(
-                                              detail.price || 0
-                                            )}
+                                            detail.price || 0
+                                          )}
                                     </div>
                                   </div>
                                 );
@@ -4280,9 +4280,9 @@ export default function CheckoutStepper({
                                         configItem?.planungspaket?.price ||
                                         (localSelectedPlan
                                           ? PLANNING_PACKAGES.find(
-                                              (p) =>
-                                                p.value === localSelectedPlan
-                                            )?.price || 0
+                                            (p) =>
+                                              p.value === localSelectedPlan
+                                          )?.price || 0
                                           : 0);
 
                                       // Check if it's basis planungspaket (should show as Standard)
@@ -4437,8 +4437,8 @@ export default function CheckoutStepper({
                                 configItem?.planungspaket?.price ||
                                 (localSelectedPlan
                                   ? PLANNING_PACKAGES.find(
-                                      (p) => p.value === localSelectedPlan
-                                    )?.price || 0
+                                    (p) => p.value === localSelectedPlan
+                                  )?.price || 0
                                   : 0);
 
                               // Check if it's basis planungspaket (should show as Standard)
@@ -4745,11 +4745,10 @@ export default function CheckoutStepper({
                     });
                   }
                 }}
-                className={`${
-                  isPaymentCompleted
-                    ? "bg-green-600 cursor-not-allowed opacity-75"
-                    : "bg-[#3D6CE1] hover:bg-blue-700"
-                } text-white py-4 px-12 rounded-full text-[clamp(16px,4vw,20px)] font-medium transition-colors`}
+                className={`${isPaymentCompleted
+                  ? "bg-green-600 cursor-not-allowed opacity-75"
+                  : "bg-[#3D6CE1] hover:bg-blue-700"
+                  } text-white py-4 px-12 rounded-full text-[clamp(16px,4vw,20px)] font-medium transition-colors`}
               >
                 {isPaymentCompleted ? "✓ Bezahlt" : "Zur Kassa"}
               </button>
@@ -4982,9 +4981,8 @@ export default function CheckoutStepper({
     // Get appointment details
     const appointmentDetails = useCartStore.getState().appointmentDetails;
     const appointmentDateTime = appointmentDetails?.date
-      ? `${appointmentDetails.date.toLocaleDateString("de-DE")} ${
-          appointmentDetails.time
-        }`
+      ? `${appointmentDetails.date.toLocaleDateString("de-DE")} ${appointmentDetails.time
+      }`
       : undefined;
 
     // Calculate delivery date (6 months from appointment)
