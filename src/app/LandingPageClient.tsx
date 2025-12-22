@@ -13,7 +13,7 @@ import LaunchFireworks from "@/components/effects/LaunchFireworks";
 
 // Define sections for landing page
 const sections = [
-  { id: "dein-hoam-haus", title: "Dein ®Hoam", slug: "dein-hoam-haus" },
+  { id: "hoam-haus", title: "®Hoam", slug: "hoam-haus" },
   {
     id: "design-im-freistil",
     title: "Dein Design im Freistil",
@@ -66,14 +66,14 @@ const getMobileImagePath = (section: { imagePath: string }): string => {
 const sectionsContent = [
   {
     id: 1,
-    sectionId: "dein-hoam-haus",
+    sectionId: "hoam-haus",
     imagePath: IMAGES.hero.nestHaus1,
     h1: "®Hoam",
     h3: "Wohne wie du willst",
     modelName: "Hoam 140",
     configuration: "Fassadenplatten Weiß",
     button1: "Konzept-Check",
-    button2: "Dein ®Hoam",
+    button2: "®Hoam",
     secondaryButtonVariant: "landing-secondary-blue" as const, // Will be overridden by getSecondaryButtonVariant
   },
   {
@@ -85,7 +85,7 @@ const sectionsContent = [
     modelName: "Hoam 100",
     configuration: "Holzlattung Lärche Natur",
     button1: "Konzept-Check",
-    button2: "Dein ®Hoam",
+    button2: "®Hoam",
     secondaryButtonVariant: "landing-secondary" as const,
   },
   {
@@ -97,7 +97,7 @@ const sectionsContent = [
     modelName: "Belichtungspaket Bright",
     configuration: "Innenverkleidung Fichte, Steinbelag hell",
     button1: "Konzept-Check",
-    button2: "Dein ®Hoam",
+    button2: "®Hoam",
     secondaryButtonVariant: "landing-secondary" as const,
   },
   {
@@ -109,7 +109,7 @@ const sectionsContent = [
     modelName: "Hoam 140",
     configuration: "Fassadenplatten Schwarz",
     button1: "Konzept-Check",
-    button2: "Dein ®Hoam",
+    button2: "®Hoam",
     secondaryButtonVariant: "landing-secondary" as const,
   },
   {
@@ -121,7 +121,7 @@ const sectionsContent = [
     modelName: "Belichtungspaket Medium",
     configuration: "Innenverkleidung Fichte, Parkett Eiche",
     button1: "Konzept-Check",
-    button2: "Dein ®Hoam",
+    button2: "®Hoam",
     secondaryButtonVariant: "landing-secondary" as const,
   },
   {
@@ -133,7 +133,7 @@ const sectionsContent = [
     modelName: "Hoam 80",
     configuration: "Trapezblech",
     button1: "Konzept-Check",
-    button2: "Dein ®Hoam",
+    button2: "®Hoam",
     secondaryButtonVariant: "landing-secondary" as const,
   },
 ];
@@ -153,7 +153,7 @@ const ImageCaption = ({ modelName, configuration }: ImageCaptionProps) => (
 
 export default function LandingPageClient() {
   const [_currentSectionId, setCurrentSectionId] =
-    useState<string>("dein-hoam-haus");
+    useState<string>("hoam-haus");
   const [showFireworks, setShowFireworks] = useState(false);
   const { isMobile } = useDeviceDetect();
 
@@ -281,28 +281,26 @@ export default function LandingPageClient() {
                       section.id === 3 || section.id === 4 || section.id === 5
                         ? "justify-start pt-[5vh] md:justify-start md:pt-[5vh] max-md:justify-between max-md:pt-[5vh] max-md:pb-[5vh]" // Sections 3,4,5: bottom on mobile only
                         : "justify-start pt-[5vh]" // Other sections: always top
-                    } ${section.id === 2 ? "px-0" : "px-8"}`}
+                      } ${section.id === 2 ? "px-0" : "px-8"}`}
                   >
                     <div className="text-center">
                       <h1
-                        className={`h1-primary ${getSectionTextColor(section.id, isMobile)} ${
-                          section.id === 3 ||
-                          section.id === 4 ||
-                          section.id === 5
+                        className={`h1-primary ${getSectionTextColor(section.id, isMobile)} ${section.id === 3 ||
+                            section.id === 4 ||
+                            section.id === 5
                             ? "drop-shadow-lg"
                             : ""
-                        }`}
+                          }`}
                       >
                         {section.h1}
                       </h1>
                       <h3
-                        className={`h3-primary ${getSectionTextColor(section.id, isMobile)} ${
-                          section.id === 3 ||
-                          section.id === 4 ||
-                          section.id === 5
+                        className={`h3-primary ${getSectionTextColor(section.id, isMobile)} ${section.id === 3 ||
+                            section.id === 4 ||
+                            section.id === 5
                             ? "drop-shadow-lg"
                             : ""
-                        }`}
+                          }`}
                       >
                         {section.h3}
                       </h3>
@@ -318,7 +316,7 @@ export default function LandingPageClient() {
                           {section.button1}
                         </Button>
                       </Link>
-                      <Link href="/dein-hoam">
+                      <Link href="/hoam">
                         <Button
                           variant={getSecondaryButtonVariant(section.id)}
                           size="xs"

@@ -71,7 +71,7 @@ import { IMAGES } from "@/constants/images";
 
 ## 2. Konfigurationen
 
-**What it is:** "Konfiguriere dein ®Hoam Haus" section with configurator video  
+**What it is:** "Konfiguriere ®Hoam Haus" section with configurator video  
 **Content:** Header + VideoCard showing configurator options  
 **Currently used on:** `/entdecken` (Section 5)
 
@@ -88,7 +88,7 @@ import { IMAGES } from "@/constants/images";
 ```tsx
 <section id="konfigurieren" className="w-full py-8 md:py-16 bg-white">
   <SectionHeader
-    title="Konfiguriere dein ®Hoam Haus"
+    title="Konfiguriere ®Hoam Haus"
     subtitle="Individualisiert, wo es Freiheit braucht. Standardisiert, wo es Effizienz schafft."
     wrapperMargin="mb-12"
   />

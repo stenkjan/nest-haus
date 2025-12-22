@@ -16,7 +16,7 @@ export default function Footer() {
     {
       title: "Überblick",
       items: [
-        { text: "Home", href: "/#dein-hoam-haus" },
+        { text: "Home", href: "/#hoam-haus" },
         { text: "Kontakt", href: "/kontakt" },
         { text: "Konfigurator", href: "/konfigurator" },
         { text: "Warenkorb", href: "/warenkorb?mode=konzept-check" },
@@ -24,13 +24,13 @@ export default function Footer() {
       ],
     },
     {
-      title: "Dein ®Hoam",
+      title: "®Hoam",
       items: [
-        { text: "Preise", href: "/dein-hoam#preise" },
-        { text: "Position am Markt", href: "/dein-hoam#position-am-markt" },
-        { text: "Haus Konfigurator", href: "/dein-hoam#haus-konfiguraton" },
-        { text: "Vorteile", href: "/dein-hoam#vorteile-hoam" },
-        { text: "Transportabilität", href: "/dein-hoam#transport" },
+        { text: "Preise", href: "/hoam#preise" },
+        { text: "Position am Markt", href: "/hoam#position-am-markt" },
+        { text: "Haus Konfigurator", href: "/hoam#haus-konfiguraton" },
+        { text: "Vorteile", href: "/hoam#vorteile-hoam" },
+        { text: "Transportabilität", href: "/hoam#transport" },
       ],
     },
     {

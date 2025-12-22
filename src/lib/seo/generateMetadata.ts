@@ -36,7 +36,7 @@ export const PAGE_SEO_CONFIG = {
     },
     konfigurator: {
         title: "Konfigurator | ®Hoam online konfigurieren & Preis berechnen",
-        description: "Dein ®Hoam online konfigurieren: Interaktiver Konfigurator mit Echtzeit-Preisberechnung. Module wählen, Fassade gestalten, Ausstattung planen. Jetzt starten!",
+        description: "®Hoam online konfigurieren: Interaktiver Konfigurator mit Echtzeit-Preisberechnung. Module wählen, Fassade gestalten, Ausstattung planen. Jetzt starten!",
         keywords: "haus konfigurator online, modulhaus konfigurieren, preis berechnen, interaktiver konfigurator, modulhaus planen, hoam konfigurator, hausbau planer österreich, echtzeit preise",
         priority: 0.9,
         changeFrequency: "weekly" as const,
@@ -45,7 +45,7 @@ export const PAGE_SEO_CONFIG = {
     },
     warenkorb: {
         title: "Warenkorb | Konzept-Check bestellen & Konfiguration einreichen",
-        description: "Deine ®Hoam Konfiguration überprüfen und Konzept-Check bestellen. Planungspakete wählen, Termin vereinbaren, Bestellung abschließen. Jetzt starten!",
+        description: "®Hoam Konfiguration überprüfen und Konzept-Check bestellen. Planungspakete wählen, Termin vereinbaren, Bestellung abschließen. Jetzt starten!",
         keywords: "konzept-check bestellen, planungspaket wählen, konfiguration überprüfen, hoam warenkorb, bestellung abschließen, modulhaus bestellen, hausbau bestellung österreich",
         priority: 0.7,
         changeFrequency: "weekly" as const,
@@ -70,9 +70,9 @@ export const PAGE_SEO_CONFIG = {
         ogImage: "/images/335-nest-haus-team-markus-schmoltner.png",
         twitterImage: "/images/335-nest-haus-team-markus-schmoltner.png",
     },
-    "dein-hoam": {
-        title: "Dein ®Hoam | Was ist ®Hoam?",
-        description: "Hoam 80 ab €213.000, Hoam 120 ab €296.000, Hoam 160 ab €380.000. Individuell konfigurierbar, transportabel und erweiterbar. Dein modulares Traumhaus.",
+    "hoam": {
+        title: "®Hoam | Was ist ®Hoam?",
+        description: "Hoam 80 ab €213.000, Hoam 120 ab €296.000, Hoam 160 ab €380.000. Individuell konfigurierbar, transportabel und erweiterbar. Modulares Traumhaus.",
         keywords: "hoam preise, hoam 80, hoam 120, hoam 160, modulhaus kosten, individuell konfigurierbar, transportabel, modulhaus österreich, haus erweitern",
         priority: 0.8,
         changeFrequency: "monthly" as const,
@@ -90,7 +90,7 @@ export const PAGE_SEO_CONFIG = {
     },
     "konzept-check": {
         title: "Konzept-Check | Grundstücksanalyse & Entwurf",
-        description: "Konzept-Check für Dein ®Hoam: Rechtssichere Grundstücksanalyse, Bebauungsmöglichkeiten, individueller Entwurf. Fertig in 4-6 Wochen. Jetzt bestellen.",
+        description: "Konzept-Check für ®Hoam: Rechtssichere Grundstücksanalyse, Bebauungsmöglichkeiten, individueller Entwurf. Fertig in 4-6 Wochen. Jetzt bestellen.",
         keywords: "konzept-check, grundstücksanalyse, rechtssicher bauen, bebauungsmöglichkeiten, konzept-check 3000 euro, nest haus planung, grundstück check, bauvorhaben analyse",
         priority: 0.8,
         changeFrequency: "monthly" as const,
@@ -501,7 +501,7 @@ export interface VideoSchemaConfig {
     duration: string;
 }
 
-// Helper: Generate Product Schema for pages like dein-hoam, hoam-system
+// Helper: Generate Product Schema for pages like hoam, hoam-system
 export function generatePageProductSchema(config: ProductSchemaConfig): object {
     return {
         "@context": "https://schema.org",

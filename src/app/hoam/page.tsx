@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import DeinHoamClient from "./DeinHoamClient";
+import HoamClient from "./HoamClient";
 import {
   generatePageMetadata,
   generateStructuredData,
@@ -7,11 +7,11 @@ import {
   generateBreadcrumbSchema,
 } from "@/lib/seo/generateMetadata";
 
-// Enhanced SEO metadata for the dein-hoam page
-export const metadata: Metadata = generatePageMetadata("dein-hoam");
+// Enhanced SEO metadata for the hoam page
+export const metadata: Metadata = generatePageMetadata("hoam");
 
-// Structured Data for the Dein Hoam page
-const deinHoamSchema = generateStructuredData("dein-hoam");
+// Structured Data for the Hoam page
+const hoamSchema = generateStructuredData("hoam");
 
 // Product Schema for modular houses
 const productSchema = generatePageProductSchema({
@@ -24,10 +24,10 @@ const productSchema = generatePageProductSchema({
 });
 
 // Breadcrumb Schema
-const breadcrumbSchema = generateBreadcrumbSchema("dein-hoam");
+const breadcrumbSchema = generateBreadcrumbSchema("hoam");
 
 // Server Component - Can handle SEO, metadata, and structured data
-export default function DeinHoamPage() {
+export default function HoamPage() {
   return (
     <>
       <script
@@ -39,7 +39,7 @@ export default function DeinHoamPage() {
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{
-          __html: JSON.stringify(deinHoamSchema),
+          __html: JSON.stringify(hoamSchema),
         }}
       />
       <script
@@ -48,8 +48,9 @@ export default function DeinHoamPage() {
           __html: JSON.stringify(productSchema),
         }}
       />
-      <DeinHoamClient />
+      <HoamClient />
     </>
   );
 }
+
 

@@ -36,7 +36,7 @@ interface PricingData {
 // Define sections with proper structure for entdecken page
 const sections = [
   {
-    id: "dein-hoam-preise",
+    id: "hoam-preise",
     title: "Design für dich gemacht",
     slug: "preise",
   },
@@ -82,9 +82,9 @@ const sections = [
   },
 ];
 
-export default function DeinHoamClient() {
+export default function HoamClient() {
   const [_currentSectionId, setCurrentSectionId] =
-    useState<string>("dein-hoam-preise");
+    useState<string>("hoam-preise");
   const [isMobile, setIsMobile] = useState(false);
   const [pricingData, setPricingData] = useState<PricingData | null>(null);
   const {
@@ -133,7 +133,7 @@ export default function DeinHoamClient() {
     >
       <SectionRouter sections={sections} onSectionChange={setCurrentSectionId}>
         {/* Section 1 - Hero with Image and Overlay Text */}
-        <section id="dein-hoam-preise" className="w-full">
+        <section id="hoam-preise" className="w-full">
           <div className="relative w-full h-[400px] sm:h-[500px] md:h-[600px] lg:h-[700px] xl:h-[800px] 2xl:h-[900px]">
             {/* Background Image */}
             <HybridBlobImage
@@ -151,7 +151,7 @@ export default function DeinHoamClient() {
               {/* Header at Top */}
               <div className="flex justify-center">
                 <SectionHeader
-                  title="Dein ®Hoam"
+                  title="®Hoam"
                   subtitle="Hausbau muss nicht immer kompliziert sein"
                   titleClassName="text-white"
                   subtitleClassName="text-white"
@@ -294,9 +294,9 @@ export default function DeinHoamClient() {
           className="w-full py-8 md:py-16 bg-white"
         >
           <SectionHeader
-            title="Konfiguriere dein ®Hoam-Haus"
+            title="Konfiguriere ®Hoam-Haus"
             subtitle="Gestalten heißt verstehen"
-            mobileTitle="Konfiguriere dein ®Hoam-Haus"
+            mobileTitle="Konfiguriere ®Hoam-Haus"
             wrapperMargin="mb-8 md:mb-12"
           />
 
@@ -442,4 +442,5 @@ export default function DeinHoamClient() {
     </div>
   );
 }
+
 

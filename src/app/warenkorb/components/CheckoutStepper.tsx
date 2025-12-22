@@ -1298,7 +1298,7 @@ export default function CheckoutStepper({
         "Hier findest du **alle Details deiner Auswahl** inklusive transparenter Preise. Nutze diesen Moment, um **alle Angaben** in Ruhe zu **überprüfen**. Nach dem Absenden erhältst du eine **schriftliche Bestätigung,** und wir beginnen mit der Ausarbeitung deines Entwurfowie der Überprüfung deines Grundstücks.",
     },
     {
-      title: "Dein ®Hoam",
+      title: "®Hoam",
       subtitle: "Weil nur du weißt, wie du wohnen willst",
       description:
         "**Die Bestellung deines Nest-Hauses. Alles beginnt mit dem Entwurf und der Grundstücksanalyse. Sobald du dein Nest-Haus bestellst und die erste Teilzahlung leistest, erhältst du von uns deinen verbindlich garantierten Liefertermin. Transparent, planbar und verlässlich.**",
@@ -1575,14 +1575,14 @@ export default function CheckoutStepper({
                       <div className={rowWrapperClass}>
                         <div className="flex-1 min-w-0">
                           <div className={`leading-relaxed ${rowTextClass(0)}`}>
-                            Dein ®Hoam
+                            ®Hoam
                           </div>
                           <div className={rowSubtitleClass}>
                             {PriceUtils.isPriceOnRequest(total)
                               ? "Genauer Preis auf Anfrage"
                               : configItem?.nest
                                 ? (() => {
-                                    // Show m² price for "Dein ®Hoam" (total house price / area)
+                                    // Show m² price for "®Hoam" (total house price / area)
                                     const nestModel =
                                       configItem.nest.value || "";
                                     const geschossdeckeQty =
@@ -1609,7 +1609,7 @@ export default function CheckoutStepper({
                       <div className={rowWrapperClass}>
                         <div className="flex-1 min-w-0">
                           <div className={`leading-relaxed ${rowTextClass(0)}`}>
-                            Dein ®Hoam
+                            ®Hoam
                           </div>
                           <div className={rowSubtitleClass}>
                             Konfiguriere dein Nest
@@ -2380,7 +2380,7 @@ export default function CheckoutStepper({
                             >
                               <div className="flex-1 min-w-0">
                                 <div className="leading-relaxed p-primary text-black font-medium">
-                                  Dein ®Hoam
+                                  ®Hoam
                                 </div>
                                 <div className="p-primary-small text-nest-gray leading-snug mt-1">
                                   Konfiguriere dein Nest mit uns
@@ -3495,7 +3495,7 @@ export default function CheckoutStepper({
                         >
                           <div className="flex-1 min-w-0">
                             <div className="leading-relaxed p-primary text-black font-medium">
-                              Dein ®Hoam
+                              ®Hoam
                             </div>
                             <div className="p-primary-small text-nest-gray leading-snug mt-1">
                               Konfiguriere dein Nest mit uns

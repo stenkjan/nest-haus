@@ -195,7 +195,7 @@ export default function Navbar() {
 
   // Navigation items - updated based on image
   const navItems = [
-    { name: "Dein ®Hoam", path: "/dein-hoam" },
+    { name: "®Hoam", path: "/hoam" },
     { name: "Konzept-Check", path: "/konzept-check" },
     { name: "Hoam System", path: "/hoam-system" },
     { name: "Warum wir?", path: "/warum-wir" },

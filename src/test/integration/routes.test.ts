@@ -95,7 +95,7 @@ describe('🚀 Route Integration Tests', () => {
       console.log('✅ Warum-wir page endpoint exists')
     })
 
-    it('should redirect dein-nest to dein-hoam (301)', async () => {
+    it('should redirect dein-nest to hoam (301)', async () => {
       console.log('🔍 Testing dein-nest redirect...')
 
       const response = await fetch(`${BASE_URL}/dein-nest`, {
@@ -108,14 +108,31 @@ describe('🚀 Route Integration Tests', () => {
 
       // Should be a 301 permanent redirect
       expect(response.status).toBe(301)
-      expect(response.headers.get('location')).toContain('/dein-hoam')
-      console.log('✅ Dein-nest redirects to dein-hoam correctly')
+      expect(response.headers.get('location')).toContain('/hoam')
+      console.log('✅ Dein-nest redirects to hoam correctly')
     })
 
-    it('should render dein-hoam page directly', async () => {
-      console.log('🔍 Testing dein-hoam page...')
+    it('should redirect dein-hoam to hoam (301)', async () => {
+      console.log('🔍 Testing dein-hoam redirect...')
 
       const response = await fetch(`${BASE_URL}/dein-hoam`, {
+        method: 'GET',
+        headers: {
+          'Accept': 'text/html',
+        },
+        redirect: 'manual', // Don't follow redirects automatically
+      })
+
+      // Should be a 301 permanent redirect
+      expect(response.status).toBe(301)
+      expect(response.headers.get('location')).toContain('/hoam')
+      console.log('✅ Dein-hoam redirects to hoam correctly')
+    })
+
+    it('should render hoam page directly', async () => {
+      console.log('🔍 Testing hoam page...')
+
+      const response = await fetch(`${BASE_URL}/hoam`, {
         method: 'GET',
         headers: {
           'Accept': 'text/html',
@@ -124,7 +141,7 @@ describe('🚀 Route Integration Tests', () => {
 
       // Should successfully render the page
       expect(response.status).toBe(200)
-      console.log('✅ Dein-hoam page renders successfully')
+      console.log('✅ Hoam page renders successfully')
     })
 
     it('should redirect nest-system to hoam-system (301)', async () => {

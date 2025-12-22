@@ -28,7 +28,7 @@ import Footer from "@/components/Footer";
 const sections: SectionDefinition[] = [
   {
     id: "unsere-technik",
-    title: "Dein Hoam System",
+    title: "®Hoam System",
     slug: "unsere-technik",
   },
   {
@@ -120,10 +120,10 @@ export default function HoamSystemClient() {
           sections={sections}
           onSectionChange={setCurrentSectionId}
         >
-          {/* Section 1 - Dein Hoam System */}
+          {/* Section 1 - ®Hoam System */}
           <section id="unsere-technik" className="bg-black pt-12 pb-8 md:pb-16">
             <SectionHeader
-              title="Dein Hoam System"
+              title="®Hoam System"
               subtitle="Individualisiert, wo es Freiheit braucht. Standardisiert, wo es Effizienz schafft."
               titleClassName="text-white"
               subtitleClassName="text-white"
