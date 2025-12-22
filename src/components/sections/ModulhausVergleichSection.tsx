@@ -69,7 +69,7 @@ const boxesData = [
   {
     id: 3,
     label: "Für Vorrausdenker",
-    title: "®Hoam Haus",
+    title: "®Hoam House",
     hasButton: true,
     hasBorder: true,
     items: [

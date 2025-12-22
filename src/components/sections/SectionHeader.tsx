@@ -30,9 +30,9 @@ import React from "react";
  *
  * // With mobile variants (different text for mobile)
  * <SectionHeader
- *   title="Konfiguriere dein ®Hoam Haus"
+ *   title="Konfiguriere dein ®Hoam House"
  *   subtitle="Durch serielle Fertigung zu transparenten Bestpreisen"
- *   mobileTitle="Konfiguriere dein\n®Hoam Haus"
+ *   mobileTitle="Konfiguriere dein\n®Hoam House"
  *   mobileSubtitle="Durch serielle Fertigung\nzu transparenten Bestpreisen"
  * />
  *

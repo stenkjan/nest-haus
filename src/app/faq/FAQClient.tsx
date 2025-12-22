@@ -52,7 +52,7 @@ const faqItems: FAQItem[] = [
     id: 7,
     question: "Was kostet ein Nest Haus?",
     answer:
-      "Der exakte Preis ist abhängig von deinem individuellen Hoam-Entwurf. Diesen arbeiten wir gemeinsam im Konzept-Check aus. Danach erhältst du ein konkretes Angebot für ®Hoam Haus.",
+      "Der exakte Preis ist abhängig von deinem individuellen Hoam-Entwurf. Diesen arbeiten wir gemeinsam im Konzept-Check aus. Danach erhältst du ein konkretes Angebot für ®Hoam House.",
   },
   {
     id: 8,

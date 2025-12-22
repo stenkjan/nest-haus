@@ -51,7 +51,7 @@ export default function AlphaTestClient() {
             <div className="flex items-center justify-between mb-4">
               <div></div>
               <h1 className="text-4xl font-bold text-gray-900">
-                ®Hoam Haus 🧪 Alpha Test
+                ®Hoam House 🧪 Alpha Test
               </h1>
               <button
                 onClick={handleReset}
