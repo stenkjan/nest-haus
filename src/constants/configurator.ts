@@ -170,7 +170,7 @@ export const GRUNDSTUECKSCHECK_PRICE = 1500;
 export const NEST_OPTIONS = [
   {
     id: 'nest80',
-    name: 'Nest. 80',
+    name: 'Hoam 80',
     description: '75m² Nutzfläche',
     price: 213032,
     monthly: 990,
@@ -178,7 +178,7 @@ export const NEST_OPTIONS = [
   },
   {
     id: 'nest100',
-    name: 'Nest. 100',
+    name: 'Hoam 100',
     description: '95m² Nutzfläche',
     price: 254731,
     monthly: 1187,
@@ -186,7 +186,7 @@ export const NEST_OPTIONS = [
   },
   {
     id: 'nest120',
-    name: 'Nest. 120',
+    name: 'Hoam 120',
     description: '115m² Nutzfläche',
     price: 296430,
     monthly: 1384,
@@ -194,7 +194,7 @@ export const NEST_OPTIONS = [
   },
   {
     id: 'nest140',
-    name: 'Nest. 140',
+    name: 'Hoam 140',
     description: '135m² Nutzfläche',
     price: 338129,
     monthly: 1581,
@@ -202,7 +202,7 @@ export const NEST_OPTIONS = [
   },
   {
     id: 'nest160',
-    name: 'Nest. 160',
+    name: 'Hoam 160',
     description: '155m² Nutzfläche',
     price: 379828,
     monthly: 1778,
