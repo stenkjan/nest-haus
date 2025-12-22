@@ -4,6 +4,36 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [75609514319e8426d775587c7583f9131a3ee22c] - Mon Dec 22 23:18:33 2025 +0100
+
+**Author**: stenkjan
+**Message**: `🔄 Update branding references from "Nest Haus" to "Hoam"  - Changed alt text in image components to reflect the new branding. - Updated titles and descriptions in various documentation files to ensure consistency with the "Hoam" branding. - Adjusted references in the codebase to replace "Nest" with "Hoam" for improved clarity and alignment with the new brand identity.  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/api/placeholder/[width]/[height]/route.ts
+- src/app/showcase/cards/page.tsx
+- src/app/showcase/grids/page.tsx
+- src/app/warenkorb/components/CheckoutStepper.tsx
+- src/components/images/HybridBlobImage.tsx
+- src/components/testing/config/TestQuestions.ts
+
+
+#### 📚 Documentation Changes
+- FIX_OLD_PRICES_DISPLAY.md
+- README.md
+- docs/COMMIT_HISTORY.md
+- docs/GLASS-QUOTE-CARDS-GUIDE.md
+- docs/KONFIGURATOR-SWITCH-GUIDE.md
+- docs/SOCIAL_MEDIA_METADATA_UPDATE.md
+- docs/WARENKORB_PRICING_SYNC_FIX_NOV11.md
+- docs/final_EMAIL_FUNCTIONALITY_SUMMARY.md
+- docs/final_GOOGLE-ANALYTICS-SEO-COMPLETE-IMPLEMENTATION.md
+
+
+---
+
 ## [741007ca54edbbdad4f8e4d925b2895e57e97915] - Mon Dec 22 23:10:38 2025 +0100
 
 **Author**: stenkjan
