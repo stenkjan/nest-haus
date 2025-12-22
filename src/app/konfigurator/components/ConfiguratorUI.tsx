@@ -113,8 +113,8 @@ export default function ConfiguratorUI({ logic, rightPanelRef }: ConfiguratorUIP
                 {/* Kamindurchzug Checkbox */}
                 <ConfiguratorCheckbox
                   id="kamindurchzug-checkbox"
-                  uncheckedText="Kaminschachtvorbereitung"
-                  checkedText="Kaminschachtvorbereitung"
+                  uncheckedText="Kaminschacht-vorbereitung"
+                  checkedText="Kaminschacht-vorbereitung"
                   price={(() => {
                     const pricingData = PriceCalculator.getPricingData();
                     return pricingData?.optionen?.kaminschacht || 887;

@@ -462,7 +462,7 @@ export const useConfiguratorStore = create<ConfiguratorState>()(
           // Add the option
           const optionData = {
             kamindurchzug: {
-              name: 'Kaminschachtvorbereitung',
+              name: 'Kaminschacht-vorbereitung',
               price: 887,
               description: 'Durchzug für den Kamin'
             },
@@ -743,11 +743,11 @@ export const useConfiguratorStore = create<ConfiguratorState>()(
         // Set default selections as requested
         // NOTE: All prices set to 0 (placeholder) - will be calculated dynamically by PriceCalculator
         const defaultSelections = [
-          // Nest 80
+          // Hoam 80
           {
             category: 'nest',
             value: 'nest80',
-            name: 'Nest. 80',
+            name: 'Hoam 80',
             price: 0, // Placeholder - calculated dynamically from Google Sheets
             description: '75m² Nutzfläche'
           },

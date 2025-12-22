@@ -344,7 +344,7 @@ export default function SummaryPanel({
     <div className={`summary-panel ${className}`}>
       <div className="mt-12">
         <h3 className="text-[clamp(1rem,2.2vw,1.25rem)] font-medium tracking-[-0.015em] leading-[1.2] mb-4">
-          <span className="text-black">®Hoam.</span>{" "}
+          <span className="text-black">®Hoam</span>{" "}
           <span className="text-[#999999]">Überblick</span>
         </h3>
 
@@ -424,7 +424,9 @@ export default function SummaryPanel({
                         <div className="font-medium text-[clamp(14px,3vw,16px)] tracking-[0.02em] leading-[1.25] text-black break-words">
                           {key === "fussboden"
                             ? `Bodenbelag - ${selection.name}`
-                            : selection.name}
+                            : selection.name === "Kaminschachtvorbereitung"
+                              ? "Kaminschacht-vorbereitung"
+                              : selection.name}
                         </div>
                         {selection.description && (
                           <div className="font-normal text-[clamp(10px,2.5vw,12px)] tracking-[0.03em] leading-[1.17] text-gray-600 mt-1 break-words">
@@ -495,7 +497,9 @@ export default function SummaryPanel({
                               )
                             : key === "fenster"
                               ? getFensterDisplayName(selection, true)
-                              : selection.name}
+                              : selection.name === "Kaminschachtvorbereitung"
+                                ? "Kaminschacht-vorbereitung"
+                                : selection.name}
                           {key === "pvanlage" &&
                             selection.quantity &&
                             selection.quantity > 1 &&
