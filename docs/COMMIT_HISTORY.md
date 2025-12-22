@@ -4,6 +4,67 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [5eef58609479ad2d5c7b882b02a4dca4b6ae43b1] - Mon Dec 22 20:14:47 2025 +0100
+
+**Author**: stenkjan
+**Message**: `🔄 Update project references from "Nest-Haus" to "Hoam-House" across multiple files for consistent branding and documentation.  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/access-denied/page.tsx
+- src/app/admin/alpha-tests/components/AlphaTestDashboard.tsx
+- src/app/admin/alpha-tests/page.tsx
+- src/app/admin/page.tsx
+- src/app/agb/page.tsx
+- src/app/cookie-einstellungen/page.tsx
+- src/app/datenschutz/page.tsx
+- src/app/impressum/page.tsx
+- src/app/konfigurator/components/ConfiguratorUI.tsx
+- src/app/showcase/cards/page.tsx
+- src/app/showcase/grids/page.tsx
+- src/app/warenkorb/WarenkorbClient.tsx
+- src/app/warenkorb/components/CheckoutStepper.tsx
+- src/app/warenkorb/page.tsx
+- src/components/Footer.tsx
+- src/components/cards/README.md
+- src/components/dialogs/GrundstueckCheckDialog.tsx
+- src/components/grids/ThreeByOneAdaptiveHeight.tsx
+- src/components/sections/GrundstueckCheckForm.tsx
+- src/components/sections/GrundstueckCheckSection.tsx
+- src/components/sections/catalog/CATALOG.md
+
+
+#### ⚙️ Backend Changes
+- scripts/README-cache-cleaning.md
+- scripts/clean-cache.bat
+- scripts/clean-cache.js
+
+
+#### 🔧 Configuration Changes
+- .github/workflows/auto-documentation.yml
+
+
+#### 📚 Documentation Changes
+- backups/BACKUP_README.md
+- docs/BUTTON_TRACKING_GUIDE.md
+- docs/COMMIT_HISTORY.md
+- docs/COMPLETE_IMPLEMENTATION_SUMMARY.md
+- docs/KONFIGURATOR-REFACTORING-PLAN.md
+- docs/PRICE_CALCULATION_ARCHITECTURE.md
+- docs/PRICING_SYNC_IMPLEMENTATION_COMPLETE.md
+- docs/SEO_ANALYSIS_AND_IMPROVEMENTS.md
+- docs/STRIPE_PRODUCTION_SETUP.md
+- docs/WARENKORB_REFACTORING_PROGRESS.md
+- docs/final_-BETA-NEST-HAUS-LAUNCH-SECURITY-ROADMAP.md
+- docs/final_EMAIL_FUNCTIONALITY_SUMMARY.md
+- docs/final_GOOGLE-ANALYTICS-SEO-COMPLETE-IMPLEMENTATION.md
+- docs/final_KONFIGURATOR_PRICING_OVERHAUL_SUMMARY.md
+- preiskalkulation/PRICING_ANALYSIS_CURRENT_STATE.md
+
+
+---
+
 ## [77b9d435bcbc48e2b4e2dd2541f18d39a33b3281] - Mon Dec 22 20:08:23 2025 +0100
 
 **Author**: stenkjan
