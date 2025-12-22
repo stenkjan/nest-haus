@@ -4,6 +4,27 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [40b6aea0625851395b667cc3ea568c415006974e] - Mon Dec 22 20:05:31 2025 +0100
+
+**Author**: stenkjan
+**Message**: `🔄 Update branding from "®Hoam Haus" to "®Hoam House" across multiple components and documentation for consistency.  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/alpha-test/AlphaTestClient.tsx
+- src/app/faq/FAQClient.tsx
+- src/components/sections/ModulhausVergleichSection.tsx
+- src/components/sections/SectionHeader.tsx
+- src/components/sections/catalog/CATALOG.md
+
+
+#### 📚 Documentation Changes
+- docs/TYPOGRAPHY_STANDARDS.md
+
+
+---
+
 ## [b650bb3483f9756adf4cb2cf8e130b432919bece] - Mon Dec 22 19:28:15 2025 +0100
 
 **Author**: stenkjan
