@@ -105,7 +105,7 @@ jobs:
           # Create header if file doesn't exist
           if [ ! -f "$HISTORY_FILE" ]; then
             cat > "$HISTORY_FILE" << 'EOF'
-          # Nest-Haus Commit History
+          # Hoam-House Commit History
 
           *Auto-generated documentation of project changes*
 

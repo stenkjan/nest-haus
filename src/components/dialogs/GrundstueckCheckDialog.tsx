@@ -77,7 +77,7 @@ const GrundstueckCheckDialog: React.FC<GrundstueckCheckDialogProps> = ({
                 <div className="flex flex-col gap-4">
                   <div>
                     <p className="text-xs sm:text-sm text-gray-500 mb-2 leading-snug">
-                      Bevor dein Traum vom Nest-Haus Realität wird, ist es
+                      Bevor dein Traum vom Hoam-House Realität wird, ist es
                       wichtig, dass dein Grundstück alle{" "}
                       <span className="font-semibold text-gray-700">
                         rechtlichen und baulichen Anforderungen
@@ -94,7 +94,7 @@ const GrundstueckCheckDialog: React.FC<GrundstueckCheckDialogProps> = ({
                       machen und uns die rechtlichen und baulichen
                       Voraussetzungen deines Grundstücks prüfen lassen, damit du{" "}
                       <span className="font-bold">
-                        entspannt und sicher in die Planung deines Nest-Hauses
+                        entspannt und sicher in die Planung deines Hoam-Housees
                         starten
                       </span>{" "}
                       kannst.
@@ -121,7 +121,7 @@ const GrundstueckCheckDialog: React.FC<GrundstueckCheckDialogProps> = ({
                         überprüft, um sicherzustellen, dass dein Bauvorhaben
                         genehmigungsfähig ist. Geeignetheit des Grundstücks: Wir
                         stellen fest, ob dein Grundstück alle notwendigen
-                        Voraussetzungen für den Aufbau deines Nest-Hauses
+                        Voraussetzungen für den Aufbau deines Hoam-Housees
                         erfüllt.
                       </p>
                     </div>

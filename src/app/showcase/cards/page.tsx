@@ -90,7 +90,7 @@ export default function CardsShowcasePage() {
                 title: "Du hast die Wahl",
                 subtitle: "",
                 description:
-                  "Gestalte dein Zuhause so individuell wie dein Leben. In unserem Online-Konfigurator wählst du Größe, Materialien, Ausstattung und Optionen Schritt für Schritt aus. Jede Entscheidung zeigt dir sofort, wie dein Haus aussieht und was es kostet.\nSo erhältst du volle Transparenz und ein realistisches Bild, wie dein Nest-Haus zu deinen Wünschen, deinem Grundstück und deinem Budget passt.",
+                  "Gestalte dein Zuhause so individuell wie dein Leben. In unserem Online-Konfigurator wählst du Größe, Materialien, Ausstattung und Optionen Schritt für Schritt aus. Jede Entscheidung zeigt dir sofort, wie dein Haus aussieht und was es kostet.\nSo erhältst du volle Transparenz und ein realistisches Bild, wie dein Hoam-House zu deinen Wünschen, deinem Grundstück und deinem Budget passt.",
                 video: IMAGES.variantvideo.twelve,
                 backgroundColor: "#F4F4F4",
                 playbackRate: 0.5,

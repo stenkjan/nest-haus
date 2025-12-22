@@ -2,7 +2,7 @@
 
 ## 🚀 Switching to Live Mode
 
-To activate real payments for Nest-Haus, you must update the environment variables in Vercel (Production) and `.env.local` (if testing locally).
+To activate real payments for Hoam-House, you must update the environment variables in Vercel (Production) and `.env.local` (if testing locally).
 
 ## 🌐 Multi-Domain Support
 

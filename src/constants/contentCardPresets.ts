@@ -106,7 +106,7 @@ export const setIconCreator = (creator: typeof createSquareTextCardIcon) => {
 
 /**
  * Preset: Process Steps ("So läuft's ab")
- * 7-step process showing how to build with Nest-Haus
+ * 7-step process showing how to build with Hoam-House
  * 
  * Re-exported from cardContent.ts for backwards compatibility
  */

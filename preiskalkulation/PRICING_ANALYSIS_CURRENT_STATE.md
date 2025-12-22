@@ -1,4 +1,4 @@
-# Nest-Haus Pricing Structure Analysis
+# Hoam-House Pricing Structure Analysis
 ## Current vs. Producer Pricing Mapping
 
 **Generated:** 2025-11-04  

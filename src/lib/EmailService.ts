@@ -458,7 +458,7 @@ export class EmailService {
   </div>
   
   <div class="footer">
-    <p>© 2025 Nest-Haus | SustainNest GmbH<br>
+    <p>© 2025 Hoam-House | SustainNest GmbH<br>
     Zösenberg 51, 8045 Weinitzen, Österreich</p>
     </div>
   </div>
@@ -500,7 +500,7 @@ Telefon: +43 384 775 090
 
 Besuchen Sie uns: https://nest-haus.at
 
-© 2025 Nest-Haus | eco Chalets GmbH
+© 2025 Hoam-House | eco Chalets GmbH
 Zösenberg 51, 8045 Weinitzen, Österreich
 `;
   }
@@ -1291,7 +1291,7 @@ Automatische Benachrichtigung vom NEST-Haus System`;
         customerEmail: data.email,
         appointmentDateTime: new Date(data.appointmentDateTime),
         durationMinutes: 60,
-        location: 'Nest-Haus Office, Zösenberg 51, 8045 Weinitzen, Austria',
+        location: 'Hoam-House Office, Zösenberg 51, 8045 Weinitzen, Austria',
         description: data.message,
         organizerEmail: this.ADMIN_EMAIL,
         organizerName: this.FROM_NAME,

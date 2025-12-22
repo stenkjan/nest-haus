@@ -2,7 +2,7 @@
 
 ## Overview
 
-This guide documents how to add proper tracking IDs to all interactive elements in the Nest-Haus codebase to eliminate "undefined/unknown" button tracking issues.
+This guide documents how to add proper tracking IDs to all interactive elements in the Hoam-House codebase to eliminate "undefined/unknown" button tracking issues.
 
 ## Tracking Audit Process
 

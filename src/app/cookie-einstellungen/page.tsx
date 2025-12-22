@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import CookieEinstellungenClient from "./CookieEinstellungenClient";
 
 export const metadata: Metadata = {
-  title: "Cookie-Einstellungen | Nest-Haus",
+  title: "Cookie-Einstellungen | Hoam-House",
   description:
     "Verwalten Sie Ihre Cookie-Präferenzen und Datenschutzeinstellungen für die NEST-Haus Website.",
   robots: {

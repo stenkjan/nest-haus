@@ -1,6 +1,6 @@
 # 📚 Section Catalog
 
-**Your reference library of all unique sections across the Nest-Haus website.**
+**Your reference library of all unique sections across the Hoam-House website.**
 
 Browse, copy, and paste sections wherever you need them.
 
@@ -98,7 +98,7 @@ import { IMAGES } from "@/constants/images";
       maxWidth={false}
       showInstructions={false}
       cardTitle="Du hast die Wahl"
-      cardDescription="Gestalte dein Zuhause so individuell wie dein Leben. In unserem Online-Konfigurator wählst du Größe, Materialien, Ausstattung und Optionen Schritt für Schritt aus. Jede Entscheidung zeigt dir sofort, wie dein Haus aussieht und was es kostet.\nSo erhältst du volle Transparenz und ein realistisches Bild, wie dein Nest-Haus zu deinen Wünschen, deinem Grundstück und deinem Budget passt."
+      cardDescription="Gestalte dein Zuhause so individuell wie dein Leben. In unserem Online-Konfigurator wählst du Größe, Materialien, Ausstattung und Optionen Schritt für Schritt aus. Jede Entscheidung zeigt dir sofort, wie dein Haus aussieht und was es kostet.\nSo erhältst du volle Transparenz und ein realistisches Bild, wie dein Hoam-House zu deinen Wünschen, deinem Grundstück und deinem Budget passt."
       videoPath={IMAGES.variantvideo.twelve}
       backgroundColor="#F4F4F4"
       playbackRate={0.5}

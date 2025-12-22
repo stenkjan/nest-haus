@@ -141,15 +141,15 @@ export default function ConfiguratorUI({ logic, rightPanelRef }: ConfiguratorUIP
                   pricePerSqm={
                     configuration?.nest?.value
                       ? (() => {
-                          const pricingData = PriceCalculator.getPricingData();
-                          if (pricingData) {
-                            const nestSize = configuration.nest.value as "nest80" | "nest100" | "nest120" | "nest140" | "nest160";
-                            const fundamentPrice = pricingData.optionen.fundament[nestSize] || 15480;
-                            const nestSquareMeters = parseInt(configuration.nest.value.replace("nest", "")) || 80;
-                            return fundamentPrice / nestSquareMeters;
-                          }
-                          return 193.5;
-                        })()
+                        const pricingData = PriceCalculator.getPricingData();
+                        if (pricingData) {
+                          const nestSize = configuration.nest.value as "nest80" | "nest100" | "nest120" | "nest140" | "nest160";
+                          const fundamentPrice = pricingData.optionen.fundament[nestSize] || 15480;
+                          const nestSquareMeters = parseInt(configuration.nest.value.replace("nest", "")) || 80;
+                          return fundamentPrice / nestSquareMeters;
+                        }
+                        return 193.5;
+                      })()
                       : 193.5
                   }
                   isChecked={!!configuration?.fundament}
@@ -157,7 +157,7 @@ export default function ConfiguratorUI({ logic, rightPanelRef }: ConfiguratorUIP
                 />
 
                 <p className="text-sm text-gray-600 leading-relaxed mt-4 px-1">
-                  Das Fundament bildet die stabile Basis für dein Nest-Haus. Es wird individuell auf dein Grundstück und die Bodenbeschaffenheit angepasst und sorgt für einen sicheren Stand über viele Jahre.
+                  Das Fundament bildet die stabile Basis für dein Hoam-House. Es wird individuell auf dein Grundstück und die Bodenbeschaffenheit angepasst und sorgt für einen sicheren Stand über viele Jahre.
                 </p>
               </div>
             </CategorySection>
@@ -179,7 +179,7 @@ export default function ConfiguratorUI({ logic, rightPanelRef }: ConfiguratorUIP
                       const contributionPrice = (category.id === "fenster" || isOptionSelected(category.id, option.id))
                         ? getActualContributionPrice(category.id, option.id)
                         : null;
-                      
+
                       // For fenster, also get the selected option's m² price for relative pricing
                       const selectedFensterM2Price = category.id === "fenster" && configuration?.fenster
                         ? getActualContributionPrice(category.id, configuration.fenster.value)
@@ -260,11 +260,11 @@ export default function ConfiguratorUI({ logic, rightPanelRef }: ConfiguratorUIP
                   {category.infoBox && (
                     <>
                       {category.id === "gebaeudehuelle" ||
-                      category.id === "innenverkleidung" ||
-                      category.id === "fussboden" ||
-                      category.id === "belichtungspaket" ||
-                      category.id === "fenster" ||
-                      category.id === "pvanlage" ? (
+                        category.id === "innenverkleidung" ||
+                        category.id === "fussboden" ||
+                        category.id === "belichtungspaket" ||
+                        category.id === "fenster" ||
+                        category.id === "pvanlage" ? (
                         <ConfiguratorContentCardsLightbox
                           categoryKey={
                             category.id === "gebaeudehuelle"

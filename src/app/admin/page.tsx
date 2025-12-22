@@ -41,7 +41,7 @@ export default async function AdminDashboard() {
           <div className="flex justify-between items-center py-6">
             <div>
               <h1 className="text-3xl font-bold text-gray-900">
-                Nest-Haus Admin
+                Hoam-House Admin
               </h1>
               <p className="text-gray-600">
                 Analytics & Configuration Management

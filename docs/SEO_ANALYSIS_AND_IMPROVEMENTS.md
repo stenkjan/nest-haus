@@ -1,4 +1,4 @@
-# SEO Analysis & Improvement Recommendations for Nest-Haus
+# SEO Analysis & Improvement Recommendations for Hoam-House
 
 **Generated:** December 8, 2025  
 **Analyst:** Claude 4.5 Sonnet  
@@ -269,7 +269,7 @@ export function generateProductSchema(): object {
     "sku": "NEST-80-BASE",
     "brand": {
       "@type": "Brand",
-      "name": "Nest-Haus",
+      "name": "Hoam-House",
       "logo": "https://www.nest-haus.at/api/images/0-homebutton-nest-haus.svg"
     }
   };
@@ -334,7 +334,7 @@ export function generateServiceAreaSchema(): object {
     "name": "Modulhaus Bau und Beratung",
     "provider": {
       "@type": "Organization",
-      "name": "Nest-Haus"
+      "name": "Hoam-House"
     },
     "areaServed": [
       { "@type": "State", "name": "Steiermark" },
@@ -368,7 +368,7 @@ export function generateServiceAreaSchema(): object {
 // In layout.tsx <head>
 <meta name="apple-mobile-web-app-capable" content="yes" />
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
-<meta name="apple-mobile-web-app-title" content="Nest-Haus" />
+<meta name="apple-mobile-web-app-title" content="Hoam-House" />
 <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
 ```
 
@@ -419,7 +419,7 @@ export function generateLocalBusinessSchema(): object {
   return {
     "@context": "https://schema.org",
     "@type": "LocalBusiness",
-    "name": "Nest-Haus",
+    "name": "Hoam-House",
     "description": "Modulhäuser und nachhaltige Bausysteme in Graz",
     "url": "https://www.nest-haus.at",
     "telephone": "+43-XXX-XXXXXX", // Add real phone
@@ -462,7 +462,7 @@ export function generateLocalBusinessSchema(): object {
 const placeSchema = {
   "@context": "https://schema.org",
   "@type": "Place",
-  "name": "Nest-Haus Büro Graz",
+  "name": "Hoam-House Büro Graz",
   "address": {
     "@type": "PostalAddress",
     "streetAddress": "Zösenberg 51",
@@ -502,7 +502,7 @@ const placeSchema = {
 // src/lib/seo/imageMetadata.ts
 export const IMAGE_METADATA = {
   "6-NEST-Haus-4-Module-Ansicht-Meer-Mediteran-Stirnseite-Holzlattung-Laerche": {
-    alt: "Modulhaus Nest-Haus mit 4 Modulen, Holzlattung aus Lärche, Meerblick in mediterraner Umgebung",
+    alt: "Modulhaus Hoam-House mit 4 Modulen, Holzlattung aus Lärche, Meerblick in mediterraner Umgebung",
     title: "NEST-Haus 4-Module Design am Meer",
     caption: "Beispielkonfiguration eines 4-Modul Hauses mit natürlicher Holzfassade"
   },
@@ -924,8 +924,8 @@ Disallow: /admin/
 ### 2. Add Missing Meta Tags (10 minutes)
 ```typescript
 // In layout.tsx <head>
-<meta name="apple-mobile-web-app-title" content="Nest-Haus" />
-<meta name="application-name" content="Nest-Haus" />
+<meta name="apple-mobile-web-app-title" content="Hoam-House" />
+<meta name="application-name" content="Hoam-House" />
 <meta name="theme-color" content="#ffffff" />
 ```
 

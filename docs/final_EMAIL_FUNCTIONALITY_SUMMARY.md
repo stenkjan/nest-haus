@@ -2,7 +2,7 @@
 
 ## Complete Guide to Email System, Calendar Integration & Configuration
 
-**Project**: Nest-Haus Configurator  
+**Project**: Hoam-House Configurator  
 **Last Updated**: November 27, 2025  
 **Status**: ✅ nest-haus.com Root Domain Configuration Active with ICS RSVP System
 

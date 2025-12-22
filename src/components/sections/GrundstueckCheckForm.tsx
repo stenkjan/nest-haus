@@ -444,7 +444,7 @@ export function GrundstueckCheckForm({
         trackGrundstueckCheckSubmit({
           location:
             typeof window !== "undefined" &&
-            window.location.pathname.includes("kontakt")
+              window.location.pathname.includes("kontakt")
               ? "kontakt"
               : "checkout",
           hasPropertyNumber: !!formData.propertyNumber,
@@ -645,9 +645,8 @@ export function GrundstueckCheckForm({
                 <button
                   onClick={handleZahlenUndPruefen}
                   disabled={isSubmitting || isSaved || !isFormValid}
-                  className={`rounded-full transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-offset-2 inline-flex items-center justify-center font-normal whitespace-nowrap bg-[#3D6CE1] border border-[#3D6CE1] text-white hover:bg-[#3D6CE1] focus:ring-[#3D6CE1] shadow-sm box-border px-6 py-1.5 text-sm xl:text-base 2xl:text-lg w-auto ${
-                    isSubmitting || isSaved || !isFormValid ? "opacity-50" : ""
-                  }`}
+                  className={`rounded-full transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-offset-2 inline-flex items-center justify-center font-normal whitespace-nowrap bg-[#3D6CE1] border border-[#3D6CE1] text-white hover:bg-[#3D6CE1] focus:ring-[#3D6CE1] shadow-sm box-border px-6 py-1.5 text-sm xl:text-base 2xl:text-lg w-auto ${isSubmitting || isSaved || !isFormValid ? "opacity-50" : ""
+                    }`}
                   style={
                     isSubmitting || isSaved || !isFormValid
                       ? { pointerEvents: "none" }
@@ -691,7 +690,7 @@ export function GrundstueckCheckForm({
                 <p className="p-primary leading-loose mb-8 mt-16">
                   <span className="text-nest-gray">Bevor dein </span>
                   <span className="text-black font-medium">
-                    Traum vom Nest-Haus
+                    Traum vom Hoam-House
                   </span>
                   <span className="text-nest-gray">
                     {" "}
@@ -710,7 +709,7 @@ export function GrundstueckCheckForm({
                     dir ein individuelles{" "}
                   </span>
                   <span className="text-black font-medium">Konzept-Check</span>
-                  <span className="text-nest-gray"> deines Nest-Hauses.</span>
+                  <span className="text-nest-gray"> deines Hoam-Housees.</span>
                 </p>
                 {/* Spacer to align with Name/Nachname form fields */}
                 <div className="h-3"></div>
@@ -756,7 +755,7 @@ export function GrundstueckCheckForm({
                     überprüft, um sicherzustellen, dass dein Bauvorhaben
                     genehmigungsfähig ist. Geeignetheit des Grundstücks: Wir
                     stellen fest, ob dein Grundstück alle notwendigen
-                    Voraussetzungen für den Aufbau deines Nest-Hauses erfüllt.
+                    Voraussetzungen für den Aufbau deines Hoam-Housees erfüllt.
                   </p>
                 </div>
               </div>
@@ -956,12 +955,12 @@ export function GrundstueckCheckForm({
 
         {/* Mobile Layout: Custom stacking order as specified */}
         <div className="md:hidden space-y-8">
-          {/* 1. Main text until "Planung deines Nest-Hauses starten kann" */}
+          {/* 1. Main text until "Planung deines Hoam-Housees starten kann" */}
           <div>
             <p className="p-primary leading-relaxed mb-4">
               <span className="text-nest-gray">Bevor dein </span>
               <span className="text-black font-medium">
-                Traum vom Nest-Haus
+                Traum vom Hoam-House
               </span>
               <span className="text-nest-gray">
                 {" "}
@@ -979,7 +978,7 @@ export function GrundstueckCheckForm({
                 dir ein individuelles{" "}
               </span>
               <span className="text-black font-medium">Konzeptcheck</span>
-              <span className="text-nest-gray"> deines Nest-Hauses.</span>
+              <span className="text-nest-gray"> deines Hoam-Housees.</span>
             </p>
             <p className="p-primary leading-relaxed mb-6">
               <span className="text-nest-gray">Dabei verbinden wir deine </span>
@@ -1198,7 +1197,7 @@ export function GrundstueckCheckForm({
                   um sicherzustellen, dass dein Bauvorhaben genehmigungsfähig
                   ist. Geeignetheit des Grundstücks: Wir stellen fest, ob dein
                   Grundstück alle notwendigen Voraussetzungen für den Aufbau
-                  deines Nest-Hauses erfüllt.
+                  deines Hoam-Housees erfüllt.
                 </p>
               </div>
             </div>

@@ -1271,13 +1271,13 @@ export default function CheckoutStepper({
       subtitle:
         "In wenigen Schritten zu deinem neuen Zuhause - ganz ohne Verpflichtungen!",
       description:
-        "Du hast dich für dein Nest-Haus entschieden. In den nächsten Schritten klären wir gemeinsam, was wir von dir benötigen und was wir für dich übernehmen, damit dein Zuhause genau so wird, wie du es dir wünschst. \n\n Wir kümmern uns um die Rahmenbedingungen und rechtlichen Schritte. Bis dahin zahlst du nur für unseren Service – keine Verpflichtung, falls etwas nicht passt.",
+        "Du hast dich für dein Hoam-House entschieden. In den nächsten Schritten klären wir gemeinsam, was wir von dir benötigen und was wir für dich übernehmen, damit dein Zuhause genau so wird, wie du es dir wünschst. \n\n Wir kümmern uns um die Rahmenbedingungen und rechtlichen Schritte. Bis dahin zahlst du nur für unseren Service – keine Verpflichtung, falls etwas nicht passt.",
     },
     {
       title: "Der Ablauf",
       subtitle: "Schritt für Schritt",
       description:
-        "Damit aus deinem Entwurf **ein Zuhause wird,** begleiten wir dich durch den gesamten Bauprozess. **Schritt für Schritt** gehen wir mit dir alle Phasen durch: von der **Einreichplanung und dem Baubescheid** über die Vorbereitung deines Grundstücks und den Bau des **Fundaments** bis hin zur **Lieferung und Montage** deines Nest-Haus.\n\nNach der **Lieferung** deines Nest-Hauses kannst du die **Haustechnik** und den **Innenausbau** entweder selbst übernehmen oder auf das Know-how unserer erfahrenen **Partnerbetriebe** zurückgreifen. Dabei stehen wir dir jederzeit **beratend zur Seite,** damit dein Zuhause genau so wird, wie du es dir wünschst.",
+        "Damit aus deinem Entwurf **ein Zuhause wird,** begleiten wir dich durch den gesamten Bauprozess. **Schritt für Schritt** gehen wir mit dir alle Phasen durch: von der **Einreichplanung und dem Baubescheid** über die Vorbereitung deines Grundstücks und den Bau des **Fundaments** bis hin zur **Lieferung und Montage** deines Hoam-House.\n\nNach der **Lieferung** deines Hoam-Housees kannst du die **Haustechnik** und den **Innenausbau** entweder selbst übernehmen oder auf das Know-how unserer erfahrenen **Partnerbetriebe** zurückgreifen. Dabei stehen wir dir jederzeit **beratend zur Seite,** damit dein Zuhause genau so wird, wie du es dir wünschst.",
     },
     {
       title: "Wir freuen uns auf dich",
@@ -1289,7 +1289,7 @@ export default function CheckoutStepper({
       title: "Unterstützung gefällig?",
       subtitle: "Unsere Planungspakete helfen auf deinem Weg zum Haus",
       description:
-        "Unsere **drei Planungspakete** geben dir Sicherheit für dein Nest-Haus. Mit dem **Basis-Paket** erhältst du eine genehmigungsfähige **Einreichplanung** und alle technischen **Grundlagen.** Das **Plus-Paket** erweitert dies um die komplette **Haustechnik- und Innenausbauplanung.**\n\nIm **Pro-Paket** entwickeln wir zusätzlich ein umfassendes **Interiorkonzept,** das Raumgefühl, Farben, Materialien und Licht vereint. Die Umsetzung kannst du **selbst übernehmen** oder mit unseren erfahrenen **Partnerfirmen realisieren.**",
+        "Unsere **drei Planungspakete** geben dir Sicherheit für dein Hoam-House. Mit dem **Basis-Paket** erhältst du eine genehmigungsfähige **Einreichplanung** und alle technischen **Grundlagen.** Das **Plus-Paket** erweitert dies um die komplette **Haustechnik- und Innenausbauplanung.**\n\nIm **Pro-Paket** entwickeln wir zusätzlich ein umfassendes **Interiorkonzept,** das Raumgefühl, Farben, Materialien und Licht vereint. Die Umsetzung kannst du **selbst übernehmen** oder mit unseren erfahrenen **Partnerfirmen realisieren.**",
     },
     {
       title: "Bereit für Vorfreude?",
@@ -1301,7 +1301,7 @@ export default function CheckoutStepper({
       title: "®Hoam",
       subtitle: "Weil nur du weißt, wie du wohnen willst",
       description:
-        "**Die Bestellung deines Nest-Hauses. Alles beginnt mit dem Entwurf und der Grundstücksanalyse. Sobald du dein Nest-Haus bestellst und die erste Teilzahlung leistest, erhältst du von uns deinen verbindlich garantierten Liefertermin. Transparent, planbar und verlässlich.**",
+        "**Die Bestellung deines Hoam-Housees. Alles beginnt mit dem Entwurf und der Grundstücksanalyse. Sobald du dein Hoam-House bestellst und die erste Teilzahlung leistest, erhältst du von uns deinen verbindlich garantierten Liefertermin. Transparent, planbar und verlässlich.**",
     },
   ];
 
@@ -2609,7 +2609,7 @@ export default function CheckoutStepper({
                       Konzept-Check
                     </h2>
                     <h3 className="h3-secondary text-black mb-2">
-                      Wir überprüfen für dich wie dein Nest-Haus auf ein
+                      Wir überprüfen für dich wie dein Hoam-House auf ein
                       Grundstück deiner Wahl passt
                     </h3>
                   </div>
@@ -2618,7 +2618,7 @@ export default function CheckoutStepper({
                       <p className="p-secondary mb-4 md:mt-12">
                         <span className="text-nest-gray">Bevor dein </span>
                         <span className="text-black font-medium">
-                          Traum vom Nest-Haus
+                          Traum vom Hoam-House
                         </span>
                         <span className="text-nest-gray">
                           {" "}
@@ -2645,7 +2645,7 @@ export default function CheckoutStepper({
                         </span>
                         <span className="text-nest-gray">
                           {" "}
-                          deines Nest-Hauses.
+                          deines Hoam-Housees.
                         </span>
                       </p>
                       <p className="p-secondary mb-6">
@@ -3984,7 +3984,7 @@ export default function CheckoutStepper({
                         {/* Disclaimer text - centered below box with margin */}
                         <div className="text-sm text-gray-600 leading-relaxed text-center pt-2 mb-6 mx-5">
                           Solltest du mit dem Entwurfsplan nicht zufrieden sein,
-                          kannst du vom Kauf deines Nest-Hauses zurücktreten. In
+                          kannst du vom Kauf deines Hoam-Housees zurücktreten. In
                           diesem Fall zahlst du lediglich die Kosten für die
                           Grundstücksanalyse und den Entwurfsplan.
                         </div>
@@ -4126,7 +4126,7 @@ export default function CheckoutStepper({
                 {/* Disclaimer text - centered below box */}
                 <div className="text-sm text-gray-600 leading-relaxed text-center mb-6 mx-5">
                   Solltest du mit dem Entwurf nicht zufrieden sein, kannst du
-                  vom Kauf deines Nest-Hauses zurücktreten. In diesem Fall
+                  vom Kauf deines Hoam-Housees zurücktreten. In diesem Fall
                   zahlst du lediglich die Kosten für den Entwurf und
                   Grundstücksanalyse.
                 </div>
@@ -4351,7 +4351,7 @@ export default function CheckoutStepper({
               ) : (
                 <div className="text-sm text-gray-600">
                   {isOhneNestMode
-                    ? "Dein Nest-Haus wird gemeinsam mit uns konfiguriert."
+                    ? "Dein Hoam-House wird gemeinsam mit uns konfiguriert."
                     : "Keine Konfiguration im Warenkorb."}
                 </div>
               )}
@@ -4386,7 +4386,7 @@ export default function CheckoutStepper({
                           Grundstücksanalyse und Entwurfsplan
                         </div>
                         <div className="text-xs md:text-sm text-gray-500 leading-snug mt-1">
-                          Der erste Schritt zu deinem Nest-Haus auf deinem
+                          Der erste Schritt zu deinem Hoam-House auf deinem
                           Grundstück.
                         </div>
                       </div>
@@ -4759,7 +4759,7 @@ export default function CheckoutStepper({
               <div className="text-sm md:text-base lg:text-lg 2xl:text-xl text-gray-700 leading-relaxed">
                 {isOhneNestMode
                   ? "Du zahlst lediglich die Grundstücksanalyse und den Entwurfsplan"
-                  : "Solltest du mit dem Entwurfsplan nicht zufrieden sein, kannst du vom Kauf deines Nest-Hauses zurücktreten. In diesem Fall zahlst du lediglich die Kosten für die Grundstücksanalyse und den Entwurfsplan."}
+                  : "Solltest du mit dem Entwurfsplan nicht zufrieden sein, kannst du vom Kauf deines Hoam-Housees zurücktreten. In diesem Fall zahlst du lediglich die Kosten für die Grundstücksanalyse und den Entwurfsplan."}
               </div>
             </div>
 

@@ -2,7 +2,7 @@
 
 **Generated:** 2025-11-20  
 **Last Updated:** 2025-11-27  
-**Project:** Nest-Haus Configurator  
+**Project:** Hoam-House Configurator  
 **Status:** ✅ FULLY OPERATIONAL  
 **Version:** 3.0.0 - Consolidated Documentation
 
@@ -30,7 +30,7 @@
 
 ## 🎯 Executive Summary
 
-This document consolidates the **complete implementation** of Google Analytics 4, Google Search Console, and enhanced SEO features for the Nest-Haus website. The integration provides demographics data while maintaining your existing superior custom analytics system.
+This document consolidates the **complete implementation** of Google Analytics 4, Google Search Console, and enhanced SEO features for the Hoam-House website. The integration provides demographics data while maintaining your existing superior custom analytics system.
 
 ### What's Actually Working Right Now
 
@@ -606,7 +606,7 @@ URL: https://lookerstudio.google.com
 2. Click "Admin" (bottom left)
 3. Click "+ Create Property"
 4. Property details:
-   - Property name: "Nest-Haus"
+   - Property name: "Hoam-House"
    - Reporting time zone: "(GMT+01:00) Central European Time"
    - Currency: "Euro (EUR)"
 5. Click "Next"
@@ -623,7 +623,7 @@ URL: https://lookerstudio.google.com
 1. In Property Settings, click "Data Streams"
 2. Click "Add stream" → "Web"
 3. Website URL: https://www.nest-haus.at
-4. Stream name: "Nest-Haus Website"
+4. Stream name: "Hoam-House Website"
 5. Enable "Enhanced measurement"
    ✅ Page views
    ✅ Scrolls
@@ -1008,15 +1008,15 @@ export default function YourPageClient() {
 import { trackCustomEvent } from '@/lib/ga4-tracking';
 
 <video
-  onPlay={() => trackCustomEvent('video_play', { video_title: 'Nest-Haus Introduction' })}
+  onPlay={() => trackCustomEvent('video_play', { video_title: 'Hoam-House Introduction' })}
   onPause={(e) => {
     const video = e.target as HTMLVideoElement;
     trackCustomEvent('video_pause', {
-      video_title: 'Nest-Haus Introduction',
+      video_title: 'Hoam-House Introduction',
       progress: Math.round((video.currentTime / video.duration) * 100)
     });
   }}
-  onEnded={() => trackCustomEvent('video_complete', { video_title: 'Nest-Haus Introduction' })}
+  onEnded={() => trackCustomEvent('video_complete', { video_title: 'Hoam-House Introduction' })}
 >
   <source src="/videos/intro.mp4" />
 </video>
@@ -1123,7 +1123,7 @@ const faqSchema = {
   mainEntity: [
     {
       "@type": "Question",
-      name: "Was kostet ein Nest-Haus?",
+      name: "Was kostet ein Hoam-House?",
       acceptedAnswer: {
         "@type": "Answer",
         text: "Die Preise beginnen bei €177.000 für das 1-Modul und reichen bis €313.000 für das 3-Module Haus.",

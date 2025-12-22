@@ -134,7 +134,7 @@ export default function GridsShowcasePage() {
             backgroundColor="black"
             image={IMAGES.function.nestHausFensterTuerenPosition}
             imageDescription="NEST Haus Fenster und Türen Positionierung Konzept"
-            text="Mit deinem Nest-Haus bestimmst du selbst, wo Fenster und Türen ihren Platz finden sollen. Nach deiner Reservierung setzen wir uns mit dir in Verbindung, um die ideale Platzierung festzulegen. Auf Basis deiner Vorgaben fertigen wir dein Zuhause mit passgenauen Öffnungen an. Dort platzieren wir im Anschluss deine Fenster & Türen."
+            text="Mit deinem Hoam-House bestimmst du selbst, wo Fenster und Türen ihren Platz finden sollen. Nach deiner Reservierung setzen wir uns mit dir in Verbindung, um die ideale Platzierung festzulegen. Auf Basis deiner Vorgaben fertigen wir dein Zuhause mit passgenauen Öffnungen an. Dort platzieren wir im Anschluss deine Fenster & Türen."
           />
         </section>
 

@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import AgbClient from "./AgbClient";
 
 export const metadata: Metadata = {
-  title: "Allgemeine Geschäftsbedingungen | Nest-Haus",
+  title: "Allgemeine Geschäftsbedingungen | Hoam-House",
   description:
     "Allgemeine Geschäftsbedingungen der NEST-Haus GmbH für den Verkauf modularer Häuser gemäß österreichischem Konsumentenschutzgesetz.",
   robots: {
@@ -10,7 +10,7 @@ export const metadata: Metadata = {
     follow: true,
   },
   openGraph: {
-    title: "Allgemeine Geschäftsbedingungen | Nest-Haus",
+    title: "Allgemeine Geschäftsbedingungen | Hoam-House",
     description:
       "Allgemeine Geschäftsbedingungen der NEST-Haus GmbH für den Verkauf modularer Häuser gemäß österreichischem Konsumentenschutzgesetz.",
     type: "website",

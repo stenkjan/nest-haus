@@ -210,7 +210,7 @@ class PricingAnalyzer:
             'metadata': {
                 'version': '1.0.0',
                 'created': datetime.now().isoformat(),
-                'description': 'Nest-Haus Configurator Pricing Template'
+                'description': 'Hoam-House Configurator Pricing Template'
             },
             'tabs': []
         }

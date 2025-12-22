@@ -1,8 +1,8 @@
 @echo off
-REM Cache Cleaning Script for Nest-Haus (Windows Batch Version)
+REM Cache Cleaning Script for Hoam-House (Windows Batch Version)
 REM Fixes webpack module resolution errors after installing new dependencies
 
-echo 🧹 Nest-Haus Cache Cleaner (Windows)
+echo 🧹 Hoam-House Cache Cleaner (Windows)
 echo ====================================
 
 echo 🔄 Step 1: Killing all Node.js processes...

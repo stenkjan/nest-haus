@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 
 /**
- * Cache Cleaning Script for Nest-Haus
+ * Cache Cleaning Script for Hoam-House
  * 
  * Fixes webpack module resolution errors that occur after installing new dependencies.
  * Based on project rules: "CRITICAL: Webpack Module Resolution Error Prevention"
@@ -19,7 +19,7 @@ const fs = require('fs');
 const path = require('path');
 const os = require('os');
 
-console.log('🧹 Nest-Haus Cache Cleaner');
+console.log('🧹 Hoam-House Cache Cleaner');
 console.log('==========================');
 
 // Check if we're on Windows (project uses Windows environment)
@@ -30,7 +30,7 @@ const isWindows = os.platform() === 'win32';
  */
 function killNodeProcesses() {
   console.log('🔄 Step 1: Killing all Node.js processes...');
-  
+
   try {
     if (isWindows) {
       // Windows: Use taskkill command
@@ -52,9 +52,9 @@ function killNodeProcesses() {
  */
 function deleteWebpackCache() {
   console.log('🗑️  Step 2: Deleting webpack cache (.next directory)...');
-  
+
   const nextDir = path.join(process.cwd(), '.next');
-  
+
   try {
     if (fs.existsSync(nextDir)) {
       // Use cross-platform removal
@@ -78,13 +78,13 @@ function deleteWebpackCache() {
  */
 function deleteAdditionalCaches() {
   console.log('🗑️  Step 3: Cleaning additional caches...');
-  
+
   const cacheDirs = [
     path.join(process.cwd(), 'node_modules', '.cache'),
     path.join(process.cwd(), '.turbo'),
     path.join(os.homedir(), '.npm', '_cacache'),
   ];
-  
+
   cacheDirs.forEach(cacheDir => {
     try {
       if (fs.existsSync(cacheDir)) {
@@ -107,10 +107,10 @@ function deleteAdditionalCaches() {
 function checkAndRestartDev() {
   const args = process.argv.slice(2);
   const shouldRestart = args.includes('--restart') || args.includes('-r');
-  
+
   if (shouldRestart) {
     console.log('🚀 Step 4: Restarting development server...');
-    
+
     // Check if server is already running on port 3000
     try {
       if (isWindows) {
@@ -127,7 +127,7 @@ function checkAndRestartDev() {
     } catch (error) {
       // Port not in use, which is good
     }
-    
+
     // Start development server
     console.log('🔄 Starting npm run dev...');
     const devProcess = spawn('npm', ['run', 'dev'], {
@@ -135,14 +135,14 @@ function checkAndRestartDev() {
       shell: true,
       detached: false
     });
-    
+
     // Handle process termination
     process.on('SIGINT', () => {
       console.log('\n🛑 Terminating development server...');
       devProcess.kill('SIGINT');
       process.exit(0);
     });
-    
+
   } else {
     console.log('ℹ️  Development server not restarted (use --restart or -r to auto-restart)');
     console.log('💡 To start manually: npm run dev');
@@ -177,23 +177,23 @@ This script fixes webpack module resolution errors by:
 // Main execution
 function main() {
   const args = process.argv.slice(2);
-  
+
   if (args.includes('--help') || args.includes('-h')) {
     showUsage();
     return;
   }
-  
+
   console.log('🎯 Fixing webpack module resolution errors...\n');
-  
+
   killNodeProcesses();
   deleteWebpackCache();
   deleteAdditionalCaches();
-  
+
   console.log('\n✨ Cache cleaning completed successfully!');
   console.log('🔧 This should resolve webpack module resolution errors.');
-  
+
   checkAndRestartDev();
-  
+
   if (!args.includes('--restart') && !args.includes('-r')) {
     console.log('\n📋 Next steps:');
     console.log('   1. Run: npm run dev');

@@ -47,7 +47,7 @@ Step 4: Abschluss (#abschluss)
 - Redesigned with left-text/right-interaction layout
 - Left side: Description text explaining appointment booking
 - Right side: `AppointmentBooking` component and form
-- Removed "Dein Nest-Haus Vorentwurf" section (moved to Step 1)
+- Removed "Dein Hoam-House Vorentwurf" section (moved to Step 1)
 - Added "Immer flexibel bleiben" information box
 
 ### 6. Step 3 (Planungspakete)

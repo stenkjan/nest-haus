@@ -75,7 +75,7 @@ import { UnifiedContentCard } from "@/components/cards";
   variant="responsive"
   // Display options
   title="Unsere Materialien"
-  subtitle="Hochwertige Auswahl für dein Nest-Haus"
+  subtitle="Hochwertige Auswahl für dein Hoam-House"
   backgroundColor="black"
   maxWidth={true}
   showInstructions={true}
@@ -171,7 +171,7 @@ import {
   category="ablaufSteps"
   layout="text-icon"
   title="So läuft's ab"
-  subtitle="In 7 Schritten zu deinem Nest-Haus"
+  subtitle="In 7 Schritten zu deinem Hoam-House"
   buttons={ABLAUF_STEPS_PRESET.buttons}
 />
 
