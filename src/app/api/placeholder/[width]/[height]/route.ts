@@ -25,7 +25,7 @@ export async function GET(
     let svg = '';
 
     if (style === 'nest') {
-      // Nest Haus styled placeholder with house icon and branding
+      // Hoam styled placeholder with house icon and branding
       svg = `
         <svg width="${width}" height="${height}" xmlns="http://www.w3.org/2000/svg">
           <rect width="100%" height="100%" fill="${bgColor}" />
@@ -61,7 +61,7 @@ export async function GET(
               text-anchor="middle" 
               dominant-baseline="middle"
             >
-              NEST Haus
+              Hoam
             </text>
           ` : ''}
         </svg>

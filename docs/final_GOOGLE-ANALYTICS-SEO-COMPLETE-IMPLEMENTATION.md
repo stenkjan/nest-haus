@@ -218,7 +218,7 @@ GA4 → Configure → Events → Find "generate_lead" → Mark as conversion ✓
 
 ### 2. `add_to_cart` (Configuration to Cart)
 
-**Triggered when:** User clicks "Zum Warenkorb" after configuring their Nest Haus
+**Triggered when:** User clicks "Zum Warenkorb" after configuring their Hoam
 
 **Event data sent:**
 

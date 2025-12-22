@@ -175,7 +175,7 @@ const myQuoteCard: ContentCardData = {
   id: 1,
   title: "", // Not used for glass-quote layout
   subtitle: "", // Not used for glass-quote layout
-  description: "Das Nest Haus verbindet **Innovation** mit **Tradition**. Ein Konzept, das die Zukunft des Bauens **neu definiert**.|||Dr. Anna Müller|||Architektin und Nachhaltigkeitsexpertin",
+  description: "Das Hoam verbindet **Innovation** mit **Tradition**. Ein Konzept, das die Zukunft des Bauens **neu definiert**.|||Dr. Anna Müller|||Architektin und Nachhaltigkeitsexpertin",
   backgroundColor: "#121212",
 };
 ```

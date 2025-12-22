@@ -1343,7 +1343,7 @@ export default function CheckoutStepper({
     });
 
     // Calculate dynamic total from configuration using PriceCalculator (same as konfigurator)
-    // IMPORTANT: Calculate FULL total, then subtract planungspaket for "Dein Nest Haus" display
+    // IMPORTANT: Calculate FULL total, then subtract planungspaket for "Dein Hoam" display
     let nestHausTotal = 0; // Physical house price (without planungspaket)
 
     if (configItem && configItem.nest) {
@@ -1378,14 +1378,14 @@ export default function CheckoutStepper({
         }
       }
 
-      // Subtract planungspaket to get "Dein Nest Haus" price (physical house only)
+      // Subtract planungspaket to get "Dein Hoam" price (physical house only)
       nestHausTotal = fullTotal - planungspaketPrice;
     } else {
       // Fall back to cart total if no configuration
       nestHausTotal = getCartTotal();
     }
 
-    const total = nestHausTotal; // "Dein Nest Haus" shows only physical house price
+    const total = nestHausTotal; // "Dein Hoam" shows only physical house price
     const _grundstueckscheckDone = Boolean(configItem?.grundstueckscheck);
     const _dueNow = GRUNDSTUECKSCHECK_PRICE; // Grundstückscheck is always due today as part of the process
     const _planungspaketDone = Boolean(configItem?.planungspaket?.value);
@@ -3667,7 +3667,7 @@ export default function CheckoutStepper({
             {/* Left/Right Layout: Teilzahlungen (left) + Grundstücksanalyse und Entwurfsplan (right) */}
             {!isOhneNestMode &&
               (() => {
-                // Calculate dynamic total (Dein Nest Haus price from Dein Preis Überblick)
+                // Calculate dynamic total (Dein Hoam price from Dein Preis Überblick)
                 // Use PriceCalculator.calculateTotalPrice() for consistency with konfigurator
                 let deinNestHausTotal = 0;
                 if (configItem && configItem.nest) {
@@ -3721,7 +3721,7 @@ export default function CheckoutStepper({
                     }
                   }
 
-                  // Subtract planungspaket to get "Dein Nest Haus" price (physical house only)
+                  // Subtract planungspaket to get "Dein Hoam Haus" price (physical house only)
                   deinNestHausTotal = fullTotal - planungspaketPrice;
                 }
 
@@ -3745,7 +3745,7 @@ export default function CheckoutStepper({
                   return planPkg?.price || 0;
                 })();
 
-                // Total price for payment calculations (Nest Haus already excludes planungspaket, so just add it back)
+                // Total price for payment calculations (Hoam already excludes planungspaket, so just add it back)
                 const totalPrice =
                   deinNestHausTotal + planungspaketPriceForTotal;
 

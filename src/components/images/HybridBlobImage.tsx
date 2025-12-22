@@ -109,7 +109,7 @@ function getClientOptimizedSettings(
   path="hero-image"
   isAboveFold={true}
   isCritical={true}
-  alt="NEST Haus Hero"
+  alt="Hoam Hero"
 />
 
 // Configurator preview (interactive, dynamic)

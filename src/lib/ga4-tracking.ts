@@ -17,7 +17,7 @@ function initDataLayer() {
  */
 function pushEvent(eventName: string, eventParams: Record<string, unknown>) {
   initDataLayer();
-  
+
   // Push to dataLayer for GTM compatibility
   const dataLayerEvent = {
     event: eventName,
@@ -25,7 +25,7 @@ function pushEvent(eventName: string, eventParams: Record<string, unknown>) {
   };
   window.dataLayer.push(dataLayerEvent);
   console.log('📊 DataLayer Event:', dataLayerEvent);
-  
+
   // Send directly to GA4 via gtag
   if (typeof window !== 'undefined' && window.gtag) {
     window.gtag('event', eventName, eventParams);
@@ -107,7 +107,7 @@ export function trackConfigurationComplete(data: {
 }) {
   // Convert customization options array to pipe-separated string
   const customizationString = data.customizationOptions?.join('|') || '';
-  
+
   pushEvent('config_complete', {
     house_model: data.houseModel || 'Unknown',
     price_estimated: data.priceEstimated || 0,
@@ -130,7 +130,7 @@ export function trackAddToCart(data: {
       value: data.price || 0,
       items: [{
         item_id: data.itemId || 'HOUSE-CONF-UNKNOWN',
-        item_name: data.itemName || 'Nest Haus Configuration',
+        item_name: data.itemName || 'Hoam Configuration',
         price: data.price || 0,
         quantity: data.quantity || 1,
       }]

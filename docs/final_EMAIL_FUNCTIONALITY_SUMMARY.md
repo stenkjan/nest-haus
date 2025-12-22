@@ -542,7 +542,7 @@ CRON_SECRET=your-secure-cron-secret-here
   - Each configuration item (Nest model, Gebäudehülle, Innenverkleidung, Fußboden, PV-Anlage, Fenster)
   - Item names and individual prices
 - ✅ **Dein Nest - Überblick** section showing:
-  - Total house price (Dein Nest Haus)
+  - Total house price (Dein Hoam)
   - Planungspaket (if selected) with price
   - Konzept-Check (if completed) with price
   - Terminvereinbarung status (if booked)

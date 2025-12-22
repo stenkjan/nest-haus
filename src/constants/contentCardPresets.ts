@@ -207,7 +207,7 @@ export const PLANUNGSPAKETE_PRESET = {
  * CARD STRUCTURE:
  * ----------------
  * Card 1: "Architektur fühlen,\nstatt nur sehen" (2x2, h2, reversed order, 2 buttons)
- * Card 2: "So fühlt sich Wohnen im Nest Haus an" (2x1)
+ * Card 2: "So fühlt sich Wohnen im Hoam Haus an" (2x1)
  * Card 3: "Wohnen wie du willst, Nur mit Nest" (2x1)
  * Card 4+: Additional entwurf-specific cards
  * 

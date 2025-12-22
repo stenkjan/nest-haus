@@ -175,7 +175,7 @@ export default function CardsShowcasePage() {
                 title: "2. Einreichplanung",
                 subtitle: "Zwei Wege zum Ziel",
                 description:
-                  "Nach dem Entwurf erstellen wir die komplette Einreichplanung und reichen diese bei der zuständigen Gemeinde ein. Ab hier hast du die Wahl, wie du mit der Bestellung deines Nest Hauses fortfährst.",
+                  "Nach dem Entwurf erstellen wir die komplette Einreichplanung und reichen diese bei der zuständigen Gemeinde ein. Ab hier hast du die Wahl, wie du mit der Bestellung deines Hoames fortfährst.",
                 backgroundColor: "#F9FAFB",
                 iconNumber: 2,
               },

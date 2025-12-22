@@ -177,7 +177,7 @@ Created standalone HTML tool for cache management:
 <html lang="de">
 <head>
     <meta charset="UTF-8">
-    <title>Clear Price Cache - NEST Haus</title>
+    <title>Clear Price Cache - Hoam</title>
 ```
 
 **Usage:**

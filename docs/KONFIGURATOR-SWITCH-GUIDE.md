@@ -169,7 +169,7 @@ The simplified konfigurator is designed for users who want to quickly get a prel
 
 #### Warenkorb Ohne Nest Mode
 
-- [ ] Overview shows "—" for "Dein Nest Haus"
+- [ ] Overview shows "—" for "Dein Hoam"
 - [ ] Overview shows "1.000 €" for "Check & Vorentwurf"
 - [ ] Overview shows "—" for "Planungspaket"
 - [ ] "Dein Nest Deine Auswahl" box hidden

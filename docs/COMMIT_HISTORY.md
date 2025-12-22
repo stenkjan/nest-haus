@@ -4331,7 +4331,7 @@ _Auto-generated documentation of project changes_
 ## [619b3c5dea5882010b24a6f8d7413dc7349681c3] - Mon Nov 17 21:16:04 2025 +0100
 
 **Author**: stenkjan
-**Message**: `fix: correct alt text and subtitles in ImageGallery and LandingImagesCarousel components  - Updated alt text for NEST Haus 4 Module in ImageGallery for improved clarity. - Changed subtitles in LandingImagesCarousel from "Fundamentplatten Weiss" to "Fassadenplatten Weiss" and "Mediterane Ansicht" to "Mediterrane Ansicht" for accuracy. - Adjusted file path in contentCardPresets for better API integration.  `
+**Message**: `fix: correct alt text and subtitles in ImageGallery and LandingImagesCarousel components  - Updated alt text for Hoam 4 Module in ImageGallery for improved clarity. - Changed subtitles in LandingImagesCarousel from "Fundamentplatten Weiss" to "Fassadenplatten Weiss" and "Mediterane Ansicht" to "Mediterrane Ansicht" for accuracy. - Adjusted file path in contentCardPresets for better API integration.  `
 
 ### Changes Analysis
 
@@ -7120,7 +7120,7 @@ _Auto-generated documentation of project changes_
 ## [c1242be8ff836487785fd99700101f816c49f76f] - Wed Nov 12 11:58:54 2025 +0100
 
 **Author**: stenkjan
-**Message**: `Fix: Correct Teilzahlung calculations and add Konfiguration bearbeiten link  FIXES: 1. Changed 4th payment label from '3. Teilzahlung' to '4. Teilzahlung' 2. Recalculated all payments based on dynamic total (Dein Nest Haus + Planungspaket) 3. Added onClick to 'Konfiguration bearbeiten' button to open /konfigurator  Calculation changes: - Base total: Dynamic sum from getItemPrice() (not stored totalPrice) - Includes Planungspaket if not basis (Plus: 9,600€, Pro: 12,700€) - 1. Teilzahlung: 3,000€ (Grundstückscheck full price) - 2. Teilzahlung: (Total × 30%) - 1,500€ credit - 3. Teilzahlung: Total × 50% - 4. Teilzahlung: Total × 20%  Example with Nest 80 defaults (226,746€) + Basis (0€) = 226,746€: - 1. Teilzahlung: 3,000€ - 2. Teilzahlung: 66,524€ (68,024 - 1,500) - 3. Teilzahlung: 113,373€ - 4. Teilzahlung: 45,349€  `
+**Message**: `Fix: Correct Teilzahlung calculations and add Konfiguration bearbeiten link  FIXES: 1. Changed 4th payment label from '3. Teilzahlung' to '4. Teilzahlung' 2. Recalculated all payments based on dynamic total (Dein Hoam + Planungspaket) 3. Added onClick to 'Konfiguration bearbeiten' button to open /konfigurator  Calculation changes: - Base total: Dynamic sum from getItemPrice() (not stored totalPrice) - Includes Planungspaket if not basis (Plus: 9,600€, Pro: 12,700€) - 1. Teilzahlung: 3,000€ (Grundstückscheck full price) - 2. Teilzahlung: (Total × 30%) - 1,500€ credit - 3. Teilzahlung: Total × 50% - 4. Teilzahlung: Total × 20%  Example with Nest 80 defaults (226,746€) + Basis (0€) = 226,746€: - 1. Teilzahlung: 3,000€ - 2. Teilzahlung: 66,524€ (68,024 - 1,500) - 3. Teilzahlung: 113,373€ - 4. Teilzahlung: 45,349€  `
 
 ### Changes Analysis
 
@@ -7233,7 +7233,7 @@ _Auto-generated documentation of project changes_
 ## [c953485d0ec7ce7077e2c7d6d31cb650f57a7807] - Wed Nov 12 11:25:30 2025 +0100
 
 **Author**: stenkjan
-**Message**: `Fix: Calculate dynamic total in Warenkorb using new pricing system  CRITICAL FIX: 'Dein Nest Haus' box was showing 0€ because it used stored totalPrice which was from the old pricing system.  Solution: - renderIntro(): Calculate total dynamically from individual item prices - Uses getItemPrice() for each configuration item - Sums: nest + gebaeudehuelle + innenverkleidung + fussboden + all options - Falls back to getCartTotal() if no configuration present - Removed useMemo (can't use hooks in regular function)  Result: - 'Dein Nest Haus' box now shows correct total (e.g., 226,746€ for Nest 80 defaults) - Price updates when configuration changes - Uses same pricing as Konfigurator (from Google Sheets)  `
+**Message**: `Fix: Calculate dynamic total in Warenkorb using new pricing system  CRITICAL FIX: 'Dein Hoam' box was showing 0€ because it used stored totalPrice which was from the old pricing system.  Solution: - renderIntro(): Calculate total dynamically from individual item prices - Uses getItemPrice() for each configuration item - Sums: nest + gebaeudehuelle + innenverkleidung + fussboden + all options - Falls back to getCartTotal() if no configuration present - Removed useMemo (can't use hooks in regular function)  Result: - 'Dein Hoam' box now shows correct total (e.g., 226,746€ for Nest 80 defaults) - Price updates when configuration changes - Uses same pricing as Konfigurator (from Google Sheets)  `
 
 ### Changes Analysis
 

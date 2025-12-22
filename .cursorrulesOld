@@ -538,7 +538,7 @@ const views = ImageManager.getAvailableViews(configuration);
   isAboveFold={true}
   isCritical={true}
   priority={true}
-  alt="NEST Haus Hero"
+  alt="Hoam Hero"
   sizes="100vw"
   style={{ aspectRatio: "16/9" }}
 />
