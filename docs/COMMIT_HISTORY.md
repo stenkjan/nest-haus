@@ -4,6 +4,19 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [77b9d435bcbc48e2b4e2dd2541f18d39a33b3281] - Mon Dec 22 20:08:23 2025 +0100
+
+**Author**: stenkjan
+**Message**: `🔄 Update YouTube video embed parameters in WarumWirClient component  - Modified the iframe source URL to include additional parameters for improved functionality, such as  and , enhancing the user experience.  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/warum-wir/WarumWirClient.tsx
+
+
+---
+
 ## [40b6aea0625851395b667cc3ea568c415006974e] - Mon Dec 22 20:05:31 2025 +0100
 
 **Author**: stenkjan
