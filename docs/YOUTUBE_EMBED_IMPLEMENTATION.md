@@ -33,7 +33,7 @@ Successfully replaced the `ModernVideoPlayer` component with a YouTube embed on 
     <iframe
       className="absolute top-0 left-0 w-full h-full rounded-lg"
       src="https://www.youtube.com/embed/Z05jRVentdc?si=qGjw2glOumXnECch"
-      title="Nest Haus Vision - Die ®Hoam Vision"
+      title="®Hoam Vision - Wohne wie du willst."
       frameBorder="0"
       allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
       referrerPolicy="strict-origin-when-cross-origin"
@@ -64,7 +64,7 @@ videos: [
 const videoSchema = {
   "@context": "https://schema.org",
   "@type": "VideoObject",
-  name: "Nest Haus Vision - Die ®Hoam Vision",
+  name: "®Hoam Vision - Wohne wie du willst.",
   description: "Erfahren Sie mehr über die Vision von NEST-Haus...",
   thumbnailUrl: "https://i.ytimg.com/vi/Z05jRVentdc/maxresdefault.jpg",
   uploadDate: "2024-01-01",

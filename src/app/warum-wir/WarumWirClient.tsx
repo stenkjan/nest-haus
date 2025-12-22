@@ -63,7 +63,7 @@ export default function WarumWirClient() {
         >
           <div className="w-full">
             <SectionHeader
-              title="Die ®Hoam Vision"
+              title="®Hoam Vision"
               subtitle="Eine Welt, in der Effizienz auf Architektur trifft"
               titleClassName="text-white"
               subtitleClassName="text-white"
