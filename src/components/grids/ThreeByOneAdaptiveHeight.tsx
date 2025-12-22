@@ -17,7 +17,7 @@ export default function ThreeByOneAdaptiveHeight({
   maxWidth = false, // Default to false to avoid width constraints
   text = "<p class='p-secondary text-white'><span class='text-nest-gray'>Mit deinem Hoam-House entscheidest du selbst, wo</span> <span class='text-white font-medium'>Fenster und Türen</span> <span class='text-nest-gray'>ihren Platz finden.</span><br /><br /><span class='text-nest-gray'>Im Rahmen deines Konzept-Checks erstellen wir deinen</span> <span class='text-white font-medium'>individuellen Vorentwurf,</span> <span class='text-nest-gray'>in dem die ideale</span> <span class='text-white font-medium'>Anordnung</span> <span class='text-nest-gray'>festgelegt wird. Auch das </span> <span class='text-white font-medium'>Material</span> <span class='text-nest-gray'>wählst du passend zu deiner Konfiguration.</span><span class='text-white font-medium'> Individuell. Effizient.</span></p>",
   image = IMAGES.function.nestHausFensterTuerenPosition,
-  imageDescription = "NEST Haus Fenster und Türen Positionierung Konzept",
+  imageDescription = "Hoam Fenster und Türen Positionierung Konzept",
   backgroundColor = "black",
 }: ThreeByOneAdaptiveHeightProps) {
   const [isClient, setIsClient] = useState(false);
