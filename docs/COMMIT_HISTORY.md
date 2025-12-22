@@ -4,6 +4,19 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [d156c5cc06d40f4e73a9c2b325f2cf160fdbd1ce] - Mon Dec 22 17:40:32 2025 +0100
+
+**Author**: stenkjan
+**Message**: `✨ Enhance LandingImagesCarousel component for responsive image handling  - Updated image selection logic to use desktop or mobile images based on screen size and  flag. - Improved height calculations for images to maintain aspect ratios across devices. - Simplified the rendering of image overlays for mobile and desktop views, ensuring proper display based on device type.  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/components/sections/LandingImagesCarousel.tsx
+
+
+---
+
 ## [156650b37bb63f85cdb57b54b4ba1d812cacdf86] - Mon Dec 22 17:29:09 2025 +0100
 
 **Author**: stenkjan
