@@ -241,19 +241,19 @@ export const configuratorData: CategoryData[] = [
       {
         id: 'light',
         name: 'Light',
-        description: '15% der Nestfläche\nGrundbelichtung',
+        description: '15% der ®Hoam Fläche\nGrundbelichtung',
         price: { type: 'upgrade', amount: 0, monthly: 0 } // Dynamic pricing
       },
       {
         id: 'medium',
         name: 'Medium',
-        description: '22% der Nestfläche\nAusgewogene Belichtung',
+        description: '22% der ®Hoam Fläche\nAusgewogene Belichtung',
         price: { type: 'upgrade', amount: 0, monthly: 0 } // Dynamic pricing
       },
       {
         id: 'bright',
         name: 'Bright',
-        description: '28% der Nestfläche\nMaximale Helligkeit',
+        description: '28% der ®Hoam Fläche\nMaximale Helligkeit',
         price: { type: 'upgrade', amount: 0, monthly: 0 } // Dynamic pricing
       }
     ],

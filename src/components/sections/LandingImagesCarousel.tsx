@@ -51,7 +51,7 @@ const LandingImagesCarousel: React.FC<LandingImagesCarouselProps> = ({
         mobilePath: IMAGES.hero.mobile.nestHaus1,
         alt: "Hoam Bild 1",
         description: {
-          title: "Nest 140",
+          title: "Hoam 140",
           subtitle: "Fassadenplatten Weiss",
           sectionSlug: "dein-Hoam", // Use slug instead of sectionId
         },
@@ -61,7 +61,7 @@ const LandingImagesCarousel: React.FC<LandingImagesCarouselProps> = ({
         mobilePath: IMAGES.hero.mobile.nestHaus2,
         alt: "Hoam Bild 2",
         description: {
-          title: "Nest 100",
+          title: "Hoam 100",
           subtitle: "Mediterrane Ansicht",
           sectionSlug: "design-im-freistil",
         },
@@ -71,7 +71,7 @@ const LandingImagesCarousel: React.FC<LandingImagesCarouselProps> = ({
         mobilePath: IMAGES.hero.mobile.nestHaus3,
         alt: "Hoam Bild 3",
         description: {
-          title: "Nest Interior",
+          title: "Hoam Interior",
           subtitle: "Kalkstein Verglasung",
           sectionSlug: "visionen-brauchen-raeume",
         },
@@ -81,7 +81,7 @@ const LandingImagesCarousel: React.FC<LandingImagesCarouselProps> = ({
         mobilePath: IMAGES.hero.mobile.nestHaus4,
         alt: "Hoam Bild 4",
         description: {
-          title: "Nest 140",
+          title: "Hoam 140",
           subtitle: "Vogelperspektive Holzlattung",
           sectionSlug: "dein-hoam-haus",
         },
@@ -91,7 +91,7 @@ const LandingImagesCarousel: React.FC<LandingImagesCarouselProps> = ({
         mobilePath: IMAGES.hero.mobile.nestHaus5,
         alt: "Hoam Bild 5",
         description: {
-          title: "Nest 80",
+          title: "Hoam 80",
           subtitle: "Stirnseite Trapezblech",
           sectionSlug: "keine-lebensentscheidung",
         },
@@ -101,7 +101,7 @@ const LandingImagesCarousel: React.FC<LandingImagesCarouselProps> = ({
         mobilePath: IMAGES.hero.mobile.nestHaus6,
         alt: "Hoam Bild 6",
         description: {
-          title: "Nest Interior",
+          title: "Hoam Interior",
           subtitle: "Innenverkleidung Fichte, Parkett Eiche",
           sectionSlug: "wohnen-neu-gedacht",
         },
@@ -111,7 +111,7 @@ const LandingImagesCarousel: React.FC<LandingImagesCarouselProps> = ({
         mobilePath: IMAGES.hero.mobile.nestHaus7,
         alt: "Hoam Bild 7",
         description: {
-          title: "Nest 140",
+          title: "Hoam 140",
           subtitle: "Wald Ansicht Schwarz",
           sectionSlug: "wohnen-ohne-grenzen",
         },

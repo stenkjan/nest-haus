@@ -45,7 +45,7 @@ Changed the display to show:
 ```
 ┌─────────────────────────────────────────────┐
 │ Belichtungspaket                      €700  │
-│ Medium 16% der Nestfläche                   │
+│ Medium 16% der ®Hoam Fläche                   │
 │ Ausgewogene Belichtung                      │
 │ ─────────────────────────────────────────   │
 │ Aluminium Hell                              │

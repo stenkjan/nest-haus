@@ -22,15 +22,15 @@ const defaultFAQItems: FAQItem[] = [
   {
     id: 1,
     question:
-      "Was genau ist Hoam und wie unterscheidet es sich von einem Fertigteilhaus, Tiny House oder Architektenhaus?",
+      "Was genau ist ®Hoam und wie unterscheidet es sich von einem Fertigteilhaus, Tiny House oder Architektenhaus?",
     answer:
-      "Hoam versucht durch optimierte Produktionsbedingungen eine enorm hohe Qualität – vergleichbar mit Luxus-Architektenhäusern – leistbar zu machen. Darüber hinaus ermöglichen wir trotz Standardisierung weiterhin individuelle Gestaltungsmöglichkeiten bei der Raumaufteilung und Grundrissplanung. Die hochpräzise Produktion macht es uns möglich, die Module so passgenau zu fertigen, dass sie mehrmals zusammen- und wieder auseinandergebaut werden können. Dadurch entsteht eine Flexibilität ähnlich wie bei einem Tiny House: Du kannst flexibel bleiben und dein Haus mitnehmen, erweitern oder verkaufen. Das Grundstück bleibt dabei stets unabhängig vom Haus.",
+      "®Hoam versucht durch optimierte Produktionsbedingungen eine enorm hohe Qualität – vergleichbar mit Luxus-Architektenhäusern – leistbar zu machen. Darüber hinaus ermöglichen wir trotz Standardisierung weiterhin individuelle Gestaltungsmöglichkeiten bei der Raumaufteilung und Grundrissplanung. Die hochpräzise Produktion macht es uns möglich, die Module so passgenau zu fertigen, dass sie mehrmals zusammen- und wieder auseinandergebaut werden können. Dadurch entsteht eine Flexibilität ähnlich wie bei einem Tiny House: Du kannst flexibel bleiben und dein Haus mitnehmen, erweitern oder verkaufen. Das Grundstück bleibt dabei stets unabhängig vom Haus.",
   },
   {
     id: 2,
     question: "Was ist der Konzept-Check?",
     answer:
-      "Mit dem Konzept-Check erhältst du deine Grundstücksanalyse, einen individuellen Entwurfsplan sowie eine konkrete Kosten- und Zeitplanung. Solltest du dich gegen Hoam entscheiden, kannst du die Grundstücksanalyse auch für andere Bauvorhaben verwenden.",
+      "Mit dem Konzept-Check erhältst du deine Grundstücksanalyse, einen individuellen Entwurfsplan sowie eine konkrete Kosten- und Zeitplanung. Solltest du dich gegen ®Hoam entscheiden, kannst du die Grundstücksanalyse auch für andere Bauvorhaben verwenden.",
   },
   {
     id: 3,
@@ -41,9 +41,9 @@ const defaultFAQItems: FAQItem[] = [
   },
   {
     id: 4,
-    question: "Was kostet Hoam?",
+    question: "Was kostet ®Hoam?",
     answer:
-      "Der exakte Preis ist abhängig von deinem individuellen Hoam-Entwurf. Diesen arbeiten wir gemeinsam im Konzept-Check aus. Danach erhältst du ein konkretes Angebot für ®Hoam.",
+      "Der exakte Preis ist abhängig von deinem individuellen ®Hoam-Entwurf. Diesen arbeiten wir gemeinsam im Konzept-Check aus. Danach erhältst du ein konkretes Angebot für ®Hoam.",
   },
 ];
 

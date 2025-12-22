@@ -9,12 +9,12 @@ export const metadata: Metadata = generatePageMetadata("home");
 const websiteSchema = {
   "@context": "https://schema.org",
   "@type": "WebSite",
-  name: "NEST-Haus",
+  name: "®Hoam",
   description: "Modulare Häuser und nachhaltiges Bauen",
-  url: "https://nest-haus.at",
+  url: "https://da-hoam.at",
   potentialAction: {
     "@type": "SearchAction",
-    target: "https://nest-haus.at/konfigurator?query={search_term_string}",
+    target: "https://da-hoam.at/konfigurator?query={search_term_string}",
     "query-input": "required name=search_term_string",
   },
 };
@@ -23,23 +23,23 @@ const websiteSchema = {
 const productSchema = {
   "@context": "https://schema.org",
   "@type": "Product",
-  name: "NEST-Haus Modulares Bausystem",
+  name: "®Hoam Modulares Bausystem",
   description:
     "Individuell konfigurierbare modulare Häuser für nachhaltiges Wohnen",
   brand: {
     "@type": "Brand",
-    name: "NEST-Haus",
+    name: "®Hoam",
   },
   category: "Modulhaus",
   offers: {
     "@type": "AggregateOffer",
     priceCurrency: "EUR",
     availability: "https://schema.org/InStock",
-    url: "https://nest-haus.at/konfigurator",
+    url: "https://da-hoam.at/konfigurator",
   },
   manufacturer: {
     "@type": "Organization",
-    name: "NEST-Haus",
+    name: "®Hoam",
   },
 };
 

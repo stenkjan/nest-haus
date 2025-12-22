@@ -4,7 +4,7 @@ import DatenschutzClient from "./DatenschutzClient";
 export const metadata: Metadata = {
   title: "Datenschutzerklärung | Hoam-House",
   description:
-    "Datenschutzerklärung und Informationen zur Verarbeitung personenbezogener Daten bei NEST-Haus gemäß DSGVO.",
+    "Datenschutzerklärung und Informationen zur Verarbeitung personenbezogener Daten bei ®Hoam gemäß DSGVO.",
   robots: {
     index: true,
     follow: true,
@@ -12,7 +12,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: "Datenschutzerklärung | Hoam-House",
     description:
-      "Datenschutzerklärung und Informationen zur Verarbeitung personenbezogener Daten bei NEST-Haus gemäß DSGVO.",
+      "Datenschutzerklärung und Informationen zur Verarbeitung personenbezogener Daten bei ®Hoam gemäß DSGVO.",
     type: "website",
   },
 };

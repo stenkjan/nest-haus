@@ -8,8 +8,8 @@ export const metadata = generatePageMetadata("faq");
 const faqSchema = {
   "@context": "https://schema.org",
   "@type": "FAQPage",
-  name: "NEST-Haus Häufig gestellte Fragen",
-  description: "Antworten auf häufig gestellte Fragen zu NEST-Haus",
+  name: "®Hoam Häufig gestellte Fragen",
+  description: "Antworten auf häufig gestellte Fragen zu ®Hoam",
   url: `${SEO_CONFIG.baseUrl}/faq`,
 };
 

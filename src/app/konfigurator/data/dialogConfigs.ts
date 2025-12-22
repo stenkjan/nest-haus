@@ -310,8 +310,8 @@ export const dialogConfigs: Record<string, MaterialSliderDialogConfig> = {
         title: "Belichtungspaket - Light",
         subtitle: "Grundbeleuchtung",
         description: {
-          mobile: "Das Light-Paket bietet eine solide Grundbeleuchtung mit 15% der Nestfläche. Ideal für gemütliche Wohnbereiche mit gezielter Lichtführung.",
-          desktop: "Das Light-Paket bietet eine durchdachte Grundbeleuchtung mit 15% der Nestfläche als Fenster- und Türenöffnungen. Diese Konfiguration schafft eine angenehme, gemütliche Atmosphäre und eignet sich besonders für Wohnbereiche mit gezielter Lichtführung. Die reduzierte Verglasung sorgt für optimale Energieeffizienz bei ausreichend natürlichem Lichteinfall."
+          mobile: "Das Light-Paket bietet eine solide Grundbeleuchtung mit 15% der ®Hoam Fläche. Ideal für gemütliche Wohnbereiche mit gezielter Lichtführung.",
+          desktop: "Das Light-Paket bietet eine durchdachte Grundbeleuchtung mit 15% der ®Hoam Fläche als Fenster- und Türenöffnungen. Diese Konfiguration schafft eine angenehme, gemütliche Atmosphäre und eignet sich besonders für Wohnbereiche mit gezielter Lichtführung. Die reduzierte Verglasung sorgt für optimale Energieeffizienz bei ausreichend natürlichem Lichteinfall."
         },
         imagePath: IMAGES.hero.nestHaus7
       },
@@ -320,8 +320,8 @@ export const dialogConfigs: Record<string, MaterialSliderDialogConfig> = {
         title: "Belichtungspaket - Medium",
         subtitle: "Ausgewogene Beleuchtung",
         description: {
-          mobile: "Das Medium-Paket bietet ausgewogene Helligkeit mit 22% der Nestfläche. Perfekt für Wohn- und Arbeitsbereiche mit natürlichem Lichtbedarf.",
-          desktop: "Das Medium-Paket bietet eine ausgewogene Beleuchtung mit 22% der Nestfläche als Fenster- und Türenöffnungen. Diese Konfiguration schafft eine harmonische Balance zwischen natürlichem Lichteinfall und Energieeffizienz. Ideal für Wohn- und Arbeitsbereiche, die Gemütlichkeit und ausreichend Tageslicht benötigen. Die durchdachte Verteilung sorgt für optimale Raumausleuchtung."
+          mobile: "Das Medium-Paket bietet ausgewogene Helligkeit mit 22% der ®Hoam Fläche. Perfekt für Wohn- und Arbeitsbereiche mit natürlichem Lichtbedarf.",
+          desktop: "Das Medium-Paket bietet eine ausgewogene Beleuchtung mit 22% der ®Hoam Fläche als Fenster- und Türenöffnungen. Diese Konfiguration schafft eine harmonische Balance zwischen natürlichem Lichteinfall und Energieeffizienz. Ideal für Wohn- und Arbeitsbereiche, die Gemütlichkeit und ausreichend Tageslicht benötigen. Die durchdachte Verteilung sorgt für optimale Raumausleuchtung."
         },
         imagePath: IMAGES.hero.nestHaus1
       },
@@ -330,8 +330,8 @@ export const dialogConfigs: Record<string, MaterialSliderDialogConfig> = {
         title: "Belichtungspaket - Bright",
         subtitle: "Maximale Helligkeit",
         description: {
-          mobile: "Das Bright-Paket bietet maximale Helligkeit mit 28% der Nestfläche. Ideal für lichtdurchflutete, offene Wohnkonzepte mit großzügiger Verglasung.",
-          desktop: "Das Bright-Paket bietet maximale Helligkeit mit 28% der Nestfläche als Fenster- und Türenöffnungen. Diese Konfiguration schafft lichtdurchflutete, offene Räume mit großzügiger Verglasung und optimaler Tageslichtnutzung. Perfekt für moderne Wohnkonzepte, die Transparenz, Weite und Naturverbindung schaffen. Die großflächigen Öffnungen ermöglichen spektakuläre Ausblicke."
+          mobile: "Das Bright-Paket bietet maximale Helligkeit mit 28% der ®Hoam Fläche. Ideal für lichtdurchflutete, offene Wohnkonzepte mit großzügiger Verglasung.",
+          desktop: "Das Bright-Paket bietet maximale Helligkeit mit 28% der ®Hoam Fläche als Fenster- und Türenöffnungen. Diese Konfiguration schafft lichtdurchflutete, offene Räume mit großzügiger Verglasung und optimaler Tageslichtnutzung. Perfekt für moderne Wohnkonzepte, die Transparenz, Weite und Naturverbindung schaffen. Die großflächigen Öffnungen ermöglichen spektakuläre Ausblicke."
         },
         imagePath: IMAGES.hero.nestHaus3
       }

@@ -15,7 +15,7 @@ const konzeptcheckSchema = generateStructuredData("konzept-check");
 
 // Service Schema for design services
 const designServiceSchema = generatePageServiceSchema({
-  name: "NEST-Haus Konzept-Check und Planungsberatung",
+  name: "®Hoam Konzept-Check und Planungsberatung",
   description:
     "Professionelle Konzept-Check- und Planungsberatung für modulare Häuser",
   serviceType: "Hauskonzept und Planungsberatung",

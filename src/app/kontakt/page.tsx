@@ -12,18 +12,18 @@ export const metadata: Metadata = generatePageMetadata("kontakt");
 const contactSchema = {
   "@context": "https://schema.org",
   "@type": "ContactPage",
-  name: "NEST-Haus Kontakt",
+  name: "®Hoam Kontakt",
   description:
-    "Kontaktieren Sie NEST-Haus für eine kostenlose Beratung zu modularen Häusern",
-  url: "https://nest-haus.at/kontakt",
+    "Kontaktieren Sie ®Hoam für eine kostenlose Beratung zu modularen Häusern",
+  url: "https://da-hoam.at/kontakt",
 };
 
 // Local Business Schema for Contact Information
 const localBusinessSchema = {
   "@context": "https://schema.org",
   "@type": "LocalBusiness",
-  name: "NEST-Haus",
-  image: "https://nest-haus.at/images/nest-haus-buero.jpg",
+  name: "®Hoam",
+  image: "https://da-hoam.at/images/nest-haus-buero.jpg",
   email: "hello@nest.at",
   telephone: "+43 664 3949605",
   address: {
@@ -59,7 +59,7 @@ const serviceSchema = {
     "Professionelle Beratung für modulare Häuser und nachhaltiges Bauen",
   provider: {
     "@type": "Organization",
-    name: "NEST-Haus",
+    name: "®Hoam",
   },
   offers: {
     "@type": "Offer",

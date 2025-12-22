@@ -148,12 +148,12 @@ export const useConfiguratorStore = create<ConfiguratorState>()(
 
       currentPrice: 0, // Start at 0€ for new sessions
       priceBreakdown: null,
-      
+
       // Session interaction tracking (NEW)
       hasUserInteracted: false, // No interaction initially
       sessionStartTime: Date.now(),
       lastActivityTime: Date.now(),
-      
+
       hasPart2BeenActive: false,
       hasPart3BeenActive: false,
       shouldSwitchToView: null,
@@ -547,14 +547,14 @@ export const useConfiguratorStore = create<ConfiguratorState>()(
       // NEW: Mark that user has interacted with the configurator
       markUserInteraction: () => {
         const state = get()
-        
+
         if (!state.hasUserInteracted) {
           console.log('🎯 First user interaction detected - enabling price calculation')
           set({
             hasUserInteracted: true,
             lastActivityTime: Date.now()
           })
-          
+
           // Recalculate price now that user has interacted
           get().calculatePrice()
         } else {
@@ -571,27 +571,27 @@ export const useConfiguratorStore = create<ConfiguratorState>()(
 
         const now = Date.now()
         const state = get()
-        
+
         // Check if session expired due to inactivity
         if (now - state.lastActivityTime > SESSION_TIMEOUT) {
           console.log('⏰ Session expired due to inactivity - resetting')
           get().resetSession()
           return
         }
-        
+
         // BUG FIX: Check if browser was closed (sessionStorage cleared)
         // Only treat as "browser close" if we have persisted data (not first visit)
         if (typeof window !== 'undefined') {
           const sessionActive = sessionStorage.getItem('nest-haus-session-active')
           const hasPersistedData = state.sessionId || state.hasUserInteracted
-          
+
           // Only reset if sessionStorage is empty BUT we have persisted data
           // (meaning user had a session before, but browser was closed)
           if (!sessionActive && hasPersistedData) {
             console.log('🔄 Browser was closed - resetting session')
             get().resetSession()
           }
-          
+
           // Always set the flag for next time
           sessionStorage.setItem('nest-haus-session-active', 'true')
         }
@@ -600,9 +600,9 @@ export const useConfiguratorStore = create<ConfiguratorState>()(
       // NEW: Reset session to new state (keep visual preselections, zero price)
       resetSession: () => {
         console.log('🔄 Resetting session to new state')
-        
+
         const newSessionId = process.env.NODE_ENV === 'test' ? null : `client_${Date.now()}_${Math.random().toString(36).substring(2)}`
-        
+
         set({
           sessionId: newSessionId,
           hasUserInteracted: false, // Reset interaction flag
@@ -615,7 +615,7 @@ export const useConfiguratorStore = create<ConfiguratorState>()(
           shouldSwitchToView: null,
           lastSelectionCategory: null
         })
-        
+
         // Set default selections (visually) but don't calculate price yet
         get().setDefaultSelections()
       },
@@ -781,7 +781,7 @@ export const useConfiguratorStore = create<ConfiguratorState>()(
             value: 'light',
             name: 'Light',
             price: 0, // Placeholder - calculated dynamically from Google Sheets
-            description: '15% der Nestfläche\nGrundbeleuchtung'
+            description: '15% der ®Hoam Fläche\nGrundbeleuchtung'
           },
           // PVC Fenster (default)
           {
@@ -993,7 +993,7 @@ export const useConfiguratorStore = create<ConfiguratorState>()(
           setTimeout(() => {
             // Get the store instance and recalculate if user has already interacted
             const storeInstance = useConfiguratorStore.getState()
-            
+
             // Only recalculate if user has interacted in previous session
             if (storeInstance.hasUserInteracted) {
               storeInstance.calculatePrice()

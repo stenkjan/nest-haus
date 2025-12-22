@@ -14,13 +14,13 @@ export const metadata: Metadata = generatePageMetadata("warumWir");
 const warumWirSchema = {
   "@context": "https://schema.org",
   "@type": "AboutPage",
-  name: "Warum Wir - NEST-Haus",
+  name: "Warum Wir - ®Hoam",
   description:
-    "Die Vision und Motivation hinter NEST-Haus modularen Bausystemen",
-  url: "https://nest-haus.at/warum-wir",
+    "Die Vision und Motivation hinter ®Hoam modularen Bausystemen",
+  url: "https://da-hoam.at/warum-wir",
   mainEntity: {
     "@type": "Organization",
-    name: "NEST-Haus",
+    name: "®Hoam",
     description: "Modulare Häuser für nachhaltiges und individuelles Wohnen",
     foundingDate: "2020",
     mission:
@@ -44,9 +44,9 @@ const missionSchema = generatePageAboutSchema({
 
 // Video Schema for YouTube embed
 const videoSchema = generatePageVideoSchema({
-  name: "Nest Haus Vision - ®Hoam Vision",
+  name: "®Hoam Vision - ®Hoam Vision",
   description:
-    "Erfahren Sie mehr über die Vision von NEST-Haus: Modulare, nachhaltige Häuser, die mit Ihnen wachsen und sich bewegen. Ein Zuhause, das Freiraum schafft.",
+    "Erfahren Sie mehr über die Vision von ®Hoam: Modulare, nachhaltige Häuser, die mit Ihnen wachsen und sich bewegen. Ein Zuhause, das Freiraum schafft.",
   thumbnailUrl: "https://i.ytimg.com/vi/Z05jRVentdc/maxresdefault.jpg",
   uploadDate: "2024-01-01",
   contentUrl: "https://www.youtube.com/watch?v=Z05jRVentdc",

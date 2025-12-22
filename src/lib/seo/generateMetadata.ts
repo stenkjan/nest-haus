@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 
 // Base configuration for SEO
 export const SEO_CONFIG = {
-    baseUrl: "https://nest-haus.at",
+    baseUrl: "https://da-hoam.at",
     siteName: "®Hoam",
     defaultTitle: "®Hoam | Wohne wie du willst",
     defaultDescription: "Entdecken Sie ®Hoam modulare Bausysteme. Nachhaltig, energieeffizient und individuell konfigurierbar.",
@@ -12,7 +12,7 @@ export const SEO_CONFIG = {
     organization: {
         name: "®Hoam",
         description: "Weil nur du weißt, wie du richtig wohnst.",
-        logo: "https://nest-haus.at/logo.png",
+        logo: "https://da-hoam.at/logo.png",
         contactPoint: {
             contactType: "customer service",
             availableLanguage: "German",
@@ -55,7 +55,7 @@ export const PAGE_SEO_CONFIG = {
     kontakt: {
         title: "Kontakt | Termin vereinbaren & Grundstücksanalyse anfragen",
         description: "Vereinbare jetzt deinen Termin bei Hoam-House in Graz, Zösenberg 51. Kostenlose Erstberatung, Grundstücksanalyse Anfrage. Wir helfen gerne weiter.",
-        keywords: "nest haus kontakt, termin vereinbaren, beratung graz, zösenberg 51 graz, grundstücksanalyse anfrage, modulhaus beratung österreich, nest haus termin",
+        keywords: "hoam kontakt, termin vereinbaren, beratung graz, zösenberg 51 graz, grundstücksanalyse anfrage, modulhaus beratung österreich, hoam termin",
         priority: 0.8,
         changeFrequency: "monthly" as const,
         ogImage: "/images/6-NEST-Haus-4-Module-Ansicht-Meer-Mediteran-Stirnseite-Holzlattung-Laerche.png",
@@ -63,8 +63,8 @@ export const PAGE_SEO_CONFIG = {
     },
     warumWir: {
         title: "Warum Wir | Hoam-House Team & Vision",
-        description: "Die NEST Vision: Wo Effizienz auf Architektur trifft. Unser Team mit DI Markus Schmoltner vereint Innovation und jahrelange Erfahrung. Verlässlichkeit, auf die du bauen kannst.",
-        keywords: "nest vision, nest haus team, markus schmoltner, verlässlichkeit, innovation erfahrung, warum nest haus, modulhaus philosophie, nest team österreich",
+        description: "Die Hoam Vision: Wo Effizienz auf Architektur trifft. Unser Team mit DI Markus Schmoltner vereint Innovation und jahrelange Erfahrung. Verlässlichkeit, auf die du bauen kannst.",
+        keywords: "hoam vision, hoam team, markus schmoltner, verlässlichkeit, innovation erfahrung, warum hoam, modulhaus philosophie, hoam team österreich",
         priority: 0.6,
         changeFrequency: "monthly" as const,
         ogImage: "/images/335-nest-haus-team-markus-schmoltner.png",
@@ -81,7 +81,7 @@ export const PAGE_SEO_CONFIG = {
     },
     "hoam-system": {
         title: "Hoam System | Modulares bauen",
-        description: "Das NEST-System: Module bis 6m hoch, 8m breit, beliebig erweiterbar. Nachhaltige Materialien, individuelle Fenster & Türen, flexible Haustechnik. Modulbau neu gedacht.",
+        description: "Das Hoam-System: Module bis 6m hoch, 8m breit, beliebig erweiterbar. Nachhaltige Materialien, individuelle Fenster & Türen, flexible Haustechnik. Modulbau neu gedacht.",
         keywords: "hoam system, modulares bausystem, 6 meter hoch, 8 meter breit, modulhaus materialien, fenster türen individuell, haustechnik, modulbau österreich, nachhaltige materialien",
         priority: 0.7,
         changeFrequency: "monthly" as const,
@@ -91,7 +91,7 @@ export const PAGE_SEO_CONFIG = {
     "konzept-check": {
         title: "Konzept-Check | Grundstücksanalyse & Entwurf",
         description: "Konzept-Check für ®Hoam: Rechtssichere Grundstücksanalyse, Bebauungsmöglichkeiten, individueller Entwurf. Fertig in 4-6 Wochen. Jetzt bestellen.",
-        keywords: "konzept-check, grundstücksanalyse, rechtssicher bauen, bebauungsmöglichkeiten, konzept-check 3000 euro, nest haus planung, grundstück check, bauvorhaben analyse",
+        keywords: "konzept-check, grundstücksanalyse, rechtssicher bauen, bebauungsmöglichkeiten, konzept-check 3000 euro, hoam planung, grundstück check, bauvorhaben analyse",
         priority: 0.8,
         changeFrequency: "monthly" as const,
         ogImage: "/images/3-NEST-Haus-3-Gebaeude-Vogelperspektive-Holzlattung-Laerche.png",
@@ -136,7 +136,7 @@ export const PAGE_SEO_CONFIG = {
     faq: {
         title: "FAQ | Hoam-House Fragen zu Kosten, Konzept-Check & Bauzeit",
         description: "Häufige Fragen zu Hoam-House: Was kostet der Konzept-Check? Wie lange dauert der Bau? Unterschied zu Fertighaus & Tiny House? Alle Antworten hier.",
-        keywords: "nest haus faq, häufige fragen modulhaus, konzept-check fragen, kosten nest haus, bauzeit dauer, nest haus vs fertighaus, nest haus vs tiny house, modulhaus fragen österreich",
+        keywords: "hoam faq, häufige fragen modulhaus, konzept-check fragen, kosten hoam, bauzeit dauer, hoam vs fertighaus, hoam vs tiny house, modulhaus fragen österreich",
         priority: 0.7,
         changeFrequency: "monthly" as const,
         ogImage: "/images/5-NEST-Haus-6-Module-Wald-Ansicht-Schwarze-Fassadenplatten.png",
@@ -423,10 +423,10 @@ export function generateFAQSchema(): object {
             },
             {
                 "@type": "Question",
-                name: "Wie nachhaltig sind NEST-Häuser?",
+                name: "Wie nachhaltig sind Hoam-Häuser?",
                 acceptedAnswer: {
                     "@type": "Answer",
-                    text: "NEST-Häuser sind hochgradig nachhaltig durch energieeffiziente Bauweise, umweltfreundliche Materialien und modulare Konstruktion, die Abfall minimiert.",
+                    text: "Hoam-Häuser sind hochgradig nachhaltig durch energieeffiziente Bauweise, umweltfreundliche Materialien und modulare Konstruktion, die Abfall minimiert.",
                 },
             },
             {
