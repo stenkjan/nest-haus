@@ -29,7 +29,7 @@ interface FullWidthImageGridProps {
 export default function FullWidthImageGrid({
   maxWidth = true,
   image = IMAGES.function.nestHausModulAnsicht,
-  textBox1 = "Warum solltest du dich zwischen Flexibilität, Qualität und Nachhaltigkeit entscheiden, wenn du mit dem Nest System alles haben kannst?  Unsere Architekten und Ingenieure haben ein Haus entwickelt, das maximale Freiheit ohne Kompromisse bietet. Durch intelligente Standardisierung garantieren wir höchste",
+  textBox1 = "Warum solltest du dich zwischen Flexibilität, Qualität und Nachhaltigkeit entscheiden, wenn du mit dem ®Hoam System alles haben kannst?  Unsere Architekten und Ingenieure haben ein Haus entwickelt, das maximale Freiheit ohne Kompromisse bietet. Durch intelligente Standardisierung garantieren wir höchste",
   textBox2 = "Qualität, Langlebigkeit und Nachhaltigkeit zum bestmöglichen Preis. Präzisionsgefertigte Module sorgen für Stabilität, Energieeffizienz und ein unvergleichliches Wohngefühl. Dein Zuhause, dein Stil, deine Freiheit. Mit Nest. musst du dich nicht entscheiden, denn du bekommst alles. Heute bauen, morgen wohnen - Nest.",
   backgroundColor = "white",
   showButtons = false,
@@ -78,9 +78,8 @@ export default function FullWidthImageGrid({
       <div className={`${containerClasses} ${backgroundClasses}`}>
         <div className="flex justify-center items-center py-8">
           <div
-            className={`animate-pulse ${
-              backgroundColor === "black" ? "bg-gray-700" : "bg-gray-200"
-            } rounded-3xl`}
+            className={`animate-pulse ${backgroundColor === "black" ? "bg-gray-700" : "bg-gray-200"
+              } rounded-3xl`}
             style={{ width: "100%", height: 400 }}
           />
         </div>
@@ -101,7 +100,7 @@ export default function FullWidthImageGrid({
         >
           <HybridBlobImage
             path={image}
-            alt="NEST Haus Module Concept"
+            alt="®Hoam Haus Module Concept"
             width={1920}
             height={1080}
             className="w-full h-auto object-contain"
@@ -118,46 +117,41 @@ export default function FullWidthImageGrid({
         {/* Two Text Boxes Below - Responsive Layout */}
         <div className="px-4 md:px-8 mt-8">
           <div
-            className={`${
-              isMobile
+            className={`${isMobile
                 ? "flex flex-col space-y-4"
                 : "grid grid-cols-2 gap-4 md:gap-6 grid-rows-1"
-            } max-w-4xl mx-auto`}
+              } max-w-4xl mx-auto`}
           >
             {/* Text Box 1 */}
             <motion.div
-              className={`${
-                isMobile
+              className={`${isMobile
                   ? "flex items-center justify-center"
                   : "flex items-start justify-start"
-              }`}
+                }`}
               initial={{ x: -20, opacity: 0 }}
               animate={{ x: 0, opacity: 1 }}
               transition={{ delay: 0.2, duration: 0.6 }}
             >
               <div
-                className={`p-secondary ${textColorClasses} ${
-                  isMobile ? "text-center" : "text-left"
-                } ${screenWidth > 1700 ? "px-8" : ""}`}
+                className={`p-secondary ${textColorClasses} ${isMobile ? "text-center" : "text-left"
+                  } ${screenWidth > 1700 ? "px-8" : ""}`}
                 dangerouslySetInnerHTML={{ __html: textBox1 }}
               />
             </motion.div>
 
             {/* Text Box 2 */}
             <motion.div
-              className={`${
-                isMobile
+              className={`${isMobile
                   ? "flex items-center justify-center"
                   : "flex items-start justify-start"
-              }`}
+                }`}
               initial={{ x: 20, opacity: 0 }}
               animate={{ x: 0, opacity: 1 }}
               transition={{ delay: 0.4, duration: 0.6 }}
             >
               <div
-                className={`p-secondary ${textColorClasses} ${
-                  isMobile ? "text-center" : "text-left"
-                } ${screenWidth > 1700 ? "px-8" : ""}`}
+                className={`p-secondary ${textColorClasses} ${isMobile ? "text-center" : "text-left"
+                  } ${screenWidth > 1700 ? "px-8" : ""}`}
                 dangerouslySetInnerHTML={{ __html: textBox2 }}
               />
             </motion.div>

@@ -503,7 +503,7 @@ export const ABLAUF_STEPS_CONTENT: ContentCardData[] = [
         title: "1. Konzept-Check",
         subtitle: "Der erste Schritt",
         description:
-            "Mit dem Konzept-Check erhältst du deine Grundstücksanalyse, deinen individuellen Entwurfsplan und eine konkrete Kostenplanung. \n\nSolltest du dich gegen den Bau deines Nest Hauses entscheiden, kannst du die Grundstücksanalyse auch für andere Bauvorhaben verwenden.",
+            "Mit dem Konzept-Check erhältst du deine Grundstücksanalyse, deinen individuellen Entwurfsplan und eine konkrete Kostenplanung. \n\nSolltest du dich gegen den Bau von Hoam entscheiden, kannst du die Grundstücksanalyse auch für andere Bauvorhaben verwenden.",
         backgroundColor: "#f4f4f4",
         iconNumber: 1,
     },
