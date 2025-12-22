@@ -30,36 +30,36 @@ export interface CategoryData {
 export const configuratorData: CategoryData[] = [
   {
     id: 'nest',
-    title: 'Nest',
-    subtitle: 'Wie groß',
+    title: '®Hoam',
+    subtitle: 'Wie Groß',
     options: [
       {
         id: 'nest80',
-        name: 'Nest 80',
+        name: 'Hoam 80',
         description: '4 Module für\n75m² Nutzfläche',
         price: { type: 'base', amount: 155500, monthly: 816 }
       },
       {
         id: 'nest100',
-        name: 'Nest 100',
+        name: 'Hoam 100',
         description: '5 Module für\n95m² Nutzfläche',
         price: { type: 'base', amount: 189100, monthly: 993 }
       },
       {
         id: 'nest120',
-        name: 'Nest 120',
+        name: 'Hoam 120',
         description: '6 Module für\n115m² Nutzfläche',
         price: { type: 'base', amount: 222700, monthly: 1169 }
       },
       {
         id: 'nest140',
-        name: 'Nest 140',
+        name: 'Hoam 140',
         description: '7 Module für\n135m² Nutzfläche',
         price: { type: 'base', amount: 256300, monthly: 1346 }
       },
       {
         id: 'nest160',
-        name: 'Nest 160',
+        name: 'Hoam 160',
         description: '8 Module für\n155m² Nutzfläche',
         price: { type: 'base', amount: 289900, monthly: 1522 }
       }

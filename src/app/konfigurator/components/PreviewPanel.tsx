@@ -322,7 +322,7 @@ export default function PreviewPanel({
             <HybridBlobImage
               key={imageKey}
               path={currentImagePath}
-              alt={`${viewLabels[activeView] || activeView} - ${configuration?.nest?.name || "Nest Konfigurator"}`}
+              alt={`${viewLabels[activeView] || activeView} - ${configuration?.nest?.name || "Hoam Konfigurator"}`}
               fill
               className={`transition-opacity duration-300 object-contain protected ${
                 showPreviousImage ? "opacity-0" : "opacity-100"

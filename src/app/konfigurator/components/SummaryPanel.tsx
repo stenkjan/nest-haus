@@ -344,7 +344,7 @@ export default function SummaryPanel({
     <div className={`summary-panel ${className}`}>
       <div className="mt-12">
         <h3 className="text-[clamp(1rem,2.2vw,1.25rem)] font-medium tracking-[-0.015em] leading-[1.2] mb-4">
-          <span className="text-black">Dein Nest.</span>{" "}
+          <span className="text-black">®Hoam.</span>{" "}
           <span className="text-[#999999]">Überblick</span>
         </h3>
 

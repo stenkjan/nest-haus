@@ -709,7 +709,7 @@ export function GrundstueckCheckForm({
                     dir ein individuelles{" "}
                   </span>
                   <span className="text-black font-medium">Konzept-Check</span>
-                  <span className="text-nest-gray"> deines Hoam-Housees.</span>
+                  <span className="text-nest-gray"> deines Hoam-Houses.</span>
                 </p>
                 {/* Spacer to align with Name/Nachname form fields */}
                 <div className="h-3"></div>
@@ -755,7 +755,7 @@ export function GrundstueckCheckForm({
                     überprüft, um sicherzustellen, dass dein Bauvorhaben
                     genehmigungsfähig ist. Geeignetheit des Grundstücks: Wir
                     stellen fest, ob dein Grundstück alle notwendigen
-                    Voraussetzungen für den Aufbau deines Hoam-Housees erfüllt.
+                    Voraussetzungen für den Aufbau deines Hoam-Houses erfüllt.
                   </p>
                 </div>
               </div>
@@ -955,7 +955,7 @@ export function GrundstueckCheckForm({
 
         {/* Mobile Layout: Custom stacking order as specified */}
         <div className="md:hidden space-y-8">
-          {/* 1. Main text until "Planung deines Hoam-Housees starten kann" */}
+          {/* 1. Main text until "Planung deines Hoam-Houses starten kann" */}
           <div>
             <p className="p-primary leading-relaxed mb-4">
               <span className="text-nest-gray">Bevor dein </span>
@@ -978,7 +978,7 @@ export function GrundstueckCheckForm({
                 dir ein individuelles{" "}
               </span>
               <span className="text-black font-medium">Konzeptcheck</span>
-              <span className="text-nest-gray"> deines Hoam-Housees.</span>
+              <span className="text-nest-gray"> deines Hoam-Houses.</span>
             </p>
             <p className="p-primary leading-relaxed mb-6">
               <span className="text-nest-gray">Dabei verbinden wir deine </span>
@@ -1197,7 +1197,7 @@ export function GrundstueckCheckForm({
                   um sicherzustellen, dass dein Bauvorhaben genehmigungsfähig
                   ist. Geeignetheit des Grundstücks: Wir stellen fest, ob dein
                   Grundstück alle notwendigen Voraussetzungen für den Aufbau
-                  deines Hoam-Housees erfüllt.
+                  deines Hoam-Houses erfüllt.
                 </p>
               </div>
             </div>

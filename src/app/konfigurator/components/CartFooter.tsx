@@ -177,7 +177,7 @@ export default function CartFooter({ onReset }: CartFooterProps) {
               // Track add to cart event (ecommerce)
               const currentDate = new Date();
               const configId = `HOUSE-CONF-${configuration.sessionId?.substring(0, 8) || "TEMP"}-${currentDate.getMonth() + 1}${currentDate.getFullYear()}`;
-              const itemName = `${configuration.nest?.name || "Nest Haus"} (Konfig. ${currentDate.getMonth() + 1}/${currentDate.getFullYear()})`;
+              const itemName = `${configuration.nest?.name || "®Hoam"} (Konfig. ${currentDate.getMonth() + 1}/${currentDate.getFullYear()})`;
 
               trackAddToCart({
                 itemId: configId,

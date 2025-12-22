@@ -812,7 +812,7 @@ export default function CheckoutStepper({
 
   const getCategoryDisplayName = (category: string): string => {
     const categoryNames: Record<string, string> = {
-      nest: "Nest",
+      nest: "®Hoam",
       gebaeudehuelle: "Gebäudehülle",
       innenverkleidung: "Innenverkleidung",
       fussboden: "Bodenbelag",
@@ -835,7 +835,7 @@ export default function CheckoutStepper({
     if ("nest" in item) {
       if (item.nest?.name) return item.nest.name;
       if (item.grundstueckscheck && !item.nest) return "Grundstücksanalyse";
-      return "Nest Konfiguration";
+      return "®Hoam Konfiguration";
     }
     if ("name" in item) return item.name;
     return "Artikel";
@@ -1277,11 +1277,11 @@ export default function CheckoutStepper({
         title: "Der Ablauf",
         subtitle: "Schritt für Schritt",
         description:
-          "Damit aus deinem Entwurf **ein Zuhause wird,** begleiten wir dich durch den gesamten Bauprozess. **Schritt für Schritt** gehen wir mit dir alle Phasen durch: von der **Einreichplanung und dem Baubescheid** über die Vorbereitung deines Grundstücks und den Bau des **Fundaments** bis hin zur **Lieferung und Montage** deines Hoam-House.\n\nNach der **Lieferung** deines Hoam-Housees kannst du die **Haustechnik** und den **Innenausbau** entweder selbst übernehmen oder auf das Know-how unserer erfahrenen **Partnerbetriebe** zurückgreifen. Dabei stehen wir dir jederzeit **beratend zur Seite,** damit dein Zuhause genau so wird, wie du es dir wünschst.",
+          "Damit aus deinem Entwurf **ein Zuhause wird,** begleiten wir dich durch den gesamten Bauprozess. **Schritt für Schritt** gehen wir mit dir alle Phasen durch: von der **Einreichplanung und dem Baubescheid** über die Vorbereitung deines Grundstücks und den Bau des **Fundaments** bis hin zur **Lieferung und Montage** deines Hoam-House.\n\nNach der **Lieferung** deines Hoam-Houses kannst du die **Haustechnik** und den **Innenausbau** entweder selbst übernehmen oder auf das Know-how unserer erfahrenen **Partnerbetriebe** zurückgreifen. Dabei stehen wir dir jederzeit **beratend zur Seite,** damit dein Zuhause genau so wird, wie du es dir wünschst.",
       },
       {
         title: "Wir freuen uns auf dich",
-        subtitle: "Vereinbare dein Entwurfsgespräch mit dem Nest Team",
+        subtitle: "Vereinbare dein Entwurfsgespräch mit dem Hoam Team",
         description:
           "Buche deinen **Termin** für ein persönliches **Startgespräch**, in dem wir deine **individuellen Wünsche** aufnehmen und die Grundlage für deinen **Entwurf** erarbeiten. \n\n  Durch die Angaben zu deinem **Grundstück** können wir uns bestmöglich vorbereiten und dir bereits **erste Ideen** und konkrete Ansätze vorstellen. So entsteht **Schritt für Schritt** ein Entwurf, der genau zu deinen Bedürfnissen passt.**",
       },
@@ -1301,7 +1301,7 @@ export default function CheckoutStepper({
         title: "®Hoam",
         subtitle: "Weil nur du weißt, wie du wohnen willst",
         description:
-          "**Die Bestellung deines Hoam-Housees. Alles beginnt mit dem Entwurf und der Grundstücksanalyse. Sobald du dein Hoam-House bestellst und die erste Teilzahlung leistest, erhältst du von uns deinen verbindlich garantierten Liefertermin. Transparent, planbar und verlässlich.**",
+          "**Die Bestellung deines Hoam-Houses. Alles beginnt mit dem Entwurf und der Grundstücksanalyse. Sobald du dein Hoam-House bestellst und die erste Teilzahlung leistest, erhältst du von uns deinen verbindlich garantierten Liefertermin. Transparent, planbar und verlässlich.**",
       },
     ];
 
@@ -1463,7 +1463,7 @@ export default function CheckoutStepper({
                 <div className="p-secondary text-center md:text-left">
                   <p>
                     <span className="text-nest-gray">
-                      Du hast dein Nest bereits konfiguriert und hast somit den
+                      Du hast ®Hoam bereits konfiguriert und hast somit den
                     </span>{" "}
                     <span className="text-black font-medium">
                       Überblick über Preis und Aussehen
@@ -2050,7 +2050,7 @@ export default function CheckoutStepper({
                 <div className="contents">
                   <div className="space-y-6 w-full max-w-[520px] lg:flex-none lg:flex lg:flex-col">
                     <h2 className="h3-secondary text-gray-500">
-                      <span className="text-black">Dein Nest</span>
+                      <span className="text-black">®Hoam</span>
                       <span className="text-gray-300"> Deine Auswahl</span>
                     </h2>
                     {items.map((item) => (
@@ -2214,7 +2214,7 @@ export default function CheckoutStepper({
 
                   <div className="space-y-6 w-full lg:flex-1 min-w-0 lg:flex lg:flex-col">
                     <h2 className="h3-secondary text-gray-500 lg:flex-shrink-0">
-                      <span className="text-black">Dein Nest</span>
+                      <span className="text-black">®Hoam</span>
                       <span className="text-gray-300">
                         {" "}
                         Ein Blick in die Zukunft
@@ -2645,7 +2645,7 @@ export default function CheckoutStepper({
                         </span>
                         <span className="text-nest-gray">
                           {" "}
-                          deines Hoam-Housees.
+                          deines Hoam-Houses.
                         </span>
                       </p>
                       <p className="p-secondary mb-6">
@@ -2956,7 +2956,7 @@ export default function CheckoutStepper({
               <div className="flex flex-col lg:flex-row gap-8 items-start lg:items-stretch">
                 <div className="space-y-6 w-full max-w-[520px] lg:flex-none lg:flex lg:flex-col">
                   <h2 className="h3-secondary text-black">
-                    <span className="text-black">Dein Nest</span>
+                    <span className="text-black">®Hoam</span>
                     <span className="text-nest-gray"> Deine Auswahl</span>
                   </h2>
                   {items.map((item) => (
@@ -3143,7 +3143,7 @@ export default function CheckoutStepper({
 
                 <div className="space-y-6 w-full lg:flex-1 min-w-0 lg:flex lg:flex-col">
                   <h2 className="h3-secondary text-gray-500 lg:flex-shrink-0">
-                    <span className="text-black">Dein Nest</span>
+                    <span className="text-black">®Hoam</span>
                     <span className="text-nest-gray">
                       {" "}
                       Ein Blick in die Zukunft
@@ -3929,7 +3929,7 @@ export default function CheckoutStepper({
                               <div className="space-y-3">
                                 <div className="flex justify-between items-center">
                                   <span className="text-sm md:text-base lg:text-lg 2xl:text-xl text-gray-700 font-medium">
-                                    Deine Nest ID:
+                                    Hoam ID:
                                   </span>
                                   <span className="font-mono text-sm md:text-base bg-white px-3 py-1.5 rounded-lg border border-green-300">
                                     {configItem?.sessionId ||
@@ -3984,7 +3984,7 @@ export default function CheckoutStepper({
                         {/* Disclaimer text - centered below box with margin */}
                         <div className="text-sm text-gray-600 leading-relaxed text-center pt-2 mb-6 mx-5">
                           Solltest du mit dem Entwurfsplan nicht zufrieden sein,
-                          kannst du vom Kauf deines Hoam-Housees zurücktreten. In
+                          kannst du vom Kauf deines Hoam-Houses zurücktreten. In
                           diesem Fall zahlst du lediglich die Kosten für die
                           Grundstücksanalyse und den Entwurfsplan.
                         </div>
@@ -4072,7 +4072,7 @@ export default function CheckoutStepper({
                       <div className="space-y-3">
                         <div className="flex justify-between items-center">
                           <span className="text-sm md:text-base lg:text-lg 2xl:text-xl text-gray-700 font-medium">
-                            Deine Nest ID:
+                            Hoam ID:
                           </span>
                           <span className="font-mono text-sm md:text-base bg-white px-3 py-1.5 rounded-lg border border-green-300">
                             {configItem?.sessionId ||
@@ -4126,7 +4126,7 @@ export default function CheckoutStepper({
                 {/* Disclaimer text - centered below box */}
                 <div className="text-sm text-gray-600 leading-relaxed text-center mb-6 mx-5">
                   Solltest du mit dem Entwurf nicht zufrieden sein, kannst du
-                  vom Kauf deines Hoam-Housees zurücktreten. In diesem Fall
+                  vom Kauf deines Hoam-Houses zurücktreten. In diesem Fall
                   zahlst du lediglich die Kosten für den Entwurf und
                   Grundstücksanalyse.
                 </div>
@@ -4300,7 +4300,7 @@ export default function CheckoutStepper({
                                   </div>
                                 </div>
                               )}
-                            {/* Termin mit dem Nest Team row */}
+                            {/* Termin mit dem Hoam Team row */}
                             <div className="flex items-center justify-between gap-4 py-3 md:py-4 px-6 md:px-7">
                               <div className="flex-1 min-w-0">
                                 <div className="text-sm md:text-base lg:text-lg 2xl:text-xl font-normal leading-relaxed text-gray-900">
@@ -4309,7 +4309,7 @@ export default function CheckoutStepper({
                                     : "—"}
                                 </div>
                                 <div className="text-xs md:text-sm text-gray-500 leading-snug mt-1">
-                                  Termin mit dem Nest Team
+                                  Termin mit dem Hoam Team
                                 </div>
                               </div>
                               <div className="text-sm md:text-base lg:text-lg 2xl:text-xl font-normal leading-relaxed text-gray-900">
@@ -4584,7 +4584,7 @@ export default function CheckoutStepper({
                   <div className="space-y-3">
                     <div className="flex justify-between items-center">
                       <span className="text-sm md:text-base lg:text-lg 2xl:text-xl text-gray-700 font-medium">
-                        Deine Nest ID:
+                        Deine Hoam ID:
                       </span>
                       <span className="font-mono text-sm md:text-base bg-white px-3 py-1.5 rounded-lg border border-green-300">
                         {configItem?.sessionId ||
@@ -4758,7 +4758,7 @@ export default function CheckoutStepper({
               <div className="text-sm md:text-base lg:text-lg 2xl:text-xl text-gray-700 leading-relaxed">
                 {isOhneNestMode
                   ? "Du zahlst lediglich die Grundstücksanalyse und den Entwurfsplan"
-                  : "Solltest du mit dem Entwurfsplan nicht zufrieden sein, kannst du vom Kauf deines Hoam-Housees zurücktreten. In diesem Fall zahlst du lediglich die Kosten für die Grundstücksanalyse und den Entwurfsplan."}
+                  : "Solltest du mit dem Entwurfsplan nicht zufrieden sein, kannst du vom Kauf deines Hoam-Houses zurücktreten. In diesem Fall zahlst du lediglich die Kosten für die Grundstücksanalyse und den Entwurfsplan."}
               </div>
             </div>
 

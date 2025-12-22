@@ -91,7 +91,7 @@ export default function WarenkorbClient() {
       if (configItem && 'nest' in configItem) {
         checkoutItems.push({
           item_id: `HOUSE-CONF-${configItem.sessionId?.substring(0, 8) || 'TEMP'}`,
-          item_name: configItem.nest?.name || 'Nest Haus Konfiguration',
+          item_name: configItem.nest?.name || '®Hoam Konfiguration',
           item_category: 'house_configuration',
           price: 0, // Not being paid for now, included for context only
           quantity: 1,
@@ -690,7 +690,7 @@ export default function WarenkorbClient() {
   // Helper function to get display names for categories
   const getCategoryDisplayName = (category: string): string => {
     const categoryNames: Record<string, string> = {
-      nest: "Nest",
+      nest: "®Hoam",
       gebaeudehuelle: "Gebäudehülle",
       innenverkleidung: "Innenverkleidung",
       fussboden: "Bodenbelag",
@@ -715,7 +715,7 @@ export default function WarenkorbClient() {
       } else if (item.grundstueckscheck && !item.nest) {
         return "Grundstücksanalyse";
       } else {
-        return "Nest Konfiguration";
+        return "®Hoam Konfiguration";
       }
     } else {
       if ("name" in item) {

@@ -94,7 +94,7 @@ const GrundstueckCheckDialog: React.FC<GrundstueckCheckDialogProps> = ({
                       machen und uns die rechtlichen und baulichen
                       Voraussetzungen deines Grundstücks prüfen lassen, damit du{" "}
                       <span className="font-bold">
-                        entspannt und sicher in die Planung deines Hoam-Housees
+                        entspannt und sicher in die Planung deines Hoam-Houses
                         starten
                       </span>{" "}
                       kannst.
@@ -121,7 +121,7 @@ const GrundstueckCheckDialog: React.FC<GrundstueckCheckDialogProps> = ({
                         überprüft, um sicherzustellen, dass dein Bauvorhaben
                         genehmigungsfähig ist. Geeignetheit des Grundstücks: Wir
                         stellen fest, ob dein Grundstück alle notwendigen
-                        Voraussetzungen für den Aufbau deines Hoam-Housees
+                        Voraussetzungen für den Aufbau deines Hoam-Houses
                         erfüllt.
                       </p>
                     </div>
