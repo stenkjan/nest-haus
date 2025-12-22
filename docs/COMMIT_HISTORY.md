@@ -4,6 +4,20 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [12eb26c92ea14fba7f1888488446063318095bc5] - Mon Dec 22 22:36:03 2025 +0100
+
+**Author**: stenkjan
+**Message**: `🔄 Update content and descriptions to reflect branding change from "Nest" to "®Hoam"  - Revised text in KonzeptcheckClient, FullWidthImageGrid, and cardContent to ensure consistency with the new brand name "®Hoam". - Updated titles and descriptions to align with the branding transition across multiple components.  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/konzept-check/KonzeptcheckClient.tsx
+- src/components/grids/FullWidthImageGrid.tsx
+
+
+---
+
 ## [946c9da7eebe4033768fe3d249125dae1a32fe31] - Mon Dec 22 22:25:28 2025 +0100
 
 **Author**: stenkjan
