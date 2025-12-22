@@ -137,7 +137,7 @@ export const configuratorData: CategoryData[] = [
       }
     ],
     infoBox: {
-      title: 'Mehr zur grünen Energie für dein Nest'
+      title: 'Mehr zur grünen Energie für ®Hoam'
     }
   },
   {
@@ -205,7 +205,7 @@ export const configuratorData: CategoryData[] = [
       }
     ],
     infoBox: {
-      title: 'Daraus besteht dein Nest - Fußboden'
+      title: 'Daraus besteht dein ®Hoam - Fußboden'
     }
   },
   {

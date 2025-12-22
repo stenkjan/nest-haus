@@ -14,15 +14,15 @@ const faqItems: FAQItem[] = [
   {
     id: 1,
     question:
-      "Was genau ist ein Nest Haus und wie unterscheidet es sich von einem Fertigteilhaus, Tiny House oder Architektenhaus?",
+      "Was genau ist ®Hoam und wie unterscheidet es sich von einem Fertigteilhaus, Tiny House oder Architektenhaus?",
     answer:
-      "Das Nest Haus versucht durch optimierte Produktionsbedingungen eine enorm hohe Qualität – vergleichbar mit Luxus-Architektenhäusern – leistbar zu machen. Darüber hinaus ermöglichen wir trotz Standardisierung weiterhin individuelle Gestaltungsmöglichkeiten bei der Raumaufteilung und Grundrissplanung. Die hochpräzise Produktion macht es uns möglich, die Module so passgenau zu fertigen, dass sie mehrmals zusammen- und wieder auseinandergebaut werden können. Dadurch entsteht eine Flexibilität ähnlich wie bei einem Tiny House: Du kannst flexibel bleiben und dein Haus mitnehmen, erweitern oder verkaufen. Das Grundstück bleibt dabei stets unabhängig vom Haus.",
+      "®Hoam versucht durch optimierte Produktionsbedingungen eine enorm hohe Qualität – vergleichbar mit Luxus-Architektenhäusern – leistbar zu machen. Darüber hinaus ermöglichen wir trotz Standardisierung weiterhin individuelle Gestaltungsmöglichkeiten bei der Raumaufteilung und Grundrissplanung. Die hochpräzise Produktion macht es uns möglich, die Module so passgenau zu fertigen, dass sie mehrmals zusammen- und wieder auseinandergebaut werden können. Dadurch entsteht eine Flexibilität ähnlich wie bei einem Tiny House: Du kannst flexibel bleiben und dein Haus mitnehmen, erweitern oder verkaufen. Das Grundstück bleibt dabei stets unabhängig vom Haus.",
   },
   {
     id: 2,
     question: "Was ist der Konzept-Check?",
     answer:
-      "Mit dem Konzept-Check erhältst du deine Grundstücksanalyse, einen individuellen Entwurfsplan sowie eine konkrete Kosten- und Zeitplanung. Solltest du dich gegen den Bau deines Nest Hauses entscheiden, kannst du die Grundstücksanalyse auch für andere Bauvorhaben verwenden.",
+      "Mit dem Konzept-Check erhältst du deine Grundstücksanalyse, einen individuellen Entwurfsplan sowie eine konkrete Kosten- und Zeitplanung. Solltest du dich gegen ®Hoam entscheiden, kannst du die Grundstücksanalyse auch für andere Bauvorhaben verwenden.",
   },
   {
     id: 3,
@@ -46,13 +46,13 @@ const faqItems: FAQItem[] = [
     id: 6,
     question: "Ist der Preis im Konfigurator fix?",
     answer:
-      "Die Preise im Konfigurator dienen als Basis für die Gestaltung deines Hauses. Du bekommst damit ein erstes Preisgefühl, das uns in der gemeinsamen Planung deines individuellen Nest Hauses hilft. Einen konkreten Preis erhältst du nach Durchführung des Konzept-Checks.",
+      "Die Preise im Konfigurator dienen als Basis für die Gestaltung deines Hauses. Du bekommst damit ein erstes Preisgefühl, das uns in der gemeinsamen Planung von ®Hoam hilft. Einen konkreten Preis erhältst du nach Durchführung des Konzept-Checks.",
   },
   {
     id: 7,
-    question: "Was kostet ein Nest Haus?",
+    question: "Was kostet ®Hoam?",
     answer:
-      "Der exakte Preis ist abhängig von deinem individuellen Hoam-Entwurf. Diesen arbeiten wir gemeinsam im Konzept-Check aus. Danach erhältst du ein konkretes Angebot für ®Hoam House.",
+      "Der exakte Preis ist abhängig von deinem individuellen ®Hoam-Entwurf. Diesen arbeiten wir gemeinsam im Konzept-Check aus. Danach erhältst du ein konkretes Angebot für ®Hoam.",
   },
   {
     id: 8,
@@ -63,27 +63,27 @@ const faqItems: FAQItem[] = [
   {
     id: 9,
     question:
-      "Was passiert, wenn ich mich nach dem Konzept-Check gegen das Nest Haus entscheide?",
+      "Was passiert, wenn ich mich nach dem Konzept-Check gegen ®Hoam entscheide?",
     answer:
       "Die Unterlagen des Konzept-Checks gehören dir. Das bedeutet, du kannst die Grundstücksanalyse auch für andere Bauvorhaben verwenden.",
   },
   {
     id: 10,
-    question: "Wie aufwändig ist der Auf- und Abbau des Nest Hauses?",
+    question: "Wie aufwändig ist der Auf- und Abbau von ®Hoam?",
     answer:
-      "Mit unserer Technologie ermöglichen wir einen sehr unkomplizierten Auf- und Abbau deines Nest Hauses. Der Abbau erfolgt innerhalb von 1 bis 2 Werktagen. Der Aufbau erfolgt ebenso in 1 bis 2 Werktagen.",
+      "Mit unserer Technologie ermöglichen wir einen sehr unkomplizierten Auf- und Abbau von ®Hoam. Der Abbau erfolgt innerhalb von 1 bis 2 Werktagen. Der Aufbau erfolgt ebenso in 1 bis 2 Werktagen.",
   },
   {
     id: 11,
-    question: "Wie groß ist das Nest Haus?",
+    question: "Wie groß ist ®Hoam?",
     answer:
-      "Das Nest Haus ermöglicht eine hochwertige architektonische Atmosphäre mit Raumhöhen von bis zu 5 Metern. Diese Höhe erlaubt es, eine Zwischendecke einzuziehen und ein zweites Geschoss zu schaffen. Die Raumbreite beträgt 7,5 Meter. Die Wohnfläche eines Moduls beträgt 20 Quadratmeter, und diese Module können beliebig kombiniert werden.",
+      "®Hoam ermöglicht eine hochwertige architektonische Atmosphäre mit Raumhöhen von bis zu 5 Metern. Diese Höhe erlaubt es, eine Zwischendecke einzuziehen und ein zweites Geschoss zu schaffen. Die Raumbreite beträgt 7,5 Meter. Die Wohnfläche eines Moduls beträgt 20 Quadratmeter, und diese Module können beliebig kombiniert werden.",
   },
   {
     id: 12,
     question: "Muss ich die vorgeschlagenen Fassadensysteme verwenden?",
     answer:
-      "Unser Nest-System ist bis zur letzten Schraube durchdacht und optimiert. Das trägt wesentlich dazu bei, hochwertige Architektur leistbar zu machen. Wir empfehlen daher nicht, das Fassadensystem zu ändern.",
+      "Unser ®Hoam-System ist bis zur letzten Schraube durchdacht und optimiert. Das trägt wesentlich dazu bei, hochwertige Architektur leistbar zu machen. Wir empfehlen daher nicht, das Fassadensystem zu ändern.",
   },
   {
     id: 13,
@@ -146,9 +146,8 @@ export default function FAQClient() {
 
           {/* Arrow Icon with Circle Background */}
           <div
-            className={`flex-shrink-0 w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-[#f4f4f4] flex items-center justify-center transition-transform duration-300 ${
-              isOpen ? "rotate-90" : ""
-            }`}
+            className={`flex-shrink-0 w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-[#f4f4f4] flex items-center justify-center transition-transform duration-300 ${isOpen ? "rotate-90" : ""
+              }`}
           >
             <svg
               className="w-4 h-4 sm:w-5 sm:h-5 text-gray-700"
