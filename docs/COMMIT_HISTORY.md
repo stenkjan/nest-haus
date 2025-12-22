@@ -4,6 +4,20 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [b5a6ceaf49feb6cea8bc58aabb2f8e4fa0a086ea] - Mon Dec 22 22:17:36 2025 +0100
+
+**Author**: stenkjan
+**Message**: `🔄 Update FAQ content to reflect branding change from "Nest" to "®Hoam"  - Revised FAQ questions and answers to incorporate the new brand name "®Hoam" for consistency across the application.  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/faq/FAQClient.tsx
+- src/app/konfigurator/data/configuratorData.ts
+
+
+---
+
 ## [aa0e4888db9a40b7c3139d2233ab6c30c83b14d9] - Mon Dec 22 22:10:40 2025 +0100
 
 **Author**: stenkjan
