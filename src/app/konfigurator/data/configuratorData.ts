@@ -121,7 +121,7 @@ export const configuratorData: CategoryData[] = [
       }
     ],
     infoBox: {
-      title: 'Daraus besteht dein Nest - Außenhülle'
+      title: 'Daraus besteht ®Hoam - Außenhülle'
     }
   },
   {
@@ -205,7 +205,7 @@ export const configuratorData: CategoryData[] = [
       }
     ],
     infoBox: {
-      title: 'Daraus besteht dein ®Hoam - Fußboden'
+      title: 'Daraus besteht ®Hoam - Fußboden'
     }
   },
   {
