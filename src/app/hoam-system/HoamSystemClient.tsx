@@ -293,7 +293,7 @@ export default function HoamSystemClient() {
           >
             <SectionHeader
               title="Hier beginnt Freiheit"
-              subtitle="Weil nur du weißt, wie du wohnen willst."
+              subtitle="Weil nur du weißt, wie du richtig wohnst."
               titleClassName="text-white"
               subtitleClassName="text-white"
               wrapperMargin="mb-8 md:mb-16"
