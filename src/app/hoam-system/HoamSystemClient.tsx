@@ -270,7 +270,7 @@ export default function HoamSystemClient() {
             <div className="md:pt-16">
               <ThreeByOneGrid
                 backgroundColor="black"
-                text="<p class='p-secondary text-white'><span class='text-nest-gray'>Mit unseren</span> <span class='text-white font-medium'>Beleuchtungspaketen</span> <span class='text-nest-gray'>legst du die</span> <span class='text-white font-medium'>Gesamtfläche</span> <span class='text-nest-gray'>deiner</span> <span class='text-white font-medium'>Fenster und Türen</span> <span class='text-nest-gray'>fest, angepasst an deine individuellen Bedürfnisse. Der</span> <span class='text-white font-medium'>Preis bleibt</span> <span class='text-nest-gray'>dabei jederzeit</span> <span class='text-white font-medium'>transparent.</span></p>"
+                text="<p class='p-secondary text-white'><span class='text-nest-gray'>Mit unseren</span> <span class='text-white font-medium'>Beleuchtungspaketen</span> <span class='text-nest-gray'>bekommst du ein</span> <span class='text-white font-medium'>Preisgefühl</span> <span class='text-nest-gray'>für deine</span> <span class='text-white font-medium'>Fenster und Türen</span><span class='text-nest-gray'>. Danach legen wir im</span> <span class='text-white font-medium'>Konzeptcheck</span> <span class='text-nest-gray'>die exakte</span> <span class='text-white font-medium'>Anzahl und Größe</span> <span class='text-nest-gray'>deiner Fenster fest.</span></p>"
                 textPosition="right"
                 maxWidth={false}
                 image1={IMAGES.function.nestHausModulSeiteKonzept}
