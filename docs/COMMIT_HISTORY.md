@@ -4,6 +4,19 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [4ee59dbf152af20ae8575cbdce82f3cdb7d40a11] - Tue Dec 23 16:51:43 2025 +0100
+
+**Author**: stenkjan
+**Message**: `🔄 Update image reference in LandingPageClient  - Changed the image reference in the LandingPageClient component from the previous function image to the new variant video for improved media representation.  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/LandingPageClient.tsx
+
+
+---
+
 ## [e84ca964ddc56267a4889fc9ddfc7137a5837a4e] - Mon Dec 22 23:45:05 2025 +0100
 
 **Author**: stenkjan
