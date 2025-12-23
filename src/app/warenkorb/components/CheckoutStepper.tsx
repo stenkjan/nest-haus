@@ -618,6 +618,12 @@ export default function CheckoutStepper({
     if (key === "nest" && cartItemConfig?.nest) {
       try {
         const pricingData = PriceCalculator.getPricingData();
+        console.log('🏠 Warenkorb - Getting nest price:', {
+          pricingDataLoaded: !!pricingData,
+          nestValue: cartItemConfig.nest.value,
+          selectionPrice: selection.price
+        });
+
         if (pricingData) {
           const nestSize = cartItemConfig.nest.value as
             | "nest80"
@@ -625,13 +631,42 @@ export default function CheckoutStepper({
             | "nest120"
             | "nest140"
             | "nest160";
-          const nestBasePrice = pricingData.nest[nestSize]?.price || 0;
-          return nestBasePrice; // Return RAW construction price only
+          const nestData = pricingData.nest[nestSize];
+          const nestBasePrice = nestData?.price || 0;
+
+          console.log('🏠 Warenkorb - Nest pricing data:', {
+            nestSize,
+            nestData,
+            nestBasePrice,
+            fallbackPrice: selection.price
+          });
+
+          // Return pricing data price if available
+          if (nestBasePrice > 0) {
+            return nestBasePrice;
+          }
         }
-      } catch {
-        // Fall back to stored price
+      } catch (error) {
+        console.error('❌ Error getting nest price from pricing data:', error);
       }
-      return selection.price || 0;
+
+      // Fallback to stored price
+      if (selection.price && selection.price > 0) {
+        console.log('🏠 Warenkorb - Using stored nest price:', selection.price);
+        return selection.price;
+      }
+
+      // Ultimate fallback to December 2024 prices
+      const hardcodedFallback: Record<string, number> = {
+        nest80: 213032,
+        nest100: 254731,
+        nest120: 296430,
+        nest140: 338129,
+        nest160: 379828,
+      };
+      const fallbackPrice = hardcodedFallback[cartItemConfig.nest.value] || 213032;
+      console.log('🏠 Warenkorb - Using hardcoded fallback nest price:', fallbackPrice);
+      return fallbackPrice;
     }
 
     // For innenverkleidung, return RELATIVE price from PriceCalculator (baseline: ohne_innenverkleidung)
@@ -1283,7 +1318,7 @@ export default function CheckoutStepper({
         title: "Wir freuen uns auf dich",
         subtitle: "Vereinbare dein Entwurfsgespräch mit dem Hoam Team",
         description:
-          "Buche deinen **Termin** für ein persönliches **Startgespräch**, in dem wir deine **individuellen Wünsche** aufnehmen und die Grundlage für deinen **Entwurf** erarbeiten. \n\n  Durch die Angaben zu deinem **Grundstück** können wir uns bestmöglich vorbereiten und dir bereits **erste Ideen** und konkrete Ansätze vorstellen. So entsteht **Schritt für Schritt** ein Entwurf, der genau zu deinen Bedürfnissen passt.**",
+          "Buche deinen **Termin** für ein persönliches **Startgespräch**, in dem wir deine **individuellen Wünsche** aufnehmen und die Grundlage für deinen **Entwurf** erarbeiten. \n\n  Durch die Angaben zu deinem **Grundstück** können wir uns bestmöglich vorbereiten und dir bereits **erste Ideen** und konkrete Ansätze vorstellen. So entsteht **Schritt für Schritt** ein Entwurf, der **genau zu deinen Bedürfnissen passt.**",
       },
       {
         title: "Unterstützung gefällig?",
@@ -1295,7 +1330,7 @@ export default function CheckoutStepper({
         title: "Bereit für Vorfreude?",
         subtitle: "Dein Garantierter Liefertermin steht fest",
         description:
-          "Hier findest du **alle Details deiner Auswahl** inklusive transparenter Preise. Nutze diesen Moment, um **alle Angaben** in Ruhe zu **überprüfen**. Nach dem Absenden erhältst du eine **schriftliche Bestätigung,** und wir beginnen mit der Ausarbeitung deines Entwurfowie der Überprüfung deines Grundstücks.",
+          "Hier findest du **alle Details deiner Auswahl** inklusive transparenter Preise. Nutze diesen Moment, um **alle Angaben** in Ruhe zu **überprüfen**. Nach dem Absenden erhältst du eine **schriftliche Bestätigung,** und wir beginnen mit der Ausarbeitung deines Entwurfs sowie der Überprüfung deines Grundstücks.",
       },
       {
         title: "®Hoam",
@@ -1463,31 +1498,28 @@ export default function CheckoutStepper({
                 <div className="p-secondary text-center md:text-left">
                   <p>
                     <span className="text-nest-gray">
-                      Du hast ®Hoam bereits konfiguriert und hast somit den
+                      Du hast dein ®Hoam bereits konfiguriert und hast somit den
                     </span>{" "}
                     <span className="text-black font-medium">
                       Überblick über Preis und Aussehen
                     </span>{" "}
                     <span className="text-nest-gray">
-                      deines Bauvorhabens. Deine
+                      deines Bauvorhabens. Dies gibt dir ein
                     </span>{" "}
-                    <span className="text-black font-medium">Auswahl</span>{" "}
-                    <span className="text-nest-gray">bleibt dabei stets</span>{" "}
-                    <span className="text-black font-medium">flexibel</span>{" "}
-                    <span className="text-nest-gray">
-                      und kann jederzeit an deine Wünsche angepasst werden.
-                    </span>
+                    <span className="text-black font-medium">Preisgefühl</span>{" "}
+                    <span className="text-nest-gray">und bildet die Basis für deinen</span>{" "}
+                    <span className="text-black font-medium">Konzept-Check</span>{" "}
                   </p>
                   <p className="mt-6">
-                    <span className="text-nest-gray">Mit dem</span>{" "}
+                    <span className="text-nest-gray">Mit dieser</span>{" "}
                     <span className="text-black font-medium">
-                      heutigen Kauf
+                      Bestellung
                     </span>{" "}
                     <span className="text-nest-gray">
-                      deckst du die Kosten für
+                      erhäslt du von uns deinen
                     </span>{" "}
                     <span className="text-black font-medium">
-                      Grundstücksanalyse und Entwurfsplan.
+                      Konzept-Check.
                     </span>{" "}
                     <span className="text-nest-gray">
                       Fahre fort und mache den ersten Schritt in Richtung
@@ -1535,10 +1567,9 @@ export default function CheckoutStepper({
                   </p>
                   <p className="mt-2">
                     <span className="text-nest-gray">
-                      Solltest du deine Meinung nach Erstellen des Erstentwurfs
-                      ändern, kannst du vom Kauf, ohne weitere Teilzahlungen,
-                      zurücktreten. In diesem Fall zahlst du lediglich die
-                      Kosten für den Entwurf.
+                      Solltest du mit deinem Konzept-Check nicht zufrieden sein,
+                      kannst du die Grundstücksanalyse auch für alle anderen Bauvorhaben nutzen. Es
+                      entsteht keine Verpflichtung zum Kauf/Bau eines Hoam Hauses.
                     </span>
                   </p>
                 </div>
@@ -2076,17 +2107,21 @@ export default function CheckoutStepper({
                                 ) {
                                   const configItem =
                                     item as ConfigurationCartItem;
-                                  const nestModel =
-                                    configItem.nest?.value || "";
+
+                                  // Validate nest data exists and has value
+                                  if (!configItem.nest?.value) {
+                                    console.error('❌ ConfigItem missing nest value:', configItem);
+                                    return "Hoam Modul nicht konfiguriert";
+                                  }
+
+                                  const nestModel = configItem.nest.value;
 
                                   // Show only Hoam MODULE price per m² (relative price)
-                                  const nestPrice = configItem.nest
-                                    ? getItemPrice(
-                                      "nest",
-                                      configItem.nest,
-                                      configItem
-                                    )
-                                    : 0;
+                                  const nestPrice = getItemPrice(
+                                    "nest",
+                                    configItem.nest,
+                                    configItem
+                                  );
 
                                   const geschossdeckeQuantity =
                                     configItem.geschossdecke?.quantity || 0;
@@ -2118,6 +2153,13 @@ export default function CheckoutStepper({
                                 ) {
                                   const configItem =
                                     item as ConfigurationCartItem;
+
+                                  // Validate nest data exists and has value
+                                  if (!configItem.nest?.value) {
+                                    console.error('❌ ConfigItem missing nest value in price display:', configItem);
+                                    return 0;
+                                  }
+
                                   if (configItem.nest) {
                                     return getItemPrice(
                                       "nest",
@@ -2348,7 +2390,7 @@ export default function CheckoutStepper({
               // KONZEPT-CHECK MODE: Unified 2-column layout
               <>
                 {/* Text left + Dein Überblick right at top */}
-                <div className="mb-24">
+                <div className="mb-32 md:mb-40">
                   {/* Text left + Dein Überblick right - Same layout as Step 1 */}
                   <div className="flex flex-col md:grid md:grid-cols-2 gap-8 items-start mb-12">
                     {/* LEFT: Info text */}
@@ -2982,7 +3024,14 @@ export default function CheckoutStepper({
                               ) {
                                 const configItem =
                                   item as ConfigurationCartItem;
-                                const nestModel = configItem.nest?.value || "";
+
+                                // Validate nest data exists and has value
+                                if (!configItem.nest?.value) {
+                                  console.error('❌ ConfigItem missing nest value in Abschluss step:', configItem);
+                                  return "Hoam Modul nicht konfiguriert";
+                                }
+
+                                const nestModel = configItem.nest.value;
 
                                 // Convert to Selections type for PriceCalculator
                                 const selections = {
@@ -3047,6 +3096,13 @@ export default function CheckoutStepper({
                               ) {
                                 const configItem =
                                   item as ConfigurationCartItem;
+
+                                // Validate nest data exists and has value
+                                if (!configItem.nest?.value) {
+                                  console.error('❌ ConfigItem missing nest value in Abschluss price display:', configItem);
+                                  return 0;
+                                }
+
                                 if (configItem.nest) {
                                   return getItemPrice(
                                     "nest",
@@ -3983,10 +4039,9 @@ export default function CheckoutStepper({
 
                         {/* Disclaimer text - centered below box with margin */}
                         <div className="text-sm text-gray-600 leading-relaxed text-center pt-2 mb-6 mx-5">
-                          Solltest du mit dem Entwurfsplan nicht zufrieden sein,
-                          kannst du vom Kauf deines Hoam-Houses zurücktreten. In
-                          diesem Fall zahlst du lediglich die Kosten für die
-                          Grundstücksanalyse und den Entwurfsplan.
+                          Solltest du mit deinem Konzept-Check nicht zufrieden sein,
+                          kannst du die Grundstücksanalyse auch für alle anderen Bauvorhaben nutzen. Es
+                          entsteht keine Verpflichtung zum Kauf/Bau eines Hoam Hauses.
                         </div>
 
                         {/* Jetzt bezahlen button - centered below text - HIDDEN ON MOBILE */}
@@ -4019,12 +4074,12 @@ export default function CheckoutStepper({
                       >
                         {isPaymentCompleted
                           ? "Bezahlt"
-                          : "Grundstücksanalyse und Entwurfsplan"}
+                          : "Konzept-Check"}
                       </h3>
                       <div className="text-sm text-gray-600">
                         {isPaymentCompleted
                           ? "Zahlung erfolgreich abgeschlossen"
-                          : "Starte dein Bauvorhaben"}
+                          : "Grundstücksanalyse und Entwurfsplan"}
                       </div>
                     </div>
                     <div className="text-right">
@@ -4125,10 +4180,9 @@ export default function CheckoutStepper({
 
                 {/* Disclaimer text - centered below box */}
                 <div className="text-sm text-gray-600 leading-relaxed text-center mb-6 mx-5">
-                  Solltest du mit dem Entwurf nicht zufrieden sein, kannst du
-                  vom Kauf deines Hoam-Houses zurücktreten. In diesem Fall
-                  zahlst du lediglich die Kosten für den Entwurf und
-                  Grundstücksanalyse.
+                  Solltest du mit deinem Konzept-Check nicht zufrieden sein,
+                  kannst du die Grundstücksanalyse auch für alle anderen Bauvorhaben nutzen. Es
+                  entsteht keine Verpflichtung zum Kauf/Bau eines Hoam Hauses.
                 </div>
 
                 {/* Note: "Jetzt bezahlen" button is hidden for ohne Hoam mode by not rendering it here */}
@@ -4758,7 +4812,7 @@ export default function CheckoutStepper({
               <div className="text-sm md:text-base lg:text-lg 2xl:text-xl text-gray-700 leading-relaxed">
                 {isOhneNestMode
                   ? "Du zahlst lediglich die Grundstücksanalyse und den Entwurfsplan"
-                  : "Solltest du mit dem Entwurfsplan nicht zufrieden sein, kannst du vom Kauf deines Hoam-Houses zurücktreten. In diesem Fall zahlst du lediglich die Kosten für die Grundstücksanalyse und den Entwurfsplan."}
+                  : "Solltest du mit nicht zufrieden sein, kannst du jederzeit von der Bestellung zurücktreten."}
               </div>
             </div>
 

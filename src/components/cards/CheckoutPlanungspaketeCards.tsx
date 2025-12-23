@@ -47,9 +47,8 @@ export default function CheckoutPlanungspaketeCards({
         return (
           <div key={pkg.value} className="h-full">
             <div
-              className={`w-full h-full rounded-3xl overflow-hidden border bg-white cursor-pointer transition-all duration-200 hover:shadow-lg flex flex-col ${
-                isSelected ? "border-blue-600 shadow-md" : "border-gray-300"
-              }`}
+              className={`w-full h-full rounded-3xl overflow-hidden border bg-white cursor-pointer transition-all duration-200 hover:shadow-lg flex flex-col ${isSelected ? "border-blue-600 shadow-md" : "border-gray-300"
+                }`}
               onClick={() => {
                 // Allow deselection for Plus and Pro, but always keep Basis selected
                 if (pkg.value === "basis") {
@@ -113,7 +112,7 @@ export default function CheckoutPlanungspaketeCards({
                     </div>
                     <p className="p-primary-small text-nest-gray mt-2">
                       {pkg.value === "basis"
-                        ? "Wert von € 10.900,00"
+                        ? "in jedem ®Hoam inkludiert"
                         : pkg.value === "plus"
                           ? "Kosten nur bei Inanspruchnahme"
                           : "Kosten nur bei Inanspruchnahme"}

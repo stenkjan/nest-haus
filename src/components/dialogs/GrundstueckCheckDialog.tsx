@@ -135,7 +135,7 @@ const GrundstueckCheckDialog: React.FC<GrundstueckCheckDialogProps> = ({
                   className="space-y-2 sm:space-y-3"
                 >
                   <h3 className="font-normal mb-1 sm:mb-2 text-xs sm:text-sm text-gray-700">
-                    Daten Bewerber
+                    Deine Daten
                   </h3>
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-1 sm:gap-2">
                     <input
