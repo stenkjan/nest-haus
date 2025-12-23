@@ -120,10 +120,15 @@ export default function HoamClient() {
       .catch((error) => console.error("Failed to load pricing:", error));
   }, []);
 
-  // Helper function to format prices for display
+  // Helper function to format prices for display (rounded to hundreds)
   const formatPrice = (price: number | undefined): string => {
     if (!price) return "213.000";
-    return Math.round(price / 1000).toString() + ".000";
+    // Round to nearest 100
+    const roundedPrice = Math.round(price / 100) * 100;
+    // Format as XXX.XXX (thousands with German notation)
+    const thousands = Math.floor(roundedPrice / 1000);
+    const hundreds = Math.floor((roundedPrice % 1000) / 100);
+    return `${thousands}.${hundreds}00`;
   };
 
   return (
