@@ -1289,7 +1289,7 @@ export default function CheckoutStepper({
         title: "Unterstützung gefällig?",
         subtitle: "Unsere Planungspakete helfen auf deinem Weg zum Haus",
         description:
-          "Unsere **drei Planungspakete** geben dir Sicherheit für dein Hoam-House. Mit dem **Basis-Paket** erhältst du eine genehmigungsfähige **Einreichplanung** und alle technischen **Grundlagen.** Das **Plus-Paket** erweitert dies um die komplette **Haustechnik- und Innenausbauplanung.**\n\nIm **Pro-Paket** entwickeln wir zusätzlich ein umfassendes **Interiorkonzept,** das Raumgefühl, Farben, Materialien und Licht vereint. Die Umsetzung kannst du **selbst übernehmen** oder mit unseren erfahrenen **Partnerfirmen realisieren.**",
+          "Unsere **drei Planungspakete** geben dir Sicherheit für dein Hoam. Mit dem **Basis-Paket** erhältst du eine genehmigungsfähige **Einreichplanung** und alle technischen **Grundlagen.** Das **Plus-Paket** erweitert dies um die komplette **Haustechnik- und Innenausbauplanung.**\n\nIm **Pro-Paket** entwickeln wir zusätzlich ein umfassendes **Interiorkonzept,** das Raumgefühl, Farben, Materialien und Licht vereint. Die Umsetzung kannst du **selbst übernehmen** oder mit unseren erfahrenen **Partnerfirmen realisieren.**",
       },
       {
         title: "Bereit für Vorfreude?",

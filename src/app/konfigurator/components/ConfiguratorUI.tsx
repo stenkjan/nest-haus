@@ -157,7 +157,7 @@ export default function ConfiguratorUI({ logic, rightPanelRef }: ConfiguratorUIP
                 />
 
                 <p className="text-sm text-gray-600 leading-relaxed mt-4 px-1">
-                  Das Fundament bildet die stabile Basis für dein Hoam-House. Es wird individuell auf dein Grundstück und die Bodenbeschaffenheit angepasst und sorgt für einen sicheren Stand über viele Jahre.
+                  Das Fundament bildet die stabile Basis für dein Hoam. Es wird individuell auf dein Grundstück und die Bodenbeschaffenheit angepasst und sorgt für einen sicheren Stand über viele Jahre.
                 </p>
               </div>
             </CategorySection>

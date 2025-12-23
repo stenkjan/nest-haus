@@ -326,7 +326,7 @@ export default function HoamSystemClient() {
               <FullWidthTextGrid
                 backgroundColor="black"
                 textBox1="<p class='p-secondary text-white'><span class='text-nest-gray'>Mit ®Hoam hast du die</span> <span class='text-white font-medium'>Freiheit, deinen Grundriss so zu gestalten,</span> <span class='text-nest-gray'>wie es zu deinem Leben passt. Kein Schema, kein Standard. Nur Räume, die sich anfühlen wie du selbst.</span> <span class='text-white font-medium'>Denn richtig wohnen bedeutet mehr als Fläche und Funktion.</span> <span class='text-nest-gray'>Es ist Persönlichkeit, Ausdruck und Alltag der von dir in Einklang gebracht wird.</span></p>"
-                textBox2="<p class='p-secondary text-white'><span class='text-nest-gray'>Wenn du auf dem Weg dorthin</span> Unterstützung <span class='text-nest-gray'>möchtest, begleiten wir dich Schritt für Schritt. Unsere</span> Planungspakete <span class='text-nest-gray'>führen dich</span> von der Einreichplanung bis zur Gestaltung des Innenraums. <span class='text-nest-gray'>Individuell, durchdacht und auf deine Vorstellungen abgestimmt. So entsteht aus einer Idee</span> <span class='text-white font-medium'>ein Zuhause, das wirklich zu dir passt.</span></p>"
+                textBox2="<p class='p-secondary text-white'><span class='text-nest-gray'>Wir begleiten dich Schritt für Schritt. Unsere</span> Planungspakete <span class='text-nest-gray'>führen dich</span> von der Einreichplanung bis zur Gestaltung des Innenraums. <span class='text-nest-gray'>Individuell, durchdacht und auf deine Vorstellungen abgestimmt. So entsteht aus einer Idee</span> <span class='text-white font-medium'>ein Zuhause, das wirklich zu dir passt.</span></p>"
                 maxWidth={false}
               />
 
@@ -370,8 +370,8 @@ export default function HoamSystemClient() {
           {/* Section 6 - Kosten-Sparen-Wert erhöhen */}
           <section id="haustechnik" className="w-full py-8 md:py-16 bg-black">
             <SectionHeader
-              title="Kosten-Sparen-Wert erhöhen"
-              subtitle="Einfache Do-It-Yourself-Pakete für alle Bereiche"
+              title="Gebäudetechnik leicht gemacht"
+              subtitle="Do-It-Yourself oder vom Profi"
               titleClassName="text-white"
               subtitleClassName="text-white"
             />
