@@ -357,9 +357,7 @@ export default function LandingPageClient() {
                         title: "Wir bauen Freiheit",
                         subtitle: "Finde heraus was ®Hoam ausmacht",
                         description: "",
-                        image:
-                          IMAGES.function
-                            .nestHausEntdeckenDeinNestErklaerungProdukt,
+                        image: IMAGES.variantvideo.twelve,
                         backgroundColor: "#F4F4F4",
                         primaryAction: "Konfigurator",
                         primaryLink: "/konfigurator",
