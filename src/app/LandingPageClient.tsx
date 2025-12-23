@@ -350,8 +350,10 @@ export default function LandingPageClient() {
                         video: IMAGES.videos.hoamClipShort,
                         playbackRate: 0.5,
                         backgroundColor: "#F4F4F4",
+                        textColor: "white",
                         primaryAction: "Unsere Mission",
                         primaryLink: "/warum-wir",
+                        primaryButtonVariant: "secondary-narrow-white",
                       },
                       {
                         id: 2,
@@ -361,8 +363,10 @@ export default function LandingPageClient() {
                         video: IMAGES.variantvideo.twelve,
                         playbackRate: 0.5,
                         backgroundColor: "#F4F4F4",
+                        textColor: "white",
                         primaryAction: "Konfigurator",
                         primaryLink: "/konfigurator",
+                        primaryButtonVariant: "secondary-narrow-white",
                       },
                       {
                         id: 3,
@@ -373,8 +377,10 @@ export default function LandingPageClient() {
                           IMAGES.function
                             .nestHausEntwurfVorentwurfCheckGrundstueckscheck,
                         backgroundColor: "#F4F4F4",
+                        textColor: "white",
                         primaryAction: "Konzept-Check",
                         primaryLink: "/konzept-check",
+                        primaryButtonVariant: "secondary-narrow-white",
                       },
                       {
                         id: 4,
@@ -385,11 +391,13 @@ export default function LandingPageClient() {
                           IMAGES.function
                             .nestHausTerminVereinbarungBuchenGespraechAnrufenEmail,
                         backgroundColor: "#F4F4F4",
+                        textColor: "white",
                         primaryAction: "Termin sichern",
                         primaryLink: "/kontakt",
+                        primaryButtonVariant: "secondary-narrow-white",
                       },
                     ]}
-                    textColor="black"
+                    textColor="white"
                   />
                 </section>
               )}
