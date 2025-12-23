@@ -4,6 +4,15 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [29797c23064ed8efb6656caae6afb0b260c2760d] - Wed Dec 24 00:20:26 2025 +0100
+
+**Author**: stenkjan
+**Message**: `🔄 Update video reference in images constant  - Changed the video reference for 'hoamClipShort' in the images constant to remove the file extension for consistency with other video entries.  `
+
+### Changes Analysis
+
+---
+
 ## [3179b188d3ec3c9e98efc07370164a5e1a2e7219] - Wed Dec 24 00:14:34 2025 +0100
 
 **Author**: stenkjan
