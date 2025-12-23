@@ -4,6 +4,20 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [3179b188d3ec3c9e98efc07370164a5e1a2e7219] - Wed Dec 24 00:14:34 2025 +0100
+
+**Author**: stenkjan
+**Message**: `🔄 Update LandingPageClient and TwoByTwoImageGrid components to support video playback  - Changed image properties to video in LandingPageClient for enhanced media presentation. - Updated TwoByTwoImageGrid to conditionally render either images or videos, including optional playback rate control. - Ensured backward compatibility by making image properties optional in the GridItem interface.  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/LandingPageClient.tsx
+- src/components/grids/TwoByTwoImageGrid.tsx
+
+
+---
+
 ## [6fadfcb6fc20d134abdd83806bffdcf82c7ba8fd] - Tue Dec 23 23:18:02 2025 +0100
 
 **Author**: stenkjan
