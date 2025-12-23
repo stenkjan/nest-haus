@@ -53,11 +53,11 @@ export default function CookieBanner() {
                 </button>
                 .
               </p>
-              <p className="text-xs text-gray-600 mt-2 italic">
+              {/* <p className="text-xs text-gray-600 mt-2 italic">
                 Hinweis: Auch bei Ablehnung erfassen wir anonymisierte,
                 cookiefreie Seitenaufrufe ohne Nutzeridentifikation (Google
                 Consent Mode v2).
-              </p>
+              </p> */}
             </div>
           </div>
 
