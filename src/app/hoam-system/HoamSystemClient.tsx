@@ -137,8 +137,8 @@ export default function HoamSystemClient() {
                     path={
                       isMobile
                         ? getMobileVideoPath(
-                            IMAGES.function.mobile.nestHausModulSchemaIntro
-                          )
+                          IMAGES.function.mobile.nestHausModulSchemaIntro
+                        )
                         : IMAGES.function.nestHausModulSchemaIntro
                     }
                     fallbackSrc={
@@ -178,7 +178,7 @@ export default function HoamSystemClient() {
             />
             <ThreeByOneGrid
               backgroundColor="black"
-              text="<p class='p-secondary text-white'><span class='text-white font-medium'>Standardisierung</span> <span class='text-nest-gray'>für</span> <span class='text-white font-medium'>Effizienz, Freiheit</span> <span class='text-nest-gray'>für</span> <span class='text-white font-medium'>Gestaltung.</span> <span class='text-nest-gray'>Alles, was sinnvoll standardisiert werden kann, wird perfektioniert.</span> <span class='text-white font-medium'>Präzisionsgefertigte Module,</span> <span class='text-nest-gray'>effiziente Prozesse und bewährte Konstruktionen sichern</span> <span class='text-white font-medium'>höchste Qualität</span> <span class='text-nest-gray'>zu einem</span> <span class='text-white font-medium'>leistbaren Preis.</span></p>"
+              text="<p class='p-secondary text-white'><span class='text-white font-medium'>Standardisierung</span> <span class='text-nest-gray'>für</span> <span class='text-white font-medium'>Effizienz, Freiheit</span> <span class='text-nest-gray'>für</span> <span class='text-white font-medium'>Gestaltung.</span> <span class='text-nest-gray'>Alles, was sinnvoll standardisiert werden kann, wird vereinheitlicht.</span> <span class='text-white font-medium'>Präzisionsgefertigte Module,</span> <span class='text-nest-gray'>effiziente Prozesse und bewährte Konstruktionen sichern</span> <span class='text-white font-medium'>höchste Qualität</span> <span class='text-nest-gray'>zu einem</span> <span class='text-white font-medium'>leistbaren Preis.</span></p>"
               textPosition="left"
               maxWidth={false}
               image1={IMAGES.function.nestHausModulKonzept}
