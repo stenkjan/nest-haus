@@ -4,6 +4,19 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [6fadfcb6fc20d134abdd83806bffdcf82c7ba8fd] - Tue Dec 23 23:18:02 2025 +0100
+
+**Author**: stenkjan
+**Message**: `🔄 Comment out cookie notice in CookieBanner component  - Temporarily disabled the display of the cookie notice paragraph in the CookieBanner component for further review. - This change does not affect the functionality of the cookie consent mechanism.  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/components/CookieBanner.tsx
+
+
+---
+
 ## [7bc74addeba960bd39709b04f5e4e261a811f096] - Tue Dec 23 18:52:31 2025 +0100
 
 **Author**: stenkjan
