@@ -680,7 +680,7 @@ export const VIDEO_BACKGROUND_CARDS_CONTENT: ContentCardData[] = [
         id: 2,
         title: "Keine Lebensentscheidung. Bleib flexibel.",
         subtitle: "",
-        description: "Warum Nest?",
+        description: "Warum ®Hoam?",
         video: IMAGES.videos.videoCard02,
         backgroundColor: "#F4F4F4",
         aspectRatio: "2x1", // Square format

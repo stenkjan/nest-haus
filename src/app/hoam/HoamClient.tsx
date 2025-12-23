@@ -294,9 +294,9 @@ export default function HoamClient() {
           className="w-full py-8 md:py-16 bg-white"
         >
           <SectionHeader
-            title="Konfiguriere ®Hoam-Haus"
+            title="®Hoam konfigurieren"
             subtitle="Gestalten heißt verstehen"
-            mobileTitle="Konfiguriere ®Hoam-Haus"
+            mobileTitle="®Hoam konfigurieren"
             wrapperMargin="mb-8 md:mb-12"
           />
 
@@ -313,7 +313,7 @@ export default function HoamClient() {
                 title: "Dein Stil. Dein Zuhause.",
                 subtitle: "",
                 description:
-                  "<span class='text-nest-gray'>Im ®Hoam Konfigurator gestaltest du </span><span class='text-black font-medium'>dein Zuhause Schritt für Schritt</span><span class='text-nest-gray'> und behältst den Preis stets im Überblick.</span><br/><br/><span class='text-nest-gray'>Entdecke unsere </span><span class='text-black font-medium'>vielfältigen Möglichkeiten</span><span class='text-nest-gray'> und konfiguriere deine Basis für dein individuelles </span><span class='text-black font-medium'>®Hoam-Haus</span><span class='text-nest-gray'>.</span>",
+                  "<span class='text-nest-gray'>Im ®Hoam Konfigurator gestaltest du </span><span class='text-black font-medium'>dein Zuhause Schritt für Schritt</span><span class='text-nest-gray'> und behältst den Preis stets im Überblick.</span><br/><br/><span class='text-nest-gray'>Entdecke unsere </span><span class='text-black font-medium'>vielfältigen Möglichkeiten</span><span class='text-nest-gray'> und konfiguriere deine Basis für dein individuelles </span><span class='text-black font-medium'>®Hoam</span><span class='text-nest-gray'>.</span>",
                 video: IMAGES.variantvideo.twelve,
                 backgroundColor: "#F4F4F4",
                 playbackRate: 0.5,

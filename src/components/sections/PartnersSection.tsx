@@ -70,7 +70,7 @@ const partners: Partner[] = [
     id: "sobitsch",
     name: "Sobitsch Bau GmbH",
     path: IMAGES.partners.partner6,
-    description: "Zimmermann",
+    description: "Holzbaumeisterbetrieb",
     link: "https://www.sobi.at",
   },
   {

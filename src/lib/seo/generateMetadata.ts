@@ -26,7 +26,7 @@ export const SEO_CONFIG = {
 // Page-specific SEO configurations
 export const PAGE_SEO_CONFIG = {
     home: {
-        title: "®Hoam-Haus | Wohne wie du willst",
+        title: "®Hoam-House | Wohne wie du willst",
         description: "Das erste Haus der Welt, welches sich an dein Leben anpasst, nicht umgekehrt. Deine Atmosphäre, deine Vorstellungen. Weil nur du weißt, wie du richtig wohnst.",
         keywords: "modulhaus, fertighaus, nachhaltiges bauen, energieeffizient, Österreich, hausbau konfigurator, modulare häuser, nachhaltig wohnen",
         priority: 1.0,
