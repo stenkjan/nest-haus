@@ -205,7 +205,7 @@ export default function WarumWirClient() {
                   title: "Wohnen im Kreislauf ",
                   subtitle: "",
                   description:
-                    "<span class='text-nest-gray'>Wohnen bedeutet Verantwortung. Deshalb bildet </span><span class='text-black font-medium'>Nest</span><span class='text-nest-gray'> jedes Modul als </span><span class='text-black font-medium'>Teil eines Kreislaufes</span><span class='text-nest-gray'> aus. Wir denken Gebäude so, dass sie sich verändern, zerlegen und </span><span class='text-black font-medium'>wiederverwenden</span><span class='text-nest-gray'> lassen. So entsteht ein Zuhause, das nicht nur gebaut, sondern bewusst geschaffen wird. Stets </span><span class='text-black font-medium'>im Einklang mit Mensch und Umwelt.</span>",
+                    "<span class='text-nest-gray'>Wohnen bedeutet Verantwortung. Deshalb bildet </span><span class='text-black font-medium'>®Hoam</span><span class='text-nest-gray'> jedes Modul als </span><span class='text-black font-medium'>Teil eines Kreislaufes</span><span class='text-nest-gray'> aus. Wir denken Gebäude so, dass sie sich verändern, zerlegen und </span><span class='text-black font-medium'>wiederverwenden</span><span class='text-nest-gray'> lassen. So entsteht ein Zuhause, das nicht nur gebaut, sondern bewusst geschaffen wird. Stets </span><span class='text-black font-medium'>im Einklang mit Mensch und Umwelt.</span>",
                   video: IMAGES.videos.nestHausTransport,
                   backgroundColor: "#F4F4F4",
                   buttons: [
