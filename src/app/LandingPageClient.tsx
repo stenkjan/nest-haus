@@ -347,7 +347,7 @@ export default function LandingPageClient() {
                         title: "Die Vision ®Hoam",
                         subtitle: "®Hoam mit Verantwortung",
                         description: "",
-                        image: IMAGES.function.nestHausCardsTeamVisionMission,
+                        image: IMAGES.videos.hoamClipShort,
                         backgroundColor: "#F4F4F4",
                         primaryAction: "Unsere Mission",
                         primaryLink: "/warum-wir",
