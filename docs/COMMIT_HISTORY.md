@@ -4,6 +4,19 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [7736e83aa2328c430135c8fa56a3ff14f10663b8] - Wed Dec 24 00:31:32 2025 +0100
+
+**Author**: stenkjan
+**Message**: `🔄 Update LandingPageClient component to modify text color  - Changed textColor from "white" to "black" for improved readability. - Removed primaryButtonVariant property to streamline button styling across sections.  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/LandingPageClient.tsx
+
+
+---
+
 ## [c3672c24ba51f6b577bad37443abfb1a42af75d4] - Wed Dec 24 00:24:46 2025 +0100
 
 **Author**: stenkjan
