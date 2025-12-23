@@ -18,18 +18,24 @@ function initDataLayer() {
 function pushEvent(eventName: string, eventParams: Record<string, unknown>) {
   initDataLayer();
 
+  // Enrich event parameters with hostname for multi-domain tracking
+  const enrichedParams = {
+    ...eventParams,
+    hostname: typeof window !== 'undefined' ? window.location.hostname : 'unknown',
+  };
+
   // Push to dataLayer for GTM compatibility
   const dataLayerEvent = {
     event: eventName,
-    ...eventParams,
+    ...enrichedParams,
   };
   window.dataLayer.push(dataLayerEvent);
   console.log('📊 DataLayer Event:', dataLayerEvent);
 
   // Send directly to GA4 via gtag
   if (typeof window !== 'undefined' && window.gtag) {
-    window.gtag('event', eventName, eventParams);
-    console.log('📈 GA4 Event (gtag):', eventName, eventParams);
+    window.gtag('event', eventName, enrichedParams);
+    console.log('📈 GA4 Event (gtag):', eventName, enrichedParams);
   } else {
     console.warn('⚠️ gtag not available - event only pushed to dataLayer');
   }

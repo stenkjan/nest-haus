@@ -13,7 +13,7 @@ import LaunchFireworks from "@/components/effects/LaunchFireworks";
 
 // Define sections for landing page
 const sections = [
-  { id: "hoam-haus", title: "®Hoam", slug: "hoam-haus" },
+  { id: "hoam-house", title: "®Hoam", slug: "hoam-house" },
   {
     id: "design-im-freistil",
     title: "Dein Design im Freistil",
@@ -66,7 +66,7 @@ const getMobileImagePath = (section: { imagePath: string }): string => {
 const sectionsContent = [
   {
     id: 1,
-    sectionId: "hoam-haus",
+    sectionId: "hoam-house",
     imagePath: IMAGES.hero.nestHaus1,
     h1: "®Hoam",
     h3: "Wohne wie du willst",
@@ -153,7 +153,7 @@ const ImageCaption = ({ modelName, configuration }: ImageCaptionProps) => (
 
 export default function LandingPageClient() {
   const [_currentSectionId, setCurrentSectionId] =
-    useState<string>("hoam-haus");
+    useState<string>("hoam-house");
   const [showFireworks, setShowFireworks] = useState(false);
   const { isMobile } = useDeviceDetect();
 
@@ -286,20 +286,20 @@ export default function LandingPageClient() {
                     <div className="text-center">
                       <h1
                         className={`h1-primary ${getSectionTextColor(section.id, isMobile)} ${section.id === 3 ||
-                            section.id === 4 ||
-                            section.id === 5
-                            ? "drop-shadow-lg"
-                            : ""
+                          section.id === 4 ||
+                          section.id === 5
+                          ? "drop-shadow-lg"
+                          : ""
                           }`}
                       >
                         {section.h1}
                       </h1>
                       <h3
                         className={`h3-primary ${getSectionTextColor(section.id, isMobile)} ${section.id === 3 ||
-                            section.id === 4 ||
-                            section.id === 5
-                            ? "drop-shadow-lg"
-                            : ""
+                          section.id === 4 ||
+                          section.id === 5
+                          ? "drop-shadow-lg"
+                          : ""
                           }`}
                       >
                         {section.h3}

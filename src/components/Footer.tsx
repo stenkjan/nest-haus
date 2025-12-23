@@ -16,7 +16,7 @@ export default function Footer() {
     {
       title: "Überblick",
       items: [
-        { text: "Home", href: "/#hoam-haus" },
+        { text: "Home", href: "/#hoam-house" },
         { text: "Kontakt", href: "/kontakt" },
         { text: "Konfigurator", href: "/konfigurator" },
         { text: "Warenkorb", href: "/warenkorb?mode=konzept-check" },
