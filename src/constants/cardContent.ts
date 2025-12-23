@@ -611,9 +611,9 @@ export const PLANUNGSPAKETE_CONTENT: PlanungspaketCardData[] = [
         backgroundColor: "#F4F4F4",
         grayWord: "Plus",
         extendedDescription:
-            "Du möchtest Unterstützung bei der technischen Innenausbauplanung? Dann ist unser Plus-Paket genau das Richtige für dich. Es umfasst alle Leistungen des Basispakets, von der Einreichplanung bis zur Detailplanung und ergänzt sie um die komplette Haustechnikplanung: Elektrik, Sanitär, Abwasser und Innenausbau. \n \n Warum das sinnvoll ist? Weil du damit alle Leitungen, Anschlüsse und Einbauten frühzeitig mitplanst. Das spart Zeit, vermeidet Abstimmungsprobleme auf der Baustelle und sorgt dafür, dass dein Haus technisch von Anfang an durchdacht ist. \n \n Aber klar, wenn du die technische Planung lieber selbst übernehmen oder mit einem Partner deines Vertrauens umsetzen möchtest, ist das genauso möglich. Unser Nest-System ist so konzipiert, dass du flexibel bleibst und auch diesen Weg einfach gehen kannst. \n \n Das Plus-Paket ist unsere Lösung für dich, wenn du maximale Planungssicherheit willst. Alles aus einer Hand, alles bestens vorbereitet.",
+            "Du möchtest Unterstützung bei der technischen Innenausbauplanung? Dann ist unser Plus-Paket genau das Richtige für dich. Es umfasst alle Leistungen des Basispakets, von der Einreichplanung bis zur Detailplanung und ergänzt sie um die komplette Haustechnikplanung: Elektrik, Sanitär, Abwasser und Innenausbau. \n \n Warum das sinnvoll ist? Weil du damit alle Leitungen, Anschlüsse und Einbauten frühzeitig mitplanst. Das spart Zeit, vermeidet Abstimmungsprobleme auf der Baustelle und sorgt dafür, dass dein Haus technisch von Anfang an durchdacht ist. \n \n Aber klar, wenn du die technische Planung lieber selbst übernehmen oder mit einem Partner deines Vertrauens umsetzen möchtest, ist das genauso möglich. Unser Hoam-System ist so konzipiert, dass du flexibel bleibst und auch diesen Weg einfach gehen kannst. \n \n Das Plus-Paket ist unsere Lösung für dich, wenn du maximale Planungssicherheit willst. Alles aus einer Hand, alles bestens vorbereitet.",
         mobileExtendedDescription:
-            "Du möchtest Unterstützung bei der technischen Innenausbauplanung? Dann ist unser Plus-Paket genau das Richtige für dich. Es umfasst alle Leistungen des Basispakets, von der Einreichplanung bis zur Detailplanung und ergänzt sie um die komplette Haustechnikplanung: Elektrik, Sanitär, Abwasser und Innenausbau. \n \n Warum das sinnvoll ist? Weil du damit alle Leitungen, Anschlüsse und Einbauten frühzeitig mitplanst. Das spart Zeit, vermeidet Abstimmungsprobleme auf der Baustelle und sorgt dafür, dass dein Haus technisch von Anfang an durchdacht ist. \n \n Aber klar, wenn du die technische Planung lieber selbst übernehmen oder mit einem Partner deines Vertrauens umsetzen möchtest, ist das genauso möglich. Unser Nest-System ist so konzipiert, dass du flexibel bleibst und auch diesen Weg einfach gehen kannst. \n \n Das Plus-Paket ist unsere Lösung für dich, wenn du maximale Planungssicherheit willst. Alles aus einer Hand, alles bestens vorbereitet.",
+            "Du möchtest Unterstützung bei der technischen Innenausbauplanung? Dann ist unser Plus-Paket genau das Richtige für dich. Es umfasst alle Leistungen des Basispakets, von der Einreichplanung bis zur Detailplanung und ergänzt sie um die komplette Haustechnikplanung: Elektrik, Sanitär, Abwasser und Innenausbau. \n \n Warum das sinnvoll ist? Weil du damit alle Leitungen, Anschlüsse und Einbauten frühzeitig mitplanst. Das spart Zeit, vermeidet Abstimmungsprobleme auf der Baustelle und sorgt dafür, dass dein Haus technisch von Anfang an durchdacht ist. \n \n Aber klar, wenn du die technische Planung lieber selbst übernehmen oder mit einem Partner deines Vertrauens umsetzen möchtest, ist das genauso möglich. Unser Hoam-System ist so konzipiert, dass du flexibel bleibst und auch diesen Weg einfach gehen kannst. \n \n Das Plus-Paket ist unsere Lösung für dich, wenn du maximale Planungssicherheit willst. Alles aus einer Hand, alles bestens vorbereitet.",
     },
     {
         id: 3,
@@ -870,7 +870,7 @@ export const ENTWURF_VIDEO_CARDS_CONTENT: ContentCardData[] = [
                 link: "/warenkorb?mode=konzept-check",
             },
             {
-                text: "Warum mit Nest?",
+                text: "Warum mit ®Hoam?",
                 variant: "secondary-narrow-blue",
                 size: "xs",
                 link: "/warum-wir",
@@ -879,7 +879,7 @@ export const ENTWURF_VIDEO_CARDS_CONTENT: ContentCardData[] = [
     },
     {
         id: 2,
-        title: "So fühlt sich Wohnen im Hoam an",
+        title: "So fühlt sich Wohnen im ®Hoam an",
         subtitle: "",
         description: "Momente schaffen",
         image: IMAGES.function.nestHausInteriorKueche,
@@ -920,7 +920,7 @@ export const ENTWURF_VIDEO_CARDS_CONTENT: ContentCardData[] = [
     },
     {
         id: 5,
-        title: "Wohnen wie du willst, nur mit Nest",
+        title: "Wohnen wie du willst, nur mit ®Hoam",
         subtitle: "",
         description: "So funktioniert die Zukunft",
         image: IMAGES.function.nestHausInteriorSteinplatten,
@@ -1144,7 +1144,7 @@ export const GLASS_QUOTE_CARDS_CONTENT: ContentCardData[] = [
         id: 3,
         title: "Wirtschaftskammer Steiermark",
         subtitle: "Auszeichnung Top 30 unter 30",
-        description: "Wegweisend <span class='text-nest-gray'>in</span> Technologie <span class='text-nest-gray'>und</span> nachhaltigem Bauen. <span class='text-nest-gray'>Nest setzt</span> neue Maßstäbe <span class='text-nest-gray'>für die</span> Zukunft.|||WKO Steiermark|||Von Jury gekürt",
+        description: "Wegweisend <span class='text-nest-gray'>in</span> Technologie <span class='text-nest-gray'>und</span> nachhaltigem Bauen. <span class='text-nest-gray'>Hoam setzt</span> neue Maßstäbe <span class='text-nest-gray'>für die</span> Zukunft.|||WKO Steiermark|||Von Jury gekürt",
         backgroundColor: "#121212",
         image: IMAGES.partners.wko, // TU-IAM logo
         externalLink: "https://www.wko.at", // Optional: link to WKO website
