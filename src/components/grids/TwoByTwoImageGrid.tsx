@@ -3,7 +3,7 @@
 import React, { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import Link from "next/link";
-import { HybridBlobImage } from "@/components/images";
+import { HybridBlobImage, ClientBlobVideo } from "@/components/images";
 import { Button } from "@/components/ui";
 
 interface GridItem {
@@ -11,7 +11,9 @@ interface GridItem {
   title: string;
   subtitle: string;
   description: string; // max 25 characters
-  image: string;
+  image?: string; // Optional - use either image or video
+  video?: string; // Optional - use either video or image
+  playbackRate?: number; // Optional playback speed control for videos
   backgroundColor: string;
   primaryAction?: string; // Optional - if omitted, no primary button
   secondaryAction?: string; // Optional - if omitted, no secondary button
@@ -127,19 +129,33 @@ export default function TwoByTwoImageGrid({
             }}
             transition={{ duration: 0.2 }}
           >
-            {/* Background Image */}
+            {/* Background Image or Video */}
             <div className="absolute inset-0">
-              <HybridBlobImage
-                path={item.image}
-                alt={item.title}
-                fill
-                className="object-cover object-center"
-                strategy="client"
-                isInteractive={true}
-                // enableCache={item.id !== 1} // Disable cache for first image to test
-                sizes="(max-width: 1024px) 100vw, 50vw"
-                quality={85}
-              />
+              {item.video ? (
+                <ClientBlobVideo
+                  path={item.video}
+                  className="w-full h-full object-cover"
+                  autoPlay={true}
+                  loop={true}
+                  muted={true}
+                  playsInline={true}
+                  controls={false}
+                  playbackRate={item.playbackRate || 1.0}
+                  enableCache={true}
+                />
+              ) : (
+                <HybridBlobImage
+                  path={item.image || ""}
+                  alt={item.title}
+                  fill
+                  className="object-cover object-center"
+                  strategy="client"
+                  isInteractive={true}
+                  // enableCache={item.id !== 1} // Disable cache for first image to test
+                  sizes="(max-width: 1024px) 100vw, 50vw"
+                  quality={85}
+                />
+              )}
             </div>
 
             {/* Content Container */}
