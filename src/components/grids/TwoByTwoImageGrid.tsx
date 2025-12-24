@@ -19,41 +19,41 @@ interface GridItem {
   secondaryAction?: string; // Optional - if omitted, no secondary button
   textColor?: "white" | "black"; // Optional text color per item
   primaryButtonVariant?:
-    | "primary"
-    | "secondary"
-    | "primary-narrow"
-    | "secondary-narrow"
-    | "secondary-narrow-white"
-    | "secondary-narrow-blue"
-    | "tertiary"
-    | "outline"
-    | "ghost"
-    | "danger"
-    | "success"
-    | "info"
-    | "landing-primary"
-    | "landing-secondary"
-    | "landing-secondary-blue"
-    | "landing-secondary-blue-white"
-    | "configurator"; // Optional primary button variant (defaults to "landing-primary")
+  | "primary"
+  | "secondary"
+  | "primary-narrow"
+  | "secondary-narrow"
+  | "secondary-narrow-white"
+  | "secondary-narrow-blue"
+  | "tertiary"
+  | "outline"
+  | "ghost"
+  | "danger"
+  | "success"
+  | "info"
+  | "landing-primary"
+  | "landing-secondary"
+  | "landing-secondary-blue"
+  | "landing-secondary-blue-white"
+  | "configurator"; // Optional primary button variant (defaults to "landing-primary")
   secondaryButtonVariant?:
-    | "primary"
-    | "secondary"
-    | "primary-narrow"
-    | "secondary-narrow"
-    | "secondary-narrow-white"
-    | "secondary-narrow-blue"
-    | "tertiary"
-    | "outline"
-    | "ghost"
-    | "danger"
-    | "success"
-    | "info"
-    | "landing-primary"
-    | "landing-secondary"
-    | "landing-secondary-blue"
-    | "landing-secondary-blue-white"
-    | "configurator"; // Optional secondary button variant (defaults to "landing-secondary")
+  | "primary"
+  | "secondary"
+  | "primary-narrow"
+  | "secondary-narrow"
+  | "secondary-narrow-white"
+  | "secondary-narrow-blue"
+  | "tertiary"
+  | "outline"
+  | "ghost"
+  | "danger"
+  | "success"
+  | "info"
+  | "landing-primary"
+  | "landing-secondary"
+  | "landing-secondary-blue"
+  | "landing-secondary-blue-white"
+  | "configurator"; // Optional secondary button variant (defaults to "landing-secondary")
   primaryLink?: string; // Optional link for primary action
   secondaryLink?: string; // Optional link for secondary action
 }
@@ -146,7 +146,7 @@ export default function TwoByTwoImageGrid({
               ) : (
                 <HybridBlobImage
                   path={item.image || ""}
-                  alt={item.title}
+                  alt={typeof item.title === 'string' ? item.title : 'Grid Image'}
                   fill
                   className="object-cover object-center"
                   strategy="client"
@@ -168,29 +168,26 @@ export default function TwoByTwoImageGrid({
                 transition={{ delay: index * 0.1, duration: 0.6 }}
               >
                 <div
-                  className={`${
-                    isUltraWide
+                  className={`${isUltraWide
                       ? "p-6"
                       : screenWidth < 1024
                         ? "p-0 -mt-2"
                         : "p-4"
-                  } text-center`}
+                    } text-center`}
                 >
                   <h2
-                    className={`mb-4 sm:mb-1 font-bold text-3xl sm:text-3xl md:font-medium md:text-xl lg:text-5xl md:lg:text-3xl xl:text-6xl md:xl:text-4xl md:2xl:text-5xl ${
-                      (item.textColor || textColor) === "white"
+                    className={`mb-4 sm:mb-1 font-bold text-3xl sm:text-3xl md:font-medium md:text-xl lg:text-5xl md:lg:text-3xl xl:text-6xl md:xl:text-4xl md:2xl:text-5xl ${(item.textColor || textColor) === "white"
                         ? "!text-white"
                         : "!text-black"
-                    }`}
+                      }`}
                   >
                     {item.title}
                   </h2>
                   <h3
-                    className={`hidden sm:block font-medium text-lg sm:text-base md:text-sm lg:text-lg md:lg:text-xl xl:text-2xl md:xl:text-2xl ${item.primaryAction || item.secondaryAction ? "mb-4" : ""} ${
-                      (item.textColor || textColor) === "white"
+                    className={`hidden sm:block font-medium text-lg sm:text-base md:text-sm lg:text-lg md:lg:text-xl xl:text-2xl md:xl:text-2xl ${item.primaryAction || item.secondaryAction ? "mb-4" : ""} ${(item.textColor || textColor) === "white"
                         ? "!text-white"
                         : "!text-black"
-                    }`}
+                      }`}
                   >
                     {item.subtitle}
                   </h3>
@@ -263,21 +260,19 @@ export default function TwoByTwoImageGrid({
                 transition={{ delay: index * 0.1 + 0.2, duration: 0.6 }}
               >
                 <div
-                  className={`${
-                    isUltraWide
+                  className={`${isUltraWide
                       ? "p-6"
                       : screenWidth < 1024
                         ? "p-0 -mb-2"
                         : "p-4"
-                  }`}
+                    }`}
                 >
                   {/* Description Text */}
                   <p
-                    className={`p-primary text-center ${
-                      (item.textColor || textColor) === "white"
+                    className={`p-primary text-center ${(item.textColor || textColor) === "white"
                         ? "!text-white"
                         : "!text-black"
-                    }`}
+                      }`}
                   >
                     {item.description}
                   </p>
