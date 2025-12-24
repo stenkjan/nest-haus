@@ -146,7 +146,7 @@ export async function GET(request: NextRequest) {
     ]);
     
     // Get active users from Redis
-    const activeUsers = await redis.scard('active_sessions') || 0;
+    const activeUsers = redis ? await redis.scard('active_sessions') || 0 : 0;
     
     // Calculate metrics
     const totalSessions = sessionStats._count.id;
