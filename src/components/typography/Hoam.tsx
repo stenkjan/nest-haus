@@ -20,7 +20,8 @@ export default function Hoam({ className = '', variant = 'title' }: HoamProps) {
   let addLeadingSpace = false;
 
   if (variant === 'button') {
-    topPosition = '0.6em';
+    topPosition = '0.65em'; // Lower for button
+    hFontWeight = '600'; // Make button H slightly thicker
   } else if (variant === 'subtitle') {
     topPosition = '0.7em'; // Lower for subtitle
     hFontSize = '0.76em'; // Slightly taller H for subtitle
