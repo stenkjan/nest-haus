@@ -4,6 +4,19 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [53f77824a137c1047c93493ffc48dd2641b99263] - Wed Dec 24 10:38:15 2025 +0100
+
+**Author**: stenkjan
+**Message**: `🔄 Update font weight in HoamClient for enhanced branding visibility  - Changed font weight from 'font-semibold' to 'font-extrabold' for the brand name "Hoam" in button labels to improve branding consistency and visibility.  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/hoam/HoamClient.tsx
+
+
+---
+
 ## [90e29d6ff81a432ebc53cd8f47d43cefc9530c0a] - Wed Dec 24 10:31:31 2025 +0100
 
 **Author**: stenkjan
