@@ -345,8 +345,8 @@ export default function LandingPageClient() {
                     customData={[
                       {
                         id: 1,
-                        title: <>Die Vision <Hoam /></>,
-                        subtitle: <><Hoam /> mit Verantwortung</>,
+                        title: <>Die Vision <Hoam variant="title" /></>,
+                        subtitle: <><Hoam variant="subtitle" /> mit Verantwortung</>,
                         description: "",
                         video: IMAGES.videos.hoamClipShort,
                         playbackRate: 0.5,
@@ -359,7 +359,7 @@ export default function LandingPageClient() {
                       {
                         id: 2,
                         title: "Wir bauen Freiheit",
-                        subtitle: <>Finde heraus was <Hoam /> ausmacht</>,
+                        subtitle: <>Finde heraus was <Hoam variant="subtitle" /> ausmacht</>,
                         description: "",
                         video: IMAGES.variantvideo.twelve,
                         playbackRate: 0.5,

@@ -2,28 +2,45 @@ import React from 'react';
 
 interface HoamProps {
     className?: string;
-    variant?: 'title' | 'button'; // title = thick H, button = normal H
+    variant?: 'title' | 'button' | 'subtitle'; // title = thick H, button/subtitle = normal H
 }
 
 /**
  * Hoam - Special typography component for ®Hoam branding
  * Renders with ® at same height and H at x-height
- * variant="title" makes H thick/bold, variant="button" keeps it normal weight
+ * variant="title" makes H thick/bold
+ * variant="button" or "subtitle" keeps it normal weight with adjusted positioning
  */
 export default function Hoam({ className = '', variant = 'title' }: HoamProps) {
     const isThick = variant === 'title';
 
+    // Adjust ® positioning and H size based on variant
+    let topPosition = '0.5em'; // default for title
+    let hFontSize = '0.72em'; // default
+    let addLeadingSpace = false;
+
+    if (variant === 'button') {
+        topPosition = '0.55em';
+    } else if (variant === 'subtitle') {
+        topPosition = '0.65em'; // Lower for subtitle
+        hFontSize = '0.76em'; // Slightly taller H for subtitle
+        addLeadingSpace = true;
+    } else if (variant === 'title') {
+        addLeadingSpace = true;
+    }
+
     return (
-        <span className={className} style={{ position: 'relative', display: 'inline-block' }}>
+        <span className={className} style={{ position: 'relative', display: 'inline-block', marginLeft: variant === 'subtitle' ? '0.3em' : '0' }}>
+            {addLeadingSpace && ' '}
             <span style={{
                 fontSize: '0.5em',
                 position: 'absolute',
-                top: isThick ? '0.5em' : '0.55em',
+                top: topPosition,
                 left: '-0.6em',
                 verticalAlign: 'baseline'
             }}>®</span>
             <span style={{
-                fontSize: '0.72em',
+                fontSize: hFontSize,
                 fontWeight: isThick ? '900' : 'inherit',
                 WebkitTextStroke: isThick ? '0.3px currentColor' : 'none'
             }}>H</span>
