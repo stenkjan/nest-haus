@@ -366,7 +366,7 @@ export default function LandingPageClient() {
                         backgroundColor: "#F4F4F4",
                         primaryAction: "Konfigurator",
                         primaryLink: "/konfigurator",
-                        primaryButtonVariant: "secondary-narrow",
+                        primaryButtonVariant: "secondary-narrow-white",
                       },
                       {
                         id: 3,

@@ -3,20 +3,33 @@
  * 
  * Handles real-time session data and user interactions
  * Integrates with Upstash Redis free tier (500K commands/month)
+ * 
+ * Gracefully degrades when Redis is not configured (development mode)
  */
 
 import { Redis } from '@upstash/redis';
 
-// Initialize Redis client
-const redis = new Redis({
-  url: process.env.UPSTASH_REDIS_REST_URL!,
-  token: process.env.UPSTASH_REDIS_REST_TOKEN!,
-});
+// Check if Redis credentials are available
+const REDIS_URL = process.env.UPSTASH_REDIS_REST_URL;
+const REDIS_TOKEN = process.env.UPSTASH_REDIS_REST_TOKEN;
+export const isRedisConfigured = !!(REDIS_URL && REDIS_TOKEN);
 
-// Test Redis connection at startup
-redis.ping().catch(error => {
-  console.error('Redis connection failed at startup:', error);
-});
+// Initialize Redis client only if credentials are available
+let redis: Redis | null = null;
+
+if (isRedisConfigured) {
+  redis = new Redis({
+    url: REDIS_URL!,
+    token: REDIS_TOKEN!,
+  });
+
+  // Test Redis connection at startup
+  redis.ping().catch(error => {
+    console.error('Redis connection failed at startup:', error);
+  });
+} else {
+  console.warn('⚠️ Redis not configured - session caching disabled (dev mode)');
+}
 
 // Type definitions for configuration
 export interface Configuration {
@@ -79,8 +92,10 @@ export class SessionManager {
       referrer: sessionData.referrer,
     };
 
-    // Store session with 24-hour expiration
-    await redis.setex(sessionId, 86400, session);
+    // Store session with 24-hour expiration (if Redis is available)
+    if (redis) {
+      await redis.setex(sessionId, 86400, session);
+    }
     return sessionId;
   }
 
@@ -88,6 +103,8 @@ export class SessionManager {
    * Update session with new activity
    */
   static async updateSession(sessionId: string, update: Partial<UserSession>): Promise<void> {
+    if (!redis) return;
+    
     const session = await this.getSession(sessionId);
     if (session) {
       const updatedSession = {
@@ -103,6 +120,8 @@ export class SessionManager {
    * Get session data
    */
   static async getSession(sessionId: string): Promise<UserSession | null> {
+    if (!redis) return null;
+    
     const sessionData = await redis.get(sessionId);
     if (!sessionData) return null;
 
@@ -119,6 +138,8 @@ export class SessionManager {
    * Track user interaction
    */
   static async trackClick(sessionId: string, clickEvent: ClickEvent): Promise<void> {
+    if (!redis) return;
+    
     const session = await this.getSession(sessionId);
     if (session) {
       session.clickHistory.push(clickEvent);
@@ -141,6 +162,8 @@ export class SessionManager {
    * Finalize session (page exit)
    */
   static async finalizeSession(sessionId: string, finalConfiguration: Configuration): Promise<void> {
+    if (!redis) return;
+    
     const session = await this.getSession(sessionId);
     if (session) {
       // Update session with final state
@@ -159,12 +182,20 @@ export class SessionManager {
    * Get analytics data for admin panel
    */
   static async getSessionAnalytics(): Promise<SessionAnalytics> {
+    if (!redis) {
+      return {
+        totalSessions: 0,
+        activeSessions: 0,
+        averageSessionDuration: 0,
+      };
+    }
+    
     // This will query Redis for session patterns
     // Implementation depends on your specific analytics needs
     const keys = await redis.keys('session:*');
     const sessions = await Promise.all(
       keys.map(async (key) => {
-        const data = await redis.get(key);
+        const data = await redis!.get(key);
         if (!data) return null;
 
         // Handle both string and object responses from Upstash
@@ -189,42 +220,51 @@ export class SessionManager {
 
   // Content session management
   static async setContentSession(sessionId: string, session: unknown): Promise<void> {
+    if (!redis) return;
     const contentKey = `content:${sessionId}`;
     await redis.setex(contentKey, 86400, session); // 24 hour expiration
   }
 
   static async getContentSession(sessionId: string): Promise<unknown> {
+    if (!redis) return null;
     const contentKey = `content:${sessionId}`;
     return await redis.get(contentKey);
   }
 
   static async updateContentSession(sessionId: string, session: unknown): Promise<void> {
+    if (!redis) return;
     const contentKey = `content:${sessionId}`;
     await redis.setex(contentKey, 86400, session); // 24 hour expiration
   }
 
   // Redis helper methods for analytics
   static async get(key: string): Promise<unknown> {
+    if (!redis) return null;
     return await redis.get(key);
   }
 
   static async setex(key: string, expiration: number, value: unknown): Promise<void> {
+    if (!redis) return;
     await redis.setex(key, expiration, value);
   }
 
   static async incr(key: string): Promise<number> {
+    if (!redis) return 0;
     return await redis.incr(key);
   }
 
   static async expire(key: string, seconds: number): Promise<void> {
+    if (!redis) return;
     await redis.expire(key, seconds);
   }
 
   static async hgetall(key: string): Promise<Record<string, string> | null> {
+    if (!redis) return null;
     return await redis.hgetall(key);
   }
 
   static async hmset(key: string, data: Record<string, string | number>): Promise<void> {
+    if (!redis) return;
     await redis.hmset(key, data);
   }
 
@@ -244,6 +284,8 @@ export class SessionManager {
     value?: string;
     timestamp?: number;
   }): Promise<void> {
+    if (!redis) return;
+    
     const key = `analytics:events:${sessionId}`;
     const eventData = {
       ...event,
@@ -267,6 +309,8 @@ export class SessionManager {
    * Get hot analytics events from Redis
    */
   static async getAnalyticsEvents(sessionId: string, limit: number = 100): Promise<unknown[]> {
+    if (!redis) return [];
+    
     const key = `analytics:events:${sessionId}`;
     const events = await redis.lrange(key, 0, limit - 1);
     
@@ -282,6 +326,8 @@ export class SessionManager {
    * Get all sessions with pending analytics events
    */
   static async getPendingAnalyticsSessions(): Promise<string[]> {
+    if (!redis) return [];
+    
     const sessions = await redis.smembers('analytics:pending:sessions');
     return sessions as string[];
   }
@@ -290,6 +336,8 @@ export class SessionManager {
    * Mark analytics events as flushed to PostgreSQL
    */
   static async clearAnalyticsEvents(sessionId: string): Promise<void> {
+    if (!redis) return;
+    
     const key = `analytics:events:${sessionId}`;
     await redis.del(key);
     await redis.srem('analytics:pending:sessions', sessionId);
@@ -299,6 +347,8 @@ export class SessionManager {
    * Increment real-time counter (for dashboard)
    */
   static async incrementCounter(metric: string, timeWindow: string = 'hour'): Promise<number> {
+    if (!redis) return 0;
+    
     const now = new Date();
     let key: string;
 
@@ -326,6 +376,8 @@ export class SessionManager {
    * Get real-time counter value
    */
   static async getCounter(metric: string, timeWindow: string = 'hour'): Promise<number> {
+    if (!redis) return 0;
+    
     const now = new Date();
     let key: string;
 
@@ -351,6 +403,8 @@ export class SessionManager {
    * Store hot traffic source data
    */
   static async trackTrafficSource(source: string): Promise<void> {
+    if (!redis) return;
+    
     const today = new Date().toISOString().split('T')[0];
     const key = `traffic:${today}`;
     
@@ -362,6 +416,8 @@ export class SessionManager {
    * Get traffic source stats for today
    */
   static async getTodayTrafficSources(): Promise<Record<string, number>> {
+    if (!redis) return {};
+    
     const today = new Date().toISOString().split('T')[0];
     const key = `traffic:${today}`;
     
@@ -377,4 +433,5 @@ export class SessionManager {
   }
 }
 
+// Export redis instance (may be null in development without credentials)
 export default redis; 
