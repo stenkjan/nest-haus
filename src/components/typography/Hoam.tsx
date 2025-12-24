@@ -34,7 +34,7 @@ export default function Hoam({ className = '', variant = 'title' }: HoamProps) {
 
   // Add proper spacing before the component based on variant
   const marginLeft = variant === 'title' ? '0.25em' : variant === 'subtitle' ? '0.3em' : '0';
-  
+
   return (
     <span className={className} style={{ position: 'relative', display: 'inline-block', marginLeft }}>
       {addLeadingSpace && ' '}
