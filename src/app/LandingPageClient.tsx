@@ -354,7 +354,7 @@ export default function LandingPageClient() {
                         textColor: "black",
                         primaryAction: "Unsere Mission",
                         primaryLink: "/warum-wir",
-                        primaryButtonVariant: "secondary-narrow-white",
+                        primaryButtonVariant: "landing-secondary-blue",
                       },
                       {
                         id: 2,
@@ -366,7 +366,7 @@ export default function LandingPageClient() {
                         backgroundColor: "#F4F4F4",
                         primaryAction: "Konfigurator",
                         primaryLink: "/konfigurator",
-                        primaryButtonVariant: "secondary-narrow-white",
+                        primaryButtonVariant: "landing-secondary-blue",
                       },
                       {
                         id: 3,
