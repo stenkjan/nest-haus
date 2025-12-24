@@ -4,6 +4,19 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [9e890e01a029ff47b5e012592894a2fa6105103a] - Wed Dec 24 11:22:43 2025 +0100
+
+**Author**: stenkjan
+**Message**: `🔄 Improve Redis integration and clean up unused variables in email templates  - Added a check for Redis availability in the analytics overview route to prevent errors when Redis is not configured. - Removed unnecessary ESLint disable comments for unused variables in AdminPaymentNotificationTemplate and PaymentConfirmationTemplate, enhancing code clarity.  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/api/admin/analytics/overview/route.ts
+
+
+---
+
 ## [1dceca3623c4d723ffd9ce293943ed580ae60d03] - Wed Dec 24 11:17:13 2025 +0100
 
 **Author**: stenkjan
