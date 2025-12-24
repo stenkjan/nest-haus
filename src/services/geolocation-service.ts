@@ -43,14 +43,16 @@ export async function getLocationFromIP(ip: string): Promise<LocationData | null
   const cacheKey = `geo:ip:${ipHash}`;
 
   try {
-    // Check Redis cache first
-    const cached = await redis.get(cacheKey);
-    if (cached) {
-      console.log(`🗺️  Geolocation cache hit for IP hash: ${ipHash}`);
-      if (typeof cached === 'string') {
-        return JSON.parse(cached) as LocationData;
+    // Check Redis cache first (if available)
+    if (redis) {
+      const cached = await redis.get(cacheKey);
+      if (cached) {
+        console.log(`🗺️  Geolocation cache hit for IP hash: ${ipHash}`);
+        if (typeof cached === 'string') {
+          return JSON.parse(cached) as LocationData;
+        }
+        return cached as LocationData;
       }
-      return cached as LocationData;
     }
 
     // Call geolocation API (ipapi.co free tier: 1000 req/day)
@@ -82,9 +84,11 @@ export async function getLocationFromIP(ip: string): Promise<LocationData | null
       countryName: data.country_name || 'Unknown'
     };
 
-    // Cache in Redis for 30 days
-    await redis.setex(cacheKey, 30 * 24 * 60 * 60, JSON.stringify(locationData));
-    console.log(`✅ Cached geolocation for ${locationData.city}, ${locationData.country}`);
+    // Cache in Redis for 30 days (if available)
+    if (redis) {
+      await redis.setex(cacheKey, 30 * 24 * 60 * 60, JSON.stringify(locationData));
+      console.log(`✅ Cached geolocation for ${locationData.city}, ${locationData.country}`);
+    }
 
     return locationData;
   } catch (error) {
