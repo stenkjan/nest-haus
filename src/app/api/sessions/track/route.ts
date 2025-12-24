@@ -23,16 +23,18 @@ export async function POST(request: Request) {
     }
 
     // Update Redis session (this is the primary state store)
-    const redisKey = `session:${sessionId}`
-    const sessionData = await redis.get(redisKey)
+    if (redis) {
+      const redisKey = `session:${sessionId}`
+      const sessionData = await redis.get(redisKey)
 
-    if (typeof sessionData === 'string') {
-      const session = JSON.parse(sessionData)
-      session.selections[category] = selection
-      session.lastActivity = Date.now()
-      session.totalPrice = totalPrice
+      if (typeof sessionData === 'string') {
+        const session = JSON.parse(sessionData)
+        session.selections[category] = selection
+        session.lastActivity = Date.now()
+        session.totalPrice = totalPrice
 
-      await redis.setex(redisKey, 7200, JSON.stringify(session))
+        await redis.setex(redisKey, 7200, JSON.stringify(session))
+      }
     }
 
     // Try to log selection event in PostgreSQL (fail-safe)
