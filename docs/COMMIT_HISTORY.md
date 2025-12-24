@@ -4,6 +4,15 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [b421a56cf91db3eb36c70bbd71ce7f000c62869c] - Wed Dec 24 11:51:05 2025 +0100
+
+**Author**: stenkjan
+**Message**: `🔄 Add Redis availability checks in geolocation service  - Implemented checks for Redis availability in the getLocationFromIP function to prevent errors when Redis is not configured. - Enhanced caching logic to ensure geolocation data is only cached if Redis is available, improving system reliability.  `
+
+### Changes Analysis
+
+---
+
 ## [f682edb3b5a120832002bf82fc28be40694c4292] - Wed Dec 24 11:38:46 2025 +0100
 
 **Author**: stenkjan
