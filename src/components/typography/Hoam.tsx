@@ -28,7 +28,7 @@ export default function Hoam({ className = '', variant = 'title' }: HoamProps) {
     addLeadingSpace = true;
   } else if (variant === 'title') {
     hFontWeight = '900'; // Extra thick
-    hTextStroke = '0.3px currentColor'; // Add stroke for maximum thickness
+    hTextStroke = '0.15px currentColor'; // Reduced stroke for better desktop rendering
     addLeadingSpace = true;
   }
 
