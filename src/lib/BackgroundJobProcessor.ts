@@ -155,6 +155,11 @@ export class BackgroundJobProcessor {
    */
   static async processInteractionQueue(): Promise<number> {
     try {
+      if (!redis) {
+        console.warn('⚠️ Redis not available, skipping interaction queue processing');
+        return 0;
+      }
+
       const queueKey = 'interaction_queue';
       const batchSize = 100;
 
@@ -200,6 +205,11 @@ export class BackgroundJobProcessor {
    */
   static async processPerformanceQueue(): Promise<number> {
     try {
+      if (!redis) {
+        console.warn('⚠️ Redis not available, skipping performance queue processing');
+        return 0;
+      }
+
       const queueKey = 'performance_queue';
       const batchSize = 200;
 
