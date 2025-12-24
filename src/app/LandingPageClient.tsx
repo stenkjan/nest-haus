@@ -351,7 +351,7 @@ export default function LandingPageClient() {
                         video: IMAGES.videos.hoamClipShort,
                         playbackRate: 0.5,
                         backgroundColor: "#F4F4F4",
-                        textColor: "white",
+                        textColor: "black",
                         primaryAction: "Unsere Mission",
                         primaryLink: "/warum-wir",
                         primaryButtonVariant: "secondary-narrow-white",
