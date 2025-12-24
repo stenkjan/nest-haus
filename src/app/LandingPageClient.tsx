@@ -10,10 +10,11 @@ import { useDeviceDetect } from "@/hooks";
 import TwoByTwoImageGrid from "@/components/grids/TwoByTwoImageGrid";
 import Footer from "@/components/Footer";
 import LaunchFireworks from "@/components/effects/LaunchFireworks";
+import { Hoam } from "@/components/typography";
 
 // Define sections for landing page
 const sections = [
-  { id: "hoam-house", title: "®Hoam", slug: "hoam-house" },
+  { id: "hoam-house", title: <Hoam />, slug: "hoam-house" },
   {
     id: "design-im-freistil",
     title: "Dein Design im Freistil",
@@ -41,7 +42,7 @@ const sections = [
   },
   {
     id: "hoam-entdecken",
-    title: "®Hoam Entdecken",
+    title: <><Hoam /> Entdecken</>,
     slug: "hoam-entdecken",
   },
 ];
@@ -68,12 +69,12 @@ const sectionsContent = [
     id: 1,
     sectionId: "hoam-house",
     imagePath: IMAGES.hero.nestHaus1,
-    h1: "®Hoam",
+    h1: <Hoam />,
     h3: "Wohne wie du willst",
     modelName: "Hoam 140",
     configuration: "Fassadenplatten Weiß",
     button1: "Konzept-Check",
-    button2: "®Hoam",
+    button2: <Hoam variant="button" />,
     secondaryButtonVariant: "landing-secondary-blue" as const, // Will be overridden by getSecondaryButtonVariant
   },
   {
@@ -85,7 +86,7 @@ const sectionsContent = [
     modelName: "Hoam 100",
     configuration: "Holzlattung Lärche Natur",
     button1: "Konzept-Check",
-    button2: "®Hoam",
+    button2: <Hoam variant="button" />,
     secondaryButtonVariant: "landing-secondary" as const,
   },
   {
@@ -97,7 +98,7 @@ const sectionsContent = [
     modelName: "Belichtungspaket Bright",
     configuration: "Innenverkleidung Fichte, Steinbelag hell",
     button1: "Konzept-Check",
-    button2: "®Hoam",
+    button2: <Hoam variant="button" />,
     secondaryButtonVariant: "landing-secondary" as const,
   },
   {
@@ -109,7 +110,7 @@ const sectionsContent = [
     modelName: "Hoam 140",
     configuration: "Fassadenplatten Schwarz",
     button1: "Konzept-Check",
-    button2: "®Hoam",
+    button2: <Hoam variant="button" />,
     secondaryButtonVariant: "landing-secondary" as const,
   },
   {
@@ -121,7 +122,7 @@ const sectionsContent = [
     modelName: "Belichtungspaket Medium",
     configuration: "Innenverkleidung Fichte, Parkett Eiche",
     button1: "Konzept-Check",
-    button2: "®Hoam",
+    button2: <Hoam variant="button" />,
     secondaryButtonVariant: "landing-secondary" as const,
   },
   {
@@ -129,11 +130,11 @@ const sectionsContent = [
     sectionId: "keine-lebensentscheidung",
     imagePath: IMAGES.hero.nestHaus5,
     h1: "Keine Lebensentscheidung",
-    h3: "Mit ®Hoam bleibt kein Ort unerreichbar",
+    h3: <>Mit <Hoam variant="title" /> bleibt kein Ort unerreichbar</>,
     modelName: "Hoam 80",
     configuration: "Trapezblech",
     button1: "Konzept-Check",
-    button2: "®Hoam",
+    button2: <Hoam variant="button" />,
     secondaryButtonVariant: "landing-secondary" as const,
   },
 ];
@@ -344,25 +345,28 @@ export default function LandingPageClient() {
                     customData={[
                       {
                         id: 1,
-                        title: "Die Vision ®Hoam",
-                        subtitle: "®Hoam mit Verantwortung",
+                        title: <>Die Vision <Hoam /></>,
+                        subtitle: <><Hoam /> mit Verantwortung</>,
                         description: "",
                         video: IMAGES.videos.hoamClipShort,
                         playbackRate: 0.5,
                         backgroundColor: "#F4F4F4",
+                        textColor: "white",
                         primaryAction: "Unsere Mission",
                         primaryLink: "/warum-wir",
+                        primaryButtonVariant: "secondary-narrow-white",
                       },
                       {
                         id: 2,
                         title: "Wir bauen Freiheit",
-                        subtitle: "Finde heraus was ®Hoam ausmacht",
+                        subtitle: <>Finde heraus was <Hoam /> ausmacht</>,
                         description: "",
                         video: IMAGES.variantvideo.twelve,
                         playbackRate: 0.5,
                         backgroundColor: "#F4F4F4",
                         primaryAction: "Konfigurator",
                         primaryLink: "/konfigurator",
+                        primaryButtonVariant: "secondary-narrow",
                       },
                       {
                         id: 3,

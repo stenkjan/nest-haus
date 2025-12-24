@@ -8,8 +8,8 @@ import { Button } from "@/components/ui";
 
 interface GridItem {
   id: number;
-  title: string;
-  subtitle: string;
+  title: string | React.ReactNode;
+  subtitle: string | React.ReactNode;
   description: string; // max 25 characters
   image?: string; // Optional - use either image or video
   video?: string; // Optional - use either video or image
