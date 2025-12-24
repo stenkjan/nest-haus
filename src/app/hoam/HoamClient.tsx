@@ -273,12 +273,12 @@ export default function HoamClient() {
               <div className="flex flex-wrap gap-4 justify-center">
                 <Link href="/hoam-system">
                   <Button variant="primary" size="xs">
-                    <span className="font-semibold">H</span>oam System
+                    <span className="font-extrabold">H</span>oam System
                   </Button>
                 </Link>
                 <Link href="/warum-wir">
                   <Button variant="landing-secondary-blue" size="xs">
-                    Warum mit ®<span className="font-semibold">H</span>oam?
+                    Warum mit ®<span className="font-extrabold">H</span>oam?
                   </Button>
                 </Link>
               </div>
