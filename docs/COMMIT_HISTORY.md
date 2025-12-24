@@ -4,6 +4,19 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [679c198c9b9f192911a19dab586b115e250c99b6] - Wed Dec 24 01:32:57 2025 +0100
+
+**Author**: stenkjan
+**Message**: `🔄 Adjust text stroke in Hoam component for improved desktop rendering  - Reduced the text stroke from '0.3px' to '0.15px' for the 'title' variant to enhance visual clarity on desktop displays. - Maintained overall typography consistency while ensuring better rendering quality.  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/components/typography/Hoam.tsx
+
+
+---
+
 ## [d1340c595fca9bf19ac2a0a99a1fda65101bae14] - Wed Dec 24 01:24:54 2025 +0100
 
 **Author**: stenkjan
