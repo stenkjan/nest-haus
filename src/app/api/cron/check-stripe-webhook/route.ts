@@ -1,11 +1,13 @@
 import { NextRequest, NextResponse } from 'next/server';
 import Stripe from 'stripe';
+import { Resend } from 'resend';
 import { prisma } from '@/lib/prisma';
-import { EmailService } from '@/lib/EmailService';
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
     apiVersion: '2025-09-30.clover',
 });
+
+const resend = new Resend(process.env.RESEND_API_KEY);
 
 /**
  * Cron Job: Check Stripe Webhook Health
@@ -99,7 +101,8 @@ export async function GET(request: NextRequest) {
             
             // Send admin alert
             try {
-                await EmailService.sendEmail({
+                await resend.emails.send({
+                    from: '®Hoam Team <mail@hoam.at>',
                     to: process.env.ADMIN_EMAIL || 'admin@nest-haus.at',
                     subject: `⚠️ Stripe Webhook Sync Issues Detected (${issues.length} issues)`,
                     html: `
@@ -176,7 +179,8 @@ export async function GET(request: NextRequest) {
         
         // Send critical error alert
         try {
-            await EmailService.sendEmail({
+            await resend.emails.send({
+                from: '®Hoam Team <mail@hoam.at>',
                 to: process.env.ADMIN_EMAIL || 'admin@nest-haus.at',
                 subject: '🚨 Critical: Stripe Webhook Health Check Failed',
                 html: `
