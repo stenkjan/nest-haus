@@ -7,6 +7,23 @@
     {
       "path": "/api/cron/backup-analytics",
       "schedule": "0 2 1 * *"
+    },
+    {
+      "path": "/api/cron/check-stripe-webhook",
+      "schedule": "0 */6 * * *"
+    }
+  ],
+  "redirects": [
+    {
+      "source": "/:path((?!api/webhooks/).*)",
+      "has": [
+        {
+          "type": "host",
+          "value": "nest-haus.at"
+        }
+      ],
+      "destination": "https://www.nest-haus.at/:path*",
+      "permanent": true
     }
   ],
   "rewrites": [
