@@ -24,6 +24,17 @@
       ],
       "destination": "https://www.nest-haus.at/:path*",
       "permanent": true
+    },
+    {
+      "source": "/:path((?!api/webhooks/).*)",
+      "has": [
+        {
+          "type": "host",
+          "value": "da-hoam.at"
+        }
+      ],
+      "destination": "https://www.da-hoam.at/:path*",
+      "permanent": true
     }
   ],
   "rewrites": [
