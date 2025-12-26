@@ -65,14 +65,54 @@ export interface AdminAppointmentNotificationData {
   userAgent?: string;
 }
 
+export interface GenericEmailData {
+  to: string;
+  subject: string;
+  html: string;
+  text?: string;
+  from?: string;
+  replyTo?: string;
+}
+
 export class EmailService {
   private static readonly FROM_EMAIL = process.env.RESEND_FROM_EMAIL || 'mail@hoam.at';
   private static readonly REPLY_TO_EMAIL = process.env.REPLY_TO_EMAIL || 'mail@hoam.at';
-  private static readonly ADMIN_EMAIL = process.env.ADMIN_EMAIL || 'mail@hoam.at';
+  private static readonly ADMIN_EMAIL = process.env.ADMIN_EMAIL || 'mail@nest-haus.at';
   private static readonly SALES_EMAIL = process.env.SALES_EMAIL || 'mail@hoam.at';
 
   // From name for better email presentation
   private static readonly FROM_NAME = '®Hoam Team';
+
+  /**
+   * Generic email sending method
+   * Used for admin alerts, system notifications, and other custom emails
+   */
+  static async sendEmail(data: GenericEmailData): Promise<boolean> {
+    try {
+      console.log(`📧 Sending generic email to ${data.to}`);
+
+      const result = await resend.emails.send({
+        from: data.from || `${this.FROM_NAME} <${this.FROM_EMAIL}>`,
+        replyTo: data.replyTo || this.REPLY_TO_EMAIL,
+        to: data.to,
+        subject: data.subject,
+        html: data.html,
+        text: data.text,
+      });
+
+      if (result.error) {
+        console.error('❌ Generic email failed:', result.error);
+        return false;
+      }
+
+      console.log('✅ Generic email sent successfully:', result.data?.id);
+      return true;
+
+    } catch (error) {
+      console.error('❌ Error sending generic email:', error);
+      return false;
+    }
+  }
 
   /**
    * Send confirmation email to customer
