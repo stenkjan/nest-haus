@@ -4,6 +4,33 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [41bd15fa127011fd6ceaa13f74f0092a73f4899f] - Fri Dec 26 22:49:07 2025 +0100
+
+**Author**: stenkjan
+**Message**: `✨ Enhance Safari compatibility across the application  - Updated content security policy in  to allow HTTPS sources for Vercel Blob Storage. - Modified image optimization settings in  to enable Next.js optimization for critical images. - Added CORS headers in  for preflight requests and error responses to improve Safari compatibility. - Implemented Safari-specific logging and debugging in  and  for better error tracking and device detection. - Applied CSS fixes in  to enhance image rendering on Safari.  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/LandingPageClient.tsx
+- src/app/api/images/route.ts
+- src/app/hoam/HoamClient.tsx
+- src/components/images/ClientBlobImage.tsx
+- src/components/images/ResponsiveHybridImage.tsx
+
+
+#### 🔧 Configuration Changes
+- next.config.ts
+
+
+#### 📚 Documentation Changes
+- SAFARI_IMAGE_FIX_SUMMARY.md
+- SAFARI_IMAGE_LOADING_INVESTIGATION.md
+- SAFARI_TESTING_GUIDE.md
+
+
+---
+
 ## [2df0bfb2eb97da94529c0fa8ef0501d5a32c485b] - Thu Dec 25 16:36:23 2025 +0100
 
 **Author**: stenkjan
