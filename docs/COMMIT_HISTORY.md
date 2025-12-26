@@ -4,6 +4,19 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [6f8a664d888e99236252d89987c2e4c637ab55db] - Fri Dec 26 22:58:42 2025 +0100
+
+**Author**: stenkjan
+**Message**: `🔧 Refactor Stripe webhook health check to disable email alerts  - Removed email alert functionality from the webhook health check due to the unavailability of the EmailService. - Added console logging for issues found during the health check for better monitoring. - Updated error handling to log detailed error information instead of sending alerts. - Marked email alert implementations as TODO for future development when the email service is available.  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/api/cron/check-stripe-webhook/route.ts
+
+
+---
+
 ## [41bd15fa127011fd6ceaa13f74f0092a73f4899f] - Fri Dec 26 22:49:07 2025 +0100
 
 **Author**: stenkjan
