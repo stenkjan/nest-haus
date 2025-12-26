@@ -149,6 +149,9 @@ export default function HoamClient() {
               enableMobileDetection={true}
               isAboveFold={true}
               isCritical={true}
+              // Safari Fix: Enable Next.js optimization for critical images
+              unoptimized={false}
+              priority={true}
             />
 
             {/* Content Overlay - Using Flexbox */}

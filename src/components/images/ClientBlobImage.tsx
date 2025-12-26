@@ -189,6 +189,9 @@ class ImageCache {
   private static async fetchImageUrl(path: string): Promise<string> {
     const maxRetries = 3;
     const baseTimeout = 10000; // Start with 10 seconds
+    
+    // Safari detection for enhanced debugging
+    const isSafari = typeof navigator !== 'undefined' && /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
 
     for (let attempt = 1; attempt <= maxRetries; attempt++) {
       const controller = new AbortController();
@@ -200,6 +203,11 @@ class ImageCache {
           console.log(
             `🔄 Retry attempt ${attempt}/${maxRetries} for image: ${path} (timeout: ${timeoutMs}ms)`
           );
+        }
+        
+        // Safari-specific debug logging
+        if (isSafari && process.env.NODE_ENV === "development") {
+          console.log(`🧭 Safari image request: ${path} (attempt ${attempt}/${maxRetries})`);
         }
 
         // IMPROVED: Better URL encoding for German characters (fixes image 177 issue)
@@ -218,13 +226,13 @@ class ImageCache {
           throw new Error("Image URL not found in response");
         }
 
-        // DEBUG: Log successful image loading for German characters
+        // DEBUG: Log successful image loading for German characters or Safari
         if (
           process.env.NODE_ENV === "development" &&
-          (path.includes("177") || attempt > 1)
+          (path.includes("177") || attempt > 1 || isSafari)
         ) {
           console.log(
-            `✅ Successfully loaded image: ${path} -> ${data.url.substring(
+            `✅ Successfully loaded image${isSafari ? ' (Safari)' : ''}: ${path} -> ${data.url.substring(
               0,
               50
             )}... (attempt ${attempt})`
@@ -234,6 +242,16 @@ class ImageCache {
         return data.url;
       } catch (error) {
         clearTimeout(timeoutId);
+        
+        // Safari-specific error logging
+        if (isSafari && process.env.NODE_ENV === "development") {
+          console.error(`❌ Safari image loading error (attempt ${attempt}/${maxRetries}):`, {
+            path,
+            error: error instanceof Error ? error.message : 'Unknown error',
+            userAgent: navigator.userAgent,
+            timestamp: new Date().toISOString()
+          });
+        }
 
         const isTimeoutError =
           error instanceof Error && error.name === "AbortError";

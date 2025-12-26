@@ -10,7 +10,8 @@ const nextConfig: NextConfig = {
   images: {
     // Enable SVG placeholders
     dangerouslyAllowSVG: true,
-    contentSecurityPolicy: "default-src 'self'; script-src 'none'; sandbox;",
+    // Safari-compatible CSP: Allow HTTPS sources for Vercel Blob Storage
+    contentSecurityPolicy: "default-src 'self' https:; script-src 'none'; sandbox;",
 
     remotePatterns: [
       {

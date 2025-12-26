@@ -256,7 +256,8 @@ export default function LandingPageClient() {
                     priority={section.id <= 3}
                     sizes="100vw"
                     quality={90}
-                    unoptimized={true}
+                    // Safari Fix: Remove unoptimized flag for critical images to enable Next.js optimization
+                    unoptimized={section.id > 3} // Only unoptimized for below-fold images
                     breakpoint={768}
                     // Aspect ratio configuration
                     desktopAspectRatio="16/9" // Desktop: landscape 16:9

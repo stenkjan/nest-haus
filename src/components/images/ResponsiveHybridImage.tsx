@@ -94,10 +94,24 @@ export default function ResponsiveHybridImage({
   // Determine device type on client side only
   useEffect(() => {
     setIsClient(true);
+    
+    // Safari detection for enhanced debugging
+    const isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
 
     const checkDevice = () => {
       // Enhanced mobile detection combining viewport size and user agent
       const width = window.innerWidth;
+      
+      // Safari-specific mobile detection logging
+      if (isSafari && process.env.NODE_ENV === "development") {
+        console.log('🧭 Safari device detection:', {
+          width,
+          userAgent: navigator.userAgent.substring(0, 100),
+          isIPhone: /iphone|ipod/i.test(navigator.userAgent),
+          isIPad: /ipad/i.test(navigator.userAgent),
+          hasTouchScreen: 'ontouchstart' in window || navigator.maxTouchPoints > 0,
+        });
+      }
       
       // CRITICAL FIX: Viewport >= 1024px is ALWAYS desktop
       // This handles DevTools laptop presets (1440px, 1024px) that simulate touch
@@ -138,9 +152,16 @@ export default function ResponsiveHybridImage({
       }
 
       // Only update if the state actually changes to prevent unnecessary re-renders
-      setIsMobile((current) =>
-        current !== newIsMobile ? newIsMobile : current
-      );
+      setIsMobile((current) => {
+        const changed = current !== newIsMobile;
+        
+        // Safari-specific logging when device type changes
+        if (isSafari && changed && process.env.NODE_ENV === "development") {
+          console.log(`🧭 Safari device type changed: ${current ? 'mobile' : 'desktop'} → ${newIsMobile ? 'mobile' : 'desktop'}`);
+        }
+        
+        return changed ? newIsMobile : current;
+      });
     };
 
     // Immediate check on mount
@@ -205,6 +226,17 @@ export default function ResponsiveHybridImage({
     console.groupEnd();
   }
 
+  // Safari-specific CSS fixes for better image rendering
+  const safariImageFix = {
+    imageRendering: 'crisp-edges' as const,
+    WebkitTransform: 'translateZ(0)',
+    transform: 'translateZ(0)',
+    WebkitBackfaceVisibility: 'hidden' as const,
+    backfaceVisibility: 'hidden' as const,
+    WebkitPerspective: 1000,
+    perspective: 1000,
+  };
+
   // Handle different rendering approaches for mobile vs desktop
   if (shouldUseMobilePath && useMobileNaturalRatio) {
     // Mobile: Use natural aspect ratio for vertical images
@@ -226,6 +258,7 @@ export default function ResponsiveHybridImage({
             position: "relative",
             width: "100%",
             height: "auto",
+            ...safariImageFix,
           }}
           {...props}
         />
@@ -250,6 +283,7 @@ export default function ResponsiveHybridImage({
           style={{
             width: "100%",
             height: "auto",
+            ...safariImageFix,
           }}
           sizes="100vw"
           {...props}
