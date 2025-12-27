@@ -4,6 +4,19 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [6f4c802fad282dd1f078329012a7c9b302e97e52] - Sat Dec 27 11:06:52 2025 +0100
+
+**Author**: stenkjan
+**Message**: `🧹 Clean up HoamPage component by removing unnecessary whitespace  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/hoam/page.tsx
+
+
+---
+
 ## [6f8a664d888e99236252d89987c2e4c637ab55db] - Fri Dec 26 22:58:42 2025 +0100
 
 **Author**: stenkjan
