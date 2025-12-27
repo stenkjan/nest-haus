@@ -78,19 +78,21 @@ export async function POST(request: Request) {
     })
 
     // Bot detection: Mark sessions with very short duration as bots
-    const MIN_HUMAN_DURATION = 2000; // 2 seconds in milliseconds
-    const sessionDuration = session.endTime.getTime() - session.startTime.getTime();
-    
-    if (sessionDuration < MIN_HUMAN_DURATION && !session.isBot) {
-      console.log(`🤖 Marking session as bot (duration: ${sessionDuration}ms)`);
-      await prisma.userSession.update({
-        where: { sessionId },
-        data: {
-          isBot: true,
-          botDetectionMethod: 'short_duration',
-          botConfidence: 0.95 // High confidence for very short sessions
-        }
-      });
+    if (session.endTime) {
+      const MIN_HUMAN_DURATION = 2000; // 2 seconds in milliseconds
+      const sessionDuration = session.endTime.getTime() - session.startTime.getTime();
+      
+      if (sessionDuration < MIN_HUMAN_DURATION && !session.isBot) {
+        console.log(`🤖 Marking session as bot (duration: ${sessionDuration}ms)`);
+        await prisma.userSession.update({
+          where: { sessionId },
+          data: {
+            isBot: true,
+            botDetectionMethod: 'short_duration',
+            botConfidence: 0.95 // High confidence for very short sessions
+          }
+        });
+      }
     }
 
     // Save final configuration if it exists
