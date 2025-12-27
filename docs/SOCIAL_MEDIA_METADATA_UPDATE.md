@@ -13,7 +13,7 @@ Updated social media metadata title and fixed WhatsApp preview image display iss
 
 ### 1. Metadata Title Update
 **Old Title**: "NEST-Haus | Modulare Häuser & Nachhaltiges Bauen in Deutschland"  
-**New Title**: "Weil nur du weißt, wie du richtig wohnst - Nest Haus"
+**New Title**: "Weil nur du weißt, wie du richtig wohnst - Hoam"
 
 This new title appears when the website is shared on:
 - WhatsApp
@@ -49,25 +49,25 @@ This new title appears when the website is shared on:
 
 ```typescript
 export const metadata: Metadata = {
-  title: "Weil nur du weißt, wie du richtig wohnst - Nest Haus",
+  title: "Weil nur du weißt, wie du richtig wohnst - Hoam",
   // ... other metadata
   
   openGraph: {
-    title: "Weil nur du weißt, wie du richtig wohnst - Nest Haus",
+    title: "Weil nur du weißt, wie du richtig wohnst - Hoam",
     images: [
       {
         url: "https://nest-haus.at/images/og-image.jpg",
         secureUrl: "https://nest-haus.at/images/og-image.jpg", // ← WhatsApp requirement
         width: 1200,
         height: 630,
-        alt: "Weil nur du weißt, wie du richtig wohnst - Nest Haus",
+        alt: "Weil nur du weißt, wie du richtig wohnst - Hoam",
         type: "image/jpeg", // ← Explicit MIME type
       },
     ],
   },
   
   twitter: {
-    title: "Weil nur du weißt, wie du richtig wohnst - Nest Haus",
+    title: "Weil nur du weißt, wie du richtig wohnst - Hoam",
     images: ["https://nest-haus.at/images/og-image.jpg"],
   },
 };
@@ -120,7 +120,7 @@ curl -s https://nest-haus.at | grep -i "og:"
 
 Expected output should include:
 ```html
-<meta property="og:title" content="Weil nur du weißt, wie du richtig wohnst - Nest Haus" />
+<meta property="og:title" content="Weil nur du weißt, wie du richtig wohnst - Hoam" />
 <meta property="og:image" content="https://nest-haus.at/images/og-image.jpg" />
 <meta property="og:image:secure_url" content="https://nest-haus.at/images/og-image.jpg" />
 <meta property="og:image:type" content="image/jpeg" />

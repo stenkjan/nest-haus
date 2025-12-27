@@ -339,7 +339,7 @@ class PopularConfigurationsService {
   }
 
   /**
-   * Get weekly trends for nest types
+   * Get weekly trends for Hoam types
    */
   static async getWeeklyTrends(): Promise<PopularConfigurationData['trends']['weekly']> {
     try {

@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server'
 import { prisma } from '../../../../lib/prisma'
 import redis from '../../../../lib/redis'
+import { isDatabaseAvailable, isProductionEnvironment } from '@/lib/utils/environment'
 
 // Finalize session when user leaves
 export async function POST(request: Request) {
@@ -15,9 +16,31 @@ export async function POST(request: Request) {
       )
     }
 
-    // Get session from Redis
+    // Check if database is available
+    if (!isDatabaseAvailable()) {
+      if (!isProductionEnvironment()) {
+        console.warn('⚠️ Session finalization skipped: Database not configured');
+        return NextResponse.json({
+          success: true,
+          message: 'Finalization skipped (dev mode, database unavailable)',
+          devMode: true,
+          timestamp: Date.now()
+        });
+      } else {
+        console.error('❌ CRITICAL: Cannot finalize session in production without database');
+        return NextResponse.json(
+          { success: false, error: 'Database not configured' },
+          { status: 500 }
+        );
+      }
+    }
+
+    // Get session from Redis (if available)
     const redisKey = `session:${sessionId}`
-    const sessionData = await redis.get(redisKey)
+    let sessionData = null;
+    if (redis) {
+      sessionData = await redis.get(redisKey);
+    }
     
     let finalConfig = config
     if (sessionData) {
@@ -79,8 +102,10 @@ export async function POST(request: Request) {
       })
     }
 
-    // Clean up Redis session
-    await redis.del(redisKey)
+    // Clean up Redis session (if Redis is available)
+    if (redis) {
+      await redis.del(redisKey);
+    }
 
     return NextResponse.json({
       success: true,

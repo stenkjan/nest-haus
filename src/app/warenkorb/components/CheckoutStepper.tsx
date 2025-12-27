@@ -86,8 +86,7 @@ export default function CheckoutStepper({
   const [internalStepIndex, setInternalStepIndex] = useState<number>(0);
   const [_hasScrolledToBottom, setHasScrolledToBottom] =
     useState<boolean>(false);
-  const [showAppointmentReminder, setShowAppointmentReminder] =
-    useState<boolean>(false);
+  // REMOVED: showAppointmentReminder state - appointments no longer required
   const isControlled =
     typeof controlledStepIndex === "number" &&
     typeof onStepChange === "function";
@@ -135,8 +134,8 @@ export default function CheckoutStepper({
       const configuratorPlan = configuration?.planungspaket?.value;
       const cartPlan = (
         items.find((it) => "nest" in it && it.nest) as
-          | ConfigurationCartItem
-          | undefined
+        | ConfigurationCartItem
+        | undefined
       )?.planungspaket?.value;
       const selectedPlan = configuratorPlan ?? cartPlan ?? "basis"; // Default to basis if nothing selected
 
@@ -213,32 +212,33 @@ export default function CheckoutStepper({
     }
   }, [paymentRedirectStatus, onPaymentRedirectHandled]);
 
-  // Check for appointment reminder when navigating to terminvereinbarung
-  useEffect(() => {
-    // Only check if we're in normal mode (not konzept-check)
-    if (isOhneNestMode) return;
-
-    // In normal mode, terminvereinbarung is step index 2
-    // We check if user just navigated to this step
-    if (stepIndex === 2) {
-      // Check if user has an appointment
-      const hasAppointment = getAppointmentSummary(sessionId);
-      const hasAppointmentFromOther =
-        appointmentDetails && !isAppointmentFromCurrentSession();
-
-      if (!hasAppointment && !hasAppointmentFromOther) {
-        // Show reminder popup
-        setShowAppointmentReminder(true);
-      }
-    }
-  }, [
-    stepIndex,
-    isOhneNestMode,
-    appointmentDetails,
-    sessionId,
-    getAppointmentSummary,
-    isAppointmentFromCurrentSession,
-  ]);
+  // REMOVED: Appointment reminder popup - appointments are no longer required in konfigurator mode
+  // Users can proceed through checkout without booking an appointment
+  // useEffect(() => {
+  //   // Only check if we're in normal mode (not konzept-check)
+  //   if (isOhneNestMode) return;
+  //
+  //   // In normal mode, terminvereinbarung is step index 2
+  //   // We check if user just navigated to this step
+  //   if (stepIndex === 2) {
+  //     // Check if user has an appointment
+  //     const hasAppointment = getAppointmentSummary(sessionId);
+  //     const hasAppointmentFromOther =
+  //       appointmentDetails && !isAppointmentFromCurrentSession();
+  //
+  //     if (!hasAppointment && !hasAppointmentFromOther) {
+  //       // Show reminder popup
+  //       setShowAppointmentReminder(true);
+  //     }
+  //   }
+  // }, [
+  //   stepIndex,
+  //   isOhneNestMode,
+  //   appointmentDetails,
+  //   sessionId,
+  //   getAppointmentSummary,
+  //   isAppointmentFromCurrentSession,
+  // ]);
 
   useEffect(() => {
     // Sync with configurator's planungspaket when it changes, otherwise use cart item
@@ -429,10 +429,10 @@ export default function CheckoutStepper({
     const target = PLANNING_PACKAGES.find((p) => p.value === value);
     if (!target) return;
 
-    // Handle ohne nest mode - update configurator store only
+    // Handle ohne Hoam mode - update configurator store only
     if (isOhneNestMode || !configItem) {
       console.log(
-        "🔄 CheckoutStepper: Ohne nest mode - updating configurator store only"
+        "🔄 CheckoutStepper: Ohne Hoam mode - updating configurator store only"
       );
       const { updateSelection } = useConfiguratorStore.getState();
       updateSelection({
@@ -511,7 +511,7 @@ export default function CheckoutStepper({
             | "nest160";
           const price =
             pricingData.pvanlage.pricesByQuantity[nestSize]?.[
-              selection.quantity
+            selection.quantity
             ];
           if (price === -1) return -1; // Return -1 for dash prices
           if (price !== undefined) return price;
@@ -537,7 +537,7 @@ export default function CheckoutStepper({
         // Ensure we have valid selection data
         if (!selection.value || !cartItemConfig.nest.value) {
           console.warn(
-            "Invalid belichtungspaket or nest data, using base price"
+            "Invalid belichtungspaket or Hoam data, using base price"
           );
           return selection.price || 0;
         }
@@ -581,7 +581,7 @@ export default function CheckoutStepper({
       }
     }
 
-    // For bodenaufbau and fundament, calculate dynamic price based on nest size
+    // For bodenaufbau and fundament, calculate dynamic price based on Hoam size
     if (
       (key === "bodenaufbau" || key === "fundament") &&
       cartItemConfig?.nest
@@ -614,10 +614,16 @@ export default function CheckoutStepper({
       }
     }
 
-    // For nest, get RAW nest base price from pricing data
+    // For nest, get RAW Hoam base price from pricing data
     if (key === "nest" && cartItemConfig?.nest) {
       try {
         const pricingData = PriceCalculator.getPricingData();
+        console.log('🏠 Warenkorb - Getting nest price:', {
+          pricingDataLoaded: !!pricingData,
+          nestValue: cartItemConfig.nest.value,
+          selectionPrice: selection.price
+        });
+
         if (pricingData) {
           const nestSize = cartItemConfig.nest.value as
             | "nest80"
@@ -625,13 +631,42 @@ export default function CheckoutStepper({
             | "nest120"
             | "nest140"
             | "nest160";
-          const nestBasePrice = pricingData.nest[nestSize]?.price || 0;
-          return nestBasePrice; // Return RAW construction price only
+          const nestData = pricingData.nest[nestSize];
+          const nestBasePrice = nestData?.price || 0;
+
+          console.log('🏠 Warenkorb - Nest pricing data:', {
+            nestSize,
+            nestData,
+            nestBasePrice,
+            fallbackPrice: selection.price
+          });
+
+          // Return pricing data price if available
+          if (nestBasePrice > 0) {
+            return nestBasePrice;
+          }
         }
-      } catch {
-        // Fall back to stored price
+      } catch (error) {
+        console.error('❌ Error getting nest price from pricing data:', error);
       }
-      return selection.price || 0;
+
+      // Fallback to stored price
+      if (selection.price && selection.price > 0) {
+        console.log('🏠 Warenkorb - Using stored nest price:', selection.price);
+        return selection.price;
+      }
+
+      // Ultimate fallback to December 2024 prices
+      const hardcodedFallback: Record<string, number> = {
+        nest80: 213032,
+        nest100: 254731,
+        nest120: 296430,
+        nest140: 338129,
+        nest160: 379828,
+      };
+      const fallbackPrice = hardcodedFallback[cartItemConfig.nest.value] || 213032;
+      console.log('🏠 Warenkorb - Using hardcoded fallback nest price:', fallbackPrice);
+      return fallbackPrice;
     }
 
     // For innenverkleidung, return RELATIVE price from PriceCalculator (baseline: ohne_innenverkleidung)
@@ -812,7 +847,7 @@ export default function CheckoutStepper({
 
   const getCategoryDisplayName = (category: string): string => {
     const categoryNames: Record<string, string> = {
-      nest: "Nest",
+      nest: "®Hoam",
       gebaeudehuelle: "Gebäudehülle",
       innenverkleidung: "Innenverkleidung",
       fussboden: "Bodenbelag",
@@ -835,7 +870,7 @@ export default function CheckoutStepper({
     if ("nest" in item) {
       if (item.nest?.name) return item.nest.name;
       if (item.grundstueckscheck && !item.nest) return "Grundstücksanalyse";
-      return "Nest Konfiguration";
+      return "®Hoam Konfiguration";
     }
     if ("name" in item) return item.name;
     return "Artikel";
@@ -1266,44 +1301,44 @@ export default function CheckoutStepper({
     subtitle: string;
     description: string;
   }> = [
-    {
-      title: "Bereit für dein neues Zuhause?",
-      subtitle:
-        "In wenigen Schritten zu deinem neuen Zuhause - ganz ohne Verpflichtungen!",
-      description:
-        "Du hast dich für dein Nest-Haus entschieden. In den nächsten Schritten klären wir gemeinsam, was wir von dir benötigen und was wir für dich übernehmen, damit dein Zuhause genau so wird, wie du es dir wünschst. \n\n Wir kümmern uns um die Rahmenbedingungen und rechtlichen Schritte. Bis dahin zahlst du nur für unseren Service – keine Verpflichtung, falls etwas nicht passt.",
-    },
-    {
-      title: "Der Ablauf",
-      subtitle: "Schritt für Schritt",
-      description:
-        "Damit aus deinem Entwurf **ein Zuhause wird,** begleiten wir dich durch den gesamten Bauprozess. **Schritt für Schritt** gehen wir mit dir alle Phasen durch: von der **Einreichplanung und dem Baubescheid** über die Vorbereitung deines Grundstücks und den Bau des **Fundaments** bis hin zur **Lieferung und Montage** deines Nest-Haus.\n\nNach der **Lieferung** deines Nest-Hauses kannst du die **Haustechnik** und den **Innenausbau** entweder selbst übernehmen oder auf das Know-how unserer erfahrenen **Partnerbetriebe** zurückgreifen. Dabei stehen wir dir jederzeit **beratend zur Seite,** damit dein Zuhause genau so wird, wie du es dir wünschst.",
-    },
-    {
-      title: "Wir freuen uns auf dich",
-      subtitle: "Vereinbare dein Entwurfsgespräch mit dem Nest Team",
-      description:
-        "Buche deinen **Termin** für ein persönliches **Startgespräch**, in dem wir deine **individuellen Wünsche** aufnehmen und die Grundlage für deinen **Entwurf** erarbeiten. \n\n  Durch die Angaben zu deinem **Grundstück** können wir uns bestmöglich vorbereiten und dir bereits **erste Ideen** und konkrete Ansätze vorstellen. So entsteht **Schritt für Schritt** ein Entwurf, der genau zu deinen Bedürfnissen passt.**",
-    },
-    {
-      title: "Unterstützung gefällig?",
-      subtitle: "Unsere Planungspakete helfen auf deinem Weg zum Haus",
-      description:
-        "Unsere **drei Planungspakete** geben dir Sicherheit für dein Nest-Haus. Mit dem **Basis-Paket** erhältst du eine genehmigungsfähige **Einreichplanung** und alle technischen **Grundlagen.** Das **Plus-Paket** erweitert dies um die komplette **Haustechnik- und Innenausbauplanung.**\n\nIm **Pro-Paket** entwickeln wir zusätzlich ein umfassendes **Interiorkonzept,** das Raumgefühl, Farben, Materialien und Licht vereint. Die Umsetzung kannst du **selbst übernehmen** oder mit unseren erfahrenen **Partnerfirmen realisieren.**",
-    },
-    {
-      title: "Bereit für Vorfreude?",
-      subtitle: "Dein Garantierter Liefertermin steht fest",
-      description:
-        "Hier findest du **alle Details deiner Auswahl** inklusive transparenter Preise. Nutze diesen Moment, um **alle Angaben** in Ruhe zu **überprüfen**. Nach dem Absenden erhältst du eine **schriftliche Bestätigung,** und wir beginnen mit der Ausarbeitung deines Entwurfowie der Überprüfung deines Grundstücks.",
-    },
-    {
-      title: "Dein ®Hoam",
-      subtitle: "Weil nur du weißt, wie du wohnen willst",
-      description:
-        "**Die Bestellung deines Nest-Hauses. Alles beginnt mit dem Entwurf und der Grundstücksanalyse. Sobald du dein Nest-Haus bestellst und die erste Teilzahlung leistest, erhältst du von uns deinen verbindlich garantierten Liefertermin. Transparent, planbar und verlässlich.**",
-    },
-  ];
+      {
+        title: "Bereit für dein neues Zuhause?",
+        subtitle:
+          "In wenigen Schritten zu deinem neuen Zuhause - ganz ohne Verpflichtungen!",
+        description:
+          "Du hast dich für dein Hoam-House entschieden. In den nächsten Schritten klären wir gemeinsam, was wir von dir benötigen und was wir für dich übernehmen, damit dein Zuhause genau so wird, wie du es dir wünschst. \n\n Wir kümmern uns um die Rahmenbedingungen und rechtlichen Schritte. Bis dahin zahlst du nur für unseren Service – keine Verpflichtung, falls etwas nicht passt.",
+      },
+      {
+        title: "Der Ablauf",
+        subtitle: "Schritt für Schritt",
+        description:
+          "Damit aus deinem Entwurf **ein Zuhause wird,** begleiten wir dich durch den gesamten Bauprozess. **Schritt für Schritt** gehen wir mit dir alle Phasen durch: von der **Einreichplanung und dem Baubescheid** über die Vorbereitung deines Grundstücks und den Bau des **Fundaments** bis hin zur **Lieferung und Montage** deines Hoam-House.\n\nNach der **Lieferung** deines Hoam-Houses kannst du die **Haustechnik** und den **Innenausbau** entweder selbst übernehmen oder auf das Know-how unserer erfahrenen **Partnerbetriebe** zurückgreifen. Dabei stehen wir dir jederzeit **beratend zur Seite,** damit dein Zuhause genau so wird, wie du es dir wünschst.",
+      },
+      {
+        title: "Wir freuen uns auf dich",
+        subtitle: "Vereinbare dein Entwurfsgespräch mit dem Hoam Team",
+        description:
+          "Buche deinen **Termin** für ein persönliches **Startgespräch**, in dem wir deine **individuellen Wünsche** aufnehmen und die Grundlage für deinen **Entwurf** erarbeiten. \n\n  Durch die Angaben zu deinem **Grundstück** können wir uns bestmöglich vorbereiten und dir bereits **erste Ideen** und konkrete Ansätze vorstellen. So entsteht **Schritt für Schritt** ein Entwurf, der **genau zu deinen Bedürfnissen passt.**",
+      },
+      {
+        title: "Unterstützung gefällig?",
+        subtitle: "Unsere Planungspakete helfen auf deinem Weg zum Haus",
+        description:
+          "Unsere **drei Planungspakete** geben dir Sicherheit für dein Hoam. Mit dem **Basis-Paket** erhältst du eine genehmigungsfähige **Einreichplanung** und alle technischen **Grundlagen.** Das **Plus-Paket** erweitert dies um die komplette **Haustechnik- und Innenausbauplanung.**\n\nIm **Pro-Paket** entwickeln wir zusätzlich ein umfassendes **Interiorkonzept,** das Raumgefühl, Farben, Materialien und Licht vereint. Die Umsetzung kannst du **selbst übernehmen** oder mit unseren erfahrenen **Partnerfirmen realisieren.**",
+      },
+      {
+        title: "Bereit für Vorfreude?",
+        subtitle: "Dein Garantierter Liefertermin steht fest",
+        description:
+          "Hier findest du **alle Details deiner Auswahl** inklusive transparenter Preise. Nutze diesen Moment, um **alle Angaben** in Ruhe zu **überprüfen**. Nach dem Absenden erhältst du eine **schriftliche Bestätigung,** und wir beginnen mit der Ausarbeitung deines Entwurfs sowie der Überprüfung deines Grundstücks.",
+      },
+      {
+        title: "®Hoam",
+        subtitle: "Weil nur du weißt, wie du wohnen willst",
+        description:
+          "**Die Bestellung deines Hoam-Houses. Alles beginnt mit dem Entwurf und der Grundstücksanalyse. Sobald du dein Hoam-House bestellst und die erste Teilzahlung leistest, erhältst du von uns deinen verbindlich garantierten Liefertermin. Transparent, planbar und verlässlich.**",
+      },
+    ];
 
   // Helper: parse euro-formatted strings like "€10.900" into integer euros (10900)
   const parseEuro = (s: string): number => {
@@ -1343,7 +1378,7 @@ export default function CheckoutStepper({
     });
 
     // Calculate dynamic total from configuration using PriceCalculator (same as konfigurator)
-    // IMPORTANT: Calculate FULL total, then subtract planungspaket for "Dein Nest Haus" display
+    // IMPORTANT: Calculate FULL total, then subtract planungspaket for "Dein Hoam" display
     let nestHausTotal = 0; // Physical house price (without planungspaket)
 
     if (configItem && configItem.nest) {
@@ -1378,21 +1413,21 @@ export default function CheckoutStepper({
         }
       }
 
-      // Subtract planungspaket to get "Dein Nest Haus" price (physical house only)
+      // Subtract planungspaket to get "Dein Hoam" price (physical house only)
       nestHausTotal = fullTotal - planungspaketPrice;
     } else {
       // Fall back to cart total if no configuration
       nestHausTotal = getCartTotal();
     }
 
-    const total = nestHausTotal; // "Dein Nest Haus" shows only physical house price
+    const total = nestHausTotal; // "Dein Hoam" shows only physical house price
     const _grundstueckscheckDone = Boolean(configItem?.grundstueckscheck);
     const _dueNow = GRUNDSTUECKSCHECK_PRICE; // Grundstückscheck is always due today as part of the process
     const _planungspaketDone = Boolean(configItem?.planungspaket?.value);
     const _terminDone = false; // Integrate with AppointmentBooking state if available
 
     // Use local selection if available so summary reflects user choice immediately
-    // In ohne nest mode, default to "basis" if nothing is selected
+    // In ohne Hoam mode, default to "basis" if nothing is selected
     const selectedPlanValue =
       localSelectedPlan ??
       configItem?.planungspaket?.value ??
@@ -1463,31 +1498,28 @@ export default function CheckoutStepper({
                 <div className="p-secondary text-center md:text-left">
                   <p>
                     <span className="text-nest-gray">
-                      Du hast dein Nest bereits konfiguriert und hast somit den
+                      Du hast dein ®Hoam bereits konfiguriert und hast somit den
                     </span>{" "}
                     <span className="text-black font-medium">
                       Überblick über Preis und Aussehen
                     </span>{" "}
                     <span className="text-nest-gray">
-                      deines Bauvorhabens. Deine
+                      deines Bauvorhabens. Dies gibt dir ein
                     </span>{" "}
-                    <span className="text-black font-medium">Auswahl</span>{" "}
-                    <span className="text-nest-gray">bleibt dabei stets</span>{" "}
-                    <span className="text-black font-medium">flexibel</span>{" "}
-                    <span className="text-nest-gray">
-                      und kann jederzeit an deine Wünsche angepasst werden.
-                    </span>
+                    <span className="text-black font-medium">Preisgefühl</span>{" "}
+                    <span className="text-nest-gray">und bildet die Basis für deinen</span>{" "}
+                    <span className="text-black font-medium">Konzept-Check</span>{" "}
                   </p>
                   <p className="mt-6">
-                    <span className="text-nest-gray">Mit dem</span>{" "}
+                    <span className="text-nest-gray">Mit dieser</span>{" "}
                     <span className="text-black font-medium">
-                      heutigen Kauf
+                      Bestellung
                     </span>{" "}
                     <span className="text-nest-gray">
-                      deckst du die Kosten für
+                      erhäslt du von uns deinen
                     </span>{" "}
                     <span className="text-black font-medium">
-                      Grundstücksanalyse und Entwurfsplan.
+                      Konzept-Check.
                     </span>{" "}
                     <span className="text-nest-gray">
                       Fahre fort und mache den ersten Schritt in Richtung
@@ -1535,10 +1567,9 @@ export default function CheckoutStepper({
                   </p>
                   <p className="mt-2">
                     <span className="text-nest-gray">
-                      Solltest du deine Meinung nach Erstellen des Erstentwurfs
-                      ändern, kannst du vom Kauf, ohne weitere Teilzahlungen,
-                      zurücktreten. In diesem Fall zahlst du lediglich die
-                      Kosten für den Entwurf.
+                      Solltest du mit deinem Konzept-Check nicht zufrieden sein,
+                      kannst du die Grundstücksanalyse auch für alle anderen Bauvorhaben nutzen. Es
+                      entsteht keine Verpflichtung zum Kauf/Bau eines Hoam Hauses.
                     </span>
                   </p>
                 </div>
@@ -1570,29 +1601,29 @@ export default function CheckoutStepper({
                 </h2>
                 <div className="border border-gray-300 rounded-2xl md:min-w-[260px] w-full overflow-hidden">
                   <div>
-                    {/* Show house configuration only if NOT in ohne nest mode */}
+                    {/* Show house configuration only if NOT in ohne Hoam mode */}
                     {!isOhneNestMode && (
                       <div className={rowWrapperClass}>
                         <div className="flex-1 min-w-0">
                           <div className={`leading-relaxed ${rowTextClass(0)}`}>
-                            Dein ®Hoam
+                            ®Hoam
                           </div>
                           <div className={rowSubtitleClass}>
                             {PriceUtils.isPriceOnRequest(total)
                               ? "Genauer Preis auf Anfrage"
                               : configItem?.nest
                                 ? (() => {
-                                    // Show m² price for "Dein ®Hoam" (total house price / area)
-                                    const nestModel =
-                                      configItem.nest.value || "";
-                                    const geschossdeckeQty =
-                                      configItem.geschossdecke?.quantity || 0;
-                                    return `${PriceUtils.calculatePricePerSquareMeter(
-                                      total,
-                                      nestModel,
-                                      geschossdeckeQty
-                                    )} inkl. MwSt.`;
-                                  })()
+                                  // Show m² price for "®Hoam" (total house price / area)
+                                  const nestModel =
+                                    configItem.nest.value || "";
+                                  const geschossdeckeQty =
+                                    configItem.geschossdecke?.quantity || 0;
+                                  return `${PriceUtils.calculatePricePerSquareMeter(
+                                    total,
+                                    nestModel,
+                                    geschossdeckeQty
+                                  )} inkl. MwSt.`;
+                                })()
                                 : getRowSubtitle(0)}
                           </div>
                         </div>
@@ -1604,15 +1635,15 @@ export default function CheckoutStepper({
                       </div>
                     )}
 
-                    {/* In ohne nest mode, show modified title */}
+                    {/* In ohne Hoam mode, show modified title */}
                     {isOhneNestMode && (
                       <div className={rowWrapperClass}>
                         <div className="flex-1 min-w-0">
                           <div className={`leading-relaxed ${rowTextClass(0)}`}>
-                            Dein ®Hoam
+                            ®Hoam
                           </div>
                           <div className={rowSubtitleClass}>
-                            Konfiguriere dein Nest
+                            Konfiguriere dein Hoam
                           </div>
                         </div>
                         <div className={`leading-relaxed ${rowTextClass(0)}`}>
@@ -1631,7 +1662,7 @@ export default function CheckoutStepper({
                           </div>
                         </div>
                         <div className={`leading-relaxed ${rowTextClass(2)}`}>
-                          {/* Show plan details in both normal and ohne nest mode */}
+                          {/* Show plan details in both normal and ohne Hoam mode */}
                           <span className="inline-flex items-center gap-2">
                             {selectedPlanName}
                             {isPlanSelected && (
@@ -1749,7 +1780,7 @@ export default function CheckoutStepper({
                         })()}
                       </div>
                     </div>
-                    {/* Show delivery date only if NOT in ohne nest mode */}
+                    {/* Show delivery date only if NOT in ohne Hoam mode */}
                     {!isOhneNestMode && (
                       <div className={rowWrapperClass}>
                         <div className="flex-1 min-w-0">
@@ -2045,12 +2076,12 @@ export default function CheckoutStepper({
           <div className="space-y-6 pt-8">
             {/* Overview grid: cart on left, summary/upgrade on right */}
             <div className="flex flex-col lg:flex-row gap-8 items-start lg:items-stretch">
-              {/* Show house configuration section only if not in ohne nest mode */}
+              {/* Show house configuration section only if not in ohne Hoam mode */}
               {!isOhneNestMode && (
                 <div className="contents">
                   <div className="space-y-6 w-full max-w-[520px] lg:flex-none lg:flex lg:flex-col">
                     <h2 className="h3-secondary text-gray-500">
-                      <span className="text-black">Dein Nest</span>
+                      <span className="text-black">®Hoam</span>
                       <span className="text-gray-300"> Deine Auswahl</span>
                     </h2>
                     {items.map((item) => (
@@ -2069,24 +2100,28 @@ export default function CheckoutStepper({
                             </div>
                             <div className="text-xs md:text-sm text-gray-500 leading-snug mt-1">
                               {(() => {
-                                // For configuration items with nest, show NEST MODULE price per m² (not total)
+                                // For configuration items with nest, show Hoam MODULE price per m² (not total)
                                 if (
                                   "totalPrice" in item &&
                                   (item as ConfigurationCartItem).nest
                                 ) {
                                   const configItem =
                                     item as ConfigurationCartItem;
-                                  const nestModel =
-                                    configItem.nest?.value || "";
 
-                                  // Show only NEST MODULE price per m² (relative price)
-                                  const nestPrice = configItem.nest
-                                    ? getItemPrice(
-                                        "nest",
-                                        configItem.nest,
-                                        configItem
-                                      )
-                                    : 0;
+                                  // Validate nest data exists and has value
+                                  if (!configItem.nest?.value) {
+                                    console.error('❌ ConfigItem missing nest value:', configItem);
+                                    return "Hoam Modul nicht konfiguriert";
+                                  }
+
+                                  const nestModel = configItem.nest.value;
+
+                                  // Show only Hoam MODULE price per m² (relative price)
+                                  const nestPrice = getItemPrice(
+                                    "nest",
+                                    configItem.nest,
+                                    configItem
+                                  );
 
                                   const geschossdeckeQuantity =
                                     configItem.geschossdecke?.quantity || 0;
@@ -2111,13 +2146,20 @@ export default function CheckoutStepper({
                           <div className="text-sm md:text-base lg:text-lg 2xl:text-xl text-gray-900 leading-relaxed min-w-0">
                             {(() => {
                               const price = (() => {
-                                // For nest configuration, show ONLY the nest base price (not total house price)
+                                // For Hoam configuration, show ONLY the Hoam base price (not total house price)
                                 if (
                                   "totalPrice" in item &&
                                   (item as ConfigurationCartItem).nest
                                 ) {
                                   const configItem =
                                     item as ConfigurationCartItem;
+
+                                  // Validate nest data exists and has value
+                                  if (!configItem.nest?.value) {
+                                    console.error('❌ ConfigItem missing nest value in price display:', configItem);
+                                    return 0;
+                                  }
+
                                   if (configItem.nest) {
                                     return getItemPrice(
                                       "nest",
@@ -2214,7 +2256,7 @@ export default function CheckoutStepper({
 
                   <div className="space-y-6 w-full lg:flex-1 min-w-0 lg:flex lg:flex-col">
                     <h2 className="h3-secondary text-gray-500 lg:flex-shrink-0">
-                      <span className="text-black">Dein Nest</span>
+                      <span className="text-black">®Hoam</span>
                       <span className="text-gray-300">
                         {" "}
                         Ein Blick in die Zukunft
@@ -2250,11 +2292,11 @@ export default function CheckoutStepper({
                             <PvModuleOverlay
                               nestSize={
                                 sourceConfig.nest.value as
-                                  | "nest80"
-                                  | "nest100"
-                                  | "nest120"
-                                  | "nest140"
-                                  | "nest160"
+                                | "nest80"
+                                | "nest100"
+                                | "nest120"
+                                | "nest140"
+                                | "nest160"
                               }
                               moduleCount={sourceConfig.pvanlage.quantity}
                               isVisible={true}
@@ -2348,7 +2390,7 @@ export default function CheckoutStepper({
               // KONZEPT-CHECK MODE: Unified 2-column layout
               <>
                 {/* Text left + Dein Überblick right at top */}
-                <div className="mb-24">
+                <div className="mb-32 md:mb-40">
                   {/* Text left + Dein Überblick right - Same layout as Step 1 */}
                   <div className="flex flex-col md:grid md:grid-cols-2 gap-8 items-start mb-12">
                     {/* LEFT: Info text */}
@@ -2361,7 +2403,7 @@ export default function CheckoutStepper({
                         <span className="text-nest-gray"> erhältst du:</span>
                       </p>
                       <ul className="p-secondary mb-6 list-disc list-inside text-nest-gray space-y-2">
-                        <li>Grundstücksplanung</li>
+                        <li>Grundstücksanalyse</li>
                         <li>Entwurfsplan</li>
                         <li>Kostenplanung</li>
                       </ul>
@@ -2380,10 +2422,10 @@ export default function CheckoutStepper({
                             >
                               <div className="flex-1 min-w-0">
                                 <div className="leading-relaxed p-primary text-black font-medium">
-                                  Dein ®Hoam
+                                  ®Hoam
                                 </div>
                                 <div className="p-primary-small text-nest-gray leading-snug mt-1">
-                                  Konfiguriere dein Nest mit uns
+                                  Konfiguriere dein Hoam mit uns
                                 </div>
                               </div>
                               <div className="leading-relaxed p-primary text-black font-medium">
@@ -2398,7 +2440,7 @@ export default function CheckoutStepper({
                                   Terminvereinbarung
                                 </div>
                                 <div className="p-primary-small text-nest-gray leading-snug mt-1">
-                                  Dein Termin bei Nest
+                                  Dein Termin bei Hoam
                                 </div>
                               </div>
                               <div className="leading-relaxed p-primary text-black font-medium">
@@ -2609,7 +2651,7 @@ export default function CheckoutStepper({
                       Konzept-Check
                     </h2>
                     <h3 className="h3-secondary text-black mb-2">
-                      Wir überprüfen für dich wie dein Nest-Haus auf ein
+                      Wir überprüfen für dich wie dein Hoam-House auf ein
                       Grundstück deiner Wahl passt
                     </h3>
                   </div>
@@ -2618,7 +2660,7 @@ export default function CheckoutStepper({
                       <p className="p-secondary mb-4 md:mt-12">
                         <span className="text-nest-gray">Bevor dein </span>
                         <span className="text-black font-medium">
-                          Traum vom Nest-Haus
+                          Traum vom Hoam-House
                         </span>
                         <span className="text-nest-gray">
                           {" "}
@@ -2645,7 +2687,7 @@ export default function CheckoutStepper({
                         </span>
                         <span className="text-nest-gray">
                           {" "}
-                          deines Nest-Hauses.
+                          deines Hoam-Houses.
                         </span>
                       </p>
                       <p className="p-secondary mb-6">
@@ -2737,7 +2779,7 @@ export default function CheckoutStepper({
           </div>
         )}
 
-        {/* Step 3: Planungspakete - Show when there's a configuration OR not in ohne-nest mode */}
+        {/* Step 3: Planungspakete - Show when there's a configuration OR not in ohne-Hoam mode */}
         {stepIndex === 3 && (!isOhneNestMode || configItem) && (
           <div className="space-y-4 pt-16">
             {(() => {
@@ -2939,7 +2981,7 @@ export default function CheckoutStepper({
 
         {stepIndex === (isOhneNestMode ? 1 : 4) && (
           <div className="space-y-6 pt-16 md:pt-16">
-            {/* Title before Dein Nest sections */}
+            {/* Title before Dein Hoam sections */}
             {!isOhneNestMode && (
               <div className="text-center mb-12 md:mb-16">
                 <h2 className="h2-title text-black mb-2">
@@ -2956,7 +2998,7 @@ export default function CheckoutStepper({
               <div className="flex flex-col lg:flex-row gap-8 items-start lg:items-stretch">
                 <div className="space-y-6 w-full max-w-[520px] lg:flex-none lg:flex lg:flex-col">
                   <h2 className="h3-secondary text-black">
-                    <span className="text-black">Dein Nest</span>
+                    <span className="text-black">®Hoam</span>
                     <span className="text-nest-gray"> Deine Auswahl</span>
                   </h2>
                   {items.map((item) => (
@@ -2982,7 +3024,14 @@ export default function CheckoutStepper({
                               ) {
                                 const configItem =
                                   item as ConfigurationCartItem;
-                                const nestModel = configItem.nest?.value || "";
+
+                                // Validate nest data exists and has value
+                                if (!configItem.nest?.value) {
+                                  console.error('❌ ConfigItem missing nest value in Abschluss step:', configItem);
+                                  return "Hoam Modul nicht konfiguriert";
+                                }
+
+                                const nestModel = configItem.nest.value;
 
                                 // Convert to Selections type for PriceCalculator
                                 const selections = {
@@ -3040,13 +3089,20 @@ export default function CheckoutStepper({
                         <div className="text-sm md:text-base lg:text-lg 2xl:text-xl text-gray-900 leading-relaxed min-w-0">
                           {PriceUtils.formatPrice(
                             (() => {
-                              // For nest configuration, show ONLY the nest base price (not total house price)
+                              // For Hoam configuration, show ONLY the Hoam base price (not total house price)
                               if (
                                 "totalPrice" in item &&
                                 (item as ConfigurationCartItem).nest
                               ) {
                                 const configItem =
                                   item as ConfigurationCartItem;
+
+                                // Validate nest data exists and has value
+                                if (!configItem.nest?.value) {
+                                  console.error('❌ ConfigItem missing nest value in Abschluss price display:', configItem);
+                                  return 0;
+                                }
+
                                 if (configItem.nest) {
                                   return getItemPrice(
                                     "nest",
@@ -3143,7 +3199,7 @@ export default function CheckoutStepper({
 
                 <div className="space-y-6 w-full lg:flex-1 min-w-0 lg:flex lg:flex-col">
                   <h2 className="h3-secondary text-gray-500 lg:flex-shrink-0">
-                    <span className="text-black">Dein Nest</span>
+                    <span className="text-black">®Hoam</span>
                     <span className="text-nest-gray">
                       {" "}
                       Ein Blick in die Zukunft
@@ -3179,11 +3235,11 @@ export default function CheckoutStepper({
                           <PvModuleOverlay
                             nestSize={
                               sourceConfig.nest.value as
-                                | "nest80"
-                                | "nest100"
-                                | "nest120"
-                                | "nest140"
-                                | "nest160"
+                              | "nest80"
+                              | "nest100"
+                              | "nest120"
+                              | "nest140"
+                              | "nest160"
                             }
                             moduleCount={sourceConfig.pvanlage.quantity}
                             isVisible={true}
@@ -3343,12 +3399,12 @@ export default function CheckoutStepper({
                             <div className="text-xl font-bold text-gray-900">
                               {appointmentDetails?.date
                                 ? new Date(
-                                    appointmentDetails.date
-                                  ).toLocaleDateString("de-DE", {
-                                    day: "2-digit",
-                                    month: "2-digit",
-                                    year: "numeric",
-                                  })
+                                  appointmentDetails.date
+                                ).toLocaleDateString("de-DE", {
+                                  day: "2-digit",
+                                  month: "2-digit",
+                                  year: "numeric",
+                                })
                                 : "—"}
                             </div>
                             {appointmentDetails?.time && (
@@ -3476,7 +3532,7 @@ export default function CheckoutStepper({
                     <span className="text-nest-gray"> erhältst du:</span>
                   </p>
                   <ul className="p-secondary mb-6 list-disc list-inside text-nest-gray space-y-2">
-                    <li>Grundstücksplanung</li>
+                    <li>Grundstücksanalyse</li>
                     <li>Entwurfsplan</li>
                     <li>Kostenplanung</li>
                   </ul>
@@ -3495,10 +3551,10 @@ export default function CheckoutStepper({
                         >
                           <div className="flex-1 min-w-0">
                             <div className="leading-relaxed p-primary text-black font-medium">
-                              Dein ®Hoam
+                              ®Hoam
                             </div>
                             <div className="p-primary-small text-nest-gray leading-snug mt-1">
-                              Konfiguriere dein Nest mit uns
+                              Konfiguriere dein Hoam mit uns
                             </div>
                           </div>
                           <div className="leading-relaxed p-primary text-black font-medium">
@@ -3513,7 +3569,7 @@ export default function CheckoutStepper({
                               Terminvereinbarung
                             </div>
                             <div className="p-primary-small text-nest-gray leading-snug mt-1">
-                              Dein Termin bei Nest
+                              Dein Termin bei Hoam
                             </div>
                           </div>
                           <div className="leading-relaxed p-primary text-black font-medium">
@@ -3648,366 +3704,7 @@ export default function CheckoutStepper({
               </div>
             )}
 
-            {/* So gehts danach weiter Section - Only in normal mode */}
-            {!isOhneNestMode && (
-              <div className="text-center mb-12 pt-4 md:mb-8">
-                <h2 className="h2-title text-black mb-2">
-                  {isPaymentCompleted
-                    ? "Vielen Dank"
-                    : "So geht's danach weiter"}
-                </h2>
-                <p className="p-secondary text-black">
-                  {isPaymentCompleted
-                    ? "Deine Zahlung wurde bearbeitet"
-                    : "Dein Preis im Überblick"}
-                </p>
-              </div>
-            )}
-
-            {/* Left/Right Layout: Teilzahlungen (left) + Grundstücksanalyse und Entwurfsplan (right) */}
-            {!isOhneNestMode &&
-              (() => {
-                // Calculate dynamic total (Dein Nest Haus price from Dein Preis Überblick)
-                // Use PriceCalculator.calculateTotalPrice() for consistency with konfigurator
-                let deinNestHausTotal = 0;
-                if (configItem && configItem.nest) {
-                  // Convert to Selections type for PriceCalculator
-                  const selections = {
-                    nest: configItem.nest || undefined,
-                    gebaeudehuelle: configItem.gebaeudehuelle || undefined,
-                    innenverkleidung: configItem.innenverkleidung || undefined,
-                    fussboden: configItem.fussboden || undefined,
-                    bodenaufbau: configItem.bodenaufbau || undefined,
-                    geschossdecke: configItem.geschossdecke || undefined,
-                    belichtungspaket: configItem.belichtungspaket || undefined,
-                    pvanlage: configItem.pvanlage || undefined,
-                    fenster: configItem.fenster || undefined,
-                    stirnseite: configItem.stirnseite || undefined,
-                    planungspaket: configItem.planungspaket || undefined, // INCLUDE for full calculation
-                    fundament: configItem.fundament || undefined,
-                    kamindurchzug: configItem.kamindurchzug || undefined,
-                    grundstueckscheck: Boolean(configItem.grundstueckscheck),
-                  };
-
-                  // Calculate FULL total including planungspaket
-                  const fullTotal =
-                    PriceCalculator.calculateTotalPrice(selections);
-
-                  // Calculate planungspaket price separately to subtract it
-                  let planungspaketPrice = 0;
-                  if (
-                    configItem?.planungspaket?.value &&
-                    configItem.planungspaket.value !== "basis"
-                  ) {
-                    const pricingData = PriceCalculator.getPricingData();
-                    if (pricingData && configItem.nest) {
-                      const nestSize = configItem.nest.value as
-                        | "nest80"
-                        | "nest100"
-                        | "nest120"
-                        | "nest140"
-                        | "nest160";
-                      if (configItem.planungspaket.value === "plus") {
-                        planungspaketPrice =
-                          pricingData.planungspaket.plus[nestSize] || 0;
-                      } else if (configItem.planungspaket.value === "pro") {
-                        planungspaketPrice =
-                          pricingData.planungspaket.pro[nestSize] || 0;
-                      }
-                      // Normalize -1 (dash price) to 0 for calculation
-                      if (planungspaketPrice === -1) {
-                        planungspaketPrice = 0;
-                      }
-                    }
-                  }
-
-                  // Subtract planungspaket to get "Dein Nest Haus" price (physical house only)
-                  deinNestHausTotal = fullTotal - planungspaketPrice;
-                }
-
-                // Calculate planungspaket price using new pricing system (nest-size dependent)
-                const planungspaketPriceForTotal = (() => {
-                  if (configItem?.planungspaket) {
-                    const price = getItemPrice(
-                      "planungspaket",
-                      configItem.planungspaket,
-                      configItem
-                    );
-                    // Normalize -1 (dash price) to 0 for calculation
-                    return price === -1 ? 0 : price;
-                  }
-                  // Fallback to PLANNING_PACKAGES if no stored planungspaket
-                  const planValue = localSelectedPlan || "basis";
-                  if (planValue === "basis") return 0;
-                  const planPkg = PLANNING_PACKAGES.find(
-                    (p) => p.value === planValue
-                  );
-                  return planPkg?.price || 0;
-                })();
-
-                // Total price for payment calculations (Nest Haus already excludes planungspaket, so just add it back)
-                const totalPrice =
-                  deinNestHausTotal + planungspaketPriceForTotal;
-
-                const _firstPayment = 3000; // Grundstückscheck full price (shown in display above)
-                const grundstueckscheckCredit = 1500; // Actual payment (discount applied)
-                const secondPaymentOriginal = Math.max(0, totalPrice * 0.3);
-                const secondPayment = Math.max(
-                  0,
-                  secondPaymentOriginal - grundstueckscheckCredit
-                );
-                const thirdPayment = Math.max(0, totalPrice * 0.5);
-                const fourthPayment = Math.max(0, totalPrice * 0.2);
-
-                return (
-                  <div className="max-w-6xl mx-auto mb-12">
-                    <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-start">
-                      {/* Left: Dein Nest - Deine Konfiguration with Teilzahlungen */}
-                      <div className="border border-gray-300 rounded-2xl p-6 bg-white">
-                        <div className="space-y-4">
-                          {/* 1. Teilzahlung */}
-                          <div className="pb-4 border-b border-gray-200">
-                            <div className="flex items-start justify-between gap-4">
-                              <div className="flex-1">
-                                <div className="font-medium text-gray-900">
-                                  1. Teilzahlung
-                                </div>
-                                <div className="text-sm text-gray-600 mt-1">
-                                  Heute zu begleichen
-                                  <br />
-                                  Grundstücksanalyse und Entwurfsplan
-                                </div>
-                              </div>
-                              <div className="text-right">
-                                <div className="text-sm text-gray-500">
-                                  Fixpreis
-                                </div>
-                                <div className="font-semibold text-gray-900">
-                                  {PriceUtils.formatPrice(3000)}
-                                </div>
-                              </div>
-                            </div>
-                          </div>
-
-                          {/* 2. Teilzahlung */}
-                          <div className="pb-4 border-b border-gray-200">
-                            <div className="flex items-start justify-between gap-4">
-                              <div className="flex-1">
-                                <div className="font-medium text-gray-900">
-                                  2. Teilzahlung
-                                </div>
-                                <div className="text-sm text-gray-600 mt-1">
-                                  Liefergarantie 6 Monate ab Teilzahlung
-                                </div>
-                              </div>
-                              <div className="text-right">
-                                <div className="text-sm text-gray-500">
-                                  30% des Gesamtpreises
-                                </div>
-                                <div className="font-semibold text-gray-900">
-                                  {PriceUtils.formatPrice(secondPayment)}
-                                </div>
-                              </div>
-                            </div>
-                          </div>
-
-                          {/* 3. Teilzahlung */}
-                          <div className="pb-4 border-b border-gray-200">
-                            <div className="flex items-start justify-between gap-4">
-                              <div className="flex-1">
-                                <div className="font-medium text-gray-900">
-                                  3. Teilzahlung
-                                </div>
-                                <div className="text-sm text-gray-600 mt-1">
-                                  Fällig nach Fertigstellung in Produktion
-                                </div>
-                              </div>
-                              <div className="text-right">
-                                <div className="text-sm text-gray-500">
-                                  50% des Gesamtpreises nach Fertigstellung
-                                </div>
-                                <div className="font-semibold text-gray-900">
-                                  {PriceUtils.formatPrice(thirdPayment)}
-                                </div>
-                              </div>
-                            </div>
-                          </div>
-
-                          {/* 4. Teilzahlung */}
-                          <div>
-                            <div className="flex items-start justify-between gap-4">
-                              <div className="flex-1">
-                                <div className="font-medium text-gray-900">
-                                  4. Teilzahlung
-                                </div>
-                                <div className="text-sm text-gray-600 mt-1">
-                                  Fällig nach Fertigstellung am Grundstück
-                                </div>
-                              </div>
-                              <div className="text-right">
-                                <div className="text-sm text-gray-500">
-                                  20% des Gesamtpreises nach Fertigstellung
-                                </div>
-                                <div className="font-semibold text-gray-900">
-                                  {PriceUtils.formatPrice(fourthPayment)}
-                                </div>
-                              </div>
-                            </div>
-                          </div>
-
-                          <div className="pt-4 mt-4 border-t border-gray-200">
-                            <button
-                              onClick={() => {
-                                window.location.href = "/konfigurator";
-                              }}
-                              className="text-blue-600 text-sm hover:underline cursor-pointer"
-                            >
-                              Konfiguration bearbeiten
-                            </button>
-                          </div>
-                        </div>
-                      </div>
-
-                      {/* Right: Grundstücksanalyse und Entwurfsplan box - compact design per image */}
-                      <div className="lg:sticky lg:top-4">
-                        {/* Compact box with title/subtitle left, price right */}
-                        <div className="border border-gray-300 rounded-2xl p-6 bg-white mb-6">
-                          <div className="flex items-start justify-between gap-4">
-                            <div className="text-left">
-                              <h3
-                                className={`text-lg font-medium mb-1 ${isPaymentCompleted ? "text-green-600" : "text-gray-900"}`}
-                              >
-                                {isPaymentCompleted
-                                  ? "Bezahlt"
-                                  : "Konzept-Check"}
-                              </h3>
-                              <div className="text-sm text-gray-600">
-                                {isPaymentCompleted
-                                  ? "Zahlung erfolgreich abgeschlossen"
-                                  : "Grundstücksanalyse und Entwurfsplan"}
-                              </div>
-                            </div>
-                            {!isPaymentCompleted ? (
-                              <div className="text-right">
-                                <div className="flex items-center gap-2 justify-end mt-2">
-                                  <span className="text-gray-400 line-through text-base md:text-xl lg:text-2xl">
-                                    3.000 €
-                                  </span>
-                                  <div className="text-xl md:text-2xl lg:text-3xl font-bold text-gray-900">
-                                    1.500 €
-                                  </div>
-                                </div>
-                                <div className="text-xs text-gray-500 text-right mt-1">
-                                  Preise inkl. MwSt.
-                                </div>
-                              </div>
-                            ) : (
-                              <div className="text-right flex items-center justify-end gap-2">
-                                <svg
-                                  className="w-8 h-8 text-green-600 mt-2"
-                                  fill="currentColor"
-                                  viewBox="0 0 20 20"
-                                >
-                                  <path
-                                    fillRule="evenodd"
-                                    d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
-                                    clipRule="evenodd"
-                                  />
-                                </svg>
-                                <div className="text-2xl font-bold text-green-600 mt-2">
-                                  Bezahlt
-                                </div>
-                              </div>
-                            )}
-                          </div>
-                        </div>
-
-                        {/* Green transaction details box - only show after payment */}
-                        {isPaymentCompleted && (
-                          <div className="mb-6">
-                            <div className="bg-green-50 border-2 border-green-500 rounded-2xl p-6">
-                              <div className="space-y-3">
-                                <div className="flex justify-between items-center">
-                                  <span className="text-sm md:text-base lg:text-lg 2xl:text-xl text-gray-700 font-medium">
-                                    Deine Nest ID:
-                                  </span>
-                                  <span className="font-mono text-sm md:text-base bg-white px-3 py-1.5 rounded-lg border border-green-300">
-                                    {configItem?.sessionId ||
-                                      configuration?.sessionId ||
-                                      "nest-haus-" + Date.now().toString(36)}
-                                  </span>
-                                </div>
-                                <div className="flex justify-between items-center">
-                                  <span className="text-sm md:text-base lg:text-lg 2xl:text-xl text-gray-700 font-medium">
-                                    Transaktion ID:
-                                  </span>
-                                  <span className="font-mono text-xs md:text-sm bg-white px-3 py-1.5 rounded-lg border border-green-300">
-                                    {successfulPaymentIntentId ||
-                                      "pi_xxxxxxxxxxxxx"}
-                                  </span>
-                                </div>
-                                <div className="flex justify-between items-center">
-                                  <span className="text-sm md:text-base lg:text-lg 2xl:text-xl text-gray-700 font-medium">
-                                    Betrag:
-                                  </span>
-                                  <span className="text-sm md:text-base lg:text-lg 2xl:text-xl text-green-700 font-bold">
-                                    1.500 €
-                                  </span>
-                                </div>
-                                <div className="flex justify-between items-center">
-                                  <span className="text-sm md:text-base lg:text-lg 2xl:text-xl text-gray-700 font-medium">
-                                    Status:
-                                  </span>
-                                  <span className="text-sm md:text-base lg:text-lg 2xl:text-xl text-green-600 font-bold">
-                                    Bezahlt
-                                  </span>
-                                </div>
-                                <div className="flex justify-between items-center">
-                                  <span className="text-sm md:text-base lg:text-lg 2xl:text-xl text-gray-700 font-medium">
-                                    Datum:
-                                  </span>
-                                  <span className="text-sm md:text-base lg:text-lg 2xl:text-xl text-gray-700">
-                                    {(() => {
-                                      const paymentDate =
-                                        paymentCompletedDate || new Date();
-                                      const date = `${paymentDate.getDate().toString().padStart(2, "0")}.${(paymentDate.getMonth() + 1).toString().padStart(2, "0")}.${paymentDate.getFullYear()}`;
-                                      const time = `${paymentDate.getHours().toString().padStart(2, "0")}:${paymentDate.getMinutes().toString().padStart(2, "0")}`;
-                                      return `${date} | ${time}`;
-                                    })()}
-                                  </span>
-                                </div>
-                              </div>
-                            </div>
-                          </div>
-                        )}
-
-                        {/* Disclaimer text - centered below box with margin */}
-                        <div className="text-sm text-gray-600 leading-relaxed text-center pt-2 mb-6 mx-5">
-                          Solltest du mit dem Entwurfsplan nicht zufrieden sein,
-                          kannst du vom Kauf deines Nest-Hauses zurücktreten. In
-                          diesem Fall zahlst du lediglich die Kosten für die
-                          Grundstücksanalyse und den Entwurfsplan.
-                        </div>
-
-                        {/* Jetzt bezahlen button - centered below text - HIDDEN ON MOBILE */}
-                        {!isPaymentCompleted && (
-                          <div className="hidden md:flex justify-center">
-                            <Button
-                              variant="landing-primary"
-                              size="xs"
-                              onClick={() => setIsPaymentModalOpen(true)}
-                            >
-                              Jetzt bezahlen
-                            </Button>
-                          </div>
-                        )}
-                      </div>
-                    </div>
-                  </div>
-                );
-              })()}
-
-            {/* Ohne-Nest Mode: Show simplified centered payment box */}
+            {/* Ohne-Hoam Mode: Show simplified centered payment box */}
             {isOhneNestMode && (
               <div className="max-w-2xl mx-auto mb-12">
                 {/* Centered "Grundstücksanalyse und Entwurfsplan" box */}
@@ -4019,12 +3716,12 @@ export default function CheckoutStepper({
                       >
                         {isPaymentCompleted
                           ? "Bezahlt"
-                          : "Grundstücksanalyse und Entwurfsplan"}
+                          : "Konzept-Check"}
                       </h3>
                       <div className="text-sm text-gray-600">
                         {isPaymentCompleted
                           ? "Zahlung erfolgreich abgeschlossen"
-                          : "Starte dein Bauvorhaben"}
+                          : "Grundstücksanalyse und Entwurfsplan"}
                       </div>
                     </div>
                     <div className="text-right">
@@ -4072,7 +3769,7 @@ export default function CheckoutStepper({
                       <div className="space-y-3">
                         <div className="flex justify-between items-center">
                           <span className="text-sm md:text-base lg:text-lg 2xl:text-xl text-gray-700 font-medium">
-                            Deine Nest ID:
+                            Hoam ID:
                           </span>
                           <span className="font-mono text-sm md:text-base bg-white px-3 py-1.5 rounded-lg border border-green-300">
                             {configItem?.sessionId ||
@@ -4125,13 +3822,12 @@ export default function CheckoutStepper({
 
                 {/* Disclaimer text - centered below box */}
                 <div className="text-sm text-gray-600 leading-relaxed text-center mb-6 mx-5">
-                  Solltest du mit dem Entwurf nicht zufrieden sein, kannst du
-                  vom Kauf deines Nest-Hauses zurücktreten. In diesem Fall
-                  zahlst du lediglich die Kosten für den Entwurf und
-                  Grundstücksanalyse.
+                  Solltest du mit deinem Konzept-Check nicht zufrieden sein,
+                  kannst du die Grundstücksanalyse auch für alle anderen Bauvorhaben nutzen. Es
+                  entsteht keine Verpflichtung zum Kauf/Bau eines Hoam Hauses.
                 </div>
 
-                {/* Note: "Jetzt bezahlen" button is hidden for ohne nest mode by not rendering it here */}
+                {/* Note: "Jetzt bezahlen" button is hidden for ohne Hoam mode by not rendering it here */}
               </div>
             )}
 
@@ -4214,15 +3910,15 @@ export default function CheckoutStepper({
                                     </div>
                                     <div className="text-sm md:text-base lg:text-lg 2xl:text-xl font-normal leading-relaxed text-gray-900">
                                       {detail.isIncluded ||
-                                      (detail.price && detail.price === 0)
+                                        (detail.price && detail.price === 0)
                                         ? "Standard"
                                         : PriceUtils.isPriceOnRequest(
-                                              detail.price || 0
-                                            )
+                                          detail.price || 0
+                                        )
                                           ? "-"
                                           : PriceUtils.formatPrice(
-                                              detail.price || 0
-                                            )}
+                                            detail.price || 0
+                                          )}
                                     </div>
                                   </div>
                                 );
@@ -4280,9 +3976,9 @@ export default function CheckoutStepper({
                                         configItem?.planungspaket?.price ||
                                         (localSelectedPlan
                                           ? PLANNING_PACKAGES.find(
-                                              (p) =>
-                                                p.value === localSelectedPlan
-                                            )?.price || 0
+                                            (p) =>
+                                              p.value === localSelectedPlan
+                                          )?.price || 0
                                           : 0);
 
                                       // Check if it's basis planungspaket (should show as Standard)
@@ -4300,7 +3996,7 @@ export default function CheckoutStepper({
                                   </div>
                                 </div>
                               )}
-                            {/* Termin mit dem Nest Team row */}
+                            {/* Termin mit dem Hoam Team row */}
                             <div className="flex items-center justify-between gap-4 py-3 md:py-4 px-6 md:px-7">
                               <div className="flex-1 min-w-0">
                                 <div className="text-sm md:text-base lg:text-lg 2xl:text-xl font-normal leading-relaxed text-gray-900">
@@ -4309,7 +4005,7 @@ export default function CheckoutStepper({
                                     : "—"}
                                 </div>
                                 <div className="text-xs md:text-sm text-gray-500 leading-snug mt-1">
-                                  Termin mit dem Nest Team
+                                  Termin mit dem Hoam Team
                                 </div>
                               </div>
                               <div className="text-sm md:text-base lg:text-lg 2xl:text-xl font-normal leading-relaxed text-gray-900">
@@ -4351,164 +4047,12 @@ export default function CheckoutStepper({
               ) : (
                 <div className="text-sm text-gray-600">
                   {isOhneNestMode
-                    ? "Dein Nest-Haus wird gemeinsam mit uns konfiguriert."
+                    ? "Dein Hoam-House wird gemeinsam mit uns konfiguriert."
                     : "Keine Konfiguration im Warenkorb."}
                 </div>
               )}
             </div>
 
-            {/* Teilzahlungen Title - only show when NOT in ohne nest mode */}
-            {!isOhneNestMode && (
-              <h2 className="h2-title text-black mb-3">Teilzahlungen</h2>
-            )}
-
-            {/* Instalment Breakdown */}
-            {(() => {
-              const totalPrice = Math.max(0, getCartTotal());
-              const firstPayment = GRUNDSTUECKSCHECK_PRICE;
-              const grundstueckscheckCredit = GRUNDSTUECKSCHECK_PRICE;
-              const secondPaymentOriginal = Math.max(0, totalPrice * 0.3);
-              const secondPayment = Math.max(
-                0,
-                secondPaymentOriginal - grundstueckscheckCredit
-              );
-              const thirdPayment = Math.max(0, totalPrice * 0.5);
-              const fourthPayment = Math.max(
-                0,
-                totalPrice - firstPayment - secondPaymentOriginal - thirdPayment
-              );
-              return (
-                <div className="border border-gray-300 rounded-2xl md:min-w-[260px] w-full overflow-hidden">
-                  <div>
-                    <div className="flex items-center justify-between gap-4 py-3 md:py-4 px-6 md:px-7">
-                      <div className="flex-1 min-w-0">
-                        <div className="text-sm md:text-base lg:text-lg 2xl:text-xl font-normal leading-relaxed text-gray-900">
-                          Grundstücksanalyse und Entwurfsplan
-                        </div>
-                        <div className="text-xs md:text-sm text-gray-500 leading-snug mt-1">
-                          Der erste Schritt zu deinem Nest-Haus auf deinem
-                          Grundstück.
-                        </div>
-                      </div>
-                      <div className="text-sm md:text-base lg:text-lg 2xl:text-xl font-normal leading-relaxed text-gray-900">
-                        {PriceUtils.formatPrice(firstPayment)}
-                      </div>
-                    </div>
-
-                    {/* Planungspaket row - hide in konzept-check mode */}
-                    {!isOhneNestMode &&
-                      (configItem?.planungspaket || localSelectedPlan) && (
-                        <div className="flex items-center justify-between gap-4 py-3 md:py-4 px-6 md:px-7 border-t border-gray-200">
-                          <div className="flex-1 min-w-0">
-                            <div className="text-sm md:text-base lg:text-lg 2xl:text-xl font-normal leading-relaxed text-gray-900">
-                              Planungspaket
-                            </div>
-                            <div className="text-xs md:text-sm text-gray-500 leading-snug mt-1">
-                              {(() => {
-                                // Get name from cart item first, but use new naming
-                                if (configItem?.planungspaket?.name) {
-                                  const name =
-                                    configItem?.planungspaket?.name?.toLowerCase() ||
-                                    "";
-                                  if (name.includes("basis"))
-                                    return "Planungspaket 01 Basis";
-                                  if (name.includes("plus"))
-                                    return "Planungspaket 02 Plus";
-                                  if (name.includes("pro"))
-                                    return "Planungspaket 03 Pro";
-                                  return configItem?.planungspaket?.name || "—";
-                                }
-                                // Otherwise get from localSelectedPlan
-                                if (localSelectedPlan) {
-                                  if (localSelectedPlan === "basis")
-                                    return "Planungspaket 01 Basis";
-                                  if (localSelectedPlan === "plus")
-                                    return "Planungspaket 02 Plus";
-                                  if (localSelectedPlan === "pro")
-                                    return "Planungspaket 03 Pro";
-                                }
-                                return "—";
-                              })()}
-                            </div>
-                          </div>
-                          <div className="text-sm md:text-base lg:text-lg 2xl:text-xl font-normal leading-relaxed text-gray-900">
-                            {(() => {
-                              const planPrice =
-                                configItem?.planungspaket?.price ||
-                                (localSelectedPlan
-                                  ? PLANNING_PACKAGES.find(
-                                      (p) => p.value === localSelectedPlan
-                                    )?.price || 0
-                                  : 0);
-
-                              // Check if it's basis planungspaket (should show as Standard)
-                              const planValue =
-                                configItem?.planungspaket?.value ||
-                                localSelectedPlan;
-                              if (planValue === "basis") {
-                                return "Standard";
-                              } else {
-                                return PriceUtils.formatPrice(planPrice);
-                              }
-                            })()}
-                          </div>
-                        </div>
-                      )}
-                    {!isOhneNestMode && (
-                      <>
-                        <div className="flex items-center justify-between gap-4 py-3 md:py-4 px-6 md:px-7">
-                          <div className="flex-1 min-w-0">
-                            <div className="text-sm md:text-base lg:text-lg 2xl:text-xl font-normal leading-relaxed text-gray-900">
-                              1. Teilzahlung
-                            </div>
-                            <div className="text-xs md:text-sm text-gray-500 leading-snug mt-1">
-                              30% vom Gesamtpreis
-                              <br />
-                              Abzüglch Grundstücksanalyse: (
-                              {PriceUtils.formatPrice(grundstueckscheckCredit)}
-                              ) -
-                              <br />
-                              Liefergarantie 6 Monate ab Teilzahlung.
-                            </div>
-                          </div>
-                          <div className="text-sm md:text-base lg:text-lg 2xl:text-xl font-normal leading-relaxed text-gray-900">
-                            {PriceUtils.formatPrice(secondPayment)}
-                          </div>
-                        </div>
-                        <div className="flex items-center justify-between gap-4 py-3 md:py-4 px-6 md:px-7">
-                          <div className="flex-1 min-w-0">
-                            <div className="text-sm md:text-base lg:text-lg 2xl:text-xl font-normal leading-relaxed text-gray-900">
-                              2. Teilzahlung
-                            </div>
-                            <div className="text-xs md:text-sm text-gray-500 leading-snug mt-1">
-                              50% vom Gesamtpreis <br />
-                              Fällig nach Fertigstellung in der Produktion
-                            </div>
-                          </div>
-                          <div className="text-sm md:text-base lg:text-lg 2xl:text-xl font-normal leading-relaxed text-gray-900">
-                            {PriceUtils.formatPrice(thirdPayment)}
-                          </div>
-                        </div>
-                        <div className="flex items-center justify-between gap-4 py-3 md:py-4 px-6 md:px-7">
-                          <div className="flex-1 min-w-0">
-                            <div className="text-sm md:text-base lg:text-lg 2xl:text-xl font-normal leading-relaxed text-gray-900">
-                              3. Teilzahlung
-                            </div>
-                            <div className="text-xs md:text-sm text-gray-500 leading-snug mt-1">
-                              20% vom Gesamtpreis <br />
-                              Fällig nach Errichtung am Grundstück
-                            </div>
-                          </div>
-                          <div className="text-sm md:text-base lg:text-lg 2xl:text-xl font-normal leading-relaxed text-gray-900">
-                            {PriceUtils.formatPrice(fourthPayment)}
-                          </div>
-                        </div>
-                      </>
-                    )}
-                  </div>
-                </div>
-              );
-            })()}
 
             <div className="border border-gray-300 rounded-2xl w-full overflow-hidden mt-3 md:mt-4">
               <div className="flex items-center justify-between gap-4 py-3 md:py-4 px-6 md:px-7">
@@ -4584,7 +4128,7 @@ export default function CheckoutStepper({
                   <div className="space-y-3">
                     <div className="flex justify-between items-center">
                       <span className="text-sm md:text-base lg:text-lg 2xl:text-xl text-gray-700 font-medium">
-                        Deine Nest ID:
+                        Deine Hoam ID:
                       </span>
                       <span className="font-mono text-sm md:text-base bg-white px-3 py-1.5 rounded-lg border border-green-300">
                         {configItem?.sessionId ||
@@ -4745,11 +4289,10 @@ export default function CheckoutStepper({
                     });
                   }
                 }}
-                className={`${
-                  isPaymentCompleted
-                    ? "bg-green-600 cursor-not-allowed opacity-75"
-                    : "bg-[#3D6CE1] hover:bg-blue-700"
-                } text-white py-4 px-12 rounded-full text-[clamp(16px,4vw,20px)] font-medium transition-colors`}
+                className={`${isPaymentCompleted
+                  ? "bg-green-600 cursor-not-allowed opacity-75"
+                  : "bg-[#3D6CE1] hover:bg-blue-700"
+                  } text-white py-4 px-12 rounded-full text-[clamp(16px,4vw,20px)] font-medium transition-colors`}
               >
                 {isPaymentCompleted ? "✓ Bezahlt" : "Zur Kassa"}
               </button>
@@ -4759,7 +4302,7 @@ export default function CheckoutStepper({
               <div className="text-sm md:text-base lg:text-lg 2xl:text-xl text-gray-700 leading-relaxed">
                 {isOhneNestMode
                   ? "Du zahlst lediglich die Grundstücksanalyse und den Entwurfsplan"
-                  : "Solltest du mit dem Entwurfsplan nicht zufrieden sein, kannst du vom Kauf deines Nest-Hauses zurücktreten. In diesem Fall zahlst du lediglich die Kosten für die Grundstücksanalyse und den Entwurfsplan."}
+                  : "Solltest du mit nicht zufrieden sein, kannst du jederzeit von der Bestellung zurücktreten."}
               </div>
             </div>
 
@@ -4921,30 +4464,7 @@ export default function CheckoutStepper({
         />
       </Dialog>
 
-      {/* Appointment Reminder Popup */}
-      {showAppointmentReminder && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
-          <div className="bg-white rounded-3xl shadow-2xl max-w-md w-full p-8 md:p-10">
-            <div className="text-center">
-              <h3 className="text-xl md:text-2xl font-semibold text-gray-900 mb-4">
-                Termin erforderlich
-              </h3>
-              <p className="text-base md:text-lg text-gray-700 mb-6 leading-relaxed">
-                Bitte vereinbaren Sie einen Termin mit uns um Ihre Bestellung
-                abzuschließen
-              </p>
-              <Button
-                variant="primary"
-                size="xs"
-                onClick={() => setShowAppointmentReminder(false)}
-                className="w-full sm:w-auto px-8"
-              >
-                Okay
-              </Button>
-            </div>
-          </div>
-        </div>
-      )}
+      {/* REMOVED: Appointment Reminder Popup - appointments are no longer required */}
     </section>
   );
 
@@ -4982,9 +4502,8 @@ export default function CheckoutStepper({
     // Get appointment details
     const appointmentDetails = useCartStore.getState().appointmentDetails;
     const appointmentDateTime = appointmentDetails?.date
-      ? `${appointmentDetails.date.toLocaleDateString("de-DE")} ${
-          appointmentDetails.time
-        }`
+      ? `${appointmentDetails.date.toLocaleDateString("de-DE")} ${appointmentDetails.time
+      }`
       : undefined;
 
     // Calculate delivery date (6 months from appointment)

@@ -47,7 +47,7 @@ describe('End-to-End Checkout Flow Tests', () => {
 
             // Step 2: Make selections in configurator
             const steps = [
-                { category: 'nest', selection: 'NEST 100', price: 10000000 },
+                { category: 'nest', selection: 'Hoam 100', price: 10000000 },
                 { category: 'gebaeudehuelle', selection: 'Holzlattung', price: 12000000 },
                 { category: 'innenverkleidung', selection: 'Kiefer', price: 13000000 },
                 { category: 'fussboden', selection: 'Parkett', price: 15000000 },
@@ -164,7 +164,7 @@ describe('End-to-End Checkout Flow Tests', () => {
                 body: JSON.stringify({
                     sessionId,
                     category: 'nest',
-                    selection: 'NEST 100',
+                    selection: 'Hoam 100',
                     totalPrice: 10000000,
                 }),
             });
@@ -230,7 +230,7 @@ describe('End-to-End Checkout Flow Tests', () => {
                 body: JSON.stringify({
                     sessionId,
                     category: 'nest',
-                    selection: 'NEST 100',
+                    selection: 'Hoam 100',
                     totalPrice: 10000000,
                 }),
             });
@@ -290,7 +290,7 @@ describe('End-to-End Checkout Flow Tests', () => {
                 body: JSON.stringify({
                     sessionId,
                     category: 'nest',
-                    selection: 'NEST 100',
+                    selection: 'Hoam 100',
                     totalPrice: 10000000,
                 }),
             });
@@ -353,7 +353,7 @@ describe('End-to-End Checkout Flow Tests', () => {
             const config1 = generateTestConfiguration();
             const config2 = {
                 ...generateTestConfiguration(),
-                nest: { name: 'NEST 150', value: 'nest150' },
+                nest: { name: 'Hoam 150', value: 'nest150' },
             };
 
             // Create order with both configurations

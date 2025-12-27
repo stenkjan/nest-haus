@@ -210,7 +210,7 @@ class PricingAnalyzer:
             'metadata': {
                 'version': '1.0.0',
                 'created': datetime.now().isoformat(),
-                'description': 'Nest-Haus Configurator Pricing Template'
+                'description': 'Hoam-House Configurator Pricing Template'
             },
             'tabs': []
         }
@@ -222,7 +222,7 @@ class PricingAnalyzer:
                 'Gebäudehülle',
                 'Innenverkleidung', 
                 'Fussboden',
-                'Base Price (Nest 80)',
+                'Base Price (Hoam 80)',
                 'Per Module Price',
                 'Notes'
             ],
@@ -277,7 +277,7 @@ class PricingAnalyzer:
             'name': 'Size-Dependent Pricing',
             'columns': [
                 'Component',
-                'Base Price (Nest 80)',
+                'Base Price (Hoam 80)',
                 'Scaling Factor',
                 'Formula',
                 'Notes'

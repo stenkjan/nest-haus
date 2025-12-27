@@ -7,7 +7,13 @@ export function middleware(request: NextRequest) {
     // 301 Redirects for rebranding: nest → hoam
     if (pathname.startsWith('/dein-nest')) {
         const url = request.nextUrl.clone();
-        url.pathname = pathname.replace('/dein-nest', '/dein-hoam');
+        url.pathname = pathname.replace('/dein-nest', '/hoam');
+        return NextResponse.redirect(url, { status: 301 });
+    }
+    
+    if (pathname.startsWith('/dein-hoam')) {
+        const url = request.nextUrl.clone();
+        url.pathname = pathname.replace('/dein-hoam', '/hoam');
         return NextResponse.redirect(url, { status: 301 });
     }
     
@@ -70,6 +76,7 @@ export const config = {
     matcher: [
         // Match old routes for redirects
         '/dein-nest/:path*',
+        '/dein-hoam/:path*',
         '/nest-system/:path*',
         // Only match admin routes and admin API routes
         '/admin/:path*',

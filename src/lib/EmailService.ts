@@ -6,6 +6,7 @@ import { generateAdminPaymentNotificationEmail } from './emailTemplates/AdminPay
 import { generateSecureToken } from './utils/tokenGenerator';
 import { generateICS, generateICSFilename } from './utils/icsGenerator';
 import { prisma } from './prisma';
+import { Prisma } from '@prisma/client';
 
 // Initialize Resend with API key
 const resend = new Resend(process.env.RESEND_API_KEY);
@@ -64,14 +65,54 @@ export interface AdminAppointmentNotificationData {
   userAgent?: string;
 }
 
+export interface GenericEmailData {
+  to: string;
+  subject: string;
+  html: string;
+  text?: string;
+  from?: string;
+  replyTo?: string;
+}
+
 export class EmailService {
   private static readonly FROM_EMAIL = process.env.RESEND_FROM_EMAIL || 'mail@hoam.at';
   private static readonly REPLY_TO_EMAIL = process.env.REPLY_TO_EMAIL || 'mail@hoam.at';
-  private static readonly ADMIN_EMAIL = process.env.ADMIN_EMAIL || 'mail@hoam.at';
+  private static readonly ADMIN_EMAIL = process.env.ADMIN_EMAIL || 'mail@nest-haus.at';
   private static readonly SALES_EMAIL = process.env.SALES_EMAIL || 'mail@hoam.at';
 
   // From name for better email presentation
   private static readonly FROM_NAME = '®Hoam Team';
+
+  /**
+   * Generic email sending method
+   * Used for admin alerts, system notifications, and other custom emails
+   */
+  static async sendEmail(data: GenericEmailData): Promise<boolean> {
+    try {
+      console.log(`📧 Sending generic email to ${data.to}`);
+
+      const result = await resend.emails.send({
+        from: data.from || `${this.FROM_NAME} <${this.FROM_EMAIL}>`,
+        replyTo: data.replyTo || this.REPLY_TO_EMAIL,
+        to: data.to,
+        subject: data.subject,
+        html: data.html,
+        text: data.text,
+      });
+
+      if (result.error) {
+        console.error('❌ Generic email failed:', result.error);
+        return false;
+      }
+
+      console.log('✅ Generic email sent successfully:', result.data?.id);
+      return true;
+
+    } catch (error) {
+      console.error('❌ Error sending generic email:', error);
+      return false;
+    }
+  }
 
   /**
    * Send confirmation email to customer
@@ -458,7 +499,7 @@ export class EmailService {
   </div>
   
   <div class="footer">
-    <p>© 2025 Nest-Haus | SustainNest GmbH<br>
+    <p>© 2025 Hoam-House | Eco Chalets GmbH<br>
     Zösenberg 51, 8045 Weinitzen, Österreich</p>
     </div>
   </div>
@@ -500,7 +541,7 @@ Telefon: +43 384 775 090
 
 Besuchen Sie uns: https://nest-haus.at
 
-© 2025 Nest-Haus | eco Chalets GmbH
+© 2025 Hoam-House | eco Chalets GmbH
 Zösenberg 51, 8045 Weinitzen, Österreich
 `;
   }
@@ -1291,7 +1332,7 @@ Automatische Benachrichtigung vom NEST-Haus System`;
         customerEmail: data.email,
         appointmentDateTime: new Date(data.appointmentDateTime),
         durationMinutes: 60,
-        location: 'Nest-Haus Office, Zösenberg 51, 8045 Weinitzen, Austria',
+        location: 'Hoam-House Office, Zösenberg 51, 8045 Weinitzen, Austria',
         description: data.message,
         organizerEmail: this.ADMIN_EMAIL,
         organizerName: this.FROM_NAME,
@@ -1320,9 +1361,12 @@ Automatische Benachrichtigung vom NEST-Haus System`;
       console.log(`📎 ICS attachment added: ${generateICSFilename(data.inquiryId)}`);
 
       // Store confirmToken in database for verification
+      // Note: TypeScript may show an error here due to IDE caching, but the field exists in the Prisma schema
       await prisma.customerInquiry.update({
         where: { id: data.inquiryId },
-        data: { confirmationToken: confirmToken },
+        data: {
+          confirmationToken: confirmToken,
+        } as Prisma.CustomerInquiryUncheckedUpdateInput,
       });
 
       console.log('✅ Confirmation token stored in database');

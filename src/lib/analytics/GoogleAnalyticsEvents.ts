@@ -27,7 +27,7 @@ export const trackConfigurationStarted = (nestType: string) => {
       currency: 'EUR',
       items: [{
         item_id: nestType,
-        item_name: `Nest-Haus ${nestType}`,
+        item_name: `Hoam-House ${nestType}`,
         item_category: 'Modulhaus',
         quantity: 1,
       }]
@@ -49,7 +49,7 @@ export const trackConfigurationCompleted = (
       value: totalPrice / 100, // Convert cents to euros
       items: [{
         item_id: nestType,
-        item_name: `Nest-Haus ${nestType}`,
+        item_name: `Hoam-House ${nestType}`,
         item_category: 'Modulhaus',
         item_variant: configuration.gebaeudehuelle,
         price: totalPrice / 100,
@@ -87,7 +87,7 @@ export const trackInquiryCompleted = (
       currency: 'EUR',
       items: [{
         item_id: 'inquiry',
-        item_name: 'Nest-Haus Anfrage',
+        item_name: 'Hoam-House Anfrage',
         item_category: 'Inquiry',
         price: 0,
         quantity: 1,

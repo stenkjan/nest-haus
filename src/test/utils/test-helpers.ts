@@ -85,7 +85,7 @@ export function generateTestCustomer() {
  */
 export function generateTestConfiguration() {
     return {
-        nest: { name: 'NEST 100', value: 'nest100' },
+        nest: { name: 'Hoam 100', value: 'nest100' },
         gebaeudehuelle: { name: 'Holzlattung Lärche', value: 'holzlattung' },
         innenverkleidung: { name: 'Kiefer', value: 'kiefer' },
         fussboden: { name: 'Parkett Eiche', value: 'parkett' },

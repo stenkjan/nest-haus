@@ -3,7 +3,7 @@
  * Following project rules: shared constants in src/constants/
  */
 
-// Nest size mapping for images (nest values to image sizes)
+// Hoam size mapping for images (Hoam values to image sizes)
 export const NEST_SIZE_MAPPING: Record<string, string> = {
   'nest80': '75',   // nest80 -> 75 in images
   'nest100': '95',  // nest100 -> 95 in images
@@ -20,7 +20,7 @@ export const GEBAEUDE_EXTERIOR_MAPPING: Record<string, string> = {
   'fassadenplatten_weiss': 'plattenweiss'
 } as const;
 
-// Stirnseite mapping for all nest sizes
+// Stirnseite mapping for all Hoam sizes
 export const STIRNSEITE_MAPPING: Record<string, string> = {
   'fassadenplatten_schwarz': 'stirnseitePlattenSchwarz',
   'fassadenplatten_weiss': 'stirnseitePlattenWeiss',
@@ -166,11 +166,11 @@ export type ImageCombinationKey = keyof typeof INTERIOR_EXACT_MAPPINGS;
 // Grundstückscheck price - Updated to match checkout pricing (with 50% discount: was 3000, now 1500)
 export const GRUNDSTUECKSCHECK_PRICE = 1500;
 
-// Nest options with base pricing - UPDATED TO MATCH GOOGLE SHEETS
+// Hoam options with base pricing - UPDATED TO MATCH GOOGLE SHEETS
 export const NEST_OPTIONS = [
   {
     id: 'nest80',
-    name: 'Nest. 80',
+    name: 'Hoam 80',
     description: '75m² Nutzfläche',
     price: 213032,
     monthly: 990,
@@ -178,7 +178,7 @@ export const NEST_OPTIONS = [
   },
   {
     id: 'nest100',
-    name: 'Nest. 100',
+    name: 'Hoam 100',
     description: '95m² Nutzfläche',
     price: 254731,
     monthly: 1187,
@@ -186,7 +186,7 @@ export const NEST_OPTIONS = [
   },
   {
     id: 'nest120',
-    name: 'Nest. 120',
+    name: 'Hoam 120',
     description: '115m² Nutzfläche',
     price: 296430,
     monthly: 1384,
@@ -194,7 +194,7 @@ export const NEST_OPTIONS = [
   },
   {
     id: 'nest140',
-    name: 'Nest. 140',
+    name: 'Hoam 140',
     description: '135m² Nutzfläche',
     price: 338129,
     monthly: 1581,
@@ -202,7 +202,7 @@ export const NEST_OPTIONS = [
   },
   {
     id: 'nest160',
-    name: 'Nest. 160',
+    name: 'Hoam 160',
     description: '155m² Nutzfläche',
     price: 379828,
     monthly: 1778,
@@ -211,7 +211,7 @@ export const NEST_OPTIONS = [
 ] as const;
 
 // CORRECTED: Modular pricing structure matching Excel data
-// Formula: Base Price (Nest 80) + (Additional Modules × Per-Module Price)
+// Formula: Base Price (Hoam 80) + (Additional Modules × Per-Module Price)
 export const MODULAR_PRICING = {
   // Each combination has base price + per-module price
   combinations: {
@@ -293,8 +293,8 @@ export const PLANNING_PACKAGES = [
 
 /**
  * Calculate modular price using CORRECT Excel formula
- * Formula: Base Price (Nest 80) + (Additional Modules × Per-Module Price)
- * @param nestType - The nest type (nest80, nest100, etc.)
+ * Formula: Base Price (Hoam 80) + (Additional Modules × Per-Module Price)
+ * @param nestType - The Hoam type (nest80, nest100, etc.)
  * @param gebaeudehuelle - Building exterior type
  * @param innenverkleidung - Interior cladding type
  * @param fussboden - Flooring type
@@ -319,10 +319,10 @@ export function calculateModularPrice(
     return fallbackData.base;
   }
 
-  // Get nest module count
+  // Get Hoam module count
   const nestOption = NEST_OPTIONS.find(option => option.id === nestType);
   if (!nestOption) {
-    console.warn(`💰 Unknown nest type: ${nestType}, defaulting to nest80`);
+    console.warn(`💰 Unknown Hoam type: ${nestType}, defaulting to nest80`);
     return combinationData.base; // Just base price for nest80 (1 module, 0 additional)
   }
 
@@ -349,8 +349,8 @@ export const SIZE_DEPENDENT_BASE_PRICES = {
 } as const;
 
 /**
- * Calculate price for size-dependent options based on nest module size
- * @param nestType - The nest type (nest80, nest100, etc.)
+ * Calculate price for size-dependent options based on Hoam module size
+ * @param nestType - The Hoam type (nest80, nest100, etc.)
  * @param optionType - The option type (elektrische_fussbodenheizung, etc.)
  * @param quantity - For geschossdecke, the number of units (default 1)
  * @returns Calculated price for the option
@@ -362,10 +362,10 @@ export function calculateSizeDependentPrice(
 ): number {
   const basePrice = SIZE_DEPENDENT_BASE_PRICES[optionType];
 
-  // Get nest module count
+  // Get Hoam module count
   const nestOption = NEST_OPTIONS.find(option => option.id === nestType);
   if (!nestOption) {
-    console.warn(`💰 Unknown nest type: ${nestType}, defaulting to nest80 pricing`);
+    console.warn(`💰 Unknown Hoam type: ${nestType}, defaulting to nest80 pricing`);
     return basePrice * quantity;
   }
 
@@ -379,13 +379,13 @@ export function calculateSizeDependentPrice(
 }
 
 /**
- * Get maximum geschossdecken based on nest size
+ * Get maximum geschossdecken based on Hoam size
  * Maximum is one less than the number of modules (modules - 1)
- * @param nestType - The nest type (nest80, nest100, etc.)
+ * @param nestType - The Hoam type (nest80, nest100, etc.)
  * @returns Maximum number of geschossdecken allowed
  */
 export function getMaxGeschossdecken(nestType: string): number {
-  // Each nest size corresponds to number of 20m² modules
+  // Each Hoam size corresponds to number of 20m² modules
   // Maximum geschossdecke is modules - 1
   const moduleMapping: Record<string, number> = {
     nest80: 4,  // 80m² = 4 × 20m² modules

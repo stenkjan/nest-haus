@@ -2,7 +2,7 @@
 
 ## What Was Built
 
-A complete Google Sheets → Database pricing sync system for the Nest-Haus configurator.
+A complete Google Sheets → Database pricing sync system for the Hoam-House configurator.
 
 ---
 

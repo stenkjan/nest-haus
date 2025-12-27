@@ -7,7 +7,7 @@
 The Warenkorb was not properly syncing with the new Google Sheets-based pricing system from the Konfigurator. This caused:
 
 1. ❌ Fichte showing as "inkludiert" instead of 23,020€
-2. ❌ Total price showing as 0€ in "Dein Nest Haus" box
+2. ❌ Total price showing as 0€ in "Dein Hoam" box
 3. ❌ Old/incorrect prices throughout the checkout
 4. ❌ "Zum Warenkorb" button not explicitly setting configuration mode
 
@@ -135,7 +135,7 @@ if (configItem && configItem.nest) {
 const total = dynamicTotal;
 ```
 
-**Result**: "Dein Nest Haus" box now shows correct total (e.g., 226,746€ for Nest 80 with defaults)
+**Result**: "Dein Hoam" box now shows correct total (e.g., 226,746€ for Nest 80 with defaults)
 
 ---
 
@@ -211,7 +211,7 @@ else if (mode === "configuration") {
 | **Ohne Heizung** | inkludiert | **inkludiert** (base) | Relative pricing |
 | **Planung Basis** | inkludiert | **inkludiert** | Always free |
 | **Belichtungspaket Light** | Old price | **15,107€** | Calculated from fenster data |
-| **Total ("Dein Nest Haus")** | ❌ **0€** | ✅ **226,746€** | Dynamic sum |
+| **Total ("Dein Hoam")** | ❌ **0€** | ✅ **226,746€** | Dynamic sum |
 
 ---
 
@@ -256,7 +256,7 @@ This ensures:
 1. ✅ Go to Konfigurator
 2. ✅ Select Nest 80 (or use defaults)
 3. ✅ Click "Zum Warenkorb"
-4. ✅ Verify: "Dein Nest Haus" shows correct total (not 0€)
+4. ✅ Verify: "Dein Hoam" shows correct total (not 0€)
 5. ✅ Verify: Fichte shows 23,020€ (not "inkludiert")
 6. ✅ Verify: Check & Vorentwurf shows 3,000€
 7. ✅ Verify: All prices match Konfigurator
@@ -265,7 +265,7 @@ This ensures:
 
 1. ✅ Go to Konfigurator
 2. ✅ Click "Ohne Nest fortfahren"
-3. ✅ Verify: "Dein Nest Haus" shows "-" (no configuration)
+3. ✅ Verify: "Dein Hoam" shows "-" (no configuration)
 4. ✅ Verify: Only shows Check & Vorentwurf and Planungspaket
 5. ✅ Verify: Checkout flow works for vorentwurf only
 

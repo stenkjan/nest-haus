@@ -133,8 +133,8 @@ export default function GridsShowcasePage() {
             maxWidth={false}
             backgroundColor="black"
             image={IMAGES.function.nestHausFensterTuerenPosition}
-            imageDescription="NEST Haus Fenster und Türen Positionierung Konzept"
-            text="Mit deinem Nest-Haus bestimmst du selbst, wo Fenster und Türen ihren Platz finden sollen. Nach deiner Reservierung setzen wir uns mit dir in Verbindung, um die ideale Platzierung festzulegen. Auf Basis deiner Vorgaben fertigen wir dein Zuhause mit passgenauen Öffnungen an. Dort platzieren wir im Anschluss deine Fenster & Türen."
+            imageDescription="Hoam Fenster und Türen Positionierung Konzept"
+            text="Mit deinem Hoam-House bestimmst du selbst, wo Fenster und Türen ihren Platz finden sollen. Nach deiner Reservierung setzen wir uns mit dir in Verbindung, um die ideale Platzierung festzulegen. Auf Basis deiner Vorgaben fertigen wir dein Zuhause mit passgenauen Öffnungen an. Dort platzieren wir im Anschluss deine Fenster & Türen."
           />
         </section>
 
@@ -153,7 +153,7 @@ export default function GridsShowcasePage() {
           <ImageWithFourTextGrid
             maxWidth={false}
             image={IMAGES.function.nestHausModulElektrikSanitaer}
-            imageDescription="NEST Haus Planung Elektrik Sanitär Einbau Gebäudetechnik HKLS Modul"
+            imageDescription="Hoam Planung Elektrik Sanitär Einbau Gebäudetechnik HKLS Modul"
             backgroundColor="black"
             textCellTitle1="Effizienz"
             textCellTitle2="Nachhaltigkeit"

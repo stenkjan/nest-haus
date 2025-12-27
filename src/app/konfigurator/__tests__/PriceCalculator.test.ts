@@ -16,7 +16,7 @@ const mockSelections = {
   nest: {
     category: 'nest',
     value: 'nest120',
-    name: 'Nest 120',
+    name: 'Hoam 120',
     price: 0
   },
   gebaeudehuelle: {
@@ -46,8 +46,8 @@ describe('PriceCalculator', () => {
   });
 
   describe('Dynamic Pricing Logic', () => {
-    it('should calculate correct modular pricing for different nest sizes', () => {
-      // Test Nest 80 (0 modules)
+    it('should calculate correct modular pricing for different Hoam sizes', () => {
+      // Test Hoam 80 (0 modules)
       const nest80Price = PriceCalculator.calculateCombinationPrice(
         'nest80',
         'holzlattung',
@@ -55,7 +55,7 @@ describe('PriceCalculator', () => {
         'parkett'
       );
 
-      // Test Nest 120 (2 modules)
+      // Test Hoam 120 (2 modules)
       const nest120Price = PriceCalculator.calculateCombinationPrice(
         'nest120',
         'holzlattung',
@@ -63,7 +63,7 @@ describe('PriceCalculator', () => {
         'parkett'
       );
 
-      // Test Nest 160 (4 modules)
+      // Test Hoam 160 (4 modules)
       const nest160Price = PriceCalculator.calculateCombinationPrice(
         'nest160',
         'holzlattung',
@@ -112,10 +112,10 @@ describe('PriceCalculator', () => {
       expect(holzResult.monthly).toBeGreaterThan(0);
     });
 
-    it('should scale upgrade prices with nest size correctly', () => {
+    it('should scale upgrade prices with Hoam size correctly', () => {
       const selections = { ...mockSelections };
 
-      // Test upgrade price for Nest 80
+      // Test upgrade price for Hoam 80
       const nest80Upgrade = PriceCalculator.getOptionDisplayPrice(
         'nest80',
         selections,
@@ -123,7 +123,7 @@ describe('PriceCalculator', () => {
         'holzlattung'
       );
 
-      // Test upgrade price for Nest 120  
+      // Test upgrade price for Hoam 120  
       const nest120Upgrade = PriceCalculator.getOptionDisplayPrice(
         'nest120',
         selections,
@@ -209,7 +209,7 @@ describe('PriceCalculator', () => {
   });
 
   describe('Error Handling', () => {
-    it('should handle invalid nest types gracefully', () => {
+    it('should handle invalid Hoam types gracefully', () => {
       const selections = { ...mockSelections };
 
       const result = PriceCalculator.getOptionDisplayPrice(
@@ -219,7 +219,7 @@ describe('PriceCalculator', () => {
         'holzlattung'
       );
 
-      // Invalid nest type should still return a valid result (upgrade or included)
+      // Invalid Hoam type should still return a valid result (upgrade or included)
       expect(['included', 'upgrade']).toContain(result.type);
       expect(result).toHaveProperty('type');
     });

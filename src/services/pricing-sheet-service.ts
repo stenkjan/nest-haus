@@ -3,14 +3,14 @@
  * 
  * Parses pricing data from Google Sheets "Preistabelle Verkauf" tab
  * Single sheet with all sections, column E contains section headers and option names
- * Prices in columns F-N (Nest 80-160)
+ * Prices in columns F-N (Hoam 80-160)
  * 
  * NOTE: Columns G, I, K, M are HIDDEN in Google Sheets (between visible columns F, H, J, L, N)
  * Row numbers referenced are 1-indexed as displayed in Google Sheets (e.g., E10 = row 10 in sheets = index 9 in code)
  * 
  * GOOGLE SHEETS STRUCTURE:
  * E7:  Geschossdecke (name in E7, price in D7)
- * E10: Nest (section title)
+ * E10: Hoam (section title)
  * E16: Gebäudehülle (section title) - E17: Trapezblech (0€), E18: Holzlattung Lärche Natur
  * E22: Innenverkleidung (section title)
  * E28: PV-Anlage (section title)
@@ -242,13 +242,13 @@ class PricingSheetService {
     // GOOGLE SHEETS STRUCTURE (1-indexed as displayed in sheets):
     // E7: Section name "Geschossdecke"
     // D7: Base price per unit
-    // F7-N7: Max quantities per nest size
+    // F7-N7: Max quantities per Hoam size
     const row7 = rows[6] || []; // Row 7 (0-indexed: 6)
 
     const basePrice = this.parseNumber(row7[3], true); // D7 is a price in thousands
 
     const maxAmounts: Partial<PricingData['geschossdecke']['maxAmounts']> = {};
-    // Fixed column mapping: F=5, H=7, J=9, L=11, N=13 (same as nest sizes)
+    // Fixed column mapping: F=5, H=7, J=9, L=11, N=13 (same as Hoam sizes)
     maxAmounts.nest80 = this.parseNumber(row7[5]); // F7 is a quantity, not a price
     maxAmounts.nest100 = this.parseNumber(row7[7]); // H7
     maxAmounts.nest120 = this.parseNumber(row7[9]); // J7
@@ -270,7 +270,7 @@ class PricingSheetService {
     // E18: Trapezblech
     // E19: Platte Black (Fassadenplatten Schwarz)
     // E20: Platte White (Fassadenplatten Weiß)
-    // Columns F-N have prices for each nest size
+    // Columns F-N have prices for each Hoam size
 
     const gebaeudehuelleData: PricingData['gebaeudehuelle'] = {};
 
@@ -295,17 +295,17 @@ class PricingSheetService {
       if (!optionName) continue;
 
       const mappedKey = optionMapping[optionName] || optionName;
-      
+
       // Skip if we already have this key (prevents duplicate parsing)
       if (gebaeudehuelleData[mappedKey]) continue;
-      
+
       gebaeudehuelleData[mappedKey] = {} as { [key in NestSize]: number };
 
       NEST_VALUES.forEach((nestSize) => {
         const colIndex = NEST_COLUMNS[nestSize];
         gebaeudehuelleData[mappedKey][nestSize] = this.parseNumber(row[colIndex], true); // Prices in thousands
       });
-      
+
       console.log(`[parseGebaeudehuelle] Row ${rowIndex + 1}: "${optionName}" → ${mappedKey}`, gebaeudehuelleData[mappedKey]);
     }
 
@@ -368,9 +368,9 @@ class PricingSheetService {
     // GOOGLE SHEETS STRUCTURE (1-indexed as displayed in sheets):
     // E28: Section title "PV-Anlage"
     // E29-E44: "1 Module", "2 Module", ... "16 Module" (quantity labels)
-    // F29-N44: Prices for each quantity × nest size combination
+    // F29-N44: Prices for each quantity × Hoam size combination
     // Each row represents a different quantity (1-16 modules)
-    // Columns F-N represent different Nest sizes
+    // Columns F-N represent different Hoam sizes
 
     const pricesByQuantity: PricingData['pvanlage']['pricesByQuantity'] = {
       nest80: {},
@@ -395,7 +395,7 @@ class PricingSheetService {
       });
     }
 
-    // Hardcoded max modules per Nest size
+    // Hardcoded max modules per Hoam size
     const maxModules: PricingData['pvanlage']['maxModules'] = {
       nest80: 8,
       nest100: 10,
@@ -415,7 +415,7 @@ class PricingSheetService {
     // GOOGLE SHEETS STRUCTURE (1-indexed as displayed in sheets):
     // E49: Section title "Bodenbelag"
     // E50-E53: Option names (bauherr, eiche, kalkstein, dunkler stein)
-    // F50-N53: Prices for each option × nest size
+    // F50-N53: Prices for each option × Hoam size
     const bodenbelagData: PricingData['bodenbelag'] = {};
 
     const optionMapping: Record<string, string> = {
@@ -455,7 +455,7 @@ class PricingSheetService {
     // E57: Ohne Heizung (baseline, 0€)
     // E58: Elektrische Fußbodenheizung (FULL SPELLING, not "FBH")
     // E59: Wassergeführte Fußbodenheizung (FULL SPELLING, not "FBH")
-    // F57-N59: Prices for each option × nest size
+    // F57-N59: Prices for each option × Hoam size
     const bodenaufbauData: PricingData['bodenaufbau'] = {};
 
     // CRITICAL: Google Sheets now uses FULL SPELLINGS, not abbreviations
@@ -530,7 +530,7 @@ class PricingSheetService {
     //   E70-E72: Holz + light/medium/bright
     //   E73-E75: Holz-Alu + light/medium/bright
     //   E76-E78: Kunststoff + light/medium/bright
-    // F70-N78: TOTAL combination prices (belichtungspaket × fenster × nest size)
+    // F70-N78: TOTAL combination prices (belichtungspaket × fenster × Hoam size)
     // Store total prices directly (price/m² calculated when needed for display)
 
     const fensterData: PricingData['fenster'] = {
@@ -609,7 +609,7 @@ class PricingSheetService {
     // E87: Basis (always 0€)
     // E88: Plus
     // E89: Pro
-    // F87-N89: Prices (same across all nest sizes for each package)
+    // F87-N89: Prices (same across all Hoam sizes for each package)
     // NOTE: THESE ARE THE ONLY PRICES THAT CHANGED IN THIS OVERHAUL
     // NEW PRICES (Nov 25, 2025): Plus = 4900€, Pro = 9600€
 

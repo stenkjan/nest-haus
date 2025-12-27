@@ -25,7 +25,7 @@ const createMockSelections = (nestValue = 'nest120') => ({
   nest: {
     category: 'nest',
     value: nestValue,
-    name: `Nest ${nestValue.replace('nest', '')}`,
+    name: `Hoam ${nestValue.replace('nest', '')}`,
     price: 0
   },
   gebaeudehuelle: {

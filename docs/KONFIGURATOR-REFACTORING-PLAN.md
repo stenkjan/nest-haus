@@ -255,7 +255,7 @@ useEffect(() => {
 **Implementation**:
 
 1. Find "Dein Nest Überblick" heading
-2. Add "kurz" text with same divider styling as "Dein Nest-Haus"
+2. Add "kurz" text with same divider styling as "Dein Hoam-House"
 
 **Example**:
 

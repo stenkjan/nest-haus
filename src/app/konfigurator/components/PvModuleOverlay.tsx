@@ -93,7 +93,7 @@ export default function PvModuleOverlay({
     return null;
   }
 
-  // Determine which overlay image to use based on module count and nest size
+  // Determine which overlay image to use based on module count and Hoam size
   const getOverlayImage = (nestSize: string, moduleCount: number) => {
     switch (nestSize) {
       case "nest80": // 75m² - 4 modules max
@@ -176,7 +176,7 @@ export default function PvModuleOverlay({
 
   const overlayImagePath = getOverlayImage(nestSize, moduleCount);
 
-  // Determine maximum modules and counter logic for each nest size
+  // Determine maximum modules and counter logic for each Hoam size
   const getMaxModules = (nestSize: string) => {
     switch (nestSize) {
       case "nest80":

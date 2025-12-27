@@ -88,12 +88,12 @@ export class KonfiguratorAudit {
 
     // Test 3: Verify required pricing data fields
     if (data.data) {
-      const requiredFields = ['nest', 'geschossdecke', 'gebaeudehuelle', 'innenverkleidung', 
-                              'pvanlage', 'bodenbelag', 'bodenaufbau', 'belichtungspaket', 
-                              'fenster', 'optionen', 'planungspaket'];
-      
+      const requiredFields = ['nest', 'geschossdecke', 'gebaeudehuelle', 'innenverkleidung',
+        'pvanlage', 'bodenbelag', 'bodenaufbau', 'belichtungspaket',
+        'fenster', 'optionen', 'planungspaket'];
+
       const missingFields = requiredFields.filter(field => !data.data[field]);
-      
+
       this.addMetric({
         testName: 'All required pricing fields present',
         duration: 0,
@@ -101,22 +101,22 @@ export class KonfiguratorAudit {
         details: missingFields.length > 0 ? `Missing: ${missingFields.join(', ')}` : 'All fields present'
       });
 
-      // Verify Nest 80 base price
+      // Verify Hoam 80 base price
       if (data.data.nest?.nest80?.price) {
         const nest80Price = data.data.nest.nest80.price;
         this.addMetric({
-          testName: 'Nest 80 price correct (189,000€)',
+          testName: 'Hoam 80 price correct (189,000€)',
           duration: 0,
           status: nest80Price === 189000 ? 'pass' : 'fail',
           details: `Expected: 189000, Got: ${nest80Price}`
         });
       }
 
-      // Verify Lärche price for Nest 80
+      // Verify Lärche price for Hoam 80
       if (data.data.gebaeudehuelle?.holzlattung?.nest80) {
         const laerchePrice = data.data.gebaeudehuelle.holzlattung.nest80;
         this.addMetric({
-          testName: 'Lärche (Holzlattung) price for Nest 80 (24,413€)',
+          testName: 'Lärche (Holzlattung) price for Hoam 80 (24,413€)',
           duration: 0,
           status: laerchePrice === 24413 ? 'pass' : 'fail',
           details: `Expected: 24413, Got: ${laerchePrice}`
@@ -151,7 +151,7 @@ export class KonfiguratorAudit {
     try {
       const testSessionId = `test-${Date.now()}`;
       const testConfig = {
-        nest: { category: 'nest', value: 'nest80', name: 'Nest 80', price: 189000 }
+        nest: { category: 'nest', value: 'nest80', name: 'Hoam 80', price: 189000 }
       };
 
       const response = await fetch(`${this.baseUrl}/api/sessions/sync`, {
@@ -267,9 +267,9 @@ export class KonfiguratorAudit {
         });
 
         // Verify quantity analytics
-        const hasQuantityAnalytics = data.quantityAnalytics && 
-                                     data.quantityAnalytics.geschossdecke && 
-                                     data.quantityAnalytics.pvanlage;
+        const hasQuantityAnalytics = data.quantityAnalytics &&
+          data.quantityAnalytics.geschossdecke &&
+          data.quantityAnalytics.pvanlage;
         this.addMetric({
           testName: 'Quantity analytics for geschossdecke & PV',
           duration: 0,
@@ -292,7 +292,7 @@ export class KonfiguratorAudit {
    */
   async testTypeScriptCompliance(): Promise<void> {
     console.log('\n=== Phase 5.1: TypeScript Compliance ===\n');
-    
+
     this.addMetric({
       testName: 'TypeScript/ESLint compliance',
       duration: 0,
@@ -354,7 +354,7 @@ export class KonfiguratorAudit {
     await this.testTypeScriptCompliance();
 
     const report = this.generateReport('Complete Audit');
-    
+
     console.log('\n✨ Audit Complete!\n');
     return report;
   }

@@ -28,7 +28,7 @@ describe('ConfiguratorStore', () => {
   describe('Initial State', () => {
     it('should initialize with correct default configuration', () => {
       const { result } = renderHook(() => useConfiguratorStore())
-      
+
       expect(result.current.configuration).toEqual(
         expect.objectContaining({
           nest: null,
@@ -39,14 +39,14 @@ describe('ConfiguratorStore', () => {
           planungspaket: null
         })
       )
-      
+
       expect(result.current.currentPrice).toBe(0)
       expect(result.current.sessionId).toBeNull()
     })
 
     it('should have all required methods defined', () => {
       const { result } = renderHook(() => useConfiguratorStore())
-      
+
       expect(typeof result.current.updateSelection).toBe('function')
       expect(typeof result.current.initializeSession).toBe('function')
       expect(typeof result.current.finalizeSession).toBe('function')
@@ -55,15 +55,15 @@ describe('ConfiguratorStore', () => {
   })
 
   describe('Selection Updates', () => {
-    it('should update NEST selection correctly', async () => {
+    it('should update Hoam selection correctly', async () => {
       const { result } = renderHook(() => useConfiguratorStore())
-      
+
       const testSelection = {
         category: 'nest' as const,
         value: 'nest80',
-        name: 'NEST 80',
+        name: 'Hoam 80',
         price: 89000,
-        description: '80m² NEST House'
+        description: '80m² Hoam House'
       }
 
       await act(async () => {
@@ -74,7 +74,7 @@ describe('ConfiguratorStore', () => {
         expect.objectContaining({
           category: 'nest',
           value: 'nest80',
-          name: 'NEST 80',
+          name: 'Hoam 80',
           price: 89000
         })
       )
@@ -82,7 +82,7 @@ describe('ConfiguratorStore', () => {
 
     it('should update material selection correctly', async () => {
       const { result } = renderHook(() => useConfiguratorStore())
-      
+
       const materialSelection = {
         category: 'gebaeudehuelle' as const,
         value: 'holzlattung',
@@ -107,7 +107,7 @@ describe('ConfiguratorStore', () => {
 
     it('should handle PV selection with quantity', async () => {
       const { result } = renderHook(() => useConfiguratorStore())
-      
+
       const pvSelection = {
         category: 'pvanlage' as const,
         value: 'pv-standard',
@@ -133,7 +133,7 @@ describe('ConfiguratorStore', () => {
 
     it('should handle Fenster selection with square meters', async () => {
       const { result } = renderHook(() => useConfiguratorStore())
-      
+
       const fensterSelection = {
         category: 'fenster' as const,
         value: 'fenster-standard',
@@ -161,13 +161,13 @@ describe('ConfiguratorStore', () => {
   describe('Price Calculations', () => {
     it('should calculate total price correctly for single selection', async () => {
       const { result } = renderHook(() => useConfiguratorStore())
-      
+
       const nestSelection = {
         category: 'nest' as const,
         value: 'nest80',
-        name: 'NEST 80',
+        name: 'Hoam 80',
         price: 89000,
-        description: '80m² NEST House'
+        description: '80m² Hoam House'
       }
 
       await act(async () => {
@@ -179,14 +179,14 @@ describe('ConfiguratorStore', () => {
 
     it('should calculate total price correctly for multiple selections', async () => {
       const { result } = renderHook(() => useConfiguratorStore())
-      
+
       const selections = [
         {
           category: 'nest' as const,
           value: 'nest80',
-          name: 'NEST 80',
+          name: 'Hoam 80',
           price: 89000,
-          description: '80m² NEST House'
+          description: '80m² Hoam House'
         },
         {
           category: 'pvanlage' as const,
@@ -218,14 +218,14 @@ describe('ConfiguratorStore', () => {
 
     it('should calculate quantity-based pricing correctly', async () => {
       const { result } = renderHook(() => useConfiguratorStore())
-      
-      // First add a nest selection (required for price calculation)
+
+      // First add a Hoam selection (required for price calculation)
       const nestSelection = {
         category: 'nest' as const,
         value: 'nest80',
-        name: 'NEST 80',
+        name: 'Hoam 80',
         price: 89000,
-        description: '80m² NEST House'
+        description: '80m² Hoam House'
       }
 
       await act(async () => {
@@ -254,7 +254,7 @@ describe('ConfiguratorStore', () => {
   describe('Session Management', () => {
     it('should initialize session correctly', async () => {
       const { result } = renderHook(() => useConfiguratorStore())
-      
+
       await act(async () => {
         await result.current.initializeSession()
       })
@@ -265,7 +265,7 @@ describe('ConfiguratorStore', () => {
 
     it('should handle session initialization failure gracefully', async () => {
       const { result } = renderHook(() => useConfiguratorStore())
-      
+
       // Mock API failure - skip for now as API module doesn't exist
       // const mockApi = await import('@/app/api')
       // vi.mocked(mockApi.initializeSession).mockRejectedValueOnce(new Error('Network error'))
@@ -280,7 +280,7 @@ describe('ConfiguratorStore', () => {
 
     it('should finalize session correctly', async () => {
       const { result } = renderHook(() => useConfiguratorStore())
-      
+
       // First initialize
       await act(async () => {
         await result.current.initializeSession()
@@ -299,7 +299,7 @@ describe('ConfiguratorStore', () => {
   describe('Error Handling', () => {
     it('should handle API errors during selection updates', async () => {
       const { result } = renderHook(() => useConfiguratorStore())
-      
+
       // Mock API failure - skip for now as API module doesn't exist
       // const mockApi = await import('@/app/api')
       // vi.mocked(mockApi.trackSelection).mockRejectedValueOnce(new Error('API Error'))
@@ -307,9 +307,9 @@ describe('ConfiguratorStore', () => {
       const selection = {
         category: 'nest' as const,
         value: 'nest80',
-        name: 'NEST 80',
+        name: 'Hoam 80',
         price: 89000,
-        description: '80m² NEST House'
+        description: '80m² Hoam House'
       }
 
       // Should not throw error
@@ -321,14 +321,14 @@ describe('ConfiguratorStore', () => {
       expect(result.current.configuration?.nest).toEqual(
         expect.objectContaining({
           value: 'nest80',
-          name: 'NEST 80'
+          name: 'Hoam 80'
         })
       )
     })
 
     it('should validate selection data before updating', async () => {
       const { result } = renderHook(() => useConfiguratorStore())
-      
+
       const invalidSelection = {
         category: 'invalid-category' as const,
         value: '',
@@ -350,16 +350,16 @@ describe('ConfiguratorStore', () => {
   describe('Performance', () => {
     it('should handle rapid successive updates efficiently', async () => {
       const { result } = renderHook(() => useConfiguratorStore())
-      
+
       const startTime = performance.now()
-      
+
       // Rapid updates
       const updates = Array.from({ length: 10 }, (_, i) => ({
         category: 'nest' as const,
         value: `nest${i}`,
-        name: `NEST ${i}`,
+        name: `Hoam ${i}`,
         price: 89000 + i * 1000,
-        description: `${i}m² NEST House`
+        description: `${i}m² Hoam House`
       }))
 
       for (const update of updates) {
@@ -373,7 +373,7 @@ describe('ConfiguratorStore', () => {
 
       // Should complete within reasonable time (2 seconds)
       expect(duration).toBeLessThan(2000)
-      
+
       // Final state should be correct
       expect(result.current.configuration?.nest?.value).toBe('nest9')
       expect(result.current.currentPrice).toBe(98000)

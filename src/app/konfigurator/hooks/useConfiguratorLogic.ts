@@ -428,7 +428,7 @@ export function useConfiguratorLogic(_rightPanelRef?: RefObject<HTMLDivElement |
       if (categoryId === "pvanlage" && pricingData && configuration?.nest) {
         const priceForOneModule = pricingData.pvanlage.pricesByQuantity[currentNestValue]?.[1];
         if (priceForOneModule === -1) return { type: "dash" as const };
-        
+
         const originalPrice = option.price;
         if (originalPrice.type === "upgrade") {
           return {
@@ -543,7 +543,7 @@ export function useConfiguratorLogic(_rightPanelRef?: RefObject<HTMLDivElement |
 
         // If this option has a dash price, show dash
         if (rawOptionPrice === -1) return { type: "dash" as const };
-        
+
         // If this option is selected, show as selected
         if (currentSelection && currentSelection.value === optionId) return { type: "selected" as const };
 
@@ -614,69 +614,69 @@ export function useConfiguratorLogic(_rightPanelRef?: RefObject<HTMLDivElement |
 
       // Calculate Option Price using specialized helper for correct value
       const getOptionPriceValue = (): number => {
-          if (!configuration?.nest) return option.price.amount || 0;
-          
-          if (categoryId === "belichtungspaket") {
-              const selectionOption = {
-                  category: categoryId,
-                  value: optionId,
-                  name: "",
-                  price: 0,
-              };
-              // Calculate total combination price (belichtung + fenster)
-              return PriceCalculator.calculateBelichtungspaketPrice(
-                  selectionOption,
-                  configuration.nest,
-                  configuration.fenster || undefined
-              );
-          }
+        if (!configuration?.nest) return option.price.amount || 0;
 
-          if (categoryId === "bodenaufbau") {
-             return PriceCalculator.calculateBodenaufbauPrice(
-                 {
-                     category: categoryId,
-                     value: optionId,
-                     name: option.name || "",
-                     price: option.price.amount || 0,
-                 },
-                 {
-                     category: "nest",
-                     value: configuration.nest.value,
-                     name: configuration.nest.name,
-                     price: configuration.nest.price || 0,
-                 }
-             );
-          }
+        if (categoryId === "belichtungspaket") {
+          const selectionOption = {
+            category: categoryId,
+            value: optionId,
+            name: "",
+            price: 0,
+          };
+          // Calculate total combination price (belichtung + fenster)
+          return PriceCalculator.calculateBelichtungspaketPrice(
+            selectionOption,
+            configuration.nest,
+            configuration.fenster || undefined
+          );
+        }
 
-          if (categoryId === "fenster") {
-             if (configuration.belichtungspaket) {
-                  // Use Google Sheets combination prices (F70-N78)
-                  // Create a temporary fenster selection object
-                  const fensterSelectionObj = { category: "fenster", value: optionId, name: "", price: 0 };
-                  // Calculate total combination price (belichtungspaket + this fenster material)
-                  return PriceCalculator.calculateBelichtungspaketPrice(
-                    configuration.belichtungspaket,
-                    configuration.nest,
-                    fensterSelectionObj
-                  );
-             }
-          }
-          
-          if (categoryId === "geschossdecke" && pricingData) {
-             return pricingData.geschossdecke.basePrice;
-          }
+        if (categoryId === "bodenaufbau") {
+          return PriceCalculator.calculateBodenaufbauPrice(
+            {
+              category: categoryId,
+              value: optionId,
+              name: option.name || "",
+              price: option.price.amount || 0,
+            },
+            {
+              category: "nest",
+              value: configuration.nest.value,
+              name: configuration.nest.name,
+              price: configuration.nest.price || 0,
+            }
+          );
+        }
 
-          return option.price.amount || 0;
+        if (categoryId === "fenster") {
+          if (configuration.belichtungspaket) {
+            // Use Google Sheets combination prices (F70-N78)
+            // Create a temporary fenster selection object
+            const fensterSelectionObj = { category: "fenster", value: optionId, name: "", price: 0 };
+            // Calculate total combination price (belichtungspaket + this fenster material)
+            return PriceCalculator.calculateBelichtungspaketPrice(
+              configuration.belichtungspaket,
+              configuration.nest,
+              fensterSelectionObj
+            );
+          }
+        }
+
+        if (categoryId === "geschossdecke" && pricingData) {
+          return pricingData.geschossdecke.basePrice;
+        }
+
+        return option.price.amount || 0;
       };
 
       // Special handling for belichtungspaket relative pricing
       if (categoryId === "belichtungspaket" && pricingData && configuration?.nest && configuration?.fenster) {
         const currentSelection = configuration.belichtungspaket;
-        
+
         if (currentSelection && currentSelection.value === optionId) {
           return { type: "selected" as const };
         }
-        
+
         // Calculate price for this option (keeping fenster material the same)
         const optionSelectionObj = { category: "belichtungspaket", value: optionId, name: "", price: 0 };
         const optionPrice = PriceCalculator.calculateBelichtungspaketPrice(
@@ -684,18 +684,18 @@ export function useConfiguratorLogic(_rightPanelRef?: RefObject<HTMLDivElement |
           configuration.nest,
           configuration.fenster
         );
-        
+
         if (optionPrice === -1) return { type: "dash" as const };
-        
+
         if (!currentSelection) {
           // No selection yet - show as base price
-          return { 
-            type: "upgrade" as const, 
-            amount: optionPrice, 
-            monthly: PriceCalculator.calculateMonthlyPaymentAmount(optionPrice) 
+          return {
+            type: "upgrade" as const,
+            amount: optionPrice,
+            monthly: PriceCalculator.calculateMonthlyPaymentAmount(optionPrice)
           };
         }
-        
+
         // Calculate price for currently selected option (with same fenster material)
         const currentSelectionObj = { category: "belichtungspaket", value: currentSelection.value, name: "", price: 0 };
         const currentPrice = PriceCalculator.calculateBelichtungspaketPrice(
@@ -703,9 +703,9 @@ export function useConfiguratorLogic(_rightPanelRef?: RefObject<HTMLDivElement |
           configuration.nest,
           configuration.fenster
         );
-        
+
         const priceDiff = optionPrice - currentPrice;
-        
+
         if (priceDiff === 0) return { type: "upgrade" as const, amount: 0, monthly: 0 };
         return {
           type: priceDiff > 0 ? ("upgrade" as const) : ("discount" as const),
@@ -717,11 +717,11 @@ export function useConfiguratorLogic(_rightPanelRef?: RefObject<HTMLDivElement |
       // Special handling for fenster relative pricing
       if (categoryId === "fenster" && pricingData && configuration?.nest && configuration?.belichtungspaket) {
         const currentSelection = configuration.fenster;
-        
+
         if (currentSelection && currentSelection.value === optionId) {
           return { type: "selected" as const };
         }
-        
+
         // Calculate price for this option (keeping belichtungspaket the same)
         const fensterSelectionObj = { category: "fenster", value: optionId, name: "", price: 0 };
         const optionPrice = PriceCalculator.calculateBelichtungspaketPrice(
@@ -729,18 +729,18 @@ export function useConfiguratorLogic(_rightPanelRef?: RefObject<HTMLDivElement |
           configuration.nest,
           fensterSelectionObj
         );
-        
+
         if (optionPrice === -1) return { type: "dash" as const };
-        
+
         if (!currentSelection) {
           // No selection yet - show as base price
-          return { 
-            type: "upgrade" as const, 
-            amount: optionPrice, 
-            monthly: PriceCalculator.calculateMonthlyPaymentAmount(optionPrice) 
+          return {
+            type: "upgrade" as const,
+            amount: optionPrice,
+            monthly: PriceCalculator.calculateMonthlyPaymentAmount(optionPrice)
           };
         }
-        
+
         // Calculate price for currently selected fenster material (with same belichtungspaket)
         const currentFensterObj = { category: "fenster", value: currentSelection.value, name: "", price: 0 };
         const currentPrice = PriceCalculator.calculateBelichtungspaketPrice(
@@ -748,9 +748,9 @@ export function useConfiguratorLogic(_rightPanelRef?: RefObject<HTMLDivElement |
           configuration.nest,
           currentFensterObj
         );
-        
+
         const priceDiff = optionPrice - currentPrice;
-        
+
         if (priceDiff === 0) return { type: "upgrade" as const, amount: 0, monthly: 0 };
         return {
           type: priceDiff > 0 ? ("upgrade" as const) : ("discount" as const),
@@ -762,25 +762,25 @@ export function useConfiguratorLogic(_rightPanelRef?: RefObject<HTMLDivElement |
       // Helper for handling complex relative pricing logic
       if (["fenster", "bodenaufbau", "geschossdecke"].includes(categoryId)) {
         const currentSelection = configuration[categoryId as keyof typeof configuration] as ConfigurationItem | undefined;
-        
+
         // Special check for bodenaufbau availability
         if (categoryId === "bodenaufbau" && pricingData) {
           const nestSize = configuration?.nest?.value || "nest80";
           let bodenaufbauKey = optionId;
           // Map potential key mismatches if needed (kept from original logic)
           if (bodenaufbauKey === "wassergefuehrte_fussbodenheizung") {
-             if (pricingData.bodenaufbau["wassergefuehrte_fussbodenheizung"]) bodenaufbauKey = "wassergefuehrte_fussbodenheizung";
-             else if (pricingData.bodenaufbau["wassergef. fbh"]) bodenaufbauKey = "wassergef. fbh";
+            if (pricingData.bodenaufbau["wassergefuehrte_fussbodenheizung"]) bodenaufbauKey = "wassergefuehrte_fussbodenheizung";
+            else if (pricingData.bodenaufbau["wassergef. fbh"]) bodenaufbauKey = "wassergef. fbh";
           }
           if (bodenaufbauKey === "elektrische_fussbodenheizung") {
-             if (pricingData.bodenaufbau["elektrische_fussbodenheizung"]) bodenaufbauKey = "elektrische_fussbodenheizung";
-             else if (pricingData.bodenaufbau["elekt. fbh"]) bodenaufbauKey = "elekt. fbh";
+            if (pricingData.bodenaufbau["elektrische_fussbodenheizung"]) bodenaufbauKey = "elektrische_fussbodenheizung";
+            else if (pricingData.bodenaufbau["elekt. fbh"]) bodenaufbauKey = "elekt. fbh";
           }
           const rawPrice = pricingData.bodenaufbau?.[bodenaufbauKey]?.[nestSize as keyof (typeof pricingData.bodenaufbau)[typeof bodenaufbauKey]];
-          
+
           // If this option has a dash price, show dash
           if (rawPrice === -1) return { type: "dash" as const };
-          
+
           // Special case: if ohne_heizung (standard) and a DASH option is currently selected
           if (optionId === "ohne_heizung" && currentSelection) {
             // Get the price of the currently selected option
@@ -794,13 +794,13 @@ export function useConfiguratorLogic(_rightPanelRef?: RefObject<HTMLDivElement |
               else if (pricingData.bodenaufbau["elekt. fbh"]) selectedKey = "elekt. fbh";
             }
             const selectedPrice = pricingData.bodenaufbau?.[selectedKey]?.[nestSize as keyof (typeof pricingData.bodenaufbau)[typeof selectedKey]];
-            
+
             // If selected option is dash, standard should show "standard" not relative price
             if (selectedPrice === -1) {
               return { type: "standard" as const };
             }
           }
-          
+
           // Also: if ohne_heizung and all other options are dash, show as "standard"
           if (optionId === "ohne_heizung") {
             const allOtherOptionsAreDash = Object.keys(pricingData.bodenaufbau).every((key) => {
@@ -818,25 +818,25 @@ export function useConfiguratorLogic(_rightPanelRef?: RefObject<HTMLDivElement |
           if (currentSelection.value === optionId) {
             return { type: "selected" as const };
           }
-          
+
           const currentPriceVal = currentSelection.price || 0;
           const optionPriceVal = getOptionPriceValue();
-          
+
           const priceDifference = optionPriceVal - currentPriceVal;
-          
+
           if (priceDifference === 0) return { type: "selected" as const };
           else if (priceDifference > 0) return { type: "upgrade" as const, amount: priceDifference, monthly: PriceCalculator.calculateMonthlyPaymentAmount(priceDifference) };
           else return { type: "discount" as const, amount: Math.abs(priceDifference), monthly: PriceCalculator.calculateMonthlyPaymentAmount(Math.abs(priceDifference)) };
         }
-        
+
         // No selection - return base price calculated
         const calculatedPrice = getOptionPriceValue();
         if (calculatedPrice === 0) return { type: "included" as const };
-        return { 
-            type: "upgrade" as const, // Default to upgrade/standard if no selection
-            amount: calculatedPrice,
-            monthly: PriceCalculator.calculateMonthlyPaymentAmount(calculatedPrice)
-        }; 
+        return {
+          type: "upgrade" as const, // Default to upgrade/standard if no selection
+          amount: calculatedPrice,
+          monthly: PriceCalculator.calculateMonthlyPaymentAmount(calculatedPrice)
+        };
       }
 
       return option.price;
@@ -844,7 +844,7 @@ export function useConfiguratorLogic(_rightPanelRef?: RefObject<HTMLDivElement |
     [configuration]
   );
 
-  // Adjust PV quantity when nest size changes
+  // Adjust PV quantity when Hoam size changes
   useEffect(() => {
     const maxPv = getMaxPvModules();
     if (pvQuantity > maxPv) {
@@ -929,7 +929,7 @@ export function useConfiguratorLogic(_rightPanelRef?: RefObject<HTMLDivElement |
     isGeschossdeckeOverlayVisible,
     isBelichtungspaketOverlayVisible,
     isCalendarDialogOpen,
-    
+
     // Actions
     setIsCalendarDialogOpen,
     resetLocalState,
@@ -939,7 +939,7 @@ export function useConfiguratorLogic(_rightPanelRef?: RefObject<HTMLDivElement |
     handleKamindurchzugChange,
     handleFundamentChange,
     handleGeschossdeckeQuantityChange,
-    
+
     // Helpers
     isOptionSelected,
     getDisplayPrice,

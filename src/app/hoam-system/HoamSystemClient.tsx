@@ -28,7 +28,7 @@ import Footer from "@/components/Footer";
 const sections: SectionDefinition[] = [
   {
     id: "unsere-technik",
-    title: "Dein Hoam System",
+    title: "®Hoam System",
     slug: "unsere-technik",
   },
   {
@@ -120,10 +120,10 @@ export default function HoamSystemClient() {
           sections={sections}
           onSectionChange={setCurrentSectionId}
         >
-          {/* Section 1 - Dein Hoam System */}
+          {/* Section 1 - ®Hoam System */}
           <section id="unsere-technik" className="bg-black pt-12 pb-8 md:pb-16">
             <SectionHeader
-              title="Dein Hoam System"
+              title="®Hoam System"
               subtitle="Individualisiert, wo es Freiheit braucht. Standardisiert, wo es Effizienz schafft."
               titleClassName="text-white"
               subtitleClassName="text-white"
@@ -137,8 +137,8 @@ export default function HoamSystemClient() {
                     path={
                       isMobile
                         ? getMobileVideoPath(
-                            IMAGES.function.mobile.nestHausModulSchemaIntro
-                          )
+                          IMAGES.function.mobile.nestHausModulSchemaIntro
+                        )
                         : IMAGES.function.nestHausModulSchemaIntro
                     }
                     fallbackSrc={
@@ -178,7 +178,7 @@ export default function HoamSystemClient() {
             />
             <ThreeByOneGrid
               backgroundColor="black"
-              text="<p class='p-secondary text-white'><span class='text-white font-medium'>Standardisierung</span> <span class='text-nest-gray'>für</span> <span class='text-white font-medium'>Effizienz, Freiheit</span> <span class='text-nest-gray'>für</span> <span class='text-white font-medium'>Gestaltung.</span> <span class='text-nest-gray'>Alles, was sinnvoll standardisiert werden kann, wird perfektioniert.</span> <span class='text-white font-medium'>Präzisionsgefertigte Module,</span> <span class='text-nest-gray'>effiziente Prozesse und bewährte Konstruktionen sichern</span> <span class='text-white font-medium'>höchste Qualität</span> <span class='text-nest-gray'>zu einem</span> <span class='text-white font-medium'>leistbaren Preis.</span></p>"
+              text="<p class='p-secondary text-white'><span class='text-white font-medium'>Standardisierung</span> <span class='text-nest-gray'>für</span> <span class='text-white font-medium'>Effizienz, Freiheit</span> <span class='text-nest-gray'>für</span> <span class='text-white font-medium'>Gestaltung.</span> <span class='text-nest-gray'>Alles, was sinnvoll standardisiert werden kann, wird vereinheitlicht.</span> <span class='text-white font-medium'>Präzisionsgefertigte Module,</span> <span class='text-nest-gray'>effiziente Prozesse und bewährte Konstruktionen sichern</span> <span class='text-white font-medium'>höchste Qualität</span> <span class='text-nest-gray'>zu einem</span> <span class='text-white font-medium'>leistbaren Preis.</span></p>"
               textPosition="left"
               maxWidth={false}
               image1={IMAGES.function.nestHausModulKonzept}
@@ -270,7 +270,7 @@ export default function HoamSystemClient() {
             <div className="md:pt-16">
               <ThreeByOneGrid
                 backgroundColor="black"
-                text="<p class='p-secondary text-white'><span class='text-nest-gray'>Mit unseren</span> <span class='text-white font-medium'>Beleuchtungspaketen</span> <span class='text-nest-gray'>legst du die</span> <span class='text-white font-medium'>Gesamtfläche</span> <span class='text-nest-gray'>deiner</span> <span class='text-white font-medium'>Fenster und Türen</span> <span class='text-nest-gray'>fest, angepasst an deine individuellen Bedürfnisse. Der</span> <span class='text-white font-medium'>Preis bleibt</span> <span class='text-nest-gray'>dabei jederzeit</span> <span class='text-white font-medium'>transparent.</span></p>"
+                text="<p class='p-secondary text-white'><span class='text-nest-gray'>Mit unseren</span> <span class='text-white font-medium'>Beleuchtungspaketen</span> <span class='text-nest-gray'>bekommst du ein</span> <span class='text-white font-medium'>Preisgefühl</span> <span class='text-nest-gray'>für deine</span> <span class='text-white font-medium'>Fenster und Türen</span><span class='text-nest-gray'>. Danach legen wir im</span> <span class='text-white font-medium'>Konzeptcheck</span> <span class='text-nest-gray'>die exakte</span> <span class='text-white font-medium'>Anzahl und Größe</span> <span class='text-nest-gray'>deiner Fenster fest.</span></p>"
                 textPosition="right"
                 maxWidth={false}
                 image1={IMAGES.function.nestHausModulSeiteKonzept}
@@ -293,7 +293,7 @@ export default function HoamSystemClient() {
           >
             <SectionHeader
               title="Hier beginnt Freiheit"
-              subtitle="Weil nur du weißt, wie du wohnen willst."
+              subtitle="Weil nur du weißt, wie du richtig wohnst."
               titleClassName="text-white"
               subtitleClassName="text-white"
               wrapperMargin="mb-8 md:mb-16"
@@ -326,7 +326,7 @@ export default function HoamSystemClient() {
               <FullWidthTextGrid
                 backgroundColor="black"
                 textBox1="<p class='p-secondary text-white'><span class='text-nest-gray'>Mit ®Hoam hast du die</span> <span class='text-white font-medium'>Freiheit, deinen Grundriss so zu gestalten,</span> <span class='text-nest-gray'>wie es zu deinem Leben passt. Kein Schema, kein Standard. Nur Räume, die sich anfühlen wie du selbst.</span> <span class='text-white font-medium'>Denn richtig wohnen bedeutet mehr als Fläche und Funktion.</span> <span class='text-nest-gray'>Es ist Persönlichkeit, Ausdruck und Alltag der von dir in Einklang gebracht wird.</span></p>"
-                textBox2="<p class='p-secondary text-white'><span class='text-nest-gray'>Wenn du auf dem Weg dorthin</span> Unterstützung <span class='text-nest-gray'>möchtest, begleiten wir dich Schritt für Schritt. Unsere</span> Planungspakete <span class='text-nest-gray'>führen dich</span> von der Einreichplanung bis zur Gestaltung des Innenraums. <span class='text-nest-gray'>Individuell, durchdacht und auf deine Vorstellungen abgestimmt. So entsteht aus einer Idee</span> <span class='text-white font-medium'>ein Zuhause, das wirklich zu dir passt.</span></p>"
+                textBox2="<p class='p-secondary text-white'><span class='text-nest-gray'>Wir begleiten dich Schritt für Schritt. Unsere</span> Planungspakete <span class='text-nest-gray'>führen dich</span> von der Einreichplanung bis zur Gestaltung des Innenraums. <span class='text-nest-gray'>Individuell, durchdacht und auf deine Vorstellungen abgestimmt. So entsteht aus einer Idee</span> <span class='text-white font-medium'>ein Zuhause, das wirklich zu dir passt.</span></p>"
                 maxWidth={false}
               />
 
@@ -370,8 +370,8 @@ export default function HoamSystemClient() {
           {/* Section 6 - Kosten-Sparen-Wert erhöhen */}
           <section id="haustechnik" className="w-full py-8 md:py-16 bg-black">
             <SectionHeader
-              title="Kosten-Sparen-Wert erhöhen"
-              subtitle="Einfache Do-It-Yourself-Pakete für alle Bereiche"
+              title="Gebäudetechnik leicht gemacht"
+              subtitle="Do-It-Yourself oder vom Profi"
               titleClassName="text-white"
               subtitleClassName="text-white"
             />

@@ -8,7 +8,7 @@ export async function POST(request: Request) {
 
     if (!config.sessionId || !config.nest) {
       return NextResponse.json(
-        { success: false, error: 'Session ID and nest type required' },
+        { success: false, error: 'Session ID and Hoam type required' },
         { status: 400 }
       )
     }
@@ -55,8 +55,8 @@ export async function POST(request: Request) {
   } catch (error) {
     console.error('Failed to save configuration:', error)
     return NextResponse.json(
-      { 
-        success: false, 
+      {
+        success: false,
         error: 'Failed to save configuration',
         timestamp: Date.now()
       },

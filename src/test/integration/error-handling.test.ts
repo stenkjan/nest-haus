@@ -17,7 +17,7 @@ describe('Error Handling and Fail-safe Tests', () => {
                 body: JSON.stringify({
                     sessionId: '', // Invalid
                     category: 'nest',
-                    selection: 'NEST 100',
+                    selection: 'Hoam 100',
                 }),
             });
 
@@ -63,7 +63,7 @@ describe('Error Handling and Fail-safe Tests', () => {
                 body: JSON.stringify({
                     sessionId,
                     category: 'nest',
-                    selection: 'NEST 100',
+                    selection: 'Hoam 100',
                     totalPrice: 10000000,
                 }),
             });
@@ -202,7 +202,7 @@ describe('Error Handling and Fail-safe Tests', () => {
                 body: JSON.stringify({
                     sessionId,
                     category: 'nest',
-                    selection: 'NEST 100',
+                    selection: 'Hoam 100',
                 }),
             });
 
@@ -220,7 +220,7 @@ describe('Error Handling and Fail-safe Tests', () => {
                 body: JSON.stringify({
                     sessionId,
                     category: 'nest',
-                    selection: 'NEST 100',
+                    selection: 'Hoam 100',
                 }),
             });
 
@@ -285,7 +285,7 @@ describe('Error Handling and Fail-safe Tests', () => {
                 body: JSON.stringify({
                     sessionId: 'x'.repeat(1000), // Extremely long ID
                     category: 'nest',
-                    selection: 'NEST 100',
+                    selection: 'Hoam 100',
                 }),
             });
 

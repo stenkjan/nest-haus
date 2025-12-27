@@ -12,13 +12,13 @@ async function main() {
 
   // ===== HOUSE OPTIONS - EXACT PRICES FROM OLD CONFIGURATOR =====
 
-  // Nest Types - ORIGINAL PRICES
+  // Hoam Types - ORIGINAL PRICES
   await prisma.houseOption.createMany({
     data: [
       {
         category: 'nest',
         value: 'nest80',
-        name: 'Nest. 80',
+        name: 'Hoam 80',
         description: '80m² Nutzfläche',
         basePrice: 155500,
         sortOrder: 1,
@@ -27,7 +27,7 @@ async function main() {
       {
         category: 'nest',
         value: 'nest100',
-        name: 'Nest. 100',
+        name: 'Hoam 100',
         description: '100m² Nutzfläche',
         basePrice: 189100,
         sortOrder: 2,
@@ -36,7 +36,7 @@ async function main() {
       {
         category: 'nest',
         value: 'nest120',
-        name: 'Nest. 120',
+        name: 'Hoam 120',
         description: '120m² Nutzfläche',
         basePrice: 222700,
         sortOrder: 3,
@@ -45,7 +45,7 @@ async function main() {
       {
         category: 'nest',
         value: 'nest140',
-        name: 'Nest. 140',
+        name: 'Hoam 140',
         description: '140m² Nutzfläche',
         basePrice: 256300,
         sortOrder: 4,
@@ -54,7 +54,7 @@ async function main() {
       {
         category: 'nest',
         value: 'nest160',
-        name: 'Nest. 160',
+        name: 'Hoam 160',
         description: '160m² Nutzfläche',
         basePrice: 289900,
         sortOrder: 5,

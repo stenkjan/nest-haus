@@ -162,6 +162,12 @@ export function useInteractionTracking({
               console.error('❌ Interaction tracking failed after all retries');
             }
           } else {
+            // Check if response indicates dev mode (services unavailable)
+            const data = await response.json().catch(() => ({}));
+            if (data.devMode) {
+              // Silent success in dev mode - tracking is disabled gracefully
+              return;
+            }
             console.log('✅ Interaction tracked successfully');
             return; // Success, exit retry loop
           }

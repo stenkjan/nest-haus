@@ -8,13 +8,13 @@ interface SelectionOptionProps {
   description: string;
   price?: {
     type:
-      | "base"
-      | "upgrade"
-      | "included"
-      | "standard"
-      | "discount"
-      | "selected"
-      | "dash";
+    | "base"
+    | "upgrade"
+    | "included"
+    | "standard"
+    | "discount"
+    | "selected"
+    | "dash";
     amount?: number;
     monthly?: number;
   };
@@ -52,7 +52,7 @@ export default function SelectionOption({
     if (!price) return null;
 
     if (price.type === "selected") {
-      // For nest modules, show the same format as non-selected
+      // For Hoam modules, show the same format as non-selected
       if (
         categoryId === "nest" &&
         contributionPrice !== null &&
@@ -73,12 +73,12 @@ export default function SelectionOption({
             <p className="text-[clamp(0.475rem,0.95vw,0.725rem)] tracking-wide leading-[1.2] text-gray-500 mt-1">
               {shouldShowPricePerSqm && nestModel && contributionPrice
                 ? PriceUtils.calculateOptionPricePerSquareMeter(
-                    contributionPrice,
-                    nestModel,
-                    categoryId,
-                    id,
-                    geschossdeckeQuantity
-                  )
+                  contributionPrice,
+                  nestModel,
+                  categoryId,
+                  id,
+                  geschossdeckeQuantity
+                )
                 : ""}
             </p>
           </div>
@@ -136,7 +136,7 @@ export default function SelectionOption({
               <>
                 <p className="text-[clamp(0.625rem,1.1vw,0.875rem)] text-gray-500 tracking-wide leading-[1.2]">
                   {categoryId === "pvanlage" || categoryId === "geschossdecke"
-                    ? `Ab ${PriceUtils.formatPrice(contributionPrice)}` 
+                    ? `Ab ${PriceUtils.formatPrice(contributionPrice)}`
                     : `${PriceUtils.formatPrice(contributionPrice)}${categoryId === "fenster" ? "/m²" : ""}`}
                 </p>
                 <p className="text-[clamp(0.475rem,0.95vw,0.725rem)] tracking-wide leading-[1.2] text-gray-500 mt-1">
@@ -150,15 +150,15 @@ export default function SelectionOption({
                     : categoryId === "pvanlage" && contributionPrice > 0 && !PriceUtils.isPriceOnRequest(contributionPrice)
                       ? `${PriceUtils.formatPrice(Math.round(contributionPrice / 4))} / Panel`
                       : shouldShowPricePerSqm &&
-                          nestModel &&
-                          contributionPrice > 0
+                        nestModel &&
+                        contributionPrice > 0
                         ? PriceUtils.calculateOptionPricePerSquareMeter(
-                            contributionPrice,
-                            nestModel,
-                            categoryId,
-                            id,
-                            geschossdeckeQuantity
-                          )
+                          contributionPrice,
+                          nestModel,
+                          categoryId,
+                          id,
+                          geschossdeckeQuantity
+                        )
                         : ""}
                 </p>
               </>
@@ -212,7 +212,7 @@ export default function SelectionOption({
       const shouldShowPricePerSqm =
         categoryId && PriceUtils.shouldShowPricePerSquareMeter(categoryId);
 
-      // Remove "Ab" from planungspakete, keep it for nest modules and pvanlage
+      // Remove "Ab" from planungspakete, keep it for Hoam modules and pvanlage
       const showAbPrefix = categoryId === "nest" || categoryId === "pvanlage";
 
       // Special handling for dash prices: center "-" without any subtitles
@@ -263,12 +263,12 @@ export default function SelectionOption({
               ? `${PriceUtils.formatPrice(Math.round(price.amount / 4))} / Panel`
               : shouldShowPricePerSqm && nestModel && price.amount
                 ? PriceUtils.calculateOptionPricePerSquareMeter(
-                    price.amount,
-                    nestModel,
-                    categoryId,
-                    id,
-                    geschossdeckeQuantity
-                  )
+                  price.amount,
+                  nestModel,
+                  categoryId,
+                  id,
+                  geschossdeckeQuantity
+                )
                 : ""}
           </p>
         </div>
@@ -315,7 +315,7 @@ export default function SelectionOption({
         // Calculate m² price difference
         const m2PriceDiff = contributionPrice - selectedFensterM2Price;
         const fensterFormattedPrice = PriceUtils.formatPrice(Math.abs(m2PriceDiff));
-        
+
         return (
           <div className="text-right">
             <p className="text-[clamp(0.625rem,1.1vw,0.875rem)] tracking-wide leading-[1.2]">
@@ -376,16 +376,16 @@ export default function SelectionOption({
             {categoryId === "pvanlage" && price.amount && !PriceUtils.isPriceOnRequest(price.amount)
               ? `${PriceUtils.formatPrice(Math.round(price.amount / 4))} / Panel`
               : shouldShowPricePerSqm &&
-                  nestModel &&
-                  price.amount &&
-                  price.amount !== 0
+                nestModel &&
+                price.amount &&
+                price.amount !== 0
                 ? PriceUtils.calculateOptionPricePerSquareMeter(
-                    price.amount,
-                    nestModel,
-                    categoryId,
-                    id,
-                    geschossdeckeQuantity
-                  )
+                  price.amount,
+                  nestModel,
+                  categoryId,
+                  id,
+                  geschossdeckeQuantity
+                )
                 : ""}
           </p>
         </div>
@@ -455,7 +455,7 @@ export default function SelectionOption({
         // Calculate m² price difference
         const m2PriceDiff = contributionPrice - selectedFensterM2Price;
         const fensterFormattedPrice = PriceUtils.formatPrice(Math.abs(m2PriceDiff));
-        
+
         return (
           <div className="text-right">
             <p className="text-[clamp(0.625rem,1.1vw,0.875rem)] tracking-wide leading-[1.2] text-gray-700">
@@ -484,12 +484,12 @@ export default function SelectionOption({
               ? `${PriceUtils.formatPrice(Math.round(Math.abs(price.amount) / 4))} / Panel`
               : shouldShowPricePerSqm && nestModel && price.amount
                 ? PriceUtils.calculateOptionPricePerSquareMeter(
-                    price.amount,
-                    nestModel,
-                    categoryId,
-                    id,
-                    geschossdeckeQuantity
-                  )
+                  price.amount,
+                  nestModel,
+                  categoryId,
+                  id,
+                  geschossdeckeQuantity
+                )
                 : ""}
           </p>
         </div>
@@ -513,7 +513,7 @@ export default function SelectionOption({
           </div>
         );
       }
-      
+
       // Check if price is -1 (price on request) and format accordingly
       const formattedPrice = price.amount && PriceUtils.isPriceOnRequest(price.amount)
         ? "-"
@@ -609,20 +609,20 @@ export default function SelectionOption({
               ? `${PriceUtils.formatPrice(Math.round(price.amount / 4))} / Panel`
               : categoryId === "geschossdecke" && price.amount && nestModel
                 ? (() => {
-                    // Calculate price per m² for geschossdecke: total price / (nest size + geschossdecke * 6.5)
-                    const adjustedNutzflaeche = PriceUtils.getAdjustedNutzflaeche(nestModel, geschossdeckeQuantity);
-                    if (adjustedNutzflaeche === 0) return '';
-                    const pricePerSqm = Math.round(price.amount / adjustedNutzflaeche);
-                    return `${PriceUtils.formatPrice(pricePerSqm)} /m²`;
-                  })()
+                  // Calculate price per m² for geschossdecke: total price / (Hoam size + geschossdecke * 6.5)
+                  const adjustedNutzflaeche = PriceUtils.getAdjustedNutzflaeche(nestModel, geschossdeckeQuantity);
+                  if (adjustedNutzflaeche === 0) return '';
+                  const pricePerSqm = Math.round(price.amount / adjustedNutzflaeche);
+                  return `${PriceUtils.formatPrice(pricePerSqm)} /m²`;
+                })()
                 : shouldShowPricePerSqm && nestModel && price.amount
                   ? PriceUtils.calculateOptionPricePerSquareMeter(
-                      price.amount,
-                      nestModel,
-                      categoryId,
-                      id,
-                      geschossdeckeQuantity
-                    )
+                    price.amount,
+                    nestModel,
+                    categoryId,
+                    id,
+                    geschossdeckeQuantity
+                  )
                   : ""}
           </p>
         </div>
@@ -656,11 +656,10 @@ export default function SelectionOption({
       role="button"
       tabIndex={0}
       onKeyDown={handleKeyDown}
-      className={`box_selection flex justify-between items-center min-h-[6rem] lg:min-h-[5.5rem] border rounded-[1.2rem] px-[clamp(0.625rem,1.35vw,1.35rem)] py-[clamp(0.75rem,1.5vw,1rem)] cursor-pointer transition-all duration-200 min-w-0 min-h-[44px] relative outline-none focus:ring-2 focus:ring-[#3D6CE1] focus:ring-offset-2 ${
-        isSelected
-          ? "selected border-[#3D6CE1] shadow-[0_0_0_1px_#3D6CE1] bg-blue-50/50"
-          : "border-gray-300 hover:border-[#3D6CE1] hover:shadow-sm"
-      } ${className}`}
+      className={`box_selection flex justify-between items-center min-h-[6rem] lg:min-h-[5.5rem] border rounded-[1.2rem] px-[clamp(0.625rem,1.35vw,1.35rem)] py-[clamp(0.75rem,1.5vw,1rem)] cursor-pointer transition-all duration-200 min-w-0 min-h-[44px] relative outline-none focus:ring-2 focus:ring-[#3D6CE1] focus:ring-offset-2 ${isSelected
+        ? "selected border-[#3D6CE1] shadow-[0_0_0_1px_#3D6CE1] bg-blue-50/50"
+        : "border-gray-300 hover:border-[#3D6CE1] hover:shadow-sm"
+        } ${className}`}
       onClick={handleClick}
     >
       {/* Unselect button for selected items that can be unselected */}
@@ -690,7 +689,7 @@ export default function SelectionOption({
             .split("\n")
             .filter((line) => line.trim());
 
-          // For nest modules, the description already contains the proper format with newlines
+          // For Hoam modules, the description already contains the proper format with newlines
           if (categoryId === "nest" && descriptionLines.length >= 2) {
             return (
               <>

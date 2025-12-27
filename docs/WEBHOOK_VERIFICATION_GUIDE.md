@@ -1,7 +1,23 @@
 # ✅ Stripe Webhook Setup COMPLETE!
 
-**Date:** October 23, 2025  
-**Status:** ✅ **CONFIGURED & READY TO TEST**
+**Date:** December 21, 2025  
+**Status:** ✅ **MULTI-DOMAIN CONFIGURED & READY TO TEST**
+
+---
+
+## 🌐 **Multi-Domain Setup**
+
+### **Supported Domains**
+
+Your webhook endpoint works across **all domain variants**:
+- ✅ `nest-haus.at`
+- ✅ `www.nest-haus.at`
+- ✅ `da-hoam.at` (future primary)
+- ✅ `www.da-hoam.at`
+
+### **How It Works**
+
+All domains point to the same Vercel deployment with the same webhook handler at `/api/webhooks/stripe`. No redirects occur for the webhook endpoint, ensuring Stripe can deliver events successfully to any domain variant.
 
 ---
 
@@ -10,7 +26,7 @@
 ### **Stripe Dashboard Settings**
 
 - ✅ Endpoint Name: `nest-payment`
-- ✅ Endpoint URL: `https://nest-haus.at/api/webhooks/stripe`
+- ✅ Endpoint URL: `https://nest-haus.at/api/webhooks/stripe` ✨ **Works for all domain variants**
 - ✅ Events Selected: 6 events
   1. `payment_intent.succeeded`
   2. `payment_intent.payment_failed`
@@ -18,6 +34,12 @@
   4. `payment_intent.processing`
   5. `refund.created`
   6. `charge.refunded`
+
+### **Vercel Configuration**
+
+- ✅ `vercel.json` - Webhook rewrites configured for all domains
+- ✅ No redirects on webhook endpoint (critical for Stripe delivery)
+- ✅ All domains SSL-enabled and verified
 
 ### **Environment Variables Updated**
 
@@ -210,7 +232,11 @@ https://dashboard.stripe.com/test/webhooks
    STRIPE_WEBHOOK_SECRET=whsec_7q82UaLdklfg8i4Y7ymEU5HQNQHzbvvX
    ```
 2. Restart server: `npm run dev`
-3. Verify URL in Stripe Dashboard matches: `https://nest-haus.at/api/webhooks/stripe`
+3. ⚠️ **IMPORTANT:** Verify URL in Stripe Dashboard matches one of your configured domains:
+   - ✅ Recommended: `https://nest-haus.at/api/webhooks/stripe` (current primary)
+   - ✅ Alternative: `https://www.nest-haus.at/api/webhooks/stripe`
+   - ✅ Future: `https://da-hoam.at/api/webhooks/stripe`
+   - ❌ Wrong: Using a domain not configured in Vercel
 
 ### **Issue: "Updated 0 inquiries"**
 

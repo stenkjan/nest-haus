@@ -2,7 +2,7 @@
 
 ## Overview
 
-This directory contains automated backups of the Nest-Haus analytics database. Backups are created monthly and stored in Vercel Blob Storage as compressed `.json.gz` files.
+This directory contains automated backups of the Hoam-House analytics database. Backups are created monthly and stored in Vercel Blob Storage as compressed `.json.gz` files.
 
 ## What's Included in Each Backup
 

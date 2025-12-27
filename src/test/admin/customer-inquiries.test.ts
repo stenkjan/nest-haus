@@ -138,7 +138,7 @@ describe('Customer Inquiries Service', () => {
 
         it('should create inquiry with configuration data', async () => {
             const configData = {
-                nest: 'NEST 100',
+                nest: 'Hoam 100',
                 gebaeudehuelle: 'Holzlattung',
                 totalPrice: 15000000,
             };

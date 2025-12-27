@@ -25,13 +25,15 @@ export async function POST(_request: Request) {
       }
     })
 
-    // Initialize session in Redis
-    await redis.setex(`session:${sessionId}`, 7200, JSON.stringify({
-      sessionId,
-      startTime: Date.now(),
-      selections: {},
-      lastActivity: Date.now()
-    }))
+    // Initialize session in Redis (if available)
+    if (redis) {
+      await redis.setex(`session:${sessionId}`, 7200, JSON.stringify({
+        sessionId,
+        startTime: Date.now(),
+        selections: {},
+        lastActivity: Date.now()
+      }))
+    }
 
     return NextResponse.json({
       success: true,

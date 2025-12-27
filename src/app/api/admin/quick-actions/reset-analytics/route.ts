@@ -49,25 +49,28 @@ export async function POST() {
     const deletedSessions = await prisma.userSession.deleteMany({});
     stats.sessions = deletedSessions.count;
 
-    // Clear Redis session data
-    const sessionKeys = await redis.keys('session:*');
-    if (sessionKeys.length > 0) {
-      await redis.del(...sessionKeys);
-      stats.redisKeys += sessionKeys.length;
-    }
+    // Clear Redis data if available
+    if (redis) {
+      // Clear Redis session data
+      const sessionKeys = await redis.keys('session:*');
+      if (sessionKeys.length > 0) {
+        await redis.del(...sessionKeys);
+        stats.redisKeys += sessionKeys.length;
+      }
 
-    // Clear Redis analytics data
-    const analyticsKeys = await redis.keys('analytics:*');
-    if (analyticsKeys.length > 0) {
-      await redis.del(...analyticsKeys);
-      stats.redisKeys += analyticsKeys.length;
-    }
+      // Clear Redis analytics data
+      const analyticsKeys = await redis.keys('analytics:*');
+      if (analyticsKeys.length > 0) {
+        await redis.del(...analyticsKeys);
+        stats.redisKeys += analyticsKeys.length;
+      }
 
-    // Clear Redis content session data
-    const contentKeys = await redis.keys('content_session:*');
-    if (contentKeys.length > 0) {
-      await redis.del(...contentKeys);
-      stats.redisKeys += contentKeys.length;
+      // Clear Redis content session data
+      const contentKeys = await redis.keys('content_session:*');
+      if (contentKeys.length > 0) {
+        await redis.del(...contentKeys);
+        stats.redisKeys += contentKeys.length;
+      }
     }
 
     return NextResponse.json({

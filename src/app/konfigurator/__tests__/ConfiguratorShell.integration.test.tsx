@@ -42,7 +42,7 @@ const mockConfiguratorStore = {
     nest: {
       category: "nest",
       value: "nest120",
-      name: "Nest 120",
+      name: "Hoam 120",
       price: 0,
     },
     gebaeudehuelle: {
@@ -106,7 +106,7 @@ describe("ConfiguratorShell Integration", () => {
       }
     );
     (PriceCalculator.calculateTotalPrice as jest.Mock).mockReturnValue(165100);
-    (PriceCalculator.clearPriceCache as jest.Mock).mockImplementation(() => {});
+    (PriceCalculator.clearPriceCache as jest.Mock).mockImplementation(() => { });
     (PriceCalculator.getPriceCacheInfo as jest.Mock).mockReturnValue({
       size: 0,
       keys: [],
@@ -137,11 +137,11 @@ describe("ConfiguratorShell Integration", () => {
     expect(screen.getByText(/€165\.100/)).toBeInTheDocument();
   });
 
-  it("should handle nest size selection correctly", async () => {
+  it("should handle Hoam size selection correctly", async () => {
     render(<ConfiguratorShell rightPanelRef={mockRightPanelRef} />);
 
-    // Find and click Nest 160 option
-    const nest160Option = screen.getByText("Nest 160");
+    // Find and click Hoam 160 option
+    const nest160Option = screen.getByText("Hoam 160");
 
     await act(async () => {
       fireEvent.click(nest160Option);
@@ -152,7 +152,7 @@ describe("ConfiguratorShell Integration", () => {
       "nest",
       expect.objectContaining({
         value: "nest160",
-        name: "Nest 160",
+        name: "Hoam 160",
       })
     );
   });
@@ -259,7 +259,7 @@ describe("ConfiguratorShell Integration", () => {
           nest: {
             category: "nest",
             value: "nest160",
-            name: "Nest 160",
+            name: "Hoam 160",
             price: 0,
           },
         },

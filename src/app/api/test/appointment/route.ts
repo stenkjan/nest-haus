@@ -29,7 +29,7 @@ export async function GET(request: Request) {
       appointmentDateTime: appointmentDateTime.toISOString(),
       configurationData: {
         nest: {
-          name: 'Nest Tiny House 25m²',
+          name: 'Hoam Tiny House 25m²',
           price: 45000,
         },
         planungspaket: {

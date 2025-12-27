@@ -1,8 +1,8 @@
-# Nest-Haus Configurator Price Calculation Architecture
+# Hoam-House Configurator Price Calculation Architecture
 
 ## Overview
 
-The Nest-Haus configurator uses a sophisticated dual-path price calculation system to provide real-time pricing updates while maintaining performance and accuracy.
+The Hoam-House configurator uses a sophisticated dual-path price calculation system to provide real-time pricing updates while maintaining performance and accuracy.
 
 ## Architecture Components
 

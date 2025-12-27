@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 
 // Base configuration for SEO
 export const SEO_CONFIG = {
-    baseUrl: "https://nest-haus.at",
+    baseUrl: "https://da-hoam.at",
     siteName: "®Hoam",
     defaultTitle: "®Hoam | Wohne wie du willst",
     defaultDescription: "Entdecken Sie ®Hoam modulare Bausysteme. Nachhaltig, energieeffizient und individuell konfigurierbar.",
@@ -12,7 +12,7 @@ export const SEO_CONFIG = {
     organization: {
         name: "®Hoam",
         description: "Weil nur du weißt, wie du richtig wohnst.",
-        logo: "https://nest-haus.at/logo.png",
+        logo: "https://da-hoam.at/logo.png",
         contactPoint: {
             contactType: "customer service",
             availableLanguage: "German",
@@ -26,7 +26,7 @@ export const SEO_CONFIG = {
 // Page-specific SEO configurations
 export const PAGE_SEO_CONFIG = {
     home: {
-        title: "®Hoam-Haus | Wohne wie du willst",
+        title: "®Hoam-House | Wohne wie du willst",
         description: "Das erste Haus der Welt, welches sich an dein Leben anpasst, nicht umgekehrt. Deine Atmosphäre, deine Vorstellungen. Weil nur du weißt, wie du richtig wohnst.",
         keywords: "modulhaus, fertighaus, nachhaltiges bauen, energieeffizient, Österreich, hausbau konfigurator, modulare häuser, nachhaltig wohnen",
         priority: 1.0,
@@ -36,7 +36,7 @@ export const PAGE_SEO_CONFIG = {
     },
     konfigurator: {
         title: "Konfigurator | ®Hoam online konfigurieren & Preis berechnen",
-        description: "Dein ®Hoam online konfigurieren: Interaktiver Konfigurator mit Echtzeit-Preisberechnung. Module wählen, Fassade gestalten, Ausstattung planen. Jetzt starten!",
+        description: "®Hoam online konfigurieren: Interaktiver Konfigurator mit Echtzeit-Preisberechnung. Module wählen, Fassade gestalten, Ausstattung planen. Jetzt starten!",
         keywords: "haus konfigurator online, modulhaus konfigurieren, preis berechnen, interaktiver konfigurator, modulhaus planen, hoam konfigurator, hausbau planer österreich, echtzeit preise",
         priority: 0.9,
         changeFrequency: "weekly" as const,
@@ -45,7 +45,7 @@ export const PAGE_SEO_CONFIG = {
     },
     warenkorb: {
         title: "Warenkorb | Konzept-Check bestellen & Konfiguration einreichen",
-        description: "Deine ®Hoam Konfiguration überprüfen und Konzept-Check bestellen. Planungspakete wählen, Termin vereinbaren, Bestellung abschließen. Jetzt starten!",
+        description: "®Hoam Konfiguration überprüfen und Konzept-Check bestellen. Planungspakete wählen, Termin vereinbaren, Bestellung abschließen. Jetzt starten!",
         keywords: "konzept-check bestellen, planungspaket wählen, konfiguration überprüfen, hoam warenkorb, bestellung abschließen, modulhaus bestellen, hausbau bestellung österreich",
         priority: 0.7,
         changeFrequency: "weekly" as const,
@@ -54,25 +54,25 @@ export const PAGE_SEO_CONFIG = {
     },
     kontakt: {
         title: "Kontakt | Termin vereinbaren & Grundstücksanalyse anfragen",
-        description: "Vereinbare jetzt deinen Termin bei Nest-Haus in Graz, Zösenberg 51. Kostenlose Erstberatung, Grundstücksanalyse Anfrage. Wir helfen gerne weiter.",
-        keywords: "nest haus kontakt, termin vereinbaren, beratung graz, zösenberg 51 graz, grundstücksanalyse anfrage, modulhaus beratung österreich, nest haus termin",
+        description: "Vereinbare jetzt deinen Termin bei Hoam-House in Graz, Zösenberg 51. Kostenlose Erstberatung, Grundstücksanalyse Anfrage. Wir helfen gerne weiter.",
+        keywords: "hoam kontakt, termin vereinbaren, beratung graz, zösenberg 51 graz, grundstücksanalyse anfrage, modulhaus beratung österreich, hoam termin",
         priority: 0.8,
         changeFrequency: "monthly" as const,
         ogImage: "/images/6-NEST-Haus-4-Module-Ansicht-Meer-Mediteran-Stirnseite-Holzlattung-Laerche.png",
         twitterImage: "/images/6-NEST-Haus-4-Module-Ansicht-Meer-Mediteran-Stirnseite-Holzlattung-Laerche.png",
     },
     warumWir: {
-        title: "Warum Wir | Nest-Haus Team & Vision",
-        description: "Die NEST Vision: Wo Effizienz auf Architektur trifft. Unser Team mit DI Markus Schmoltner vereint Innovation und jahrelange Erfahrung. Verlässlichkeit, auf die du bauen kannst.",
-        keywords: "nest vision, nest haus team, markus schmoltner, verlässlichkeit, innovation erfahrung, warum nest haus, modulhaus philosophie, nest team österreich",
+        title: "Warum Wir | Hoam-House Team & Vision",
+        description: "Die Hoam Vision: Wo Effizienz auf Architektur trifft. Unser Team mit DI Markus Schmoltner vereint Innovation und jahrelange Erfahrung. Verlässlichkeit, auf die du bauen kannst.",
+        keywords: "hoam vision, hoam team, markus schmoltner, verlässlichkeit, innovation erfahrung, warum hoam, modulhaus philosophie, hoam team österreich",
         priority: 0.6,
         changeFrequency: "monthly" as const,
         ogImage: "/images/335-nest-haus-team-markus-schmoltner.png",
         twitterImage: "/images/335-nest-haus-team-markus-schmoltner.png",
     },
-    "dein-hoam": {
-        title: "Dein ®Hoam | Was ist ®Hoam?",
-        description: "Hoam 80 ab €213.000, Hoam 120 ab €296.000, Hoam 160 ab €380.000. Individuell konfigurierbar, transportabel und erweiterbar. Dein modulares Traumhaus.",
+    "hoam": {
+        title: "®Hoam | Was ist ®Hoam?",
+        description: "Hoam 80 ab €213.000, Hoam 120 ab €296.000, Hoam 160 ab €380.000. Individuell konfigurierbar, transportabel und erweiterbar. Modulares Traumhaus.",
         keywords: "hoam preise, hoam 80, hoam 120, hoam 160, modulhaus kosten, individuell konfigurierbar, transportabel, modulhaus österreich, haus erweitern",
         priority: 0.8,
         changeFrequency: "monthly" as const,
@@ -81,7 +81,7 @@ export const PAGE_SEO_CONFIG = {
     },
     "hoam-system": {
         title: "Hoam System | Modulares bauen",
-        description: "Das NEST-System: Module bis 6m hoch, 8m breit, beliebig erweiterbar. Nachhaltige Materialien, individuelle Fenster & Türen, flexible Haustechnik. Modulbau neu gedacht.",
+        description: "Das Hoam-System: Module bis 6m hoch, 8m breit, beliebig erweiterbar. Nachhaltige Materialien, individuelle Fenster & Türen, flexible Haustechnik. Modulbau neu gedacht.",
         keywords: "hoam system, modulares bausystem, 6 meter hoch, 8 meter breit, modulhaus materialien, fenster türen individuell, haustechnik, modulbau österreich, nachhaltige materialien",
         priority: 0.7,
         changeFrequency: "monthly" as const,
@@ -90,15 +90,15 @@ export const PAGE_SEO_CONFIG = {
     },
     "konzept-check": {
         title: "Konzept-Check | Grundstücksanalyse & Entwurf",
-        description: "Konzept-Check für Dein ®Hoam: Rechtssichere Grundstücksanalyse, Bebauungsmöglichkeiten, individueller Entwurf. Fertig in 4-6 Wochen. Jetzt bestellen.",
-        keywords: "konzept-check, grundstücksanalyse, rechtssicher bauen, bebauungsmöglichkeiten, konzept-check 3000 euro, nest haus planung, grundstück check, bauvorhaben analyse",
+        description: "Konzept-Check für ®Hoam: Rechtssichere Grundstücksanalyse, Bebauungsmöglichkeiten, individueller Entwurf. Fertig in 4-6 Wochen. Jetzt bestellen.",
+        keywords: "konzept-check, grundstücksanalyse, rechtssicher bauen, bebauungsmöglichkeiten, konzept-check 3000 euro, hoam planung, grundstück check, bauvorhaben analyse",
         priority: 0.8,
         changeFrequency: "monthly" as const,
         ogImage: "/images/3-NEST-Haus-3-Gebaeude-Vogelperspektive-Holzlattung-Laerche.png",
         twitterImage: "/images/3-NEST-Haus-3-Gebaeude-Vogelperspektive-Holzlattung-Laerche.png",
     },
     showcase: {
-        title: "Showcase | Nest-Haus Projekte & Referenzen",
+        title: "Showcase | Hoam-House Projekte & Referenzen",
         description: "Entdecken Sie unsere realisierten Projekte und Referenzen. Modulare Häuser, die inspiriert und begeistert.",
         keywords: "showcase, projekte, referenzen, realisierte häuser, modulhaus projekte, referenzprojekte",
         priority: 0.6,
@@ -107,8 +107,8 @@ export const PAGE_SEO_CONFIG = {
         twitterImage: "/images/showcase-twitter.jpg",
     },
     datenschutz: {
-        title: "Datenschutz | Nest-Haus Datenschutzerklärung",
-        description: "Datenschutzerklärung von Nest-Haus. Informationen zum Umgang mit Ihren personenbezogenen Daten.",
+        title: "Datenschutz | Hoam-House Datenschutzerklärung",
+        description: "Datenschutzerklärung von Hoam-House. Informationen zum Umgang mit Ihren personenbezogenen Daten.",
         keywords: "datenschutz, datenschutzerklärung, privatsphäre, datenschutz bestimmungen",
         priority: 0.3,
         changeFrequency: "yearly" as const,
@@ -116,8 +116,8 @@ export const PAGE_SEO_CONFIG = {
         twitterImage: "/images/datenschutz-twitter.jpg",
     },
     impressum: {
-        title: "Impressum | Nest-Haus Kontaktdaten & Rechtliches",
-        description: "Impressum von Nest-Haus mit Kontaktdaten und rechtlichen Informationen.",
+        title: "Impressum | Hoam-House Kontaktdaten & Rechtliches",
+        description: "Impressum von Hoam-House mit Kontaktdaten und rechtlichen Informationen.",
         keywords: "impressum, kontakt, rechtliches, unternehmensdaten, kontaktinformationen",
         priority: 0.3,
         changeFrequency: "yearly" as const,
@@ -125,8 +125,8 @@ export const PAGE_SEO_CONFIG = {
         twitterImage: "/images/impressum-twitter.jpg",
     },
     agb: {
-        title: "AGB | Nest-Haus Allgemeine Geschäftsbedingungen",
-        description: "Allgemeine Geschäftsbedingungen von Nest-Haus für modulare Hausbau-Services.",
+        title: "AGB | Hoam-House Allgemeine Geschäftsbedingungen",
+        description: "Allgemeine Geschäftsbedingungen von Hoam-House für modulare Hausbau-Services.",
         keywords: "agb, allgemeine geschäftsbedingungen, vertragsbedingungen, rechtliches",
         priority: 0.3,
         changeFrequency: "yearly" as const,
@@ -134,9 +134,9 @@ export const PAGE_SEO_CONFIG = {
         twitterImage: "/images/agb-twitter.jpg",
     },
     faq: {
-        title: "FAQ | Nest-Haus Fragen zu Kosten, Konzept-Check & Bauzeit",
-        description: "Häufige Fragen zu Nest-Haus: Was kostet der Konzept-Check? Wie lange dauert der Bau? Unterschied zu Fertighaus & Tiny House? Alle Antworten hier.",
-        keywords: "nest haus faq, häufige fragen modulhaus, konzept-check fragen, kosten nest haus, bauzeit dauer, nest haus vs fertighaus, nest haus vs tiny house, modulhaus fragen österreich",
+        title: "FAQ | Hoam-House Fragen zu Kosten, Konzept-Check & Bauzeit",
+        description: "Häufige Fragen zu Hoam-House: Was kostet der Konzept-Check? Wie lange dauert der Bau? Unterschied zu Fertighaus & Tiny House? Alle Antworten hier.",
+        keywords: "hoam faq, häufige fragen modulhaus, konzept-check fragen, kosten hoam, bauzeit dauer, hoam vs fertighaus, hoam vs tiny house, modulhaus fragen österreich",
         priority: 0.7,
         changeFrequency: "monthly" as const,
         ogImage: "/images/5-NEST-Haus-6-Module-Wald-Ansicht-Schwarze-Fassadenplatten.png",
@@ -328,7 +328,7 @@ export function generateStructuredData(pageKey: PageKey, _customData?: CustomMet
             return {
                 ...baseSchema,
                 "@type": "ShoppingCart",
-                name: "Nest-Haus Warenkorb",
+                name: "Hoam-House Warenkorb",
             };
 
         case 'kontakt':
@@ -348,7 +348,7 @@ export function generateStructuredData(pageKey: PageKey, _customData?: CustomMet
                 "@type": "CollectionPage",
                 mainEntity: {
                     "@type": "ItemList",
-                    name: "Nest-Haus Showcase",
+                    name: "Hoam-House Showcase",
                     description: "Gallery of modular house designs and configurations",
                     numberOfItems: 8,
                 },
@@ -366,11 +366,11 @@ export function generateProductSchema(): object {
     return {
         "@context": "https://schema.org",
         "@type": "Product",
-        name: "Nest-Haus Modulares Bausystem",
+        name: "Hoam-House Modulares Bausystem",
         description: "Nachhaltiges, energieeffizientes modulares Bausystem für individuelles Wohnen",
         brand: {
             "@type": "Brand",
-            name: "Nest-Haus",
+            name: "Hoam-House",
         },
         manufacturer: {
             "@type": "Organization",
@@ -423,18 +423,18 @@ export function generateFAQSchema(): object {
             },
             {
                 "@type": "Question",
-                name: "Wie nachhaltig sind NEST-Häuser?",
+                name: "Wie nachhaltig sind Hoam-Häuser?",
                 acceptedAnswer: {
                     "@type": "Answer",
-                    text: "NEST-Häuser sind hochgradig nachhaltig durch energieeffiziente Bauweise, umweltfreundliche Materialien und modulare Konstruktion, die Abfall minimiert.",
+                    text: "Hoam-Häuser sind hochgradig nachhaltig durch energieeffiziente Bauweise, umweltfreundliche Materialien und modulare Konstruktion, die Abfall minimiert.",
                 },
             },
             {
                 "@type": "Question",
-                name: "Kann ich mein Nest-Haus konfigurieren?",
+                name: "Kann ich mein Hoam-House konfigurieren?",
                 acceptedAnswer: {
                     "@type": "Answer",
-                    text: "Ja, mit unserem interaktiven Konfigurator können Sie Ihr Nest-Haus individuell nach Ihren Wünschen und Bedürfnissen gestalten.",
+                    text: "Ja, mit unserem interaktiven Konfigurator können Sie Ihr Hoam-House individuell nach Ihren Wünschen und Bedürfnissen gestalten.",
                 },
             },
         ],
@@ -501,7 +501,7 @@ export interface VideoSchemaConfig {
     duration: string;
 }
 
-// Helper: Generate Product Schema for pages like dein-hoam, hoam-system
+// Helper: Generate Product Schema for pages like hoam, hoam-system
 export function generatePageProductSchema(config: ProductSchemaConfig): object {
     return {
         "@context": "https://schema.org",
@@ -510,7 +510,7 @@ export function generatePageProductSchema(config: ProductSchemaConfig): object {
         description: config.description,
         brand: {
             "@type": "Brand",
-            name: "Nest-Haus",
+            name: "Hoam-House",
         },
         category: config.category || "Modulhäuser",
         ...(config.lowPrice && config.highPrice ? {

@@ -1,36 +1,38 @@
 # Google Analytics 4 & SEO Integration - Complete Implementation Guide
 
 **Generated:** 2025-11-20  
-**Last Updated:** 2025-11-27  
-**Project:** Nest-Haus Configurator  
+**Last Updated:** 2025-12-23  
+**Project:** Hoam-House Configurator  
 **Status:** ✅ FULLY OPERATIONAL  
-**Version:** 3.0.0 - Consolidated Documentation
+**Version:** 3.1.0 - Multi-Domain Tracking Edition  
+**Domains:** nest-haus.at (primary) | da-hoam.at (alias)
 
 ---
 
 ## 📋 Table of Contents
 
 1. [Current Implementation Status](#-current-implementation-status)
-2. [Active GA4 Events & Usage](#-active-ga4-events--what-you-can-do-with-them)
-3. [Recommended Next Steps](#-recommended-next-steps-priority-ordered)
-4. [Setup Instructions](#-setup-instructions)
-5. [Event Tracking Reference](#-event-tracking-reference)
-6. [Quick Wins for Better Tracking](#-quick-wins-for-better-tracking)
-7. [SEO Improvements Roadmap](#-seo-improvements-roadmap)
-8. [Cookie Consent & GDPR](#-cookie-consent--gdpr-compliance)
-9. [Admin Dashboard Integration](#-admin-dashboard-integration)
-10. [GA4 Reports to Monitor](#-ga4-reports-to-monitor)
-11. [Troubleshooting & Bug Fixes](#-troubleshooting--bug-fixes)
-12. [Architecture & Integration](#-architecture--integration-plan)
-13. [Testing & Verification](#-testing--verification)
-14. [Cost Analysis](#-cost-analysis)
-15. [Maintenance & Monitoring](#-maintenance--monitoring)
+2. [Multi-Domain Tracking Architecture](#-multi-domain-tracking-architecture)
+3. [Active GA4 Events & Usage](#-active-ga4-events--what-you-can-do-with-them)
+4. [Recommended Next Steps](#-recommended-next-steps-priority-ordered)
+5. [Setup Instructions](#-setup-instructions)
+6. [Event Tracking Reference](#-event-tracking-reference)
+7. [Quick Wins for Better Tracking](#-quick-wins-for-better-tracking)
+8. [SEO Improvements Roadmap](#-seo-improvements-roadmap)
+9. [Cookie Consent & GDPR](#-cookie-consent--gdpr-compliance)
+10. [Admin Dashboard Integration](#-admin-dashboard-integration)
+11. [GA4 Reports to Monitor](#-ga4-reports-to-monitor)
+12. [Troubleshooting & Bug Fixes](#-troubleshooting--bug-fixes)
+13. [Architecture & Integration](#-architecture--integration-plan)
+14. [Testing & Verification](#-testing--verification)
+15. [Cost Analysis](#-cost-analysis)
+16. [Maintenance & Monitoring](#-maintenance--monitoring)
 
 ---
 
 ## 🎯 Executive Summary
 
-This document consolidates the **complete implementation** of Google Analytics 4, Google Search Console, and enhanced SEO features for the Nest-Haus website. The integration provides demographics data while maintaining your existing superior custom analytics system.
+This document consolidates the **complete implementation** of Google Analytics 4, Google Search Console, and enhanced SEO features for the Hoam-House website. The integration provides demographics data while maintaining your existing superior custom analytics system.
 
 ### What's Actually Working Right Now
 
@@ -49,6 +51,12 @@ This document consolidates the **complete implementation** of Google Analytics 4
 - ⏳ Custom dimensions and conversion goals in GA4 admin
 - ⏳ Advanced tracking (scroll depth, time on page, CTA clicks)
 - ⏳ Mark events as conversions in GA4 dashboard
+
+**🌐 Multi-Domain Setup:**
+- ✅ Cross-domain tracking enabled (nest-haus.at ↔ da-hoam.at)
+- ✅ Hostname parameter in all events for domain filtering
+- ✅ Future-proof architecture for additional domains
+- ✅ Single GA4 property tracking all domains
 
 ---
 
@@ -164,6 +172,463 @@ window.gtag("consent", "default", {
 
 **Effort:** 20-30 minutes of Google Cloud setup
 
+---
+
+## 🌐 Multi-Domain Tracking Architecture
+
+**Status:** ✅ FULLY IMPLEMENTED (December 2025)  
+**Current Domains:** nest-haus.at (primary) → da-hoam.at (alias)  
+**Future Expansion:** Ready for additional domains
+
+### Domain Strategy
+
+#### Current Setup
+
+```
+┌──────────────────────────────────────────────────────┐
+│ Single Vercel Project                                 │
+│                                                       │
+│  ┌─────────────┐      ┌─────────────┐               │
+│  │nest-haus.at │      │ da-hoam.at  │               │
+│  │  (Primary)  │ ←──→ │   (Alias)   │               │
+│  └─────────────┘      └─────────────┘               │
+│         │                     │                       │
+│         └──────────┬──────────┘                      │
+│                    ▼                                  │
+│         Same Code & Environment                      │
+│         Same GA4 Measurement ID                      │
+│         Same Database & Sessions                     │
+└──────────────────────────────────────────────────────┘
+                     │
+                     ▼
+         ┌──────────────────────┐
+         │ Google Analytics 4    │
+         │ Single Property       │
+         │ G-5Y5KZG56VK         │
+         └──────────────────────┘
+```
+
+#### Domain Evolution Timeline
+
+**Phase 1: Current (Dec 2025)**
+- **Primary:** nest-haus.at
+- **Alias:** da-hoam.at
+- **Status:** Both domains active, same content, same tracking
+
+**Phase 2: Transition (Future)**
+- **Primary:** da-hoam.at (will become main brand)
+- **Alias:** nest-haus.at (legacy support)
+- **Status:** Gradual user migration, all tracking continues
+
+**Phase 3: Expansion (Future)**
+- **Primary:** da-hoam.at
+- **Regional:** da-hoam.de, da-hoam.ch (possible future domains)
+- **Status:** Multi-region support, unified analytics
+
+### Architecture Benefits
+
+✅ **Unified Analytics**
+- Single GA4 property tracks all domains
+- Combined user base and demographics
+- Simplified reporting and insights
+- No data fragmentation
+
+✅ **Session Continuity**
+- Users navigate between domains seamlessly
+- Sessions don't break on domain switch
+- Cross-domain tracking via linker parameter
+- Accurate user journey mapping
+
+✅ **Domain Flexibility**
+- Add/remove domains without code changes
+- Environment variables control everything
+- Same codebase serves all domains
+- Future-proof for rebranding
+
+✅ **Cost Efficiency**
+- Single Vercel project (no duplicate hosting)
+- One GA4 property (no separate configs)
+- Shared database and Redis
+- Zero additional cost per domain
+
+### Implementation Details
+
+#### 1. Cross-Domain Tracking Configuration
+
+**File:** `src/components/analytics/GoogleAnalyticsProvider.tsx`
+
+```typescript
+// Linker configuration for cross-domain sessions
+gtag('config', 'G-5Y5KZG56VK', {
+  linker: {
+    domains: ['nest-haus.at', 'da-hoam.at']
+    // Easy to add: 'da-hoam.de', 'da-hoam.ch'
+  }
+});
+```
+
+**How it works:**
+- When user clicks link from nest-haus.at → da-hoam.at
+- GA4 adds `_gl` parameter to URL (contains client_id)
+- Session continues seamlessly on new domain
+- User counted once, not duplicated
+
+#### 2. Hostname Tracking
+
+**File:** `src/lib/ga4-tracking.ts`
+
+```typescript
+// Every event automatically includes hostname
+function pushEvent(eventName: string, eventParams: Record<string, unknown>) {
+  const enrichedParams = {
+    ...eventParams,
+    hostname: window.location.hostname  // 'nest-haus.at' or 'da-hoam.at'
+  };
+  // ... send to GA4
+}
+```
+
+**Benefits:**
+- Filter reports by domain
+- Segment users by entry domain
+- Compare performance across domains
+- Track domain migration progress
+
+#### 3. Environment Configuration
+
+**Single Measurement ID for All Domains**
+
+```bash
+# .env.local (shared across all domains in project)
+NEXT_PUBLIC_GA_MEASUREMENT_ID=G-5Y5KZG56VK
+
+# Same ID used automatically on:
+# - nest-haus.at
+# - da-hoam.at
+# - any future domains added to Vercel project
+```
+
+### GA4 Dashboard Configuration
+
+#### Referral Exclusions (✅ Configured)
+
+Prevents self-referrals between your domains:
+
+```
+GA4 → Admin → Data Streams → Configure tag settings
+→ List unwanted referrals
+
+Added domains:
+- nest-haus.at
+- da-hoam.at
+```
+
+**Why:** Without this, nest-haus.at → da-hoam.at would count as a "referral" instead of continuing the session.
+
+#### Cross-Domain Measurement (✅ Configured)
+
+Links sessions across domains:
+
+```
+GA4 → Admin → Data Streams → Configure your domains
+
+Configured domains:
+- nest-haus.at
+- da-hoam.at
+```
+
+**Why:** Ensures sessions continue when users navigate between domains.
+
+### Filtering and Reporting
+
+#### View All Traffic (Default)
+
+```
+GA4 → Reports → Any report
+No filters applied
+→ Shows combined data from all domains
+```
+
+**Use for:**
+- Total website performance
+- Combined conversion rates
+- Overall user demographics
+- Business-wide metrics
+
+#### View nest-haus.at Only
+
+```
+GA4 → Reports → Add comparison
+Dimension: Hostname
+Condition: contains "nest-haus.at"
+```
+
+**Use for:**
+- Legacy domain performance
+- Pre-migration metrics
+- Domain-specific campaigns
+- Transition tracking
+
+#### View da-hoam.at Only
+
+```
+GA4 → Reports → Add comparison
+Dimension: Hostname
+Condition: contains "da-hoam.at"
+```
+
+**Use for:**
+- New brand performance
+- Post-migration metrics
+- New domain adoption rate
+- Future primary domain insights
+
+### Future Domain Additions
+
+#### Adding a New Domain (e.g., da-hoam.de)
+
+**Step 1: Vercel Configuration (2 minutes)**
+```
+1. Vercel Dashboard → Project Settings → Domains
+2. Add domain: da-hoam.de
+3. Configure DNS as instructed
+4. Domain automatically uses same environment variables
+5. No code changes needed ✓
+```
+
+**Step 2: Update GA4 Configuration (5 minutes)**
+```
+1. GA4 → Admin → Data Streams → Configure tag settings
+2. List unwanted referrals → Add "da-hoam.de"
+3. Configure your domains → Add "da-hoam.de"
+4. Save changes
+```
+
+**Step 3: Update Code (2 minutes)**
+```typescript
+// src/components/analytics/GoogleAnalyticsProvider.tsx
+linker: {
+  domains: ['nest-haus.at', 'da-hoam.at', 'da-hoam.de']  // Add new domain
+}
+```
+
+**Step 4: Deploy & Verify (5 minutes)**
+```bash
+git add .
+git commit -m "Add da-hoam.de to cross-domain tracking"
+git push
+
+# Verify in GA4 Realtime after deployment
+# Visit da-hoam.de → should see traffic with hostname: "da-hoam.de"
+```
+
+**Total time:** ~15 minutes per new domain
+
+### Domain Migration Strategy
+
+#### When Switching Primary Domain (nest-haus.at → da-hoam.at)
+
+**Phase 1: Parallel Operation (Weeks 1-4)**
+```
+✅ Keep both domains active
+✅ Monitor traffic distribution
+✅ Track user behavior on each domain
+✅ Identify migration issues early
+```
+
+**Phase 2: Gradual Redirect (Weeks 5-12)**
+```
+1. Add canonical tags pointing to da-hoam.at
+2. Update marketing materials to da-hoam.at
+3. Implement 301 redirects for key pages (optional)
+4. Monitor GA4 hostname dimension for shift
+```
+
+**Phase 3: Full Migration (Week 13+)**
+```
+1. Update all external links to da-hoam.at
+2. Set nest-haus.at as permanent redirect
+3. Update Google Search Console primary domain
+4. Historical data preserved in GA4
+```
+
+**Throughout migration:**
+- GA4 tracks everything seamlessly
+- No data loss or interruption
+- Session continuity maintained
+- Reports show migration progress
+
+### Technical Considerations
+
+#### DNS & Routing
+```
+Both domains point to same Vercel project:
+- Same deployment
+- Same code
+- Same build
+- Same environment variables
+
+Vercel handles routing automatically
+No special configuration needed
+```
+
+#### SEO Implications
+```
+Current: nest-haus.at and da-hoam.at serve same content
+Risk: Duplicate content penalty
+
+Solutions implemented:
+✅ Canonical tags (can point to primary domain)
+✅ hreflang tags (if needed for regions)
+✅ Structured data (Organization schema mentions both)
+✅ Search Console (verify both domains)
+
+Future: When ready to migrate
+→ 301 redirects from old to new domain
+→ Update Search Console primary domain
+→ Submit updated sitemap
+```
+
+#### Cookie & Session Management
+```
+Domain-specific concerns:
+- Cookies set per domain (not shared)
+- Sessions tracked separately per first visit
+- Cross-domain linking preserves client_id
+- User identified consistently via GA4
+
+No changes needed to:
+- Cookie consent system (works per domain)
+- Custom analytics (tracks all domains)
+- Database sessions (unified)
+```
+
+### Monitoring Multi-Domain Performance
+
+#### Key Metrics to Track
+
+**Domain Distribution**
+```
+GA4 → Reports → Engagement → Pages and screens
+Add secondary dimension: Hostname
+→ See traffic split: 60% nest-haus.at / 40% da-hoam.at
+```
+
+**Cross-Domain Navigation**
+```
+GA4 → Explore → Path exploration
+Filter: sessions with both hostnames
+→ Track user journeys across domains
+```
+
+**Domain-Specific Conversions**
+```
+GA4 → Reports → Engagement → Conversions
+Add comparison: Hostname contains "da-hoam.at"
+→ Compare conversion rates by domain
+```
+
+**Migration Progress**
+```
+GA4 → Reports → Acquisition → Traffic acquisition
+Segment by hostname dimension
+→ Track shift from old to new domain over time
+```
+
+### Troubleshooting Multi-Domain Setup
+
+#### Issue: Sessions breaking across domains
+
+**Symptoms:**
+- Different client_id on each domain
+- Double-counting users
+- Broken funnels
+
+**Check:**
+```bash
+# 1. Verify linker parameter in URL
+# Navigate: nest-haus.at → da-hoam.at
+# URL should contain: ?_gl=1*abc123...
+
+# 2. Check referral exclusions
+# GA4 → Admin → Data Streams → List unwanted referrals
+# Must include both domains
+
+# 3. Verify cross-domain config
+# GA4 → Admin → Data Streams → Configure your domains
+# Must include both domains
+```
+
+**Fix:** Revisit GA4 configuration steps in `docs/GA4_MULTI_DOMAIN_SETUP.md`
+
+#### Issue: Can't filter by domain in reports
+
+**Symptoms:**
+- Hostname dimension shows "(not set)"
+- Can't separate domain traffic
+
+**Check:**
+```javascript
+// Browser console on both domains:
+window.dataLayer
+// Should show events with hostname parameter
+
+// Example event:
+{
+  event: 'page_view',
+  hostname: 'nest-haus.at',  // or 'da-hoam.at'
+  ...
+}
+```
+
+**Fix:** Hostname tracking is implemented in `src/lib/ga4-tracking.ts` - verify deployment
+
+### Documentation & Resources
+
+**Implementation Guides:**
+- `docs/GA4_MULTI_DOMAIN_SETUP.md` - Complete setup guide
+- `GA4_SETUP_CHECKLIST.md` - Quick reference checklist
+- This file - Comprehensive architecture documentation
+
+**Google Resources:**
+- [Cross-Domain Measurement](https://support.google.com/analytics/answer/10071811)
+- [Referral Exclusions](https://support.google.com/analytics/answer/10119069)
+- [Hostname Dimension](https://support.google.com/analytics/answer/11396839)
+
+### Summary: Multi-Domain Benefits
+
+✅ **Single Source of Truth**
+- One GA4 property for all domains
+- Unified user analytics
+- Simplified reporting
+
+✅ **Seamless User Experience**
+- Sessions continue across domains
+- No tracking disruption
+- Accurate user journeys
+
+✅ **Future-Proof Architecture**
+- Add domains in minutes
+- No code refactoring needed
+- Flexible for growth
+
+✅ **Migration Ready**
+- Track domain transition progress
+- Historical data preserved
+- Zero downtime switching
+
+✅ **Cost Effective**
+- Single infrastructure
+- No duplicate services
+- Zero marginal cost per domain
+
+**Current Status:** Fully operational multi-domain tracking  
+**Primary Domain:** nest-haus.at  
+**Alias Domain:** da-hoam.at  
+**Future Ready:** Yes - architecture supports unlimited domains
+
+---
+
 #### 2. GA4 Configuration in Admin Panel
 
 **Missing setup steps:**
@@ -218,7 +683,7 @@ GA4 → Configure → Events → Find "generate_lead" → Mark as conversion ✓
 
 ### 2. `add_to_cart` (Configuration to Cart)
 
-**Triggered when:** User clicks "Zum Warenkorb" after configuring their Nest Haus
+**Triggered when:** User clicks "Zum Warenkorb" after configuring their Hoam
 
 **Event data sent:**
 
@@ -606,7 +1071,7 @@ URL: https://lookerstudio.google.com
 2. Click "Admin" (bottom left)
 3. Click "+ Create Property"
 4. Property details:
-   - Property name: "Nest-Haus"
+   - Property name: "Hoam-House"
    - Reporting time zone: "(GMT+01:00) Central European Time"
    - Currency: "Euro (EUR)"
 5. Click "Next"
@@ -623,7 +1088,7 @@ URL: https://lookerstudio.google.com
 1. In Property Settings, click "Data Streams"
 2. Click "Add stream" → "Web"
 3. Website URL: https://www.nest-haus.at
-4. Stream name: "Nest-Haus Website"
+4. Stream name: "Hoam-House Website"
 5. Enable "Enhanced measurement"
    ✅ Page views
    ✅ Scrolls
@@ -1008,15 +1473,15 @@ export default function YourPageClient() {
 import { trackCustomEvent } from '@/lib/ga4-tracking';
 
 <video
-  onPlay={() => trackCustomEvent('video_play', { video_title: 'Nest-Haus Introduction' })}
+  onPlay={() => trackCustomEvent('video_play', { video_title: 'Hoam-House Introduction' })}
   onPause={(e) => {
     const video = e.target as HTMLVideoElement;
     trackCustomEvent('video_pause', {
-      video_title: 'Nest-Haus Introduction',
+      video_title: 'Hoam-House Introduction',
       progress: Math.round((video.currentTime / video.duration) * 100)
     });
   }}
-  onEnded={() => trackCustomEvent('video_complete', { video_title: 'Nest-Haus Introduction' })}
+  onEnded={() => trackCustomEvent('video_complete', { video_title: 'Hoam-House Introduction' })}
 >
   <source src="/videos/intro.mp4" />
 </video>
@@ -1123,7 +1588,7 @@ const faqSchema = {
   mainEntity: [
     {
       "@type": "Question",
-      name: "Was kostet ein Nest-Haus?",
+      name: "Was kostet ein Hoam-House?",
       acceptedAnswer: {
         "@type": "Answer",
         text: "Die Preise beginnen bei €177.000 für das 1-Modul und reichen bis €313.000 für das 3-Module Haus.",
@@ -2276,6 +2741,9 @@ docs/
 - ✅ **Zero monthly cost**
 - ✅ **4 active conversion events**
 - ✅ **Professional event tracking**
+- ✅ **Multi-domain tracking (nest-haus.at + da-hoam.at)**
+- ✅ **Future-proof for domain expansion**
+- ✅ **Cross-domain session continuity**
 
 ### Your Analytics Stack is Now:
 
@@ -2285,6 +2753,8 @@ docs/
 - **Scalable** to enterprise traffic
 - **Google-optimized** for SEO & ads
 - **Conversion-ready** for marketing campaigns
+- **Multi-domain capable** with seamless cross-domain tracking
+- **Future-proof** for domain expansion and rebranding
 
 ---
 
@@ -2328,6 +2798,7 @@ docs/
 ---
 
 _Generated: 2025-11-20_  
-_Last Updated: 2025-11-27_  
-_Version: 3.0.0 - Consolidated & Complete_  
-_Status: ✅ FULLY OPERATIONAL & DOCUMENTED_
+_Last Updated: 2025-12-23_  
+_Version: 3.1.0 - Multi-Domain Tracking Edition_  
+_Status: ✅ FULLY OPERATIONAL & DOCUMENTED_  
+_Domains: nest-haus.at (primary) | da-hoam.at (alias) | Future: Expandable_

@@ -131,7 +131,6 @@ export function generateAdminPaymentNotificationEmail(
   });
 
   // Configuration data is stored but not displayed in the email
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const _config = parseConfigurationForEmail(data.configurationData);
 
   const subject = `Zahlung erhalten: ${formattedAmount} - ${data.name}`;

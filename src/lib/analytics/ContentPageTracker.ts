@@ -1,7 +1,7 @@
 /**
  * Content Page Session Tracking Service
  * 
- * Tracks user interactions on content pages (warenkorb, kontakt, dein-nest, entwurf, nest-system)
+ * Tracks user interactions on content pages (warenkorb, kontakt, hoam, entwurf, hoam-system)
  * for analytics and conversion optimization.
  * 
  * Features:
@@ -16,7 +16,7 @@ import { SessionManager } from '@/lib/redis';
 
 export interface ContentPageSession {
     sessionId: string;
-    pageType: 'warenkorb' | 'kontakt' | 'dein-nest' | 'entwurf' | 'nest-system' | 'warum-wir';
+    pageType: 'warenkorb' | 'kontakt' | 'hoam' | 'entwurf' | 'hoam-system' | 'warum-wir';
     startTime: number;
     endTime?: number;
     currentSection?: string;

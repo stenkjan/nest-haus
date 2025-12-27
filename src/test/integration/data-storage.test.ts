@@ -125,7 +125,7 @@ describe('Data Storage and Integrity Tests', () => {
                     data: {
                         sessionId: nonExistentSession,
                         category: 'nest',
-                        selection: 'NEST 100',
+                        selection: 'Hoam 100',
                     },
                 })
             ).rejects.toThrow();
@@ -136,7 +136,7 @@ describe('Data Storage and Integrity Tests', () => {
                 data: {
                     sessionId: testSessionId,
                     category: 'nest',
-                    selection: 'NEST 100',
+                    selection: 'Hoam 100',
                     totalPrice: 10000000,
                 },
             });
@@ -157,7 +157,7 @@ describe('Data Storage and Integrity Tests', () => {
                 data: {
                     sessionId: testSessionId,
                     category: 'nest',
-                    selection: 'NEST 100',
+                    selection: 'Hoam 100',
                 },
             });
 
@@ -217,7 +217,7 @@ describe('Data Storage and Integrity Tests', () => {
                     {
                         sessionId: testSessionId,
                         category: 'nest',
-                        selection: 'NEST 100',
+                        selection: 'Hoam 100',
                     },
                     {
                         sessionId: testSessionId,
@@ -307,7 +307,7 @@ describe('Data Storage and Integrity Tests', () => {
                 body: JSON.stringify({
                     sessionId,
                     category: 'nest',
-                    selection: 'NEST 100',
+                    selection: 'Hoam 100',
                     totalPrice: 10000000,
                 }),
             });
@@ -353,7 +353,7 @@ describe('Data Storage and Integrity Tests', () => {
                     body: JSON.stringify({
                         sessionId: testSessionId,
                         category: 'nest',
-                        selection: 'NEST 100',
+                        selection: 'Hoam 100',
                         totalPrice: 10000000,
                     }),
                 }),

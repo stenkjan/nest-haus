@@ -10,7 +10,7 @@ import React from "react";
 import AlphaTestDashboard from "./components/AlphaTestDashboard";
 
 export const metadata = {
-  title: "Alpha Test Results | Nest-Haus Admin",
+  title: "Alpha Test Results | Hoam-House Admin",
   description: "View and analyze alpha test results and user feedback",
 };
 

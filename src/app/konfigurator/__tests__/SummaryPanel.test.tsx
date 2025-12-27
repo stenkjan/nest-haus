@@ -23,7 +23,7 @@ const mockConfiguratorStore = {
     nest: {
       category: "nest",
       value: "nest120",
-      name: "Nest 120",
+      name: "Hoam 120",
       price: 165100,
     },
     gebaeudehuelle: {
@@ -53,10 +53,10 @@ const mockConfiguratorStore = {
     },
     planungspaket: {
       category: "planungspaket",
-    value: "pro",
-    name: "Planung Pro",
-    price: 9600, // Updated to new pricing (Nov 2025)
-  },
+      value: "pro",
+      name: "Planung Pro",
+      price: 9600, // Updated to new pricing (Nov 2025)
+    },
     totalPrice: 175100,
     timestamp: Date.now(),
   },
@@ -80,7 +80,7 @@ describe("SummaryPanel", () => {
     render(<SummaryPanel />);
 
     // Check that all items are displayed
-    expect(screen.getByText("Nest 120")).toBeInTheDocument();
+    expect(screen.getByText("Hoam 120")).toBeInTheDocument();
     expect(screen.getByText("Trapezblech")).toBeInTheDocument();
     expect(screen.getByText("Kiefer")).toBeInTheDocument();
     expect(screen.getByText("Parkett")).toBeInTheDocument();
@@ -104,10 +104,10 @@ describe("SummaryPanel", () => {
     });
   });
 
-  it('should show "Startpreis" for nest item', () => {
+  it('should show "Startpreis" for Hoam item', () => {
     render(<SummaryPanel />);
 
-    // Nest should show "Startpreis" label
+    // Hoam should show "Startpreis" label
     expect(screen.getByText("Startpreis")).toBeInTheDocument();
     expect(screen.getByText("€165.100")).toBeInTheDocument();
   });

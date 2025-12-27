@@ -140,7 +140,7 @@ export const TEST_STEPS: TestStep[] = [
             {
                 id: "nest-haus-understanding",
                 type: "rating",
-                question: "Hast du das Gefühl, dass du verstanden hast wie das Nest Haus funktioniert?",
+                question: "Hast du das Gefühl, dass du verstanden hast wie das Hoam funktioniert?",
                 required: false,
                 step: "feedback"
             },
@@ -161,14 +161,14 @@ export const TEST_STEPS: TestStep[] = [
             {
                 id: "website-overall",
                 type: "rating",
-                question: "Wie gefällt dir unsere Nest Haus Website?",
+                question: "Wie gefällt dir unsere Hoam Website?",
                 required: false,
                 step: "feedback"
             },
             {
                 id: "purchase-intention",
                 type: "rating",
-                question: "Könntest du dir vorstellen einmal ein Nest Haus zu bauen?",
+                question: "Könntest du dir vorstellen einmal ein Hoam zu bauen?",
                 required: false,
                 step: "feedback"
             },
@@ -233,7 +233,7 @@ export const TEST_STEPS: TestStep[] = [
             {
                 id: "house-categorization",
                 type: "text",
-                question: "Wie würdest du das Nest Haus kategorisieren? (Fertigteilhaus, Tiny House, Massivhaus, Modulbauhaus, Holz-Haus, mobile-home oder eine eigene Kategorie?)",
+                question: "Wie würdest du das Hoam kategorisieren? (Fertigteilhaus, Tiny House, Massivhaus, Modulbauhaus, Holz-Haus, mobile-home oder eine eigene Kategorie?)",
                 required: false,
                 step: "feedback"
             },

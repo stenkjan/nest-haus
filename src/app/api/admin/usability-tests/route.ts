@@ -377,9 +377,9 @@ function processConfigurationAnalytics(tests: Array<{ testId: string; interactio
 
 function getPageTitle(path: string): string {
     const titleMap: Record<string, string> = {
-        '/dein-nest': 'Dein Nest',
+        '/hoam': 'Hoam',
         '/entwurf': 'Entwurf',
-        '/nest-system': 'Nest System',
+        '/hoam-system': 'Hoam System',
         '/kontakt': 'Kontakt',
         '/warum-wir': 'Warum Wir',
         '/entdecken': 'Entdecken'

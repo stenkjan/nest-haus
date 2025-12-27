@@ -1,6 +1,909 @@
-# Nest-Haus Commit History
+# Hoam-House Commit History
 
 _Auto-generated documentation of project changes_
+
+---
+
+## [6f4c802fad282dd1f078329012a7c9b302e97e52] - Sat Dec 27 11:06:52 2025 +0100
+
+**Author**: stenkjan
+**Message**: `🧹 Clean up HoamPage component by removing unnecessary whitespace  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/hoam/page.tsx
+
+
+---
+
+## [6f8a664d888e99236252d89987c2e4c637ab55db] - Fri Dec 26 22:58:42 2025 +0100
+
+**Author**: stenkjan
+**Message**: `🔧 Refactor Stripe webhook health check to disable email alerts  - Removed email alert functionality from the webhook health check due to the unavailability of the EmailService. - Added console logging for issues found during the health check for better monitoring. - Updated error handling to log detailed error information instead of sending alerts. - Marked email alert implementations as TODO for future development when the email service is available.  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/api/cron/check-stripe-webhook/route.ts
+
+
+---
+
+## [41bd15fa127011fd6ceaa13f74f0092a73f4899f] - Fri Dec 26 22:49:07 2025 +0100
+
+**Author**: stenkjan
+**Message**: `✨ Enhance Safari compatibility across the application  - Updated content security policy in  to allow HTTPS sources for Vercel Blob Storage. - Modified image optimization settings in  to enable Next.js optimization for critical images. - Added CORS headers in  for preflight requests and error responses to improve Safari compatibility. - Implemented Safari-specific logging and debugging in  and  for better error tracking and device detection. - Applied CSS fixes in  to enhance image rendering on Safari.  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/LandingPageClient.tsx
+- src/app/api/images/route.ts
+- src/app/hoam/HoamClient.tsx
+- src/components/images/ClientBlobImage.tsx
+- src/components/images/ResponsiveHybridImage.tsx
+
+
+#### 🔧 Configuration Changes
+- next.config.ts
+
+
+#### 📚 Documentation Changes
+- SAFARI_IMAGE_FIX_SUMMARY.md
+- SAFARI_IMAGE_LOADING_INVESTIGATION.md
+- SAFARI_TESTING_GUIDE.md
+
+
+---
+
+## [2df0bfb2eb97da94529c0fa8ef0501d5a32c485b] - Thu Dec 25 16:36:23 2025 +0100
+
+**Author**: stenkjan
+**Message**: `Merge f4e966a5d941923ff322c8b045b8721971caead3 into 3221b9a2976907d48ca1dc9d92883e139be7773c  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/api/cron/check-stripe-webhook/route.ts
+
+
+#### 🔧 Configuration Changes
+- .env.local.example
+
+
+#### 📚 Documentation Changes
+- STRIPE_WEBHOOK_ERROR_ANALYSIS.md
+- STRIPE_WEBHOOK_FIX_SUMMARY.md
+- STRIPE_WEBHOOK_PREVENTION.md
+- STRIPE_WEBHOOK_QUICK_FIX.md
+
+
+---
+
+## [ff9c20985b2705306f4d57a373abe6e5a28512ba] - Wed Dec 24 12:03:12 2025 +0100
+
+**Author**: stenkjan
+**Message**: `Merge branch 'main' of https://github.com/stenkjan/nest-haus  `
+
+### Changes Analysis
+
+#### 📚 Documentation Changes
+- docs/COMMIT_HISTORY.md
+
+
+---
+
+## [02e8bfba94d1114d5b3df27bc4e41e183d5ab744] - Wed Dec 24 11:56:13 2025 +0100
+
+**Author**: stenkjan
+**Message**: `Merge branch 'main' of https://github.com/stenkjan/nest-haus  `
+
+### Changes Analysis
+
+#### 📚 Documentation Changes
+- docs/COMMIT_HISTORY.md
+
+
+---
+
+## [b421a56cf91db3eb36c70bbd71ce7f000c62869c] - Wed Dec 24 11:51:05 2025 +0100
+
+**Author**: stenkjan
+**Message**: `🔄 Add Redis availability checks in geolocation service  - Implemented checks for Redis availability in the getLocationFromIP function to prevent errors when Redis is not configured. - Enhanced caching logic to ensure geolocation data is only cached if Redis is available, improving system reliability.  `
+
+### Changes Analysis
+
+---
+
+## [f682edb3b5a120832002bf82fc28be40694c4292] - Wed Dec 24 11:38:46 2025 +0100
+
+**Author**: stenkjan
+**Message**: `Merge branch 'main' of https://github.com/stenkjan/nest-haus  `
+
+### Changes Analysis
+
+#### 📚 Documentation Changes
+- docs/COMMIT_HISTORY.md
+
+
+---
+
+## [bc24f8b16b598922920559afc6b0b87add95c0f3] - Wed Dec 24 11:29:31 2025 +0100
+
+**Author**: stenkjan
+**Message**: `Merge branch 'main' of https://github.com/stenkjan/nest-haus  `
+
+### Changes Analysis
+
+#### 📚 Documentation Changes
+- docs/COMMIT_HISTORY.md
+
+
+---
+
+## [9e890e01a029ff47b5e012592894a2fa6105103a] - Wed Dec 24 11:22:43 2025 +0100
+
+**Author**: stenkjan
+**Message**: `🔄 Improve Redis integration and clean up unused variables in email templates  - Added a check for Redis availability in the analytics overview route to prevent errors when Redis is not configured. - Removed unnecessary ESLint disable comments for unused variables in AdminPaymentNotificationTemplate and PaymentConfirmationTemplate, enhancing code clarity.  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/api/admin/analytics/overview/route.ts
+
+
+---
+
+## [1dceca3623c4d723ffd9ce293943ed580ae60d03] - Wed Dec 24 11:17:13 2025 +0100
+
+**Author**: stenkjan
+**Message**: `🔄 Enhance session management and tracking services  - Updated environment variables documentation to clarify optional configurations for development and production. - Modified button variant in LandingPageClient for improved UI consistency. - Implemented checks for database and Redis availability in session finalization and interaction tracking APIs, ensuring graceful degradation in development mode. - Enhanced Redis integration to handle cases where Redis is not configured, preventing errors in session management. - Added logging for tracking services to improve debugging and user experience in development.  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/LandingPageClient.tsx
+- src/app/api/sessions/finalize/route.ts
+- src/app/api/sessions/track-interaction/route.ts
+- src/hooks/useInteractionTracking.ts
+
+
+#### 🔧 Configuration Changes
+- .env.local.example
+
+
+---
+
+## [8338c7358b38790e2654588f3ca04ad375256730] - Wed Dec 24 10:46:34 2025 +0100
+
+**Author**: stenkjan
+**Message**: `Merge branch 'main' of https://github.com/stenkjan/nest-haus  `
+
+### Changes Analysis
+
+#### 📚 Documentation Changes
+- docs/COMMIT_HISTORY.md
+
+
+---
+
+## [53f77824a137c1047c93493ffc48dd2641b99263] - Wed Dec 24 10:38:15 2025 +0100
+
+**Author**: stenkjan
+**Message**: `🔄 Update font weight in HoamClient for enhanced branding visibility  - Changed font weight from 'font-semibold' to 'font-extrabold' for the brand name "Hoam" in button labels to improve branding consistency and visibility.  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/hoam/HoamClient.tsx
+
+
+---
+
+## [90e29d6ff81a432ebc53cd8f47d43cefc9530c0a] - Wed Dec 24 10:31:31 2025 +0100
+
+**Author**: stenkjan
+**Message**: `Merge branch 'main' of https://github.com/stenkjan/nest-haus  `
+
+### Changes Analysis
+
+#### 📚 Documentation Changes
+- docs/COMMIT_HISTORY.md
+
+
+---
+
+## [679c198c9b9f192911a19dab586b115e250c99b6] - Wed Dec 24 01:32:57 2025 +0100
+
+**Author**: stenkjan
+**Message**: `🔄 Adjust text stroke in Hoam component for improved desktop rendering  - Reduced the text stroke from '0.3px' to '0.15px' for the 'title' variant to enhance visual clarity on desktop displays. - Maintained overall typography consistency while ensuring better rendering quality.  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/components/typography/Hoam.tsx
+
+
+---
+
+## [d1340c595fca9bf19ac2a0a99a1fda65101bae14] - Wed Dec 24 01:24:54 2025 +0100
+
+**Author**: stenkjan
+**Message**: `Merge branch 'main' of https://github.com/stenkjan/nest-haus  `
+
+### Changes Analysis
+
+#### 📚 Documentation Changes
+- docs/COMMIT_HISTORY.md
+
+
+---
+
+## [cb212b8784a0cc2a635951c7e4cbf069f7bbfdb1] - Wed Dec 24 01:12:23 2025 +0100
+
+**Author**: stenkjan
+**Message**: `Merge branch 'main' of https://github.com/stenkjan/nest-haus  `
+
+### Changes Analysis
+
+#### 📚 Documentation Changes
+- docs/COMMIT_HISTORY.md
+
+
+---
+
+## [4760dfdc6a1db2c870b7cb67bdff2569facc3d32] - Wed Dec 24 01:10:47 2025 +0100
+
+**Author**: stenkjan
+**Message**: `Merge branch 'main' of https://github.com/stenkjan/nest-haus  `
+
+### Changes Analysis
+
+#### 📚 Documentation Changes
+- docs/COMMIT_HISTORY.md
+
+
+---
+
+## [6974ed1ff70704f2fbccfd064a84adb3b13910f1] - Wed Dec 24 01:05:06 2025 +0100
+
+**Author**: stenkjan
+**Message**: `Merge branch 'main' of https://github.com/stenkjan/nest-haus  `
+
+### Changes Analysis
+
+#### 📚 Documentation Changes
+- docs/COMMIT_HISTORY.md
+
+
+---
+
+## [7736e83aa2328c430135c8fa56a3ff14f10663b8] - Wed Dec 24 00:31:32 2025 +0100
+
+**Author**: stenkjan
+**Message**: `🔄 Update LandingPageClient component to modify text color  - Changed textColor from "white" to "black" for improved readability. - Removed primaryButtonVariant property to streamline button styling across sections.  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/LandingPageClient.tsx
+
+
+---
+
+## [c3672c24ba51f6b577bad37443abfb1a42af75d4] - Wed Dec 24 00:24:46 2025 +0100
+
+**Author**: stenkjan
+**Message**: `Merge branch 'main' of https://github.com/stenkjan/nest-haus  `
+
+### Changes Analysis
+
+#### 📚 Documentation Changes
+- docs/COMMIT_HISTORY.md
+
+
+---
+
+## [29797c23064ed8efb6656caae6afb0b260c2760d] - Wed Dec 24 00:20:26 2025 +0100
+
+**Author**: stenkjan
+**Message**: `🔄 Update video reference in images constant  - Changed the video reference for 'hoamClipShort' in the images constant to remove the file extension for consistency with other video entries.  `
+
+### Changes Analysis
+
+---
+
+## [3179b188d3ec3c9e98efc07370164a5e1a2e7219] - Wed Dec 24 00:14:34 2025 +0100
+
+**Author**: stenkjan
+**Message**: `🔄 Update LandingPageClient and TwoByTwoImageGrid components to support video playback  - Changed image properties to video in LandingPageClient for enhanced media presentation. - Updated TwoByTwoImageGrid to conditionally render either images or videos, including optional playback rate control. - Ensured backward compatibility by making image properties optional in the GridItem interface.  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/LandingPageClient.tsx
+- src/components/grids/TwoByTwoImageGrid.tsx
+
+
+---
+
+## [6fadfcb6fc20d134abdd83806bffdcf82c7ba8fd] - Tue Dec 23 23:18:02 2025 +0100
+
+**Author**: stenkjan
+**Message**: `🔄 Comment out cookie notice in CookieBanner component  - Temporarily disabled the display of the cookie notice paragraph in the CookieBanner component for further review. - This change does not affect the functionality of the cookie consent mechanism.  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/components/CookieBanner.tsx
+
+
+---
+
+## [7bc74addeba960bd39709b04f5e4e261a811f096] - Tue Dec 23 18:52:31 2025 +0100
+
+**Author**: stenkjan
+**Message**: `Merge branch 'main' of https://github.com/stenkjan/nest-haus  `
+
+### Changes Analysis
+
+#### 📚 Documentation Changes
+- docs/COMMIT_HISTORY.md
+
+
+---
+
+## [abd0a5e15ff84bd37b096f33da2b38a6e75e47b5] - Tue Dec 23 18:39:09 2025 +0100
+
+**Author**: stenkjan
+**Message**: `Merge branch 'main' of https://github.com/stenkjan/nest-haus  `
+
+### Changes Analysis
+
+#### 📚 Documentation Changes
+- docs/COMMIT_HISTORY.md
+
+
+---
+
+## [164ce7170ab7bf174daa5e3185c9ad454b41ff48] - Tue Dec 23 18:35:51 2025 +0100
+
+**Author**: stenkjan
+**Message**: `Merge branch 'main' of https://github.com/stenkjan/nest-haus  `
+
+### Changes Analysis
+
+#### 📚 Documentation Changes
+- docs/COMMIT_HISTORY.md
+
+
+---
+
+## [f680c3ce0e8fe1c328ada9706828e533a5f515d2] - Tue Dec 23 18:05:57 2025 +0100
+
+**Author**: stenkjan
+**Message**: `Merge branch 'main' of https://github.com/stenkjan/nest-haus  `
+
+### Changes Analysis
+
+#### 📚 Documentation Changes
+- docs/COMMIT_HISTORY.md
+
+
+---
+
+## [74bfe18a7df8e3bff4677749c2257420ac218e8e] - Tue Dec 23 17:37:48 2025 +0100
+
+**Author**: stenkjan
+**Message**: `Merge branch 'main' of https://github.com/stenkjan/nest-haus  `
+
+### Changes Analysis
+
+#### 📚 Documentation Changes
+- docs/COMMIT_HISTORY.md
+
+
+---
+
+## [7ce1600e56f5bd32d026291a84b77ae90a635d74] - Tue Dec 23 17:36:31 2025 +0100
+
+**Author**: stenkjan
+**Message**: `Merge branch 'main' of https://github.com/stenkjan/nest-haus  `
+
+### Changes Analysis
+
+#### 📚 Documentation Changes
+- docs/COMMIT_HISTORY.md
+
+
+---
+
+## [16927c9d4ac7ce06f917d221450a1470237bc6f5] - Tue Dec 23 17:31:26 2025 +0100
+
+**Author**: stenkjan
+**Message**: `Merge branch 'main' of https://github.com/stenkjan/nest-haus  `
+
+### Changes Analysis
+
+#### 📚 Documentation Changes
+- docs/COMMIT_HISTORY.md
+
+
+---
+
+## [a4febf33cae5abeef710e58a6136dc454f13f7c0] - Tue Dec 23 17:27:20 2025 +0100
+
+**Author**: stenkjan
+**Message**: `🔄 Update text content in HoamSystemClient component  - Revised the text in the ThreeByOneGrid to replace "perfektioniert" with "vereinheitlicht" for improved clarity and consistency in messaging.  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/hoam-system/HoamSystemClient.tsx
+
+
+---
+
+## [add80f7093e9a31cd57d69cd06b4c1425a0ab7af] - Tue Dec 23 17:23:11 2025 +0100
+
+**Author**: stenkjan
+**Message**: `Merge branch 'main' of https://github.com/stenkjan/nest-haus  `
+
+### Changes Analysis
+
+#### 📚 Documentation Changes
+- docs/COMMIT_HISTORY.md
+
+
+---
+
+## [317ab7fd4058a3ff5ec37680e240c929afc700ae] - Tue Dec 23 17:17:53 2025 +0100
+
+**Author**: stenkjan
+**Message**: `Merge branch 'main' of https://github.com/stenkjan/nest-haus  `
+
+### Changes Analysis
+
+#### 📚 Documentation Changes
+- docs/COMMIT_HISTORY.md
+
+
+---
+
+## [552b5e530023134a7bd67ae7210875a36c464be8] - Tue Dec 23 17:16:10 2025 +0100
+
+**Author**: stenkjan
+**Message**: `Merge branch 'main' of https://github.com/stenkjan/nest-haus  `
+
+### Changes Analysis
+
+#### 📚 Documentation Changes
+- docs/COMMIT_HISTORY.md
+
+
+---
+
+## [4ee59dbf152af20ae8575cbdce82f3cdb7d40a11] - Tue Dec 23 16:51:43 2025 +0100
+
+**Author**: stenkjan
+**Message**: `🔄 Update image reference in LandingPageClient  - Changed the image reference in the LandingPageClient component from the previous function image to the new variant video for improved media representation.  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/LandingPageClient.tsx
+
+
+---
+
+## [e84ca964ddc56267a4889fc9ddfc7137a5837a4e] - Mon Dec 22 23:45:05 2025 +0100
+
+**Author**: stenkjan
+**Message**: `Merge branch 'main' of https://github.com/stenkjan/nest-haus  `
+
+### Changes Analysis
+
+#### 📚 Documentation Changes
+- docs/COMMIT_HISTORY.md
+
+
+---
+
+## [75609514319e8426d775587c7583f9131a3ee22c] - Mon Dec 22 23:18:33 2025 +0100
+
+**Author**: stenkjan
+**Message**: `🔄 Update branding references from "Nest Haus" to "Hoam"  - Changed alt text in image components to reflect the new branding. - Updated titles and descriptions in various documentation files to ensure consistency with the "Hoam" branding. - Adjusted references in the codebase to replace "Nest" with "Hoam" for improved clarity and alignment with the new brand identity.  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/api/placeholder/[width]/[height]/route.ts
+- src/app/showcase/cards/page.tsx
+- src/app/showcase/grids/page.tsx
+- src/app/warenkorb/components/CheckoutStepper.tsx
+- src/components/images/HybridBlobImage.tsx
+- src/components/testing/config/TestQuestions.ts
+
+
+#### 📚 Documentation Changes
+- FIX_OLD_PRICES_DISPLAY.md
+- README.md
+- docs/COMMIT_HISTORY.md
+- docs/GLASS-QUOTE-CARDS-GUIDE.md
+- docs/KONFIGURATOR-SWITCH-GUIDE.md
+- docs/SOCIAL_MEDIA_METADATA_UPDATE.md
+- docs/WARENKORB_PRICING_SYNC_FIX_NOV11.md
+- docs/final_EMAIL_FUNCTIONALITY_SUMMARY.md
+- docs/final_GOOGLE-ANALYTICS-SEO-COMPLETE-IMPLEMENTATION.md
+
+
+---
+
+## [741007ca54edbbdad4f8e4d925b2895e57e97915] - Mon Dec 22 23:10:38 2025 +0100
+
+**Author**: stenkjan
+**Message**: `Merge branch 'main' of https://github.com/stenkjan/nest-haus  `
+
+### Changes Analysis
+
+#### 📚 Documentation Changes
+- docs/COMMIT_HISTORY.md
+
+
+---
+
+## [15422721ae2e9275a71b81c96ec0025cfbe1abb1] - Mon Dec 22 22:54:50 2025 +0100
+
+**Author**: stenkjan
+**Message**: `Merge branch 'main' of https://github.com/stenkjan/nest-haus  `
+
+### Changes Analysis
+
+#### 📚 Documentation Changes
+- docs/COMMIT_HISTORY.md
+
+
+---
+
+## [f52dc012e616d6ca74d70892ec52e652600b702a] - Mon Dec 22 22:48:07 2025 +0100
+
+**Author**: stenkjan
+**Message**: `Merge branch 'main' of https://github.com/stenkjan/nest-haus  `
+
+### Changes Analysis
+
+#### 📚 Documentation Changes
+- docs/COMMIT_HISTORY.md
+
+
+---
+
+## [12eb26c92ea14fba7f1888488446063318095bc5] - Mon Dec 22 22:36:03 2025 +0100
+
+**Author**: stenkjan
+**Message**: `🔄 Update content and descriptions to reflect branding change from "Nest" to "®Hoam"  - Revised text in KonzeptcheckClient, FullWidthImageGrid, and cardContent to ensure consistency with the new brand name "®Hoam". - Updated titles and descriptions to align with the branding transition across multiple components.  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/konzept-check/KonzeptcheckClient.tsx
+- src/components/grids/FullWidthImageGrid.tsx
+
+
+---
+
+## [946c9da7eebe4033768fe3d249125dae1a32fe31] - Mon Dec 22 22:25:28 2025 +0100
+
+**Author**: stenkjan
+**Message**: `Merge branch 'main' of https://github.com/stenkjan/nest-haus  `
+
+### Changes Analysis
+
+#### 📚 Documentation Changes
+- docs/COMMIT_HISTORY.md
+
+
+---
+
+## [919867d8e97f04ade395a12fbbe2737d0b3fe15f] - Mon Dec 22 22:18:32 2025 +0100
+
+**Author**: stenkjan
+**Message**: `Merge branch 'main' of https://github.com/stenkjan/nest-haus  `
+
+### Changes Analysis
+
+#### 📚 Documentation Changes
+- docs/COMMIT_HISTORY.md
+
+
+---
+
+## [b5a6ceaf49feb6cea8bc58aabb2f8e4fa0a086ea] - Mon Dec 22 22:17:36 2025 +0100
+
+**Author**: stenkjan
+**Message**: `🔄 Update FAQ content to reflect branding change from "Nest" to "®Hoam"  - Revised FAQ questions and answers to incorporate the new brand name "®Hoam" for consistency across the application.  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/faq/FAQClient.tsx
+- src/app/konfigurator/data/configuratorData.ts
+
+
+---
+
+## [aa0e4888db9a40b7c3139d2233ab6c30c83b14d9] - Mon Dec 22 22:10:40 2025 +0100
+
+**Author**: stenkjan
+**Message**: `Merge branch 'main' of https://github.com/stenkjan/nest-haus  `
+
+### Changes Analysis
+
+#### 📚 Documentation Changes
+- docs/COMMIT_HISTORY.md
+
+
+---
+
+## [ca77dad98f11dfe3a428a590ec5f9235b363241a] - Mon Dec 22 21:59:09 2025 +0100
+
+**Author**: stenkjan
+**Message**: `Merge branch 'main' of https://github.com/stenkjan/nest-haus  `
+
+### Changes Analysis
+
+#### 📚 Documentation Changes
+- docs/COMMIT_HISTORY.md
+
+
+---
+
+## [5eef58609479ad2d5c7b882b02a4dca4b6ae43b1] - Mon Dec 22 20:14:47 2025 +0100
+
+**Author**: stenkjan
+**Message**: `🔄 Update project references from "Nest-Haus" to "Hoam-House" across multiple files for consistent branding and documentation.  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/access-denied/page.tsx
+- src/app/admin/alpha-tests/components/AlphaTestDashboard.tsx
+- src/app/admin/alpha-tests/page.tsx
+- src/app/admin/page.tsx
+- src/app/agb/page.tsx
+- src/app/cookie-einstellungen/page.tsx
+- src/app/datenschutz/page.tsx
+- src/app/impressum/page.tsx
+- src/app/konfigurator/components/ConfiguratorUI.tsx
+- src/app/showcase/cards/page.tsx
+- src/app/showcase/grids/page.tsx
+- src/app/warenkorb/WarenkorbClient.tsx
+- src/app/warenkorb/components/CheckoutStepper.tsx
+- src/app/warenkorb/page.tsx
+- src/components/Footer.tsx
+- src/components/cards/README.md
+- src/components/dialogs/GrundstueckCheckDialog.tsx
+- src/components/grids/ThreeByOneAdaptiveHeight.tsx
+- src/components/sections/GrundstueckCheckForm.tsx
+- src/components/sections/GrundstueckCheckSection.tsx
+- src/components/sections/catalog/CATALOG.md
+
+
+#### ⚙️ Backend Changes
+- scripts/README-cache-cleaning.md
+- scripts/clean-cache.bat
+- scripts/clean-cache.js
+
+
+#### 🔧 Configuration Changes
+- .github/workflows/auto-documentation.yml
+
+
+#### 📚 Documentation Changes
+- backups/BACKUP_README.md
+- docs/BUTTON_TRACKING_GUIDE.md
+- docs/COMMIT_HISTORY.md
+- docs/COMPLETE_IMPLEMENTATION_SUMMARY.md
+- docs/KONFIGURATOR-REFACTORING-PLAN.md
+- docs/PRICE_CALCULATION_ARCHITECTURE.md
+- docs/PRICING_SYNC_IMPLEMENTATION_COMPLETE.md
+- docs/SEO_ANALYSIS_AND_IMPROVEMENTS.md
+- docs/STRIPE_PRODUCTION_SETUP.md
+- docs/WARENKORB_REFACTORING_PROGRESS.md
+- docs/final_-BETA-NEST-HAUS-LAUNCH-SECURITY-ROADMAP.md
+- docs/final_EMAIL_FUNCTIONALITY_SUMMARY.md
+- docs/final_GOOGLE-ANALYTICS-SEO-COMPLETE-IMPLEMENTATION.md
+- docs/final_KONFIGURATOR_PRICING_OVERHAUL_SUMMARY.md
+- preiskalkulation/PRICING_ANALYSIS_CURRENT_STATE.md
+
+
+---
+
+## [77b9d435bcbc48e2b4e2dd2541f18d39a33b3281] - Mon Dec 22 20:08:23 2025 +0100
+
+**Author**: stenkjan
+**Message**: `🔄 Update YouTube video embed parameters in WarumWirClient component  - Modified the iframe source URL to include additional parameters for improved functionality, such as  and , enhancing the user experience.  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/warum-wir/WarumWirClient.tsx
+
+
+---
+
+## [40b6aea0625851395b667cc3ea568c415006974e] - Mon Dec 22 20:05:31 2025 +0100
+
+**Author**: stenkjan
+**Message**: `🔄 Update branding from "®Hoam Haus" to "®Hoam House" across multiple components and documentation for consistency.  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/alpha-test/AlphaTestClient.tsx
+- src/app/faq/FAQClient.tsx
+- src/components/sections/ModulhausVergleichSection.tsx
+- src/components/sections/SectionHeader.tsx
+- src/components/sections/catalog/CATALOG.md
+
+
+#### 📚 Documentation Changes
+- docs/TYPOGRAPHY_STANDARDS.md
+
+
+---
+
+## [b650bb3483f9756adf4cb2cf8e130b432919bece] - Mon Dec 22 19:28:15 2025 +0100
+
+**Author**: stenkjan
+**Message**: `Merge branch 'main' of https://github.com/stenkjan/nest-haus  `
+
+### Changes Analysis
+
+#### 📚 Documentation Changes
+- docs/COMMIT_HISTORY.md
+
+
+---
+
+## [d156c5cc06d40f4e73a9c2b325f2cf160fdbd1ce] - Mon Dec 22 17:40:32 2025 +0100
+
+**Author**: stenkjan
+**Message**: `✨ Enhance LandingImagesCarousel component for responsive image handling  - Updated image selection logic to use desktop or mobile images based on screen size and  flag. - Improved height calculations for images to maintain aspect ratios across devices. - Simplified the rendering of image overlays for mobile and desktop views, ensuring proper display based on device type.  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/components/sections/LandingImagesCarousel.tsx
+
+
+---
+
+## [156650b37bb63f85cdb57b54b4ba1d812cacdf86] - Mon Dec 22 17:29:09 2025 +0100
+
+**Author**: stenkjan
+**Message**: `Merge branch 'main' of https://github.com/stenkjan/nest-haus  `
+
+### Changes Analysis
+
+#### 📚 Documentation Changes
+- docs/COMMIT_HISTORY.md
+
+
+---
+
+## [1ecf7e191239833f335e3084620c4a40d72adb2d] - Mon Dec 22 17:27:10 2025 +0100
+
+**Author**: stenkjan
+**Message**: `Merge branch 'main' of https://github.com/stenkjan/nest-haus  `
+
+### Changes Analysis
+
+#### 📚 Documentation Changes
+- docs/COMMIT_HISTORY.md
+
+
+---
+
+## [1e00f3ae41a80fe4a56b23ccbbe53a6940c322f0] - Sun Dec 21 21:15:54 2025 +0100
+
+**Author**: stenkjan
+**Message**: `🔧 Update Vercel configuration for multi-domain support and enhance Stripe webhook documentation  - Added rewrites and headers for the Stripe webhook in . - Updated  to include multi-domain support details and migration paths. - Enhanced  with information on domain variants and Vercel configuration for webhook delivery.  `
+
+### Changes Analysis
+
+#### 📚 Documentation Changes
+- IMPLEMENTATION_COMPLETE_SUMMARY.md
+- STRIPE_WEBHOOK_FIX_INSTRUCTIONS.md
+- docs/STRIPE_PRODUCTION_SETUP.md
+- docs/WEBHOOK_VERIFICATION_GUIDE.md
+
+
+---
+
+## [34a47883a7abc7d12ab998ec34eea18c64e06e9b] - Sun Dec 21 20:49:58 2025 +0100
+
+**Author**: stenkjan
+**Message**: `Merge 570adfb0ecdf8d4b27c40a92d68695a00d7283c9 into 061d5658ecdbee73f0a2a05525582b4c492d6aba  `
+
+### Changes Analysis
+
+#### 📚 Documentation Changes
+- STRIPE_MIGRATION_CHECKLIST.md
+- STRIPE_MIGRATION_QUICK_START.md
+- STRIPE_PRODUCTION_MIGRATION_GUIDE.md
+- STRIPE_WEBHOOK_INVESTIGATION_REPORT.md
+- STRIPE_WEBHOOK_INVESTIGATION_SUMMARY.md
+- STRIPE_WEBHOOK_QUICK_FIX.md
+- docs/WEBHOOK_VERIFICATION_GUIDE.md
+
+
+---
+
+## [d035df53ccfead9bea7c0819ee3fbc80ef5b1af4] - Sun Dec 21 14:10:22 2025 +0100
+
+**Author**: stenkjan
+**Message**: `Merge 7755277dcab9cce1b4478bda1c94b787b77ec0d6 into 1f2628d70ffa3a9d6e59ca5b7eda1bc831d2bfe6  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/warenkorb/components/CheckoutStepper.tsx
+
+
+---
+
+## [f13b9d782c73b8bbced92c1b4ca441869ac1960a] - Sat Dec 20 14:13:36 2025 +0100
+
+**Author**: stenkjan
+**Message**: `Merge branch 'main' of https://github.com/stenkjan/nest-haus  `
+
+### Changes Analysis
+
+#### 📚 Documentation Changes
+- docs/COMMIT_HISTORY.md
+
+
+---
+
+## [c3598ab936a3e53c6d9880e16a4622b0f8fa158a] - Sat Dec 20 14:09:27 2025 +0100
+
+**Author**: stenkjan
+**Message**: `Merge branch 'main' of https://github.com/stenkjan/nest-haus  `
+
+### Changes Analysis
+
+#### 📚 Documentation Changes
+- docs/COMMIT_HISTORY.md
+
+
+---
+
+## [1b3c8feee69e95e2fd6653bb6d3506b9c4cb074a] - Sat Dec 20 14:00:06 2025 +0100
+
+**Author**: stenkjan
+**Message**: `🔧 Refactor image path handling in PreviewPanel to use a ref for previous image tracking, improving performance and preventing unnecessary re-renders.  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/LandingPageClient.tsx
+- src/app/konfigurator/components/PreviewPanel.tsx
+
+
+---
+
+## [fe088215020ac7d36ba4a3843d6b4da5b6ed2903] - Thu Dec 18 10:33:40 2025 +0100
+
+**Author**: stenkjan
+**Message**: `Merge 774f0b485ce0ddc21747e97f3c6df4224b28276c into 7251cd6b5e16123236b4abd3582b317477fb97fc  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/LandingPageClient.tsx
+
 
 ---
 
@@ -1139,7 +2042,7 @@ _Auto-generated documentation of project changes_
 ## [46adae7a96621a8edd9a2377364e0c342d48c157] - Tue Dec 9 15:29:16 2025 +0100
 
 **Author**: stenkjan
-**Message**: `Update company name references in AgbClient for accuracy  - Changed "Nest-Haus GmbH" to "Eco Chalets GmbH" in multiple locations for correct branding. - Updated subtitle and footer to reflect the new company name while maintaining clarity.  `
+**Message**: `Update company name references in AgbClient for accuracy  - Changed "Hoam-House GmbH" to "Eco Chalets GmbH" in multiple locations for correct branding. - Updated subtitle and footer to reflect the new company name while maintaining clarity.  `
 
 ### Changes Analysis
 
@@ -3964,7 +4867,7 @@ _Auto-generated documentation of project changes_
 ## [619b3c5dea5882010b24a6f8d7413dc7349681c3] - Mon Nov 17 21:16:04 2025 +0100
 
 **Author**: stenkjan
-**Message**: `fix: correct alt text and subtitles in ImageGallery and LandingImagesCarousel components  - Updated alt text for NEST Haus 4 Module in ImageGallery for improved clarity. - Changed subtitles in LandingImagesCarousel from "Fundamentplatten Weiss" to "Fassadenplatten Weiss" and "Mediterane Ansicht" to "Mediterrane Ansicht" for accuracy. - Adjusted file path in contentCardPresets for better API integration.  `
+**Message**: `fix: correct alt text and subtitles in ImageGallery and LandingImagesCarousel components  - Updated alt text for Hoam 4 Module in ImageGallery for improved clarity. - Changed subtitles in LandingImagesCarousel from "Fundamentplatten Weiss" to "Fassadenplatten Weiss" and "Mediterane Ansicht" to "Mediterrane Ansicht" for accuracy. - Adjusted file path in contentCardPresets for better API integration.  `
 
 ### Changes Analysis
 
@@ -6753,7 +7656,7 @@ _Auto-generated documentation of project changes_
 ## [c1242be8ff836487785fd99700101f816c49f76f] - Wed Nov 12 11:58:54 2025 +0100
 
 **Author**: stenkjan
-**Message**: `Fix: Correct Teilzahlung calculations and add Konfiguration bearbeiten link  FIXES: 1. Changed 4th payment label from '3. Teilzahlung' to '4. Teilzahlung' 2. Recalculated all payments based on dynamic total (Dein Nest Haus + Planungspaket) 3. Added onClick to 'Konfiguration bearbeiten' button to open /konfigurator  Calculation changes: - Base total: Dynamic sum from getItemPrice() (not stored totalPrice) - Includes Planungspaket if not basis (Plus: 9,600€, Pro: 12,700€) - 1. Teilzahlung: 3,000€ (Grundstückscheck full price) - 2. Teilzahlung: (Total × 30%) - 1,500€ credit - 3. Teilzahlung: Total × 50% - 4. Teilzahlung: Total × 20%  Example with Nest 80 defaults (226,746€) + Basis (0€) = 226,746€: - 1. Teilzahlung: 3,000€ - 2. Teilzahlung: 66,524€ (68,024 - 1,500) - 3. Teilzahlung: 113,373€ - 4. Teilzahlung: 45,349€  `
+**Message**: `Fix: Correct Teilzahlung calculations and add Konfiguration bearbeiten link  FIXES: 1. Changed 4th payment label from '3. Teilzahlung' to '4. Teilzahlung' 2. Recalculated all payments based on dynamic total (Dein Hoam + Planungspaket) 3. Added onClick to 'Konfiguration bearbeiten' button to open /konfigurator  Calculation changes: - Base total: Dynamic sum from getItemPrice() (not stored totalPrice) - Includes Planungspaket if not basis (Plus: 9,600€, Pro: 12,700€) - 1. Teilzahlung: 3,000€ (Grundstückscheck full price) - 2. Teilzahlung: (Total × 30%) - 1,500€ credit - 3. Teilzahlung: Total × 50% - 4. Teilzahlung: Total × 20%  Example with Nest 80 defaults (226,746€) + Basis (0€) = 226,746€: - 1. Teilzahlung: 3,000€ - 2. Teilzahlung: 66,524€ (68,024 - 1,500) - 3. Teilzahlung: 113,373€ - 4. Teilzahlung: 45,349€  `
 
 ### Changes Analysis
 
@@ -6866,7 +7769,7 @@ _Auto-generated documentation of project changes_
 ## [c953485d0ec7ce7077e2c7d6d31cb650f57a7807] - Wed Nov 12 11:25:30 2025 +0100
 
 **Author**: stenkjan
-**Message**: `Fix: Calculate dynamic total in Warenkorb using new pricing system  CRITICAL FIX: 'Dein Nest Haus' box was showing 0€ because it used stored totalPrice which was from the old pricing system.  Solution: - renderIntro(): Calculate total dynamically from individual item prices - Uses getItemPrice() for each configuration item - Sums: nest + gebaeudehuelle + innenverkleidung + fussboden + all options - Falls back to getCartTotal() if no configuration present - Removed useMemo (can't use hooks in regular function)  Result: - 'Dein Nest Haus' box now shows correct total (e.g., 226,746€ for Nest 80 defaults) - Price updates when configuration changes - Uses same pricing as Konfigurator (from Google Sheets)  `
+**Message**: `Fix: Calculate dynamic total in Warenkorb using new pricing system  CRITICAL FIX: 'Dein Hoam' box was showing 0€ because it used stored totalPrice which was from the old pricing system.  Solution: - renderIntro(): Calculate total dynamically from individual item prices - Uses getItemPrice() for each configuration item - Sums: nest + gebaeudehuelle + innenverkleidung + fussboden + all options - Falls back to getCartTotal() if no configuration present - Removed useMemo (can't use hooks in regular function)  Result: - 'Dein Hoam' box now shows correct total (e.g., 226,746€ for Nest 80 defaults) - Price updates when configuration changes - Uses same pricing as Konfigurator (from Google Sheets)  `
 
 ### Changes Analysis
 

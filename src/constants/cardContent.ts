@@ -315,11 +315,11 @@ export const BELICHTUNGSPAKET_CONTENT: ContentCardData[] = [
         title: "Belichtungspaket - Light",
         subtitle: "Grundbeleuchtung",
         description:
-            "Das Light-Paket bietet eine durchdachte Grundbeleuchtung mit 15% der Nestfläche als Fenster- und Türenöffnungen. Diese Konfiguration schafft eine angenehme, gemütliche Atmosphäre und eignet sich besonders für Wohnbereiche, in denen gezieltes, warmes Licht gewünscht ist. Die bewusst reduzierte Verglasung sorgt für optimale Energieeffizienz bei gleichzeitig ausreichend natürlichem Lichteinfall.",
+            "Das Light-Paket bietet eine durchdachte Grundbeleuchtung mit 15% der ®Hoam Fläche als Fenster- und Türenöffnungen. Diese Konfiguration schafft eine angenehme, gemütliche Atmosphäre und eignet sich besonders für Wohnbereiche, in denen gezieltes, warmes Licht gewünscht ist. Die bewusst reduzierte Verglasung sorgt für optimale Energieeffizienz bei gleichzeitig ausreichend natürlichem Lichteinfall.",
         mobileTitle: "Belichtungspaket - Light",
         mobileSubtitle: "Grundbeleuchtung",
         mobileDescription:
-            "Das Light-Paket bietet eine solide Grundbeleuchtung mit 15% der Nestfläche. Ideal für gemütliche Wohnbereiche mit gezielter Lichtführung.",
+            "Das Light-Paket bietet eine solide Grundbeleuchtung mit 15% der ®Hoam Fläche. Ideal für gemütliche Wohnbereiche mit gezielter Lichtführung.",
         image: IMAGES.hero.nestHaus7,
         backgroundColor: "#F4F4F4",
     },
@@ -328,11 +328,11 @@ export const BELICHTUNGSPAKET_CONTENT: ContentCardData[] = [
         title: "Belichtungspaket - Medium",
         subtitle: "Ausgewogene Beleuchtung",
         description:
-            "Das Medium-Paket bietet eine ausgewogene Beleuchtung mit 22% der Nestfläche als Fenster- und Türenöffnungen. Diese Konfiguration schafft eine harmonische Balance zwischen natürlichem Lichteinfall und Energieeffizienz. Ideal für Wohn- und Arbeitsbereiche, die sowohl Gemütlichkeit als auch ausreichend Tageslicht benötigen. Die durchdachte Verteilung der Öffnungen sorgt für optimale Raumausleuchtung.",
+            "Das Medium-Paket bietet eine ausgewogene Beleuchtung mit 22% der ®Hoam Fläche als Fenster- und Türenöffnungen. Diese Konfiguration schafft eine harmonische Balance zwischen natürlichem Lichteinfall und Energieeffizienz. Ideal für Wohn- und Arbeitsbereiche, die sowohl Gemütlichkeit als auch ausreichend Tageslicht benötigen. Die durchdachte Verteilung der Öffnungen sorgt für optimale Raumausleuchtung.",
         mobileTitle: "Belichtungspaket - Medium",
         mobileSubtitle: "Ausgewogene Beleuchtung",
         mobileDescription:
-            "Das Medium-Paket bietet ausgewogene Helligkeit mit 22% der Nestfläche. Perfekt für Wohn- und Arbeitsbereiche mit natürlichem Lichtbedarf.",
+            "Das Medium-Paket bietet ausgewogene Helligkeit mit 22% der ®Hoam Fläche. Perfekt für Wohn- und Arbeitsbereiche mit natürlichem Lichtbedarf.",
         image: IMAGES.hero.nestHaus1,
         backgroundColor: "#F4F4F4",
     },
@@ -341,11 +341,11 @@ export const BELICHTUNGSPAKET_CONTENT: ContentCardData[] = [
         title: "Belichtungspaket - Bright",
         subtitle: "Maximale Helligkeit",
         description:
-            "Das Bright-Paket bietet maximale Helligkeit mit 28% der Nestfläche als Fenster- und Türenöffnungen. Diese Konfiguration schafft lichtdurchflutete, offene Räume mit großzügiger Verglasung und optimaler Tageslichtnutzung. Perfekt für moderne Wohnkonzepte, die Transparenz, Weite und eine starke Verbindung zur Natur schaffen möchten. Die großflächigen Öffnungen ermöglichen spektakuläre Ausblicke und ein Gefühl von Grenzenlosigkeit.",
+            "Das Bright-Paket bietet maximale Helligkeit mit 28% der ®Hoam Fläche als Fenster- und Türenöffnungen. Diese Konfiguration schafft lichtdurchflutete, offene Räume mit großzügiger Verglasung und optimaler Tageslichtnutzung. Perfekt für moderne Wohnkonzepte, die Transparenz, Weite und eine starke Verbindung zur Natur schaffen möchten. Die großflächigen Öffnungen ermöglichen spektakuläre Ausblicke und ein Gefühl von Grenzenlosigkeit.",
         mobileTitle: "Belichtungspaket - Bright",
         mobileSubtitle: "Maximale Helligkeit",
         mobileDescription:
-            "Das Bright-Paket bietet maximale Helligkeit mit 28% der Nestfläche. Ideal für lichtdurchflutete, offene Wohnkonzepte mit großzügiger Verglasung.",
+            "Das Bright-Paket bietet maximale Helligkeit mit 28% der ®Hoam Fläche. Ideal für lichtdurchflutete, offene Wohnkonzepte mit großzügiger Verglasung.",
         image: IMAGES.hero.nestHaus3,
         backgroundColor: "#F4F4F4",
     },
@@ -494,7 +494,7 @@ export const KONTAKTFORMULAR_CONTENT: ContentCardData[] = [
 
 /**
  * ABLAUF STEPS CONTENT
- * Process steps showing how to build with Nest-Haus
+ * Process steps showing how to build with Hoam-House
  * Used in: Entdecken page
  */
 export const ABLAUF_STEPS_CONTENT: ContentCardData[] = [
@@ -503,7 +503,7 @@ export const ABLAUF_STEPS_CONTENT: ContentCardData[] = [
         title: "1. Konzept-Check",
         subtitle: "Der erste Schritt",
         description:
-            "Mit dem Konzept-Check erhältst du deine Grundstücksanalyse, deinen individuellen Entwurfsplan und eine konkrete Kostenplanung. \n\nSolltest du dich gegen den Bau deines Nest Hauses entscheiden, kannst du die Grundstücksanalyse auch für andere Bauvorhaben verwenden.",
+            "Mit dem Konzept-Check erhältst du deine Grundstücksanalyse, deinen individuellen Entwurfsplan und eine konkrete Kostenplanung. \n\nSolltest du dich gegen den Bau von Hoam entscheiden, kannst du die Grundstücksanalyse auch für andere Bauvorhaben verwenden.",
         backgroundColor: "#f4f4f4",
         iconNumber: 1,
     },
@@ -539,7 +539,7 @@ export const ABLAUF_STEPS_CONTENT: ContentCardData[] = [
         title: "5. Lieferung + Aufbau",
         subtitle: "In nur 6 Monaten",
         description:
-            "Sobald dein Fundament fertig ist, liefern wir dein Nest-Haus direkt zu dir. Unser erfahrenes Team übernimmt die Montage vor Ort, sodass dein Zuhause in kürzester Zeit steht.\n\nDie Kosten sind transparent geregelt und werden nach Bekanntgabe deines Bauplatzes exakt festgelegt.",
+            "Sobald dein Fundament fertig ist, liefern wir dein Hoam-House direkt zu dir. Unser erfahrenes Team übernimmt die Montage vor Ort, sodass dein Zuhause in kürzester Zeit steht.\n\nDie Kosten sind transparent geregelt und werden nach Bekanntgabe deines Bauplatzes exakt festgelegt.",
         backgroundColor: "#f4f4f4",
         iconNumber: 5,
     },
@@ -592,9 +592,9 @@ export const PLANUNGSPAKETE_CONTENT: PlanungspaketCardData[] = [
         backgroundColor: "#F4F4F4",
         grayWord: "Basis",
         extendedDescription:
-            "Nachdem dein Konzept-Check abgeschlossen ist, erstellen wir die vollständige und rechtlich korrekte Planung für dein zuständiges Bauamt. Im Planungspaket Basis bereiten wir alle notwendigen Unterlagen auf, die für den offiziellen Einreichprozess erforderlich sind. Dazu gehören die präzise Darstellung des geplanten Gebäudes auf deinem Grundstück, die Prüfung der örtlichen Bauvorschriften sowie die Berücksichtigung aller relevanten Abstände, Höhen und Flächen. \n \n Darüber hinaus stimmen wir technische Aspekte wie Stromversorgung, Wasser- und Kanalanschlüsse, Heizungsanschlussmöglichkeiten und Zufahrtswege sorgfältig ab. Auch Anforderungen zur Erschließung, zu Brandschutz oder zu besonderen Auflagen der Behörde werden berücksichtigt und in die Planung integriert. \n \n Mit dem Planungspaket Basis erhältst du eine genehmigungsfähige Einreichplanung und die Sicherheit, dass wir dich während des gesamten Bauprozesses begleiten und unterstützen, von den ersten Behördenschritten bis hin zur finalen Umsetzung deines Nest Hauses.",
+            "Nachdem dein Konzept-Check abgeschlossen ist, erstellen wir die vollständige und rechtlich korrekte Planung für dein zuständiges Bauamt. Im Planungspaket Basis bereiten wir alle notwendigen Unterlagen auf, die für den offiziellen Einreichprozess erforderlich sind. Dazu gehören die präzise Darstellung des geplanten Gebäudes auf deinem Grundstück, die Prüfung der örtlichen Bauvorschriften sowie die Berücksichtigung aller relevanten Abstände, Höhen und Flächen. \n \n Darüber hinaus stimmen wir technische Aspekte wie Stromversorgung, Wasser- und Kanalanschlüsse, Heizungsanschlussmöglichkeiten und Zufahrtswege sorgfältig ab. Auch Anforderungen zur Erschließung, zu Brandschutz oder zu besonderen Auflagen der Behörde werden berücksichtigt und in die Planung integriert. \n \n Mit dem Planungspaket Basis erhältst du eine genehmigungsfähige Einreichplanung und die Sicherheit, dass wir dich während des gesamten Bauprozesses begleiten und unterstützen, von den ersten Behördenschritten bis hin zur finalen Umsetzung deines Hoames.",
         mobileExtendedDescription:
-            "Nachdem dein Konzept-Check abgeschlossen ist, erstellen wir die vollständige und rechtlich korrekte Planung für dein zuständiges Bauamt. Im Planungspaket Basis bereiten wir alle notwendigen Unterlagen auf, die für den offiziellen Einreichprozess erforderlich sind. Dazu gehören die präzise Darstellung des geplanten Gebäudes auf deinem Grundstück, die Prüfung der örtlichen Bauvorschriften sowie die Berücksichtigung aller relevanten Abstände, Höhen und Flächen. \n \n Darüber hinaus stimmen wir technische Aspekte wie Stromversorgung, Wasser- und Kanalanschlüsse, Heizungsanschlussmöglichkeiten und Zufahrtswege sorgfältig ab. Auch Anforderungen zur Erschließung, zu Brandschutz oder zu besonderen Auflagen der Behörde werden berücksichtigt und in die Planung integriert. \n \n Mit dem Planungspaket Basis erhältst du eine genehmigungsfähige Einreichplanung und die Sicherheit, dass wir dich während des gesamten Bauprozesses begleiten und unterstützen, von den ersten Behördenschritten bis hin zur finalen Umsetzung deines Nest Hauses.",
+            "Nachdem dein Konzept-Check abgeschlossen ist, erstellen wir die vollständige und rechtlich korrekte Planung für dein zuständiges Bauamt. Im Planungspaket Basis bereiten wir alle notwendigen Unterlagen auf, die für den offiziellen Einreichprozess erforderlich sind. Dazu gehören die präzise Darstellung des geplanten Gebäudes auf deinem Grundstück, die Prüfung der örtlichen Bauvorschriften sowie die Berücksichtigung aller relevanten Abstände, Höhen und Flächen. \n \n Darüber hinaus stimmen wir technische Aspekte wie Stromversorgung, Wasser- und Kanalanschlüsse, Heizungsanschlussmöglichkeiten und Zufahrtswege sorgfältig ab. Auch Anforderungen zur Erschließung, zu Brandschutz oder zu besonderen Auflagen der Behörde werden berücksichtigt und in die Planung integriert. \n \n Mit dem Planungspaket Basis erhältst du eine genehmigungsfähige Einreichplanung und die Sicherheit, dass wir dich während des gesamten Bauprozesses begleiten und unterstützen, von den ersten Behördenschritten bis hin zur finalen Umsetzung deines Hoames.",
     },
     {
         id: 2,
@@ -611,9 +611,9 @@ export const PLANUNGSPAKETE_CONTENT: PlanungspaketCardData[] = [
         backgroundColor: "#F4F4F4",
         grayWord: "Plus",
         extendedDescription:
-            "Du möchtest Unterstützung bei der technischen Innenausbauplanung? Dann ist unser Plus-Paket genau das Richtige für dich. Es umfasst alle Leistungen des Basispakets, von der Einreichplanung bis zur Detailplanung und ergänzt sie um die komplette Haustechnikplanung: Elektrik, Sanitär, Abwasser und Innenausbau. \n \n Warum das sinnvoll ist? Weil du damit alle Leitungen, Anschlüsse und Einbauten frühzeitig mitplanst. Das spart Zeit, vermeidet Abstimmungsprobleme auf der Baustelle und sorgt dafür, dass dein Haus technisch von Anfang an durchdacht ist. \n \n Aber klar, wenn du die technische Planung lieber selbst übernehmen oder mit einem Partner deines Vertrauens umsetzen möchtest, ist das genauso möglich. Unser Nest-System ist so konzipiert, dass du flexibel bleibst und auch diesen Weg einfach gehen kannst. \n \n Das Plus-Paket ist unsere Lösung für dich, wenn du maximale Planungssicherheit willst. Alles aus einer Hand, alles bestens vorbereitet.",
+            "Du möchtest Unterstützung bei der technischen Innenausbauplanung? Dann ist unser Plus-Paket genau das Richtige für dich. Es umfasst alle Leistungen des Basispakets, von der Einreichplanung bis zur Detailplanung und ergänzt sie um die komplette Haustechnikplanung: Elektrik, Sanitär, Abwasser und Innenausbau. \n \n Warum das sinnvoll ist? Weil du damit alle Leitungen, Anschlüsse und Einbauten frühzeitig mitplanst. Das spart Zeit, vermeidet Abstimmungsprobleme auf der Baustelle und sorgt dafür, dass dein Haus technisch von Anfang an durchdacht ist. \n \n Aber klar, wenn du die technische Planung lieber selbst übernehmen oder mit einem Partner deines Vertrauens umsetzen möchtest, ist das genauso möglich. Unser Hoam-System ist so konzipiert, dass du flexibel bleibst und auch diesen Weg einfach gehen kannst. \n \n Das Plus-Paket ist unsere Lösung für dich, wenn du maximale Planungssicherheit willst. Alles aus einer Hand, alles bestens vorbereitet.",
         mobileExtendedDescription:
-            "Du möchtest Unterstützung bei der technischen Innenausbauplanung? Dann ist unser Plus-Paket genau das Richtige für dich. Es umfasst alle Leistungen des Basispakets, von der Einreichplanung bis zur Detailplanung und ergänzt sie um die komplette Haustechnikplanung: Elektrik, Sanitär, Abwasser und Innenausbau. \n \n Warum das sinnvoll ist? Weil du damit alle Leitungen, Anschlüsse und Einbauten frühzeitig mitplanst. Das spart Zeit, vermeidet Abstimmungsprobleme auf der Baustelle und sorgt dafür, dass dein Haus technisch von Anfang an durchdacht ist. \n \n Aber klar, wenn du die technische Planung lieber selbst übernehmen oder mit einem Partner deines Vertrauens umsetzen möchtest, ist das genauso möglich. Unser Nest-System ist so konzipiert, dass du flexibel bleibst und auch diesen Weg einfach gehen kannst. \n \n Das Plus-Paket ist unsere Lösung für dich, wenn du maximale Planungssicherheit willst. Alles aus einer Hand, alles bestens vorbereitet.",
+            "Du möchtest Unterstützung bei der technischen Innenausbauplanung? Dann ist unser Plus-Paket genau das Richtige für dich. Es umfasst alle Leistungen des Basispakets, von der Einreichplanung bis zur Detailplanung und ergänzt sie um die komplette Haustechnikplanung: Elektrik, Sanitär, Abwasser und Innenausbau. \n \n Warum das sinnvoll ist? Weil du damit alle Leitungen, Anschlüsse und Einbauten frühzeitig mitplanst. Das spart Zeit, vermeidet Abstimmungsprobleme auf der Baustelle und sorgt dafür, dass dein Haus technisch von Anfang an durchdacht ist. \n \n Aber klar, wenn du die technische Planung lieber selbst übernehmen oder mit einem Partner deines Vertrauens umsetzen möchtest, ist das genauso möglich. Unser Hoam-System ist so konzipiert, dass du flexibel bleibst und auch diesen Weg einfach gehen kannst. \n \n Das Plus-Paket ist unsere Lösung für dich, wenn du maximale Planungssicherheit willst. Alles aus einer Hand, alles bestens vorbereitet.",
     },
     {
         id: 3,
@@ -630,9 +630,9 @@ export const PLANUNGSPAKETE_CONTENT: PlanungspaketCardData[] = [
         backgroundColor: "#F4F4F4",
         grayWord: "Pro",
         extendedDescription:
-            "Du willst nicht nur planen, du willst gestalten. Mit Gefühl für Raum, Stil und Atmosphäre. \n \n Das Pro-Paket ergänzt die technischen und baurechtlichen Grundlagen der ersten beiden Pakete um eine umfassende gestalterische Ebene. Gemeinsam entwickeln wir ein Interiorkonzept, das deine Wünsche in Raumgefühl, Möblierung und Stil widerspiegelt. Die Küche wird funktional durchdacht und gestalterisch in das Gesamtkonzept eingebettet – alle Anschlüsse und Geräte exakt geplant. Ein stimmungsvolles Licht- und Beleuchtungskonzept bringt Leben in deine Räume, während harmonisch abgestimmte Farben und Materialien innen wie außen für ein rundes Gesamtbild sorgen. Auch der Garten und die Außenräume werden in die Planung miteinbezogen, sodass dein neues Zuhause nicht nur innen, sondern auch im Außenbereich überzeugt. \n \nMit dem Pro-Paket wird dein Nest-Haus zum Ausdruck deiner Persönlichkeit. Durchdacht, gestaltet und bereit zum Leben.",
+            "Du willst nicht nur planen, du willst gestalten. Mit Gefühl für Raum, Stil und Atmosphäre. \n \n Das Pro-Paket ergänzt die technischen und baurechtlichen Grundlagen der ersten beiden Pakete um eine umfassende gestalterische Ebene. Gemeinsam entwickeln wir ein Interiorkonzept, das deine Wünsche in Raumgefühl, Möblierung und Stil widerspiegelt. Die Küche wird funktional durchdacht und gestalterisch in das Gesamtkonzept eingebettet – alle Anschlüsse und Geräte exakt geplant. Ein stimmungsvolles Licht- und Beleuchtungskonzept bringt Leben in deine Räume, während harmonisch abgestimmte Farben und Materialien innen wie außen für ein rundes Gesamtbild sorgen. Auch der Garten und die Außenräume werden in die Planung miteinbezogen, sodass dein neues Zuhause nicht nur innen, sondern auch im Außenbereich überzeugt. \n \nMit dem Pro-Paket wird dein Hoam-House zum Ausdruck deiner Persönlichkeit. Durchdacht, gestaltet und bereit zum Leben.",
         mobileExtendedDescription:
-            "Du willst nicht nur planen, du willst gestalten. Mit Gefühl für Raum, Stil und Atmosphäre. \n \n Das Pro-Paket ergänzt die technischen und baurechtlichen Grundlagen der ersten beiden Pakete um eine umfassende gestalterische Ebene. Gemeinsam entwickeln wir ein Interiorkonzept, das deine Wünsche in Raumgefühl, Möblierung und Stil widerspiegelt. Die Küche wird funktional durchdacht und gestalterisch in das Gesamtkonzept eingebettet – alle Anschlüsse und Geräte exakt geplant. Ein stimmungsvolles Licht- und Beleuchtungskonzept bringt Leben in deine Räume, während harmonisch abgestimmte Farben und Materialien innen wie außen für ein rundes Gesamtbild sorgen. Auch der Garten und die Außenräume werden in die Planung miteinbezogen, sodass dein neues Zuhause nicht nur innen, sondern auch im Außenbereich überzeugt. \n \nMit dem Pro-Paket wird dein Nest-Haus zum Ausdruck deiner Persönlichkeit. Durchdacht, gestaltet und bereit zum Leben.",
+            "Du willst nicht nur planen, du willst gestalten. Mit Gefühl für Raum, Stil und Atmosphäre. \n \n Das Pro-Paket ergänzt die technischen und baurechtlichen Grundlagen der ersten beiden Pakete um eine umfassende gestalterische Ebene. Gemeinsam entwickeln wir ein Interiorkonzept, das deine Wünsche in Raumgefühl, Möblierung und Stil widerspiegelt. Die Küche wird funktional durchdacht und gestalterisch in das Gesamtkonzept eingebettet – alle Anschlüsse und Geräte exakt geplant. Ein stimmungsvolles Licht- und Beleuchtungskonzept bringt Leben in deine Räume, während harmonisch abgestimmte Farben und Materialien innen wie außen für ein rundes Gesamtbild sorgen. Auch der Garten und die Außenräume werden in die Planung miteinbezogen, sodass dein neues Zuhause nicht nur innen, sondern auch im Außenbereich überzeugt. \n \nMit dem Pro-Paket wird dein Hoam-House zum Ausdruck deiner Persönlichkeit. Durchdacht, gestaltet und bereit zum Leben.",
     },
 ];
 
@@ -680,7 +680,7 @@ export const VIDEO_BACKGROUND_CARDS_CONTENT: ContentCardData[] = [
         id: 2,
         title: "Keine Lebensentscheidung. Bleib flexibel.",
         subtitle: "",
-        description: "Warum Nest?",
+        description: "Warum ®Hoam?",
         video: IMAGES.videos.videoCard02,
         backgroundColor: "#F4F4F4",
         aspectRatio: "2x1", // Square format
@@ -706,7 +706,7 @@ export const VIDEO_BACKGROUND_CARDS_CONTENT: ContentCardData[] = [
                 text: "Das System verstehen",
                 variant: "secondary-narrow-white",
                 size: "xs",
-                link: "/nest-system",
+                link: "/hoam-system",
             },
         ],
     },
@@ -870,7 +870,7 @@ export const ENTWURF_VIDEO_CARDS_CONTENT: ContentCardData[] = [
                 link: "/warenkorb?mode=konzept-check",
             },
             {
-                text: "Warum mit Nest?",
+                text: "Warum mit ®Hoam?",
                 variant: "secondary-narrow-blue",
                 size: "xs",
                 link: "/warum-wir",
@@ -879,7 +879,7 @@ export const ENTWURF_VIDEO_CARDS_CONTENT: ContentCardData[] = [
     },
     {
         id: 2,
-        title: "So fühlt sich Wohnen im Nest Haus an",
+        title: "So fühlt sich Wohnen im ®Hoam an",
         subtitle: "",
         description: "Momente schaffen",
         image: IMAGES.function.nestHausInteriorKueche,
@@ -920,7 +920,7 @@ export const ENTWURF_VIDEO_CARDS_CONTENT: ContentCardData[] = [
     },
     {
         id: 5,
-        title: "Wohnen wie du willst, nur mit Nest",
+        title: "Wohnen wie du willst, nur mit ®Hoam",
         subtitle: "",
         description: "So funktioniert die Zukunft",
         image: IMAGES.function.nestHausInteriorSteinplatten,
@@ -943,7 +943,7 @@ export const PROCESS_CARDS_CONTENT: ContentCardData[] = [
         title: "Der Auftakt",
         subtitle: "",
         description:
-            "Dein Nest entsteht schnell, doch Individualität steht immer an erster Stelle. Mit deiner ersten Anzahlung erhältst du rechtliche Sicherheit und Klarheit darüber, ob dein Grundstück geeignet ist. Anschließend erstellen wir einen Konzept-Check, der deine Idee greifbar macht.\n\nDu entscheidest, ob du dein Zuhause bereits konfigurieren möchtest, um ein Gefühl für die Kosten zu bekommen, oder ob du ohne Konfiguration fortfährst. In beiden Fällen zahlst du nur für die rechtliche Prüfung und den Konzept-Check.",
+            "Ein Hoam-House entsteht schnell, doch Individualität steht immer an erster Stelle. Mit deiner ersten Anzahlung erhältst du rechtliche Sicherheit und Klarheit darüber, ob dein Grundstück geeignet ist. Anschließend erstellen wir einen Konzept-Check, der deine Idee greifbar macht.\n\nDu entscheidest, ob du dein Zuhause bereits konfigurieren möchtest, um ein Gefühl für die Kosten zu bekommen, oder ob du ohne Konfiguration fortfährst. In beiden Fällen zahlst du nur für die rechtliche Prüfung und den Konzept-Check.",
         image: IMAGES.function.nestHausEntwurfVorentwurf,
         backgroundColor: "#F4F4F4",
         buttons: [
@@ -957,7 +957,7 @@ export const PROCESS_CARDS_CONTENT: ContentCardData[] = [
                 text: "Unsere Technik",
                 variant: "landing-secondary-blue",
                 size: "xs",
-                link: "/nest-system",
+                link: "/hoam-system",
             },
         ],
     },
@@ -966,7 +966,7 @@ export const PROCESS_CARDS_CONTENT: ContentCardData[] = [
         title: "Die Basis",
         subtitle: "",
         description:
-            "Mit der Grundstücksanalyse, die Teil deiner ersten Anzahlung ist, erhältst du sofort rechtliche Sicherheit. Wir prüfen alle relevanten Grundlagen, damit dein Bauvorhaben auf festen Boden gestellt ist. \n\n Dabei analysieren wir, ob dein Grundstück den Vorgaben des Landesbaugesetzes, des Raumordnungsgesetzes und den örtlichen Bestimmungen entspricht.Zusätzlich prüfen wir, ob alle Voraussetzungen für den Aufbau deines Nest Hauses erfüllt sind.So kannst du von Anfang an mit Sicherheit planen.",
+            "Mit der Grundstücksanalyse, die Teil deiner ersten Anzahlung ist, erhältst du sofort rechtliche Sicherheit. Wir prüfen alle relevanten Grundlagen, damit dein Bauvorhaben auf festen Boden gestellt ist. \n\n Dabei analysieren wir, ob dein Grundstück den Vorgaben des Landesbaugesetzes, des Raumordnungsgesetzes und den örtlichen Bestimmungen entspricht.Zusätzlich prüfen wir, ob alle Voraussetzungen für den Aufbau deines Hoames erfüllt sind.So kannst du von Anfang an mit Sicherheit planen.",
         image: IMAGES.function.nestHausEntwurfVorentwurf,
         backgroundColor: "#F4F4F4",
         buttons: [
@@ -980,7 +980,7 @@ export const PROCESS_CARDS_CONTENT: ContentCardData[] = [
                 text: "Wie funktionierts?",
                 variant: "landing-secondary-blue",
                 size: "xs",
-                link: "/nest-system",
+                link: "/hoam-system",
             },
         ],
     },
@@ -1003,7 +1003,7 @@ export const PROCESS_CARDS_CONTENT: ContentCardData[] = [
                 text: "Unsere Technik",
                 variant: "landing-secondary-blue",
                 size: "xs",
-                link: "/nest-system",
+                link: "/hoam-system",
             },
         ],
     },
@@ -1144,7 +1144,7 @@ export const GLASS_QUOTE_CARDS_CONTENT: ContentCardData[] = [
         id: 3,
         title: "Wirtschaftskammer Steiermark",
         subtitle: "Auszeichnung Top 30 unter 30",
-        description: "Wegweisend <span class='text-nest-gray'>in</span> Technologie <span class='text-nest-gray'>und</span> nachhaltigem Bauen. <span class='text-nest-gray'>Nest setzt</span> neue Maßstäbe <span class='text-nest-gray'>für die</span> Zukunft.|||WKO Steiermark|||Von Jury gekürt",
+        description: "Wegweisend <span class='text-nest-gray'>in</span> Technologie <span class='text-nest-gray'>und</span> nachhaltigem Bauen. <span class='text-nest-gray'>Hoam setzt</span> neue Maßstäbe <span class='text-nest-gray'>für die</span> Zukunft.|||WKO Steiermark|||Von Jury gekürt",
         backgroundColor: "#121212",
         image: IMAGES.partners.wko, // TU-IAM logo
         externalLink: "https://www.wko.at", // Optional: link to WKO website

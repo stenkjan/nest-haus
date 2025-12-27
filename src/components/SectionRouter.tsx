@@ -6,7 +6,7 @@ import React from "react";
 
 interface Section {
   id: string;
-  title: string;
+  title: string | React.ReactNode;
   slug: string;
 }
 

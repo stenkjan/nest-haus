@@ -95,19 +95,85 @@ describe('🚀 Route Integration Tests', () => {
       console.log('✅ Warum-wir page endpoint exists')
     })
 
-    it('should render dein-nest page', async () => {
-      console.log('🔍 Testing dein-nest page...')
+    it('should redirect dein-Hoam to hoam (301)', async () => {
+      console.log('🔍 Testing dein-Hoam redirect...')
 
       const response = await fetch(`${BASE_URL}/dein-nest`, {
         method: 'GET',
         headers: {
           'Accept': 'text/html',
         },
+        redirect: 'manual', // Don't follow redirects automatically
       })
 
-      // Accept either success or redirect for static pages
-      expect([200, 301, 302, 404]).toContain(response.status)
-      console.log('✅ Dein-nest page endpoint exists')
+      // Should be a 301 permanent redirect
+      expect(response.status).toBe(301)
+      expect(response.headers.get('location')).toContain('/hoam')
+      console.log('✅ Dein-Hoam redirects to hoam correctly')
+    })
+
+    it('should redirect dein-hoam to hoam (301)', async () => {
+      console.log('🔍 Testing dein-hoam redirect...')
+
+      const response = await fetch(`${BASE_URL}/dein-hoam`, {
+        method: 'GET',
+        headers: {
+          'Accept': 'text/html',
+        },
+        redirect: 'manual', // Don't follow redirects automatically
+      })
+
+      // Should be a 301 permanent redirect
+      expect(response.status).toBe(301)
+      expect(response.headers.get('location')).toContain('/hoam')
+      console.log('✅ Dein-hoam redirects to hoam correctly')
+    })
+
+    it('should render hoam page directly', async () => {
+      console.log('🔍 Testing hoam page...')
+
+      const response = await fetch(`${BASE_URL}/hoam`, {
+        method: 'GET',
+        headers: {
+          'Accept': 'text/html',
+        },
+      })
+
+      // Should successfully render the page
+      expect(response.status).toBe(200)
+      console.log('✅ Hoam page renders successfully')
+    })
+
+    it('should redirect nest-system to hoam-system (301)', async () => {
+      console.log('🔍 Testing nest-system redirect...')
+
+      const response = await fetch(`${BASE_URL}/nest-system`, {
+        method: 'GET',
+        headers: {
+          'Accept': 'text/html',
+        },
+        redirect: 'manual', // Don't follow redirects automatically
+      })
+
+      // Should be a 301 permanent redirect
+      expect(response.status).toBe(301)
+      expect(response.headers.get('location')).toContain('/hoam-system')
+      console.log('✅ Nest-system redirects to hoam-system correctly')
+    })
+
+    it('should render hoam-system page directly', async () => {
+      console.log('🔍 Testing hoam-system page...')
+
+      const response = await fetch(`${BASE_URL}/hoam-system`, {
+        method: 'GET',
+        headers: {
+          'Accept': 'text/html',
+        },
+      })
+
+      // Should successfully render the page
+      expect(response.status).toBe(200)
+      console.log('✅ Hoam-system page renders successfully')
     })
 
     it('should render entwurf page', async () => {
@@ -123,21 +189,6 @@ describe('🚀 Route Integration Tests', () => {
       // Accept either success or redirect for static pages
       expect([200, 301, 302, 404]).toContain(response.status)
       console.log('✅ Entwurf page endpoint exists')
-    })
-
-    it('should render nest-system page', async () => {
-      console.log('🔍 Testing nest-system page...')
-
-      const response = await fetch(`${BASE_URL}/nest-system`, {
-        method: 'GET',
-        headers: {
-          'Accept': 'text/html',
-        },
-      })
-
-      // Accept either success or redirect for static pages
-      expect([200, 301, 302, 404]).toContain(response.status)
-      console.log('✅ Nest-system page endpoint exists')
     })
 
     it('should render dein-part page', async () => {

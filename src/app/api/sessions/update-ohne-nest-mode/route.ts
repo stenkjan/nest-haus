@@ -1,5 +1,5 @@
 /**
- * Update Ohne-Nest Mode Endpoint
+ * Update Ohne-Hoam Mode Endpoint
  * 
  * Updates the isOhneNestMode flag for a session when user navigates to warenkorb with ?mode=ohne-nest
  */
@@ -23,9 +23,9 @@ export async function POST(request: NextRequest) {
             }, { status: 400 });
         }
 
-        console.log(`🏠 Updating session ${sessionId} ohne-nest mode to: ${isOhneNestMode}`);
+        console.log(`🏠 Updating session ${sessionId} ohne-Hoam mode to: ${isOhneNestMode}`);
 
-        // Update session's ohne-nest mode flag
+        // Update session's ohne-Hoam mode flag
         await prisma.userSession.updateMany({
             where: { sessionId },
             data: {
@@ -34,7 +34,7 @@ export async function POST(request: NextRequest) {
             }
         });
 
-        console.log(`✅ Session ${sessionId} ohne-nest mode updated successfully`);
+        console.log(`✅ Session ${sessionId} ohne-Hoam mode updated successfully`);
 
         return NextResponse.json({
             success: true,
@@ -44,7 +44,7 @@ export async function POST(request: NextRequest) {
         });
 
     } catch (error) {
-        console.error('❌ Error updating ohne-nest mode:', error);
+        console.error('❌ Error updating ohne-Hoam mode:', error);
 
         // Return success to not block user experience
         return NextResponse.json({

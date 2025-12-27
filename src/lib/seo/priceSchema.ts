@@ -74,7 +74,7 @@ export function generateProductPriceSchema(
                 },
                 {
                     "@type": "PropertyValue",
-                    name: "Nest Modell",
+                    name: "Hoam Modell",
                     value: configuration.nest.name,
                 },
             ],

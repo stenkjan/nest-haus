@@ -20,11 +20,11 @@ interface _Configuration {
 // Simple price calculation without PriceCalculator dependency
 function calculateSimplePrice(config: _Configuration): number {
   if (!config.nest) return 0;
-  
+
   // Use combination logic inline to avoid import conflicts
   let totalPrice = 0;
-  
-  // Base price from nest selection - UPDATED TO MATCH GOOGLE SHEETS (December 2024)
+
+  // Base price from Hoam selection - UPDATED TO MATCH GOOGLE SHEETS (December 2024)
   const nestPrices: Record<string, number> = {
     'nest80': 213032,
     'nest100': 254731,
@@ -32,26 +32,26 @@ function calculateSimplePrice(config: _Configuration): number {
     'nest140': 338129,
     'nest160': 379828
   };
-  
+
   totalPrice = nestPrices[config.nest.value] || 0;
-  
+
   // Add additional components
   if (config.pvanlage && config.pvanlage.quantity) {
     totalPrice += (config.pvanlage.price || 0) * config.pvanlage.quantity;
   }
-  
+
   if (config.fenster && config.fenster.squareMeters) {
     totalPrice += (config.fenster.price || 0) * config.fenster.squareMeters;
   }
-  
+
   if (config.planungspaket) {
     totalPrice += config.planungspaket.price || 0;
   }
-  
+
   if (config.grundstueckscheck) {
     totalPrice += 1500; // GRUNDSTUECKSCHECK_PRICE
   }
-  
+
   return totalPrice;
 }
 
@@ -62,7 +62,7 @@ export async function POST(request: Request) {
 
     if (!config.nest) {
       return NextResponse.json(
-        { success: false, error: 'Nest type required' },
+        { success: false, error: 'Hoam type required' },
         { status: 400 }
       )
     }
@@ -84,8 +84,8 @@ export async function POST(request: Request) {
   } catch (error) {
     console.error('Failed to calculate price:', error)
     return NextResponse.json(
-      { 
-        success: false, 
+      {
+        success: false,
         error: 'Failed to calculate price',
         timestamp: Date.now()
       },

@@ -22,15 +22,15 @@ const defaultFAQItems: FAQItem[] = [
   {
     id: 1,
     question:
-      "Was genau ist ein Nest Haus und wie unterscheidet es sich von einem Fertigteilhaus, Tiny House oder Architektenhaus?",
+      "Was genau ist ®Hoam und wie unterscheidet es sich von einem Fertigteilhaus, Tiny House oder Architektenhaus?",
     answer:
-      "Das Nest Haus versucht durch optimierte Produktionsbedingungen eine enorm hohe Qualität – vergleichbar mit Luxus-Architektenhäusern – leistbar zu machen. Darüber hinaus ermöglichen wir trotz Standardisierung weiterhin individuelle Gestaltungsmöglichkeiten bei der Raumaufteilung und Grundrissplanung. Die hochpräzise Produktion macht es uns möglich, die Module so passgenau zu fertigen, dass sie mehrmals zusammen- und wieder auseinandergebaut werden können. Dadurch entsteht eine Flexibilität ähnlich wie bei einem Tiny House: Du kannst flexibel bleiben und dein Haus mitnehmen, erweitern oder verkaufen. Das Grundstück bleibt dabei stets unabhängig vom Haus.",
+      "®Hoam versucht durch optimierte Produktionsbedingungen eine enorm hohe Qualität – vergleichbar mit Luxus-Architektenhäusern – leistbar zu machen. Darüber hinaus ermöglichen wir trotz Standardisierung weiterhin individuelle Gestaltungsmöglichkeiten bei der Raumaufteilung und Grundrissplanung. Die hochpräzise Produktion macht es uns möglich, die Module so passgenau zu fertigen, dass sie mehrmals zusammen- und wieder auseinandergebaut werden können. Dadurch entsteht eine Flexibilität ähnlich wie bei einem Tiny House: Du kannst flexibel bleiben und dein Haus mitnehmen, erweitern oder verkaufen. Das Grundstück bleibt dabei stets unabhängig vom Haus.",
   },
   {
     id: 2,
     question: "Was ist der Konzept-Check?",
     answer:
-      "Mit dem Konzept-Check erhältst du deine Grundstücksanalyse, einen individuellen Entwurfsplan sowie eine konkrete Kosten- und Zeitplanung. Solltest du dich gegen den Bau deines Nest Hauses entscheiden, kannst du die Grundstücksanalyse auch für andere Bauvorhaben verwenden.",
+      "Mit dem Konzept-Check erhältst du deine Grundstücksanalyse, einen individuellen Entwurfsplan sowie eine konkrete Kosten- und Zeitplanung. Solltest du dich gegen ®Hoam entscheiden, kannst du die Grundstücksanalyse auch für andere Bauvorhaben verwenden.",
   },
   {
     id: 3,
@@ -41,9 +41,9 @@ const defaultFAQItems: FAQItem[] = [
   },
   {
     id: 4,
-    question: "Was kostet ein Nest Haus?",
+    question: "Was kostet ®Hoam?",
     answer:
-      "Der exakte Preis ist abhängig von deinem individuellen Nest-Entwurf. Diesen arbeiten wir gemeinsam im Konzept-Check aus. Danach erhältst du ein konkretes Angebot für Dein ®Hoam.",
+      "Der exakte Preis ist abhängig von deinem individuellen ®Hoam-Entwurf. Diesen arbeiten wir gemeinsam im Konzept-Check aus. Danach erhältst du ein konkretes Angebot für ®Hoam.",
   },
 ];
 
@@ -100,9 +100,8 @@ export default function FAQSection({
 
           {/* Arrow Icon with Circle Background */}
           <div
-            className={`flex-shrink-0 w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-[#f4f4f4] flex items-center justify-center transition-transform duration-300 ${
-              isOpen ? "rotate-90" : ""
-            }`}
+            className={`flex-shrink-0 w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-[#f4f4f4] flex items-center justify-center transition-transform duration-300 ${isOpen ? "rotate-90" : ""
+              }`}
           >
             <svg
               className="w-4 h-4 sm:w-5 sm:h-5 text-gray-700"

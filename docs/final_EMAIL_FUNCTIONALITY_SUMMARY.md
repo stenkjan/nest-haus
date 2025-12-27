@@ -2,7 +2,7 @@
 
 ## Complete Guide to Email System, Calendar Integration & Configuration
 
-**Project**: Nest-Haus Configurator  
+**Project**: Hoam-House Configurator  
 **Last Updated**: November 27, 2025  
 **Status**: ✅ nest-haus.com Root Domain Configuration Active with ICS RSVP System
 
@@ -542,7 +542,7 @@ CRON_SECRET=your-secure-cron-secret-here
   - Each configuration item (Nest model, Gebäudehülle, Innenverkleidung, Fußboden, PV-Anlage, Fenster)
   - Item names and individual prices
 - ✅ **Dein Nest - Überblick** section showing:
-  - Total house price (Dein Nest Haus)
+  - Total house price (Dein Hoam)
   - Planungspaket (if selected) with price
   - Konzept-Check (if completed) with price
   - Terminvereinbarung status (if booked)

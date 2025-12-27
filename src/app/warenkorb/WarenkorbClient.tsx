@@ -55,11 +55,11 @@ export default function WarenkorbClient() {
   // Track begin_checkout event when user enters warenkorb
   useEffect(() => {
     if (typeof window === 'undefined') return;
-    
+
     // Prevent duplicate tracking on same page load
     const hasTrackedCheckout = sessionStorage.getItem('checkout_tracked');
     if (hasTrackedCheckout === 'true') return;
-    
+
     // Only track if there are items in cart (konzept-check mode always has 1 item)
     if (items.length === 0) return;
 
@@ -67,15 +67,15 @@ export default function WarenkorbClient() {
 
     // Determine if user has house configuration
     const hasHouseConfig = items.some(item => 'nest' in item && item.nest);
-    
+
     // Get house configuration value for custom dimension
-    const houseConfigValue = hasHouseConfig 
+    const houseConfigValue = hasHouseConfig
       ? (items.find(item => 'nest' in item && item.nest) as ConfigurationCartItem)?.totalPrice || 0
       : 0;
 
     // Build items array for GA4
     const checkoutItems = [];
-    
+
     // Always include Konzept-Check as the payable item
     checkoutItems.push({
       item_id: 'KONZEPT-CHECK-001',
@@ -91,7 +91,7 @@ export default function WarenkorbClient() {
       if (configItem && 'nest' in configItem) {
         checkoutItems.push({
           item_id: `HOUSE-CONF-${configItem.sessionId?.substring(0, 8) || 'TEMP'}`,
-          item_name: configItem.nest?.name || 'Nest Haus Konfiguration',
+          item_name: configItem.nest?.name || '®Hoam Konfiguration',
           item_category: 'house_configuration',
           price: 0, // Not being paid for now, included for context only
           quantity: 1,
@@ -121,7 +121,7 @@ export default function WarenkorbClient() {
     const handleBeforeUnload = () => {
       sessionStorage.removeItem('checkout_tracked');
     };
-    
+
     window.addEventListener('beforeunload', handleBeforeUnload);
     return () => window.removeEventListener('beforeunload', handleBeforeUnload);
   }, []);
@@ -182,7 +182,7 @@ export default function WarenkorbClient() {
   // Set default hash after component mounts to avoid setState during render
   useEffect(() => {
     if (typeof window !== "undefined") {
-      // Check for ohne-nest mode from URL params
+      // Check for ohne-Hoam mode from URL params
       const urlParams = new URLSearchParams(window.location.search);
       const mode = urlParams.get("mode");
 
@@ -314,7 +314,7 @@ export default function WarenkorbClient() {
         const newUrl = new URL(window.location.href);
         newUrl.searchParams.delete("mode");
         window.history.replaceState({}, "", newUrl.toString());
-        
+
         // CRITICAL FIX: Set correct hash for configuration mode immediately
         if (!window.location.hash || window.location.hash === "#konzept-check") {
           window.history.replaceState(null, "", "#übersicht");
@@ -339,7 +339,7 @@ export default function WarenkorbClient() {
           newUrl.searchParams.delete("mode");
           window.history.replaceState({}, "", newUrl.toString());
         }
-        
+
         // Set correct hash for konzept-check mode
         if (!window.location.hash || window.location.hash === "#übersicht") {
           window.history.replaceState(null, "", "#konzept-check");
@@ -548,18 +548,18 @@ export default function WarenkorbClient() {
         // Compare configurations to see if update is needed
         const configChanged =
           existingItem.gebaeudehuelle?.value !==
-            cartConfig.gebaeudehuelle?.value ||
+          cartConfig.gebaeudehuelle?.value ||
           existingItem.innenverkleidung?.value !==
-            cartConfig.innenverkleidung?.value ||
+          cartConfig.innenverkleidung?.value ||
           existingItem.fussboden?.value !== cartConfig.fussboden?.value ||
           existingItem.bodenaufbau?.value !== cartConfig.bodenaufbau?.value ||
           existingItem.geschossdecke?.value !==
-            cartConfig.geschossdecke?.value ||
+          cartConfig.geschossdecke?.value ||
           existingItem.geschossdecke?.quantity !==
-            cartConfig.geschossdecke?.quantity ||
+          cartConfig.geschossdecke?.quantity ||
           existingItem.fundament?.value !== cartConfig.fundament?.value ||
           existingItem.belichtungspaket?.value !==
-            cartConfig.belichtungspaket?.value ||
+          cartConfig.belichtungspaket?.value ||
           existingItem.pvanlage?.value !== cartConfig.pvanlage?.value ||
           existingItem.pvanlage?.quantity !== cartConfig.pvanlage?.quantity ||
           existingItem.fenster?.value !== cartConfig.fenster?.value ||
@@ -690,7 +690,7 @@ export default function WarenkorbClient() {
   // Helper function to get display names for categories
   const getCategoryDisplayName = (category: string): string => {
     const categoryNames: Record<string, string> = {
-      nest: "Nest",
+      nest: "®Hoam",
       gebaeudehuelle: "Gebäudehülle",
       innenverkleidung: "Innenverkleidung",
       fussboden: "Bodenbelag",
@@ -715,7 +715,7 @@ export default function WarenkorbClient() {
       } else if (item.grundstueckscheck && !item.nest) {
         return "Grundstücksanalyse";
       } else {
-        return "Nest Konfiguration";
+        return "®Hoam Konfiguration";
       }
     } else {
       if ("name" in item) {
@@ -849,7 +849,7 @@ export default function WarenkorbClient() {
                   Ihr Warenkorb ist leer
                 </h2>
                 <p className="text-gray-600 mb-8">
-                  Konfigurieren Sie Ihr Nest-Haus, um es zum Warenkorb
+                  Konfigurieren Sie Ihr Hoam-House, um es zum Warenkorb
                   hinzuzufügen.
                 </p>
                 <Link

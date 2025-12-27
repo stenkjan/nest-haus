@@ -33,35 +33,35 @@ const ImageGallery: React.FC<ImageGalleryProps> = ({
   const defaultGalleryImages: ImageProps[] = useMemo(() => [
     {
       src: IMAGES.hero.nestHaus1,
-      alt: "NEST Haus Berg Vision Austria Swiss Holzlattung Lärche",
+      alt: "Hoam House Berg Vision Austria Swiss Holzlattung Lärche",
     },
     {
       src: IMAGES.hero.nestHaus2,
-      alt: "NEST Haus 7 Module Ansicht Weisse Fassadenplatten",
+      alt: "Hoam House 7 Module Ansicht Weisse Fassadenplatten",
     },
     {
       src: IMAGES.hero.nestHaus3,
-      alt: "NEST Haus 3 Gebäude Vogelperspektive Holzlattung Lärche",
+      alt: "Hoam House 3 Gebäude Vogelperspektive Holzlattung Lärche",
     },
     {
       src: IMAGES.hero.nestHaus4,
-      alt: "NEST Haus 2 Gebäude Schnee Stirnseite Schwarze Trapezblech Fassade",
+      alt: "Hoam House 2 Gebäude Schnee Stirnseite Schwarze Trapezblech Fassade",
     },
     {
       src: IMAGES.hero.nestHaus5,
-      alt: "NEST Haus 6 Module Wald Ansicht Schwarze Fassadenplatten",
+      alt: "Hoam House 6 Module Wald Ansicht Schwarze Fassadenplatten",
     },
     {
       src: IMAGES.hero.nestHaus6,
-      alt: "NEST Haus 4 Module Ansicht Meer Mediterran Stirnseite Holzlattung Lärche",
+      alt: "Hoam House 4 Module Ansicht Meer Mediterran Stirnseite Holzlattung Lärche",
     },
     {
       src: IMAGES.hero.nestHaus7,
-      alt: "NEST Haus Innenperspektive Kalkstein Holz Verglasung Stirnseite",
+      alt: "Hoam House Innenperspektive Kalkstein Holz Verglasung Stirnseite",
     },
     {
       src: IMAGES.hero.nestHaus8,
-      alt: "NEST Haus Innenperspektive Schwarze Innenverkleidung Fichte Parkett Eiche",
+      alt: "Hoam House Innenperspektive Schwarze Innenverkleidung Fichte Parkett Eiche",
     },
   ], []);
 

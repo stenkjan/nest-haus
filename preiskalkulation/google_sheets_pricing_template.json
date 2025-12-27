@@ -2,7 +2,7 @@
   "metadata": {
     "version": "1.0.0",
     "created": "2025-11-04T14:30:11.491658",
-    "description": "Nest-Haus Configurator Pricing Template"
+    "description": "Hoam-House Configurator Pricing Template"
   },
   "tabs": [
     {
@@ -11,7 +11,7 @@
         "Gebäudehülle",
         "Innenverkleidung",
         "Fussboden",
-        "Base Price (Nest 80)",
+        "Base Price (Hoam 80)",
         "Per Module Price",
         "Notes"
       ],
@@ -333,7 +333,7 @@
       "name": "Size-Dependent Pricing",
       "columns": [
         "Component",
-        "Base Price (Nest 80)",
+        "Base Price (Hoam 80)",
         "Scaling Factor",
         "Formula",
         "Notes"

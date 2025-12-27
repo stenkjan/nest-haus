@@ -1,5 +1,5 @@
 """
-Price Audit Script for Nest-Haus Configurator
+Price Audit Script for Hoam-House Configurator
 ==============================================
 
 This script reads the Excel price table (Preiskalkulation.xlsx) and displays

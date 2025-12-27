@@ -69,7 +69,7 @@ const boxesData = [
   {
     id: 3,
     label: "Für Vorrausdenker",
-    title: "Dein ®Hoam Haus",
+    title: "®Hoam House",
     hasButton: true,
     hasBorder: true,
     items: [
@@ -113,9 +113,8 @@ const Box: React.FC<BoxProps> = ({ data, layout }) => {
           <li key={index} className="flex items-start gap-3">
             {item.type === "check" ? <CheckmarkBullet /> : <CircleBullet />}
             <span
-              className={`p-primary-small ${
-                item.type === "check" ? "text-black" : "text-[#9CA3AF]"
-              }`}
+              className={`p-primary-small ${item.type === "check" ? "text-black" : "text-[#9CA3AF]"
+                }`}
             >
               {item.text}
             </span>
@@ -154,7 +153,7 @@ export default function ModulhausVergleichSection() {
             <h2 className="h2-title text-black mb-3 md:mb-4">
               Die smarte Wahl treffen
             </h2>
-            <p className="p-primary text-black">Weniger Kompromiss Mehr Nest</p>
+            <p className="p-primary text-black">Weniger Kompromiss Mehr Hoam</p>
           </div>
 
           {/* Three Boxes Stacked */}
@@ -172,7 +171,7 @@ export default function ModulhausVergleichSection() {
             <h2 className="h2-title text-black mb-3 md:mb-4">
               Die smarte Wahl treffen
             </h2>
-            <p className="p-primary text-black">Weniger Kompromiss Mehr Nest</p>
+            <p className="p-primary text-black">Weniger Kompromiss Mehr Hoam</p>
           </div>
 
           {/* Three Boxes in Grid */}
@@ -192,7 +191,7 @@ export default function ModulhausVergleichSection() {
                 Die smarte Wahl treffen
               </h2>
               <p className="p-primary text-black">
-                Weniger Kompromiss Mehr Nest
+                Weniger Kompromiss Mehr Hoam
               </p>
             </div>
           </div>

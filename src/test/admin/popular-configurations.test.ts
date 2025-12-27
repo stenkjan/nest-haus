@@ -173,7 +173,7 @@ describe('Popular Configurations Service', () => {
     });
 
     describe('Selection Statistics', () => {
-        it('should group configurations by nest type', async () => {
+        it('should group configurations by Hoam type', async () => {
             const sessions = await prisma.userSession.findMany({
                 where: {
                     configurationData: {

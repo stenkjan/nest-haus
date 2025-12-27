@@ -51,7 +51,7 @@ const LandingImagesCarousel: React.FC<LandingImagesCarouselProps> = ({
         mobilePath: IMAGES.hero.mobile.nestHaus1,
         alt: "Hoam Bild 1",
         description: {
-          title: "Nest 140",
+          title: "Hoam 140",
           subtitle: "Fassadenplatten Weiss",
           sectionSlug: "dein-Hoam", // Use slug instead of sectionId
         },
@@ -61,7 +61,7 @@ const LandingImagesCarousel: React.FC<LandingImagesCarouselProps> = ({
         mobilePath: IMAGES.hero.mobile.nestHaus2,
         alt: "Hoam Bild 2",
         description: {
-          title: "Nest 100",
+          title: "Hoam 100",
           subtitle: "Mediterrane Ansicht",
           sectionSlug: "design-im-freistil",
         },
@@ -71,7 +71,7 @@ const LandingImagesCarousel: React.FC<LandingImagesCarouselProps> = ({
         mobilePath: IMAGES.hero.mobile.nestHaus3,
         alt: "Hoam Bild 3",
         description: {
-          title: "Nest Interior",
+          title: "Hoam Interior",
           subtitle: "Kalkstein Verglasung",
           sectionSlug: "visionen-brauchen-raeume",
         },
@@ -81,9 +81,9 @@ const LandingImagesCarousel: React.FC<LandingImagesCarouselProps> = ({
         mobilePath: IMAGES.hero.mobile.nestHaus4,
         alt: "Hoam Bild 4",
         description: {
-          title: "Nest 140",
+          title: "Hoam 140",
           subtitle: "Vogelperspektive Holzlattung",
-          sectionSlug: "dein-nest-haus",
+          sectionSlug: "dein-hoam-house",
         },
       },
       {
@@ -91,7 +91,7 @@ const LandingImagesCarousel: React.FC<LandingImagesCarouselProps> = ({
         mobilePath: IMAGES.hero.mobile.nestHaus5,
         alt: "Hoam Bild 5",
         description: {
-          title: "Nest 80",
+          title: "Hoam 80",
           subtitle: "Stirnseite Trapezblech",
           sectionSlug: "keine-lebensentscheidung",
         },
@@ -101,7 +101,7 @@ const LandingImagesCarousel: React.FC<LandingImagesCarouselProps> = ({
         mobilePath: IMAGES.hero.mobile.nestHaus6,
         alt: "Hoam Bild 6",
         description: {
-          title: "Nest Interior",
+          title: "Hoam Interior",
           subtitle: "Innenverkleidung Fichte, Parkett Eiche",
           sectionSlug: "wohnen-neu-gedacht",
         },
@@ -111,7 +111,7 @@ const LandingImagesCarousel: React.FC<LandingImagesCarouselProps> = ({
         mobilePath: IMAGES.hero.mobile.nestHaus7,
         alt: "Hoam Bild 7",
         description: {
-          title: "Nest 140",
+          title: "Hoam 140",
           subtitle: "Wald Ansicht Schwarz",
           sectionSlug: "wohnen-ohne-grenzen",
         },
@@ -293,32 +293,40 @@ const LandingImagesCarousel: React.FC<LandingImagesCarouselProps> = ({
         >
           <div className="relative w-screen -ml-[calc((100vw-100%)/2)] -mr-[calc((100vw-100%)/2)]">
             <div className="flex items-center" style={trackStyle}>
-              {infiniteImages.map((img, idx) => (
-                <div
-                  key={idx}
-                  className="flex-shrink-0 px-2"
-                  style={{ width: `${imageWidth}px` }}
-                >
-                  {isMobile && !forceDesktopImages ? (
-                    <Link
-                      href={`/#${img.description.sectionSlug}`}
-                      className="relative block w-full transition-transform duration-300 hover:scale-[1.02] hover:z-10"
-                    >
+              {infiniteImages.map((img, idx) => {
+                // Determine which image to use: desktop images when forceDesktopImages is true, otherwise use mobile on small screens
+                const useDesktopImage = forceDesktopImages || !isMobile;
+                const imagePath = useDesktopImage ? img.path : img.mobilePath;
+                const imageHeight = useDesktopImage
+                  ? Math.round(imageWidth * 0.5625) // 16:9 on desktop
+                  : Math.round(imageWidth * 1.333);  // 3:4 on mobile
+
+                return (
+                  <div
+                    key={idx}
+                    className="flex-shrink-0 px-2"
+                    style={{ width: `${imageWidth}px` }}
+                  >
+                    <div className="relative w-full transition-transform duration-300 hover:scale-[1.02] hover:z-10">
+                      {/* Image - always desktop image when forceDesktopImages is true */}
                       <HybridBlobImage
-                        path={img.mobilePath}
+                        path={imagePath}
                         alt={img.alt}
                         strategy="client"
                         isInteractive={true}
                         enableCache={true}
                         width={imageWidth}
-                        height={Math.round(imageWidth * 1.333)} // 3:4 on mobile (4/3)
+                        height={imageHeight}
                         className="object-cover"
                         sizes={`${imageWidth}px`}
                         priority={idx === 0}
                       />
 
-                      {/* Mobile Description Overlay - Only title and "Beispiele" */}
-                      <div className="md:hidden absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent p-3">
+                      {/* Mobile Description Overlay - Only title and "Beispiele" - Shows on mobile screens */}
+                      <Link
+                        href={`/#${img.description.sectionSlug}`}
+                        className="md:hidden absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent p-3"
+                      >
                         <div className="flex justify-between items-end">
                           {/* Left side - Title only */}
                           <div className="text-white flex-1 pr-4">
@@ -327,36 +335,17 @@ const LandingImagesCarousel: React.FC<LandingImagesCarouselProps> = ({
                             </h3>
                           </div>
 
-                          {/* Right side - "Beispiele" label (container is clickable) */}
+                          {/* Right side - "Beispiele" label */}
                           <div className="flex-shrink-0">
                             <span className="p-primary-small2 text-white hover:text-gray-200 transition-colors duration-200 whitespace-nowrap underline">
                               Beispiele
                             </span>
                           </div>
                         </div>
-                      </div>
-                    </Link>
-                  ) : (
-                    <div className="relative w-full transition-transform duration-300 hover:scale-[1.02] hover:z-10">
-                      {/* Desktop: Image without link wrapper (text overlay has link) */}
-                      <HybridBlobImage
-                        path={img.path}
-                        alt={img.alt}
-                        strategy="client"
-                        isInteractive={true}
-                        enableCache={true}
-                        width={imageWidth}
-                        height={Math.round(imageWidth * 0.5625)} // 16:9 on desktop (9/16)
-                        className="object-cover"
-                        sizes={`${imageWidth}px`}
-                        priority={idx === 0}
-                      />
+                      </Link>
 
-                      {/* Desktop Description Overlay - Full version */}
-                      <div
-                        className={`${forceDesktopImages ? "block" : "hidden md:block"} absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent p-3 sm:p-4 lg:p-6`}
-                      >
-                        {/* Flex container for positioning */}
+                      {/* Desktop Description Overlay - Full version - Shows on desktop screens */}
+                      <div className="hidden md:block absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent p-3 sm:p-4 lg:p-6">
                         <div className="flex justify-between items-end">
                           {/* Left side - Title and Subtitle */}
                           <div className="text-white flex-1 pr-4">
@@ -393,9 +382,9 @@ const LandingImagesCarousel: React.FC<LandingImagesCarouselProps> = ({
                         </div>
                       </div>
                     </div>
-                  )}
-                </div>
-              ))}
+                  </div>
+                );
+              })}
             </div>
           </div>
 

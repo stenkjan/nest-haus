@@ -12,6 +12,7 @@ import { prisma } from '@/lib/prisma';
 import { SessionManager } from '@/lib/redis';
 import { getLocationFromIP, parseReferrer } from '@/services/geolocation-service';
 import { BotDetector } from '@/lib/security/BotDetector';
+import { isDatabaseAvailable, isRedisAvailable, isProductionEnvironment } from '@/lib/utils/environment';
 import crypto from 'crypto';
 
 /**
@@ -58,6 +59,35 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({
         error: 'Missing required interaction fields: eventType, category'
       }, { status: 400 });
+    }
+
+    // Check if tracking services are available
+    const dbAvailable = isDatabaseAvailable();
+    const redisAvailable = isRedisAvailable();
+
+    if (!dbAvailable || !redisAvailable) {
+      if (!isProductionEnvironment()) {
+        // In development, gracefully degrade - tracking is optional
+        console.warn('⚠️ Tracking disabled: Database or Redis not configured');
+        console.log(`📊 Would track: ${eventType} on ${category} (dev mode, services unavailable)`);
+        return NextResponse.json({
+          success: true,
+          message: 'Tracking skipped (dev mode, services unavailable)',
+          devMode: true,
+          data: {
+            sessionId,
+            eventType,
+            category,
+            timestamp: new Date().toISOString()
+          }
+        });
+      } else {
+        // In production, this is a critical error
+        console.error('❌ CRITICAL: Tracking services not configured in production');
+        return NextResponse.json({
+          error: 'Database services not configured'
+        }, { status: 500 });
+      }
     }
 
     const startTime = Date.now();
@@ -313,6 +343,30 @@ export async function GET(request: NextRequest) {
       return NextResponse.json({
         error: 'Missing sessionId parameter'
       }, { status: 400 });
+    }
+
+    // Check if database is available
+    if (!isDatabaseAvailable()) {
+      if (!isProductionEnvironment()) {
+        console.warn('⚠️ Cannot retrieve interactions: Database not configured');
+        return NextResponse.json({
+          success: true,
+          devMode: true,
+          data: {
+            sessionId,
+            interactionCount: 0,
+            interactions: [],
+            performance: {
+              averageProcessingTime: 0,
+              trackingEfficiency: 'disabled'
+            }
+          }
+        });
+      } else {
+        return NextResponse.json({
+          error: 'Database not configured'
+        }, { status: 500 });
+      }
     }
 
     // Retrieve interaction history for session

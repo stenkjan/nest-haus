@@ -79,7 +79,7 @@ const VideoGallery: React.FC<VideoGalleryProps> = ({
             />
             {/* Accessibility description for screen readers */}
             <span className="sr-only">
-              Video demonstration of NEST-Haus modular construction variants
+              Video demonstration of Hoam-House modular construction variants
               showing different architectural configurations and possibilities
             </span>
           </div>

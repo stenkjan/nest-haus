@@ -11,6 +11,7 @@
  * - Enhanced ecommerce tracking
  * - User demographics collection
  * - Cross-device tracking with Google Signals
+ * - Cross-domain tracking for nest-haus.at and da-hoam.at
  *
  * IMPORTANT: Consent mode is configured BEFORE gtag script loads to ensure
  * proper consent initialization (Google's best practice)
@@ -134,7 +135,11 @@ export default function GoogleAnalyticsProvider({
               cookie_domain: 'auto',
               cookie_expires: 63072000,
               // Enable cookieless pings when consent is denied
-              send_page_view: true
+              send_page_view: true,
+              // Cross-domain tracking for nest-haus.at and da-hoam.at
+              linker: {
+                domains: ['nest-haus.at', 'da-hoam.at']
+              }
             });
           `,
         }}

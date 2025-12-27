@@ -16,7 +16,7 @@ export default function Footer() {
     {
       title: "Überblick",
       items: [
-        { text: "Home", href: "/#dein-hoam-haus" },
+        { text: "Home", href: "/#hoam-house" },
         { text: "Kontakt", href: "/kontakt" },
         { text: "Konfigurator", href: "/konfigurator" },
         { text: "Warenkorb", href: "/warenkorb?mode=konzept-check" },
@@ -24,13 +24,13 @@ export default function Footer() {
       ],
     },
     {
-      title: "Dein ®Hoam",
+      title: "®Hoam",
       items: [
-        { text: "Preise", href: "/dein-hoam#preise" },
-        { text: "Position am Markt", href: "/dein-hoam#position-am-markt" },
-        { text: "Haus Konfigurator", href: "/dein-hoam#haus-konfiguraton" },
-        { text: "Vorteile", href: "/dein-hoam#vorteile-hoam" },
-        { text: "Transportabilität", href: "/dein-hoam#transport" },
+        { text: "Preise", href: "/hoam#preise" },
+        { text: "Position am Markt", href: "/hoam#position-am-markt" },
+        { text: "Haus Konfigurator", href: "/hoam#haus-konfiguraton" },
+        { text: "Vorteile", href: "/hoam#vorteile-hoam" },
+        { text: "Transportabilität", href: "/hoam#transport" },
       ],
     },
     {
@@ -120,7 +120,7 @@ export default function Footer() {
       <div className="w-full max-w-[1536px] mx-auto px-4 sm:px-6 lg:px-8 py-6">
         <div className="flex flex-col md:flex-row justify-between items-center text-[clamp(12px,2.2vw,14px)] text-gray-500 space-y-4 md:space-y-0">
           <div>
-            <p>Copyright © {currentYear} Nest-Haus. Alle Rechte vorbehalten.</p>
+            <p>Copyright © {currentYear} Hoam-House. Alle Rechte vorbehalten.</p>
           </div>
 
           <div className="flex space-x-6">

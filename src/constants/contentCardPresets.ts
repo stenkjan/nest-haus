@@ -106,7 +106,7 @@ export const setIconCreator = (creator: typeof createSquareTextCardIcon) => {
 
 /**
  * Preset: Process Steps ("So läuft's ab")
- * 7-step process showing how to build with Nest-Haus
+ * 7-step process showing how to build with Hoam-House
  * 
  * Re-exported from cardContent.ts for backwards compatibility
  */
@@ -121,7 +121,7 @@ export const ABLAUF_STEPS_BUTTONS = [
         text: "Anleitung als PDF",
         variant: "primary" as const,
         size: "xs" as const,
-        file: "20250708-Ikea-Layout-A5", // Clean path (API adds files/ prefix and resolves hash/extension)
+        file: "2025-12-24-Bauanleitung-Layout-A5", // Clean path (API adds files/ prefix and resolves hash/extension)
         fileMode: "open" as const, // Open in new tab
     },
 ];
@@ -207,7 +207,7 @@ export const PLANUNGSPAKETE_PRESET = {
  * CARD STRUCTURE:
  * ----------------
  * Card 1: "Architektur fühlen,\nstatt nur sehen" (2x2, h2, reversed order, 2 buttons)
- * Card 2: "So fühlt sich Wohnen im Nest Haus an" (2x1)
+ * Card 2: "So fühlt sich Wohnen im Hoam Haus an" (2x1)
  * Card 3: "Wohnen wie du willst, Nur mit Nest" (2x1)
  * Card 4+: Additional entwurf-specific cards
  * 
@@ -444,7 +444,7 @@ export const VIDEO_BACKGROUND_CARDS_PRESET = {
  * 
  * COMPARISON TO STANDARD VIDEO CARD:
  * -----------------------------------
- * Standard video card (like on /dein-nest):
+ * Standard video card (like on /hoam):
  *   - Heights: 510px (1280px), 548px (1380px), 630px (1536px)
  *   - Buttons: Shown on desktop, hidden on mobile
  *   - Image: Centered (object-center)

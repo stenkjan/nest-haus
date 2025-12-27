@@ -31,7 +31,7 @@ export default function SimplifiedPreviewPanel({
       <div className="relative w-full h-full max-w-[800px] max-h-[600px]">
         <HybridBlobImage
           path={imagePath}
-          alt="NEST Haus Vorschau"
+          alt="®Hoam Haus Vorschau"
           fill
           className="object-contain"
           priority

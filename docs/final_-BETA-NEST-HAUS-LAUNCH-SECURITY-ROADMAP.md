@@ -501,7 +501,7 @@ export async function generateDynamicMetadata(
   params?: Record<string, string>
 ): Promise<Metadata> {
   const baseMetadata = {
-    title: `${getPageTitle(page)} | Nest-Haus`,
+    title: `${getPageTitle(page)} | Hoam-House`,
     description: getPageDescription(page),
     keywords: getPageKeywords(page),
     alternates: {

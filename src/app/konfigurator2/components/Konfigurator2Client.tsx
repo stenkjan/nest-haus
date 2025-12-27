@@ -9,27 +9,27 @@ import VorentwurfButton from "./VorentwurfButton";
 const NEST_OPTIONS = [
   {
     id: 'nest80',
-    name: 'Nest 80',
+    name: 'Hoam 80',
     subtitle: '4 Module / 75m²',
   },
   {
     id: 'nest100',
-    name: 'Nest 100',
+    name: 'Hoam 100',
     subtitle: '5 Module / 95m²',
   },
   {
     id: 'nest120',
-    name: 'Nest 120',
+    name: 'Hoam 120',
     subtitle: '6 Module / 115m²',
   },
   {
     id: 'nest140',
-    name: 'Nest 140',
+    name: 'Hoam 140',
     subtitle: '7 Module / 135m²',
   },
   {
     id: 'nest160',
-    name: 'Nest 160',
+    name: 'Hoam 160',
     subtitle: '8 Module / 155m²',
   },
 ];

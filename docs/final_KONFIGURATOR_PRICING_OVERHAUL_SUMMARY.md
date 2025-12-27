@@ -7,7 +7,7 @@
 
 ## 🎯 Overview
 
-Implemented a comprehensive pricing overhaul for the Nest-Haus Konfigurator, transitioning from hardcoded prices to a dynamic Google Sheets-based system with database shadow copy for optimal performance.
+Implemented a comprehensive pricing overhaul for the Hoam-House Konfigurator, transitioning from hardcoded prices to a dynamic Google Sheets-based system with database shadow copy for optimal performance.
 
 ---
 

@@ -1,5 +1,5 @@
 export const FILES = {
     anleitung: {
-        pdf: "20250708-Ikea-Layout-A5",
+        pdf: "2025-12-24-Bauanleitung-Layout-A5",
     },
 };

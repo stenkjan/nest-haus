@@ -15,9 +15,9 @@ interface ThreeByOneAdaptiveHeightProps {
 
 export default function ThreeByOneAdaptiveHeight({
   maxWidth = false, // Default to false to avoid width constraints
-  text = "<p class='p-secondary text-white'><span class='text-nest-gray'>Mit deinem Nest-Haus entscheidest du selbst, wo</span> <span class='text-white font-medium'>Fenster und Türen</span> <span class='text-nest-gray'>ihren Platz finden.</span><br /><br /><span class='text-nest-gray'>Im Rahmen deines Konzept-Checks erstellen wir deinen</span> <span class='text-white font-medium'>individuellen Vorentwurf,</span> <span class='text-nest-gray'>in dem die ideale</span> <span class='text-white font-medium'>Anordnung</span> <span class='text-nest-gray'>festgelegt wird. Auch das </span> <span class='text-white font-medium'>Material</span> <span class='text-nest-gray'>wählst du passend zu deiner Konfiguration.</span><span class='text-white font-medium'> Individuell. Effizient.</span></p>",
+  text = "<p class='p-secondary text-white'><span class='text-nest-gray'>Mit deinem ®Hoam entscheidest du selbst, wo</span> <span class='text-white font-medium'>Fenster und Türen</span> <span class='text-nest-gray'>ihren Platz finden.</span><br /><br /><span class='text-nest-gray'>Im Rahmen deines Konzept-Checks erstellen wir deinen</span> <span class='text-white font-medium'>individuellen Entwurf,</span> <span class='text-nest-gray'>in dem die ideale</span> <span class='text-white font-medium'>Anordnung</span> <span class='text-nest-gray'>festgelegt wird. Auch das </span> <span class='text-white font-medium'>Material</span> <span class='text-nest-gray'>wählst du passend zu deiner Konfiguration.</span><span class='text-white font-medium'> Individuell. Effizient.</span></p>",
   image = IMAGES.function.nestHausFensterTuerenPosition,
-  imageDescription = "NEST Haus Fenster und Türen Positionierung Konzept",
+  imageDescription = "Hoam Fenster und Türen Positionierung Konzept",
   backgroundColor = "black",
 }: ThreeByOneAdaptiveHeightProps) {
   const [isClient, setIsClient] = useState(false);
@@ -62,9 +62,8 @@ export default function ThreeByOneAdaptiveHeight({
       <div className={`${containerClasses} ${backgroundClasses} pb-0 md:pb-32`}>
         <div className="flex justify-center items-center py-8">
           <div
-            className={`animate-pulse ${
-              backgroundColor === "black" ? "bg-gray-700" : "bg-gray-200"
-            } rounded-3xl`}
+            className={`animate-pulse ${backgroundColor === "black" ? "bg-gray-700" : "bg-gray-200"
+              } rounded-3xl`}
             style={{ width: "100%", height: 400 }}
           />
         </div>
@@ -111,9 +110,8 @@ export default function ThreeByOneAdaptiveHeight({
               transition={{ delay: 0.2, duration: 0.6 }}
             >
               <div
-                className={`p-secondary ${textColorClasses} text-center lg:text-left ${
-                  screenWidth > 1700 ? "px-8" : ""
-                }`}
+                className={`p-secondary ${textColorClasses} text-center lg:text-left ${screenWidth > 1700 ? "px-8" : ""
+                  }`}
                 dangerouslySetInnerHTML={{ __html: text }}
               />
             </motion.div>
@@ -164,9 +162,8 @@ export default function ThreeByOneAdaptiveHeight({
               transition={{ delay: 0.4, duration: 0.6 }}
             >
               <div
-                className={`p-secondary ${textColorClasses} text-left ${
-                  screenWidth > 1700 ? "px-8" : ""
-                }`}
+                className={`p-secondary ${textColorClasses} text-left ${screenWidth > 1700 ? "px-8" : ""
+                  }`}
                 dangerouslySetInnerHTML={{ __html: text }}
               />
             </motion.div>

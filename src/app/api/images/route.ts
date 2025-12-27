@@ -9,17 +9,34 @@ export const maxDuration = 30; // 30 seconds max execution time
 const urlCache = new Map<string, { url: string; timestamp: number }>();
 const CACHE_TTL = 60 * 60 * 1000; // 1 hour
 
+// OPTIONS handler for CORS preflight requests (Safari compatibility)
+export async function OPTIONS(_request: NextRequest) {
+  return new NextResponse(null, {
+    status: 200,
+    headers: {
+      'Access-Control-Allow-Origin': '*',
+      'Access-Control-Allow-Methods': 'GET, OPTIONS',
+      'Access-Control-Allow-Headers': 'Content-Type',
+      'Access-Control-Max-Age': '86400', // Cache preflight for 24 hours
+    },
+  });
+}
+
 export async function GET(request: NextRequest) {
   // Verify blob storage is configured
   if (!process.env.BLOB_READ_WRITE_TOKEN) {
     console.error('❌ BLOB_READ_WRITE_TOKEN is not configured');
     const fallbackUrl = `/api/placeholder/400/300?text=Storage+Not+Configured&style=nest`;
-    return NextResponse.json({
+    const errorResponse = NextResponse.json({
       url: fallbackUrl,
       path: '',
       type: 'fallback',
       error: 'Blob storage not configured'
     }, { status: 503 });
+    // Add CORS headers even for error responses (Safari compatibility)
+    errorResponse.headers.set('Access-Control-Allow-Origin', '*');
+    errorResponse.headers.set('Access-Control-Allow-Methods', 'GET, OPTIONS');
+    return errorResponse;
   }
 
   const { searchParams } = new URL(request.url);
@@ -27,7 +44,11 @@ export async function GET(request: NextRequest) {
   const redirect = searchParams.get('redirect') === 'true';
 
   if (!path) {
-    return NextResponse.json({ error: 'No path provided' }, { status: 400 });
+    const errorResponse = NextResponse.json({ error: 'No path provided' }, { status: 400 });
+    // Add CORS headers even for error responses (Safari compatibility)
+    errorResponse.headers.set('Access-Control-Allow-Origin', '*');
+    errorResponse.headers.set('Access-Control-Allow-Methods', 'GET, OPTIONS');
+    return errorResponse;
   }
 
   // Check cache first
@@ -41,6 +62,9 @@ export async function GET(request: NextRequest) {
     if (redirect) {
       const response = NextResponse.redirect(cached.url, 302);
       response.headers.set('Cache-Control', 'public, s-maxage=3600, stale-while-revalidate=86400');
+      // Add CORS headers for Safari compatibility
+      response.headers.set('Access-Control-Allow-Origin', '*');
+      response.headers.set('Access-Control-Allow-Methods', 'GET, OPTIONS');
       return response;
     }
 
@@ -50,6 +74,9 @@ export async function GET(request: NextRequest) {
       type: 'cached'
     });
     jsonResponse.headers.set('Cache-Control', 'public, s-maxage=3600, stale-while-revalidate=86400');
+    // Add CORS headers for Safari compatibility
+    jsonResponse.headers.set('Access-Control-Allow-Origin', '*');
+    jsonResponse.headers.set('Access-Control-Allow-Methods', 'GET, OPTIONS');
     return jsonResponse;
   }
 
@@ -90,6 +117,9 @@ export async function GET(request: NextRequest) {
           if (redirect) {
             const response = NextResponse.redirect(imageUrl, 302);
             response.headers.set('Cache-Control', 'public, s-maxage=3600, stale-while-revalidate=86400');
+            // Add CORS headers for Safari compatibility
+            response.headers.set('Access-Control-Allow-Origin', '*');
+            response.headers.set('Access-Control-Allow-Methods', 'GET, OPTIONS');
             return response;
           }
 
@@ -99,6 +129,9 @@ export async function GET(request: NextRequest) {
             type: 'blob'
           });
           jsonResponse.headers.set('Cache-Control', 'public, s-maxage=3600, stale-while-revalidate=86400');
+          // Add CORS headers for Safari compatibility
+          jsonResponse.headers.set('Access-Control-Allow-Origin', '*');
+          jsonResponse.headers.set('Access-Control-Allow-Methods', 'GET, OPTIONS');
           return jsonResponse;
         }
       } catch (extError) {
@@ -122,6 +155,9 @@ export async function GET(request: NextRequest) {
     if (redirect) {
       const response = NextResponse.redirect(placeholderUrl, 302);
       response.headers.set('Cache-Control', 'public, s-maxage=300, stale-while-revalidate=86400');
+      // Add CORS headers for Safari compatibility
+      response.headers.set('Access-Control-Allow-Origin', '*');
+      response.headers.set('Access-Control-Allow-Methods', 'GET, OPTIONS');
       return response;
     }
 
@@ -131,6 +167,9 @@ export async function GET(request: NextRequest) {
       type: 'placeholder'
     });
     jsonResponse.headers.set('Cache-Control', 'public, s-maxage=300, stale-while-revalidate=86400');
+    // Add CORS headers for Safari compatibility
+    jsonResponse.headers.set('Access-Control-Allow-Origin', '*');
+    jsonResponse.headers.set('Access-Control-Allow-Methods', 'GET, OPTIONS');
     return jsonResponse;
 
   } catch (error) {
@@ -157,6 +196,9 @@ export async function GET(request: NextRequest) {
     if (redirect) {
       const response = NextResponse.redirect(fallbackUrl, 302);
       response.headers.set('Cache-Control', 'public, s-maxage=60, stale-while-revalidate=3600');
+      // Add CORS headers for Safari compatibility
+      response.headers.set('Access-Control-Allow-Origin', '*');
+      response.headers.set('Access-Control-Allow-Methods', 'GET, OPTIONS');
       return response;
     }
 
@@ -167,6 +209,9 @@ export async function GET(request: NextRequest) {
       error: error instanceof Error ? error.message : 'Unknown error'
     });
     jsonResponse.headers.set('Cache-Control', 'public, s-maxage=60, stale-while-revalidate=3600');
+    // Add CORS headers for Safari compatibility
+    jsonResponse.headers.set('Access-Control-Allow-Origin', '*');
+    jsonResponse.headers.set('Access-Control-Allow-Methods', 'GET, OPTIONS');
     return jsonResponse;
   }
 }

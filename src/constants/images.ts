@@ -47,6 +47,7 @@ export const IMAGES = {
     videos: {
         nestHausTransport: '11-NEST-Haus-Module-Transport-Animation-Schema',
         nestHausKonfigurator: '104-NEST-Haus-Konfigurator-75-Holzfassade-Ansicht',
+        hoamClipShort: '375-hoam-clip-short-1zu1',
 
         // Video background cards (16 videos)
         videoCard01: '350-nest-haus-cards-vorentwurf-check',
