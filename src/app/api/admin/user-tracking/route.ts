@@ -537,8 +537,35 @@ class UserTrackingService {
 
         // Count mouse clicks (click events)
         const mouseClicksMap = new Map<string, { category: string; count: number }>();
+        
+        // Generic patterns to filter out
+        const IGNORED_PATTERNS = [
+            'unknown-element',
+            /^(back|next|close|×|✕)$/i,
+            /^(weiter|zurück|schließen)$/i, // German
+        ];
+
+        const shouldIgnoreClick = (elementId: string): boolean => {
+            // Filter out unknown-element explicitly
+            if (elementId === 'unknown-element') return true;
+            
+            // Filter out generic navigation patterns
+            for (const pattern of IGNORED_PATTERNS) {
+                if (pattern instanceof RegExp) {
+                    if (pattern.test(elementId)) return true;
+                } else if (elementId === pattern) {
+                    return true;
+                }
+            }
+            
+            // Filter out very short element IDs (likely not meaningful)
+            if (elementId.trim().length < 2) return true;
+            
+            return false;
+        };
+
         interactions
-            .filter(i => i.eventType === 'click' && i.elementId)
+            .filter(i => i.eventType === 'click' && i.elementId && !shouldIgnoreClick(i.elementId))
             .forEach(i => {
                 const key = i.elementId || 'unknown';
                 const category = i.category || 'other';

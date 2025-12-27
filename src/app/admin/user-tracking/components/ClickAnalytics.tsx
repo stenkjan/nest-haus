@@ -51,6 +51,9 @@ export default function ClickAnalytics({ pageClicks, mouseClicks }: ClickAnalyti
         <h3 className="text-lg font-semibold text-gray-900 mb-4">
           🖱️ Most Clicked Elements
         </h3>
+        <p className="text-xs text-gray-500 mb-4 italic">
+          Note: Generic navigation elements (back/next buttons) and unknown elements are filtered out to show only meaningful user interactions.
+        </p>
         {mouseClicks.length > 0 ? (
           <div className="space-y-3">
             {mouseClicks.slice(0, 15).map((click, index) => (
