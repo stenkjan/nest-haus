@@ -229,10 +229,15 @@ class UserTrackingService {
         // Combine IP filter and bot filter for all queries
         const baseFilter = {
             ...getIPFilterClause(),
-            ...botFilter
+            ...botFilter,
+            // Exclude bot sessions from counts
+            OR: [
+                { isBot: false },
+                { isBot: null }
+            ]
         };
 
-        // Count ALL sessions (including ACTIVE and ABANDONED)
+        // Count ALL sessions (including ACTIVE and ABANDONED, but excluding bots)
         const totalSessions = await prisma.userSession.count({
             where: baseFilter
         });
@@ -483,8 +488,15 @@ class UserTrackingService {
      */
     static async getClickAnalytics() {
         // Get ALL sessions (not just cart sessions) to show all user click activity
+        // Exclude bot sessions
         const sessionIds = await prisma.userSession.findMany({
-            where: getIPFilterClause(), // Filter out excluded IPs
+            where: {
+                ...getIPFilterClause(), // Filter out excluded IPs
+                OR: [
+                    { isBot: false },
+                    { isBot: null }
+                ]
+            },
             select: {
                 sessionId: true
             }

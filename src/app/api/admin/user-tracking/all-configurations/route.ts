@@ -507,8 +507,15 @@ export async function GET() {
         console.log('📊 Fetching all user sessions with details...');
 
         // Get ALL sessions (not just cart sessions) to show all user activity
+        // Exclude bot sessions from main user view
         const sessions = await prisma.userSession.findMany({
-            where: getIPFilterClause(), // Filter out excluded IPs
+            where: {
+                ...getIPFilterClause(), // Filter out excluded IPs
+                OR: [
+                    { isBot: false },
+                    { isBot: null }
+                ]
+            },
             include: {
                 selectionEvents: {
                     select: { id: true }
