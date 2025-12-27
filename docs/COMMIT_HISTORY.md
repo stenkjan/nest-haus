@@ -4,6 +4,177 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [43daf5507e7acbd39fd86b282286420880eada71] - Sat Dec 27 11:56:09 2025 +0100
+
+**Author**: stenkjan
+**Message**: `Merge branch 'main' of https://github.com/stenkjan/nest-haus  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/LandingPageClient.tsx
+- src/app/access-denied/page.tsx
+- src/app/admin/alpha-tests/components/AlphaTestDashboard.tsx
+- src/app/admin/alpha-tests/page.tsx
+- src/app/admin/page.tsx
+- src/app/admin/user-tracking/components/AllConfigurations.tsx
+- src/app/admin/user-tracking/components/AllUsers.tsx
+- src/app/agb/page.tsx
+- src/app/alpha-test/AlphaTestClient.tsx
+- src/app/api/admin/analytics/overview/route.ts
+- src/app/api/admin/pmg/seed/route.ts
+- src/app/api/admin/popular-configurations/route.ts
+- src/app/api/admin/quick-actions/reset-analytics/route.ts
+- src/app/api/admin/usability-tests/route.ts
+- src/app/api/admin/user-tracking/all-configurations/route.ts
+- src/app/api/admin/user-tracking/route.ts
+- src/app/api/configurations/route.ts
+- src/app/api/content/analytics/route.ts
+- src/app/api/cron/check-stripe-webhook/route.ts
+- src/app/api/images/route.ts
+- src/app/api/placeholder/[width]/[height]/route.ts
+- src/app/api/pricing/calculate/route.ts
+- src/app/api/sessions/finalize/route.ts
+- src/app/api/sessions/route.ts
+- src/app/api/sessions/track-interaction/route.ts
+- src/app/api/sessions/track/route.ts
+- src/app/api/sessions/update-ohne-nest-mode/route.ts
+- src/app/api/test/appointment/route.ts
+- src/app/api/test/payment-email/route.ts
+- src/app/cookie-einstellungen/page.tsx
+- src/app/datenschutz/page.tsx
+- src/app/faq/FAQClient.tsx
+- src/app/faq/page.tsx
+- src/app/hoam-system/HoamSystemClient.tsx
+- src/app/hoam/HoamClient.tsx
+- src/app/hoam/page.tsx
+- src/app/impressum/page.tsx
+- src/app/konfigurator/__tests__/ConfiguratorShell.integration.test.tsx
+- src/app/konfigurator/__tests__/ConfiguratorShell.test.tsx
+- src/app/konfigurator/__tests__/ImageManager.test.ts
+- src/app/konfigurator/__tests__/PriceCalculator.test.ts
+- src/app/konfigurator/__tests__/SummaryPanel.test.tsx
+- src/app/konfigurator/__tests__/performance.test.ts
+- src/app/konfigurator/components/CartFooter.tsx
+- src/app/konfigurator/components/ConfiguratorUI.tsx
+- src/app/konfigurator/components/PreviewPanel.tsx
+- src/app/konfigurator/components/PvModuleOverlay.tsx
+- src/app/konfigurator/components/SelectionOption.tsx
+- src/app/konfigurator/components/SummaryPanel.tsx
+- src/app/konfigurator/core/ImageManager.ts
+- src/app/konfigurator/core/PriceCalculator.ts
+- src/app/konfigurator/core/PriceUtils.ts
+- src/app/konfigurator/data/configuratorData.ts
+- src/app/konfigurator/data/dialogConfigs.ts
+- src/app/konfigurator/hooks/useConfiguratorLogic.ts
+- src/app/konfigurator/hooks/useConfiguratorState.ts
+- src/app/konfigurator2/components/Konfigurator2Client.tsx
+- src/app/konfigurator2/components/SimplifiedPreviewPanel.tsx
+- src/app/konfigurator2/components/VorentwurfButton.tsx
+- src/app/kontakt/page.tsx
+- src/app/konzept-check/KonzeptcheckClient.tsx
+- src/app/konzept-check/page.tsx
+- src/app/page.tsx
+- src/app/showcase/cards/page.tsx
+- src/app/showcase/grids/page.tsx
+- src/app/warenkorb/WarenkorbClient.tsx
+- src/app/warenkorb/components/CheckoutStepper.tsx
+- src/app/warenkorb/page.tsx
+- src/app/warum-wir/WarumWirClient.tsx
+- src/app/warum-wir/page.tsx
+- src/components/CookieBanner.tsx
+- src/components/Footer.tsx
+- src/components/SectionRouter.tsx
+- src/components/analytics/GoogleAnalyticsProvider.tsx
+- src/components/cards/CheckoutPlanungspaketeCards.tsx
+- src/components/cards/README.md
+- src/components/dialogs/GrundstueckCheckDialog.tsx
+- src/components/grids/FullWidthImageGrid.tsx
+- src/components/grids/ImageGallery.tsx
+- src/components/grids/ImageWithFourTextGrid.tsx
+- src/components/grids/ThreeByOneAdaptiveHeight.tsx
+- src/components/grids/TwoByTwoImageGrid.tsx
+- src/components/grids/VideoGallery.tsx
+- src/components/images/ClientBlobImage.tsx
+- src/components/images/HybridBlobImage.tsx
+- src/components/images/ResponsiveHybridImage.tsx
+- src/components/index.ts
+- src/components/layout/Navbar.tsx
+- src/components/sections/FAQSection.tsx
+- src/components/sections/GrundstueckCheckForm.tsx
+- src/components/sections/GrundstueckCheckSection.tsx
+- src/components/sections/LandingImagesCarousel.tsx
+- src/components/sections/ModulhausVergleichSection.tsx
+- src/components/sections/PartnersSection.tsx
+- src/components/sections/SectionHeader.tsx
+- src/components/sections/catalog/CATALOG.md
+- src/components/testing/config/TestQuestions.ts
+- src/components/typography/Hoam.tsx
+- src/components/typography/index.ts
+- src/hooks/useInteractionTracking.ts
+
+
+#### ⚙️ Backend Changes
+- prisma/seed.ts
+- scripts/README-cache-cleaning.md
+- scripts/clean-cache.bat
+- scripts/clean-cache.js
+
+
+#### 🔧 Configuration Changes
+- .env.local.example
+- .github/workflows/auto-documentation.yml
+- next.config.ts
+- package.json
+
+
+#### 📚 Documentation Changes
+- FIX_OLD_PRICES_DISPLAY.md
+- GA4_SETUP_CHECKLIST.md
+- IMPLEMENTATION_COMPLETE_SUMMARY.md
+- README.md
+- SAFARI_IMAGE_FIX_SUMMARY.md
+- SAFARI_IMAGE_LOADING_INVESTIGATION.md
+- SAFARI_TESTING_GUIDE.md
+- STRIPE_MIGRATION_CHECKLIST.md
+- STRIPE_MIGRATION_QUICK_START.md
+- STRIPE_PRODUCTION_MIGRATION_GUIDE.md
+- STRIPE_WEBHOOK_ERROR_ANALYSIS.md
+- STRIPE_WEBHOOK_FIX_INSTRUCTIONS.md
+- STRIPE_WEBHOOK_FIX_SUMMARY.md
+- STRIPE_WEBHOOK_INVESTIGATION_REPORT.md
+- STRIPE_WEBHOOK_INVESTIGATION_SUMMARY.md
+- STRIPE_WEBHOOK_PREVENTION.md
+- STRIPE_WEBHOOK_QUICK_FIX.md
+- backups/BACKUP_README.md
+- docs/BELICHTUNGSPAKET_FENSTER_FIX.md
+- docs/BUTTON_TRACKING_GUIDE.md
+- docs/COMMIT_HISTORY.md
+- docs/COMPLETE_IMPLEMENTATION_SUMMARY.md
+- docs/GA4_MULTI_DOMAIN_SETUP.md
+- docs/GLASS-QUOTE-CARDS-GUIDE.md
+- docs/KONFIGURATOR-REFACTORING-PLAN.md
+- docs/KONFIGURATOR-SWITCH-GUIDE.md
+- docs/PRICE_CALCULATION_ARCHITECTURE.md
+- docs/PRICING_SYNC_IMPLEMENTATION_COMPLETE.md
+- docs/SEO_ANALYSIS_AND_IMPROVEMENTS.md
+- docs/SOCIAL_MEDIA_METADATA_UPDATE.md
+- docs/STRIPE_PRODUCTION_SETUP.md
+- docs/TYPOGRAPHY_STANDARDS.md
+- docs/WARENKORB_PRICING_SYNC_FIX_NOV11.md
+- docs/WARENKORB_REFACTORING_PROGRESS.md
+- docs/WEBHOOK_VERIFICATION_GUIDE.md
+- docs/YOUTUBE_EMBED_IMPLEMENTATION.md
+- docs/YOUTUBE_PRIVACY_SETTINGS.md
+- docs/final_-BETA-NEST-HAUS-LAUNCH-SECURITY-ROADMAP.md
+- docs/final_EMAIL_FUNCTIONALITY_SUMMARY.md
+- docs/final_GOOGLE-ANALYTICS-SEO-COMPLETE-IMPLEMENTATION.md
+- docs/final_KONFIGURATOR_PRICING_OVERHAUL_SUMMARY.md
+- preiskalkulation/PRICING_ANALYSIS_CURRENT_STATE.md
+
+
+---
+
 ## [6f4c802fad282dd1f078329012a7c9b302e97e52] - Sat Dec 27 11:06:52 2025 +0100
 
 **Author**: stenkjan

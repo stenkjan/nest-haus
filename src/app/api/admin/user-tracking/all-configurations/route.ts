@@ -529,7 +529,7 @@ export async function GET() {
             orderBy: {
                 startTime: 'desc'
             },
-            take: 100 // Limit to last 100 configurations
+            take: 1000 // Increased limit to show more sessions (was 100)
         });
 
         // Get payment and contact information for sessions that have associated inquiries
@@ -562,9 +562,12 @@ export async function GET() {
 
         const configurations: ConfigurationWithDetails[] = sessions.map(session => {
             const { simple, detailed } = parseConfigurationData(session.configurationData);
+            // Calculate duration: use endTime if available, otherwise use lastActivity for active sessions
             const duration = session.endTime
                 ? Math.round((session.endTime.getTime() - session.startTime.getTime()) / 1000)
-                : 0;
+                : session.lastActivity
+                    ? Math.round((session.lastActivity.getTime() - session.startTime.getTime()) / 1000)
+                    : 0;
 
             // Get inquiry info if available
             const inquiry = inquiryMap.get(session.sessionId);

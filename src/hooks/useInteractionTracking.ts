@@ -13,6 +13,58 @@
 import { useEffect, useCallback, useRef } from 'react';
 import { usePathname } from 'next/navigation';
 
+// Elements to ignore from tracking (non-valuable interactions)
+const IGNORED_ELEMENT_IDS = [
+  'unknown-element',
+];
+
+// Classes that indicate elements should be ignored
+const IGNORED_CLASSES = [
+  'simple-nav',
+  'back-button',
+  'next-button',
+];
+
+// Generic text patterns to ignore
+const IGNORED_TEXT_PATTERNS = [
+  /^(back|next|close|×|✕)$/i,
+  /^(weiter|zurück|schließen)$/i, // German equivalents
+];
+
+/**
+ * Check if an element should be ignored from tracking
+ */
+function shouldIgnoreElement(element: Element, elementId: string, elementText?: string): boolean {
+  // Ignore if in blacklist
+  if (IGNORED_ELEMENT_IDS.includes(elementId)) {
+    return true;
+  }
+
+  // Ignore if has blacklisted class
+  for (const className of IGNORED_CLASSES) {
+    if (element.classList.contains(className)) {
+      return true;
+    }
+  }
+
+  // Ignore if text matches generic patterns
+  if (elementText) {
+    const trimmedText = elementText.trim();
+    for (const pattern of IGNORED_TEXT_PATTERNS) {
+      if (pattern.test(trimmedText)) {
+        return true;
+      }
+    }
+  }
+
+  // Ignore if text is too short (likely not meaningful)
+  if (elementText && elementText.trim().length < 2) {
+    return true;
+  }
+
+  return false;
+}
+
 interface DeviceInfo {
   type: string;
   width: number;
@@ -244,12 +296,37 @@ export function useInteractionTracking({
 
       if (!interactiveElement) return;
 
-      const elementId =
+      // Extract element text for filtering
+      const elementText = (interactiveElement as HTMLElement).innerText?.trim() || '';
+
+      // Try to get a meaningful element ID
+      let elementId = 
         interactiveElement.id ||
         interactiveElement.getAttribute('data-track-id') ||
-        interactiveElement.getAttribute('aria-label') ||
-        (interactiveElement as HTMLElement).innerText?.slice(0, 50) ||
-        'unknown-element';
+        interactiveElement.getAttribute('aria-label');
+
+      // If no explicit ID, check parent elements for context
+      if (!elementId) {
+        const parent = interactiveElement.parentElement;
+        if (parent) {
+          elementId = parent.id || parent.getAttribute('data-track-id');
+        }
+      }
+
+      // If still no ID, use meaningful text (if available)
+      if (!elementId && elementText.length >= 3) {
+        elementId = elementText.slice(0, 50);
+      }
+
+      // Last resort: unknown-element
+      if (!elementId) {
+        elementId = 'unknown-element';
+      }
+
+      // Check if element should be ignored
+      if (shouldIgnoreElement(interactiveElement, elementId, elementText)) {
+        return; // Don't track this element
+      }
 
       const category =
         interactiveElement.getAttribute('data-track-category') ||
@@ -257,7 +334,7 @@ export function useInteractionTracking({
 
       const selectionValue =
         interactiveElement.getAttribute('data-track-value') ||
-        (interactiveElement as HTMLElement).innerText?.slice(0, 100);
+        elementText.slice(0, 100);
 
       // Debounce to avoid duplicate tracking
       if (debounceTimer) {
