@@ -502,20 +502,34 @@ function generateSessionName(startTime: Date, name: string | null, _sessionId: s
     return `${dateStr}_user${userNum}`;
 }
 
-export async function GET() {
+export async function GET(request: Request) {
     try {
         console.log('📊 Fetching all user sessions with details...');
+
+        // Parse pagination parameters
+        const { searchParams } = new URL(request.url);
+        const page = parseInt(searchParams.get('page') || '1', 10);
+        const limit = parseInt(searchParams.get('limit') || '100', 10);
+        const skip = (page - 1) * limit;
+
+        // Define base filter for non-bot sessions
+        const baseFilter = {
+            ...getIPFilterClause(), // Filter out excluded IPs
+            OR: [
+                { isBot: false },
+                { isBot: null }
+            ]
+        };
+
+        // Get total count for pagination metadata
+        const totalCount = await prisma.userSession.count({
+            where: baseFilter
+        });
 
         // Get ALL sessions (not just cart sessions) to show all user activity
         // Exclude bot sessions from main user view
         const sessions = await prisma.userSession.findMany({
-            where: {
-                ...getIPFilterClause(), // Filter out excluded IPs
-                OR: [
-                    { isBot: false },
-                    { isBot: null }
-                ]
-            },
+            where: baseFilter,
             include: {
                 selectionEvents: {
                     select: { id: true }
@@ -536,7 +550,8 @@ export async function GET() {
             orderBy: {
                 startTime: 'desc'
             },
-            take: 1000 // Increased limit to show more sessions (was 100)
+            skip,
+            take: limit
         });
 
         // Get payment and contact information for sessions that have associated inquiries
@@ -660,13 +675,18 @@ export async function GET() {
             };
         });
 
-        console.log(`✅ Found ${configurations.length} configurations`);
+        console.log(`✅ Found ${configurations.length} configurations (page ${page} of ${Math.ceil(totalCount / limit)})`);
 
         return NextResponse.json({
             success: true,
             data: configurations,
             metadata: {
                 total: configurations.length,
+                totalCount, // Total sessions across all pages
+                page,
+                limit,
+                totalPages: Math.ceil(totalCount / limit),
+                hasMore: page * limit < totalCount,
                 lastUpdated: new Date().toISOString()
             }
         });

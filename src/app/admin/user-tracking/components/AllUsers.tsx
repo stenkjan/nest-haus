@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import Pagination from "./Pagination";
 
 interface DetailedItem {
   value: string;
@@ -115,6 +116,11 @@ interface AllConfigurationsResponse {
   data: ConfigurationWithDetails[];
   metadata: {
     total: number;
+    totalCount?: number;
+    page?: number;
+    limit?: number;
+    totalPages?: number;
+    hasMore?: boolean;
     lastUpdated: string;
   };
 }
@@ -908,6 +914,12 @@ export default function AllUsers() {
   const [selectedConfig, setSelectedConfig] =
     useState<ConfigurationWithDetails | null>(null);
 
+  // Pagination State
+  const [currentPage, setCurrentPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(1);
+  const [totalCount, setTotalCount] = useState(0);
+  const limit = 100;
+
   // Filter & Sort State
   const [showWithConfig, setShowWithConfig] = useState(true);
   const [showWithoutConfig, setShowWithoutConfig] = useState(true);
@@ -916,14 +928,14 @@ export default function AllUsers() {
   >("date-newest");
 
   useEffect(() => {
-    fetchConfigurations();
-  }, []);
+    fetchConfigurations(currentPage);
+  }, [currentPage]);
 
-  const fetchConfigurations = async () => {
+  const fetchConfigurations = async (page: number) => {
     try {
       setLoading(true);
       const response = await fetch(
-        "/api/admin/user-tracking/all-configurations"
+        `/api/admin/user-tracking/all-configurations?page=${page}&limit=${limit}`
       );
 
       if (!response.ok) {
@@ -934,6 +946,8 @@ export default function AllUsers() {
 
       if (result.success) {
         setConfigurations(result.data);
+        setTotalPages(result.metadata.totalPages || 1);
+        setTotalCount(result.metadata.totalCount || result.data.length);
         setError(null);
       } else {
         throw new Error("Invalid response format");
@@ -944,6 +958,12 @@ export default function AllUsers() {
     } finally {
       setLoading(false);
     }
+  };
+
+  const handlePageChange = (newPage: number) => {
+    setCurrentPage(newPage);
+    // Scroll to top of page
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
   const filteredAndSortedUsers = (() => {
@@ -1035,11 +1055,11 @@ export default function AllUsers() {
           <div>
             <h2 className="text-2xl font-bold text-gray-900">All Users</h2>
             <p className="text-sm text-gray-600 mt-1">
-              {configurations.length} total users • Click any card for details
+              {totalCount} total users • Page {currentPage} of {totalPages} • Click any card for details
             </p>
           </div>
           <button
-            onClick={fetchConfigurations}
+            onClick={() => fetchConfigurations(currentPage)}
             className="text-blue-600 hover:text-blue-800 text-sm font-medium"
           >
             🔄 Refresh
@@ -1112,6 +1132,17 @@ export default function AllUsers() {
               No users found with the selected filters
             </p>
           </div>
+        )}
+
+        {/* Pagination */}
+        {!loading && configurations.length > 0 && totalPages > 1 && (
+          <Pagination
+            currentPage={currentPage}
+            totalPages={totalPages}
+            onPageChange={handlePageChange}
+            totalItems={totalCount}
+            itemsPerPage={limit}
+          />
         )}
       </div>
 
