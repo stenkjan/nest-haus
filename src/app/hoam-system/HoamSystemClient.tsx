@@ -17,6 +17,7 @@ import {
   SectionHeader,
   FAQSection,
 } from "@/components/sections";
+import { Hoam } from "@/components/typography";
 import { HybridBlobImage, ClientBlobVideo } from "@/components/images";
 import { useContentAnalytics } from "@/hooks";
 import type { SectionDefinition } from "@/types";
@@ -123,7 +124,7 @@ export default function HoamSystemClient() {
           {/* Section 1 - ®Hoam System */}
           <section id="unsere-technik" className="bg-black pt-12 pb-8 md:pb-16">
             <SectionHeader
-              title="®Hoam System"
+              title={<><Hoam /> System</>}
               subtitle="Individualisiert, wo es Freiheit braucht. Standardisiert, wo es Effizienz schafft."
               titleClassName="text-white"
               subtitleClassName="text-white"

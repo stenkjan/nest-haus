@@ -18,6 +18,7 @@ import {
   PartnersSection,
   ModulhausVergleichSection,
 } from "@/components/sections";
+import { Hoam } from "@/components/typography";
 import { IMAGES } from "@/constants/images";
 import {
   ABLAUF_STEPS_PRESET as _ABLAUF_STEPS_PRESET,
@@ -159,7 +160,7 @@ export default function HoamClient() {
               {/* Header at Top */}
               <div className="flex justify-center">
                 <SectionHeader
-                  title="®Hoam"
+                  title={<Hoam />}
                   subtitle="Hausbau muss nicht immer kompliziert sein"
                   titleClassName="text-white"
                   subtitleClassName="text-white"
@@ -276,12 +277,12 @@ export default function HoamClient() {
               <div className="flex flex-wrap gap-4 justify-center">
                 <Link href="/hoam-system">
                   <Button variant="primary" size="xs">
-                    <span className="font-black" style={{ WebkitTextStroke: '0.3px currentColor' }}>H</span>oam System
+                    <Hoam variant="button" /> System
                   </Button>
                 </Link>
                 <Link href="/warum-wir">
                   <Button variant="landing-secondary-blue" size="xs">
-                    Warum mit ®<span className="font-black" style={{ WebkitTextStroke: '0.3px currentColor' }}>H</span>oam?
+                    Warum mit <Hoam variant="button" />?
                   </Button>
                 </Link>
               </div>
@@ -302,9 +303,9 @@ export default function HoamClient() {
           className="w-full py-8 md:py-16 bg-white"
         >
           <SectionHeader
-            title="®Hoam konfigurieren"
+            title={<><Hoam /> konfigurieren</>}
             subtitle="Gestalten heißt verstehen"
-            mobileTitle="®Hoam konfigurieren"
+            mobileTitle={<><Hoam /> konfigurieren</>}
             wrapperMargin="mb-8 md:mb-12"
           />
 
@@ -357,7 +358,7 @@ export default function HoamClient() {
         {/* Section 6 - Video Background Cards */}
         <section id="vorteile-hoam" className="w-full py-8 md:py-16 bg-white">
           <SectionHeader
-            title="Warum ®Hoam Sinn macht?"
+            title={<>Warum <Hoam /> Sinn macht?</>}
             subtitle="Weil bauen nicht immer kompliziert sein muss."
             wrapperMargin="mb-8 md:mb-12"
           />

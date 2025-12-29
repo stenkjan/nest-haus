@@ -28,6 +28,12 @@ import React from "react";
  *   subtitle="Architektur für ein bewegtes Leben."
  * />
  *
+ * // With React components (e.g., Hoam logo)
+ * <SectionHeader
+ *   title={<><Hoam /> Vision</>}
+ *   subtitle="Eine Welt, in der Effizienz auf Architektur trifft"
+ * />
+ *
  * // With mobile variants (different text for mobile)
  * <SectionHeader
  *   title="Konfiguriere dein ®Hoam House"
@@ -56,9 +62,10 @@ import React from "react";
 
 interface SectionHeaderProps {
   /**
-   * Main title text (required)
+   * Main title text or React element (required)
+   * Can accept strings or React components like <Hoam />
    */
-  title: string;
+  title: React.ReactNode;
 
   /**
    * Optional subtitle text
@@ -68,8 +75,9 @@ interface SectionHeaderProps {
   /**
    * Mobile-specific title (use \n for line breaks)
    * If provided, will be used on screens < 1024px instead of title
+   * Can accept strings or React components
    */
-  mobileTitle?: string;
+  mobileTitle?: React.ReactNode;
 
   /**
    * Mobile-specific subtitle (use \n for line breaks)

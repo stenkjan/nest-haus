@@ -11,6 +11,7 @@ import {
   PartnersSection,
   FAQSection,
 } from "@/components/sections";
+import { Hoam } from "@/components/typography";
 import { IMAGES } from "@/constants/images";
 import { TALL_CARD_PROPS_WITH_PADDING } from "@/constants/cardContent";
 import Footer from "@/components/Footer";
@@ -63,7 +64,7 @@ export default function WarumWirClient() {
         >
           <div className="w-full">
             <SectionHeader
-              title="®Hoam Vision"
+              title={<><Hoam /> Vision</>}
               subtitle="Eine Welt, in der Effizienz auf Architektur trifft"
               titleClassName="text-white"
               subtitleClassName="text-white"
