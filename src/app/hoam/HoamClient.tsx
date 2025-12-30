@@ -140,7 +140,7 @@ export default function HoamClient() {
       <SectionRouter sections={sections} onSectionChange={setCurrentSectionId}>
         {/* Section 1 - Hero with Image and Overlay Text */}
         <section id="hoam-preise" className="w-full">
-          <div className="relative w-full h-[400px] sm:h-[500px] md:h-[600px] lg:h-[700px] xl:h-[800px] 2xl:h-[900px]">
+          <div className="relative w-full aspect-[4/5] sm:aspect-auto sm:h-[500px] md:h-[600px] lg:h-[700px] xl:h-[800px] 2xl:h-[900px]">
             {/* Background Image */}
             <HybridBlobImage
               path={IMAGES.hero.nestHaus3}
@@ -303,9 +303,17 @@ export default function HoamClient() {
           className="w-full py-8 md:py-16 bg-white"
         >
           <SectionHeader
-            title={<><Hoam /> konfigurieren</>}
+            title={
+              <>
+                <Hoam /> konfigurieren
+              </>
+            }
             subtitle="Gestalten heißt verstehen"
-            mobileTitle={<><Hoam /> konfigurieren</>}
+            mobileTitle={
+              <>
+                <Hoam /> konfigurieren
+              </>
+            }
             wrapperMargin="mb-8 md:mb-12"
           />
 
@@ -358,7 +366,11 @@ export default function HoamClient() {
         {/* Section 6 - Video Background Cards */}
         <section id="vorteile-hoam" className="w-full py-8 md:py-16 bg-white">
           <SectionHeader
-            title={<>Warum <Hoam /> Sinn macht?</>}
+            title={
+              <>
+                Warum <Hoam /> Sinn macht?
+              </>
+            }
             subtitle="Weil bauen nicht immer kompliziert sein muss."
             wrapperMargin="mb-8 md:mb-12"
           />
@@ -451,6 +463,3 @@ export default function HoamClient() {
     </div>
   );
 }
-
-
-
