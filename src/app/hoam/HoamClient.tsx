@@ -241,17 +241,21 @@ export default function HoamClient() {
 
           {/* Video-only Card Section */}
           <div className="w-full py-8 md:py-16">
-            {/* Mobile: Full-width background video */}
+            {/* Mobile: Video card with padding */}
             {isMobile ? (
-              <div className="w-full">
-                <ClientBlobVideo
-                  path={IMAGES.variantvideo.mobile.ten}
-                  className="w-full h-auto"
-                  autoPlay
-                  loop
-                  muted
-                  playsInline
-                />
+              <div className="w-full px-4">
+                <div className="bg-[#F4F4F4] rounded-3xl p-[15px]">
+                  <div className="relative w-full overflow-hidden rounded-2xl">
+                    <ClientBlobVideo
+                      path={IMAGES.variantvideo.mobile.ten}
+                      className="w-full h-auto"
+                      autoPlay
+                      loop
+                      muted
+                      playsInline
+                    />
+                  </div>
+                </div>
               </div>
             ) : (
               /* Desktop: Video card with padding */
