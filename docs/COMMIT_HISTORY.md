@@ -4,6 +4,19 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [c176ae244cdd569d3725a57d68c91c2cdf4d4de3] - Tue Dec 30 15:34:50 2025 +0100
+
+**Author**: stenkjan
+**Message**: `✨ Adjust HoamClient layout for improved spacing and consistency.  - Increased bottom padding in the button container for better visual balance. - Unified padding in the "Konfigurationen" section for enhanced layout consistency.  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/hoam/HoamClient.tsx
+
+
+---
+
 ## [c202a9097f07c77e1aaf1e5660df5d6b4d48a9e9] - Tue Dec 30 15:23:03 2025 +0100
 
 **Author**: stenkjan
