@@ -272,7 +272,7 @@ export default function HoamClient() {
             )}
 
             {/* Text Grid and Buttons Container */}
-            <div className="pt-8">
+            <div className="pt-8 pb-16">
               {/* Button combination */}
               <div className="flex flex-wrap gap-4 justify-center">
                 <Link href="/hoam-system">
@@ -303,10 +303,7 @@ export default function HoamClient() {
         </section>
         {/* Section 5 - Konfigurationen */}
         {/* 📚 Catalog: @sections/catalog/CATALOG.md → "Konfigurationen" */}
-        <section
-          id="haus-konfiguration"
-          className="w-full py-8 md:py-16 bg-white"
-        >
+        <section id="haus-konfiguration" className="w-full py-16 bg-white">
           <SectionHeader
             title={
               <>
