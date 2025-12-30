@@ -90,11 +90,11 @@ export default function Footer() {
       <div className="w-full max-w-[1536px] mx-auto px-4 sm:px-12 lg:px-12 py-12">
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-8">
           {footerColumns.map((column, index) => (
-            <div key={index} className="space-y-4">
-              <h3 className="text-[clamp(14px,2.5vw,16px)] font-medium tracking-[-0.015em] text-black mb-4">
+            <div key={index} className={`space-y-1 md:space-y-4 ${index === 0 ? 'hidden md:block' : ''}`}>
+              <h3 className="text-[clamp(14px,2.5vw,16px)] font-medium tracking-[-0.015em] text-black mb-1 md:mb-4">
                 {column.title}
               </h3>
-              <ul className="space-y-3" role="list">
+              <ul className="space-y-1 md:space-y-3" role="list">
                 {column.items.map((item, itemIndex) => (
                   <li key={itemIndex}>
                     <Link
