@@ -4,6 +4,19 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [1b2981c8ed28c191095beaf795bf8baff9f6b52b] - Tue Dec 30 15:01:38 2025 +0100
+
+**Author**: stenkjan
+**Message**: `✨ Update HoamClient layout for improved responsiveness and code consistency.  - Changed fixed height to aspect ratio for the hero section to enhance responsiveness. - Refactored title and mobileTitle props in SectionHeader to use React fragments for better readability.  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/hoam/HoamClient.tsx
+
+
+---
+
 ## [7f71e79abffbb7772be8feea92a4e96ecf0f55cb] - Tue Dec 30 14:24:02 2025 +0100
 
 **Author**: stenkjan
