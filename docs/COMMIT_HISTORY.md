@@ -4,6 +4,22 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [b1de95f9e42cd6fe8edb50c3e93dea7f4a38ad82] - Mon Dec 29 14:53:18 2025 +0100
+
+**Author**: stenkjan
+**Message**: `✨ Refactor Hoam branding in multiple components to use the Hoam typography component for consistency.  - Updated titles in HoamClient, HoamSystemClient, and WarumWirClient to utilize the Hoam component. - Modified SectionHeader component to accept React nodes for titles and mobile titles, enhancing flexibility for future use.  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/hoam-system/HoamSystemClient.tsx
+- src/app/hoam/HoamClient.tsx
+- src/app/warum-wir/WarumWirClient.tsx
+- src/components/sections/SectionHeader.tsx
+
+
+---
+
 ## [a06899fc24bdd90317e304834ad667c310dc3503] - Sat Dec 27 12:42:08 2025 +0100
 
 **Author**: stenkjan
