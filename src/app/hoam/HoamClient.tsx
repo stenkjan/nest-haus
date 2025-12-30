@@ -229,12 +229,12 @@ export default function HoamClient() {
         {/* Section 2 - Text Content Below Hero */}
         <section id="intro-hoam" className="w-full relative bg-white">
           {/* Text Content Below Video */}
-          <div className="max-w-[1440px] 2xl:max-w-[1440px] px-4 sm:px-8 md:px-16 lg:px-24 xl:px-32 2xl:px-32 mx-auto pt-8 md:pt-16">
+          <div className="max-w-[1536px] 2xl:max-w-[1600px] px-4 sm:px-8 md:px-16 lg:px-24 xl:px-32 2xl:px-32 mx-auto pt-4 md:pt-16 pb-4 md:pb-8">
             <h2
-              className="h2-title text-center"
+              className="h2-title text-center leading-tight md:leading-normal"
               dangerouslySetInnerHTML={{
                 __html:
-                  "<span class='text-nest-gray'>Das </span><span class='text-black font-medium'>erste Haus</span><span class='text-nest-gray'> der </span><span class='text-black font-medium'>Welt</span><span class='text-nest-gray'>, welches sich an </span><span class='text-black font-medium'>dein Leben anpasst</span><span class='text-nest-gray'>, nicht umgekehrt.</span><br/><br/><span class='text-nest-gray'>Deine </span><span class='text-black font-medium'>Atmosphäre</span><span class='text-nest-gray'>, deine Vorstellungen. </span><span class='text-black font-medium'>Weil nur du weißt, wie du richtig wohnst.</span>",
+                  "<span class='text-nest-gray'>Das </span><span class='text-black font-medium'>erste Haus</span><span class='text-nest-gray'> der </span><span class='text-black font-medium'>Welt</span><span class='text-nest-gray'>, welches sich an </span><span class='text-black font-medium'>dein Leben anpasst</span><span class='text-nest-gray'>, nicht&nbsp;umgekehrt.</span><br/><span class='text-nest-gray'>Deine </span><span class='text-black font-medium'>Atmosphäre</span><span class='text-nest-gray'>, deine Vorstellungen. </span><span class='text-black font-medium'>Weil nur du weißt, wie&nbsp;du&nbsp;richtig&nbsp;wohnst.</span>",
               }}
             />
           </div>
@@ -277,12 +277,17 @@ export default function HoamClient() {
               <div className="flex flex-wrap gap-4 justify-center">
                 <Link href="/hoam-system">
                   <Button variant="primary" size="xs">
-                    <Hoam variant="button" /> System
+                    <Hoam variant="button" />
+                    <span className="ml-1.5 sm:ml-1"> system</span>
                   </Button>
                 </Link>
                 <Link href="/warum-wir">
                   <Button variant="landing-secondary-blue" size="xs">
-                    Warum mit <Hoam variant="button" />?
+                    Warum mit
+                    <span className="ml-1.5 sm:ml-1">
+                      <Hoam variant="button" />
+                    </span>
+                    ?
                   </Button>
                 </Link>
               </div>
