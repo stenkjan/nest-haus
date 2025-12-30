@@ -4,6 +4,19 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [7f71e79abffbb7772be8feea92a4e96ecf0f55cb] - Tue Dec 30 14:24:02 2025 +0100
+
+**Author**: stenkjan
+**Message**: `✨ Enhance Footer component layout for better responsiveness and spacing.  - Adjusted visibility of the first footer column on medium screens. - Updated spacing for footer items to improve overall readability and consistency.  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/components/Footer.tsx
+
+
+---
+
 ## [ce682df8d077061a73035216193836a85851181c] - Tue Dec 30 13:37:17 2025 +0100
 
 **Author**: stenkjan
