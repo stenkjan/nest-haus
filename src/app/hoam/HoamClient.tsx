@@ -330,13 +330,15 @@ export default function HoamClient() {
             maxWidth={true}
             showInstructions={false}
             noPadding={true}
+            mobileTextAlignment="center"
+            removeMobilePadding={true}
             customData={[
               {
                 id: 1,
                 title: "Dein Stil. Dein Zuhause.",
                 subtitle: "",
                 description:
-                  "<span class='text-nest-gray'>Im ®Hoam Konfigurator gestaltest du </span><span class='text-black font-medium'>dein Zuhause Schritt für Schritt</span><span class='text-nest-gray'> und behältst den Preis stets im Überblick.</span><br/><br/><span class='text-nest-gray'>Entdecke unsere </span><span class='text-black font-medium'>vielfältigen Möglichkeiten</span><span class='text-nest-gray'> und konfiguriere deine Basis für dein individuelles </span><span class='text-black font-medium'>®Hoam</span><span class='text-nest-gray'>.</span>",
+                  "<span class='text-nest-gray'>Im ®Hoam Konfigurator gestaltest du </span><strong class='text-black'>dein Zuhause Schritt für Schritt</strong><span class='text-nest-gray'> und behältst den Preis stets im Überblick.</span><br/><span style='display: block; margin-bottom: 0.5rem;'></span><span class='text-nest-gray'>Entdecke unsere </span><strong class='text-black'>vielfältigen Möglichkeiten</strong><span class='text-nest-gray'> und konfiguriere deine Basis für dein individuelles </span><strong class='text-black'>®Hoam</strong><span class='text-nest-gray'>.</span>",
                 video: IMAGES.variantvideo.twelve,
                 backgroundColor: "#F4F4F4",
                 playbackRate: 0.5,
@@ -410,13 +412,15 @@ export default function HoamClient() {
             maxWidth={true}
             showInstructions={false}
             noPadding={true}
+            mobileTextAlignment="center"
+            removeMobilePadding={true}
             customData={[
               {
                 id: 1,
                 title: "Architektur für ein bewegtes Leben",
                 subtitle: "",
                 description:
-                  "<span class='text-black font-medium'>Aufbauen. Mitnehmen. Weitergeben.</span><br/><br/><span class='text-nest-gray'>Das einzige Haus der Welt, dass sich an die Lebenszyklen seiner Bewohner anpasst.<br/><br/>Nicht umgekehrt.</span>",
+                  "<strong class='text-black'>Aufbauen. Mitnehmen. Weitergeben.</strong><br/><span style='display: block; margin-bottom: 0.5rem;'></span><span class='text-nest-gray'>Das einzige Haus der Welt, dass sich an die Lebenszyklen seiner Bewohner anpasst.</span><br/><span style='display: block; margin-bottom: 0.5rem;'></span><span class='text-nest-gray'>Nicht umgekehrt.</span>",
                 video: IMAGES.videos.nestHausTransport,
                 backgroundColor: "#F4F4F4",
                 buttons: [

@@ -114,6 +114,8 @@ export interface UnifiedContentCardProps {
   noPadding?: boolean; // Remove py-8 container padding
   showProgress?: boolean; // Show integrated progress bar above cards
   alignment?: CardAlignment; // Controls horizontal alignment of cards (center or left)
+  mobileTextAlignment?: "left" | "center"; // Controls text alignment on mobile for video layout
+  removeMobilePadding?: boolean; // Removes horizontal padding on mobile for video/overlay layouts
 
   // Content source (category or custom data)
   category?: ContentCategory;
@@ -169,6 +171,8 @@ export default function UnifiedContentCard({
   noPadding: _noPadding = false, // Default: include py-8 padding
   showProgress = false, // Default: don't show integrated progress bar
   alignment = "center", // Default: center alignment
+  mobileTextAlignment = "left", // Default: left alignment (current behavior)
+  removeMobilePadding = false, // Default: keep padding (current behavior)
   category,
   customData,
   title = "",
@@ -1022,7 +1026,7 @@ export default function UnifiedContentCard({
       // Mobile/Tablet: Stacked layout (Text top, Video bottom with 16:10 aspect ratio)
       <div className="flex flex-col">
         {/* Text Content - More space with better padding */}
-        <div className="flex flex-col justify-center items-start text-left px-6 py-6">
+        <div className={`flex flex-col justify-center ${mobileTextAlignment === 'center' ? 'items-center text-center' : 'items-start text-left'} px-6 pt-4`}>
           <motion.div
             initial={{ y: -20, opacity: 0 }}
             animate={{ y: 0, opacity: 1 }}
@@ -1031,7 +1035,7 @@ export default function UnifiedContentCard({
           >
             <h2
               className={`h2-title ${textColors.title} ${
-                card.subtitle ? "mb-1" : "mb-4"
+                card.subtitle ? "mb-1" : "mb-2 md:mb-4"
               }`}
             >
               {getCardText(card, "title")}
@@ -1044,7 +1048,7 @@ export default function UnifiedContentCard({
               </h3>
             )}
             <p
-              className={`p-primary ${textColors.description} leading-relaxed`}
+              className={`p-primary ${textColors.description} leading-normal md:leading-relaxed`}
               dangerouslySetInnerHTML={{
                 __html: getCardText(card, "description").replace(
                   /\n/g,
@@ -2291,7 +2295,7 @@ export default function UnifiedContentCard({
                   isLightboxMode
                     ? "" // No padding in lightbox mode - use full width
                     : layout === "video"
-                      ? "px-4 md:px-12"
+                      ? removeMobilePadding ? "md:px-12" : "px-4 md:px-12"
                       : layout === "overlay-text"
                         ? "px-4 md:px-12"
                         : layout === "glass-quote"

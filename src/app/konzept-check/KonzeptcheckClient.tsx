@@ -189,7 +189,7 @@ export default function KonzeptcheckClient() {
             customData={[
               {
                 id: 1,
-                title: "Teil 1/3",
+                title: "Teil 1 von 3",
                 subtitle: "",
                 description:
                   "<span class='text-nest-gray'>Mit dem </span><span class='text-black font-medium'>Konzept-Check</span><span class='text-nest-gray'> erhältst du eine </span><span class='text-black font-medium'>Analyse deines Grundstücks</span><span class='text-nest-gray'>, welche dir einen Überblick und eine </span><span class='text-black font-medium'>rechtssichere Auskunft</span><span class='text-nest-gray'> über alle vorherrschenden </span><span class='text-black font-medium'>Vorschriften, Gesetze und Bebauungsmöglichkeiten</span><span class='text-nest-gray'> gibt. Diese Analyse ist die Grundlage für jedes Bauvorhaben und gibt dir eine klar strukturierte Übersicht über dein Baugrundstück.</span>\n\n<span class='text-nest-gray'>Solltest du dich nach dem </span><span class='text-black font-medium'>Konzept-Check</span><span class='text-nest-gray'> gegen Hoam entscheiden, dient dir diese </span><span class='text-black font-medium'>Analyse</span><span class='text-nest-gray'> auch als </span><span class='text-black font-medium'>Grundlage</span><span class='text-nest-gray'> für </span><span class='text-black font-medium'>alle anderen Bauvorhaben</span><span class='text-nest-gray'>.</span>",
@@ -228,7 +228,7 @@ export default function KonzeptcheckClient() {
             customData={[
               {
                 id: 2,
-                title: "Teil 2/3",
+                title: "Teil 2 von 3",
                 subtitle: "",
                 description:
                   "<span class='text-nest-gray'>Nach der Analyse deines Grundstücks erstellen wir einen </span><span class='text-black font-medium'>individuell</span><span class='text-nest-gray'> für dich </span><span class='text-black font-medium'>maßgeschneiderten Entwurfsplan</span><span class='text-nest-gray'>, der dir eine </span><span class='text-black font-medium'>konkrete Vorstellung</span><span class='text-nest-gray'> davon gibt, wie dein </span><span class='text-black font-medium'>®Hoam</span><span class='text-nest-gray'> auf </span><span class='text-black font-medium'>deinem Grundstück</span><span class='text-nest-gray'> aussehen könnte.</span>\n\n<span class='text-nest-gray'>Unser </span><span class='text-black font-medium'>Konfigurator</span><span class='text-nest-gray'> dient dafür, dass du ein </span><span class='text-black font-medium'>Preisgefühl</span><span class='text-nest-gray'> für </span><span class='text-black font-medium'>dein ®Hoam</span><span class='text-nest-gray'> bekommst und hilft uns dabei, eine </span><span class='text-black font-medium'>Ausgangsbasis</span><span class='text-nest-gray'> für deinen </span><span class='text-black font-medium'>individuellen Entwurf</span><span class='text-nest-gray'> festzulegen.</span>",
@@ -278,7 +278,7 @@ export default function KonzeptcheckClient() {
             customData={[
               {
                 id: 3,
-                title: "Teil 3/3",
+                title: "Teil 3 von 3",
                 subtitle: "",
                 description:
                   "<span class='text-nest-gray'>Da eine verlässliche Kostenplanung besonders wichtig ist, behalten wir die Kosten für dein Bauvorhaben jederzeit </span><span class='text-black font-medium'>transparent und nachvollziehbar</span><span class='text-nest-gray'> im Überblick.</span>\n\n<span class='text-nest-gray'>Mit dem </span><span class='text-black font-medium'>Grundstückscheck</span><span class='text-nest-gray'> und deiner </span><span class='text-black font-medium'>individuellen Entwurfsplanung</span><span class='text-nest-gray'> können wir eine </span><span class='text-black font-medium'>exakte Kostenplanung</span><span class='text-nest-gray'> für dich erstellen. So hast du den </span><span class='text-black font-medium'>Gesamtpreis stets klar im Blick</span><span class='text-nest-gray'>.</span>",
