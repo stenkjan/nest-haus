@@ -4,6 +4,21 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [3b21872fc3ae2bec1ce1609fe347ae79e1cbde90] - Fri Jan 2 14:38:52 2026 +0100
+
+**Author**: stenkjan
+**Message**: `✨ Update text alignment and styling in grid components for improved readability and consistency.  - Changed text alignment from center to left in FullWidthTextGrid and ThreeByOneAdaptiveHeight components. - Enhanced text styling with leading adjustments for better visual clarity in ThreeByOneGrid.  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/components/grids/FullWidthTextGrid.tsx
+- src/components/grids/ThreeByOneAdaptiveHeight.tsx
+- src/components/grids/ThreeByOneGrid.tsx
+
+
+---
+
 ## [53ac0c5aca374c6a30cb33f7f167eea7596a06cf] - Wed Dec 31 15:09:44 2025 +0100
 
 **Author**: stenkjan
