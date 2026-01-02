@@ -165,7 +165,7 @@ export default function ThreeByOneGrid({
             {/* Text Section - Always in the middle */}
             <div className={`px-4 md:px-12 mb-12 ${textWrapperClassName}`}>
               <motion.div
-                className={`p-secondary ${textColorClasses} text-center lg:text-left ${textClassName}`}
+                className={`p-secondary ${textColorClasses} text-left leading-snug lg:leading-relaxed ${textClassName}`}
                 dangerouslySetInnerHTML={{ __html: displayText }}
                 initial={{ y: 20, opacity: 0 }}
                 animate={{ y: 0, opacity: 1 }}

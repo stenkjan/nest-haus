@@ -94,9 +94,7 @@ export default function FullWidthTextGrid({
             transition={{ delay: 0.2, duration: 0.6 }}
           >
             <p
-              className={`p-secondary ${textColorClasses} ${
-                isMobile ? "text-center" : "text-left"
-              }`}
+              className={`p-secondary ${textColorClasses} text-left leading-snug lg:leading-relaxed`}
               dangerouslySetInnerHTML={{ __html: textBox1 }}
             />
           </motion.div>
@@ -110,9 +108,7 @@ export default function FullWidthTextGrid({
             transition={{ delay: 0.4, duration: 0.6 }}
           >
             <p
-              className={`p-secondary ${textColorClasses} ${
-                isMobile ? "text-center" : "text-left"
-              }`}
+              className={`p-secondary ${textColorClasses} text-left leading-snug lg:leading-relaxed`}
               dangerouslySetInnerHTML={{ __html: textBox2 }}
             />
           </motion.div>
