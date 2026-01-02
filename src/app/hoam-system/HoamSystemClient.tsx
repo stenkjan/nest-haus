@@ -124,7 +124,11 @@ export default function HoamSystemClient() {
           {/* Section 1 - ®Hoam System */}
           <section id="unsere-technik" className="bg-black pt-12 pb-8 md:pb-16">
             <SectionHeader
-              title={<><Hoam /> system</>}
+              title={
+                <>
+                  <Hoam /> system
+                </>
+              }
               subtitle="Individualisiert, wo es Freiheit braucht. Standardisiert, wo es Effizienz schafft."
               titleClassName="text-white"
               subtitleClassName="text-white"
@@ -138,8 +142,8 @@ export default function HoamSystemClient() {
                     path={
                       isMobile
                         ? getMobileVideoPath(
-                          IMAGES.function.mobile.nestHausModulSchemaIntro
-                        )
+                            IMAGES.function.mobile.nestHausModulSchemaIntro
+                          )
                         : IMAGES.function.nestHausModulSchemaIntro
                     }
                     fallbackSrc={
@@ -227,12 +231,12 @@ export default function HoamSystemClient() {
             <div className="w-full max-w-[1536px] mx-auto px-4 sm:px-6 lg:px-8 pt-12 md:pt-16">
               <div className="flex flex-row gap-4 justify-center items-center">
                 <Link href="/warum-wir">
-                  <Button variant="primary" size="lg">
+                  <Button variant="primary" size="xs">
                     Unsere Philosophie
                   </Button>
                 </Link>
                 <Link href="/konfigurator">
-                  <Button variant="landing-secondary-blue" size="lg">
+                  <Button variant="secondary-narrow-white" size="xs">
                     Konfigurieren
                   </Button>
                 </Link>
@@ -358,7 +362,7 @@ export default function HoamSystemClient() {
               )}
 
               {/* Single Button - Konzept-Check bestellen */}
-              <div className="flex gap-4 justify-center w-full pt-12">
+              <div className="flex gap-4 justify-center w-full pt-4 md:pt-12">
                 <Link href="/warenkorb?mode=konzept-check">
                   <Button variant="primary" size="xs">
                     Konzept-Check bestellen
@@ -382,8 +386,7 @@ export default function HoamSystemClient() {
               mobileImage={IMAGES.function.mobile.nestHausModulElektrikSanitaer}
               imageDescription="®Hoam Modulansicht für deinen Part"
               textCellTitle1="Die Installationsebene"
-              textCell1="Alle unsere Gebäude werden mit einer Installationsebene ausgeführt und sind so konzipiert, dass ein unkompliziertes Demontieren der Interior-Platten möglich ist. Im Anschluss können sämltiche Elektro-, & Installationsarbeiten durchgeführt werden. 
-Nach Abschluss dieser Arbeiten können die Interior-Platten wieder montiert werden. Dies ermöglicht eine stetigen Zugang zu sämtlichen im Gebäude verlegten Leitungen und ermöglicht auch eine unkomplizierte Erweiterung, Montage & Wartung."
+              textCell1="Alle unsere Gebäude werden mit einer Installationsebene ausgeführt und sind so konzipiert, dass ein unkompliziertes Demontieren der Interior-Platten möglich ist. Im Anschluss können sämltiche Elektro-, & Installationsarbeiten durchgeführt werden. Nach Abschluss dieser Arbeiten können die Interior-Platten wieder montiert werden. Dies ermöglicht eine stetigen Zugang zu sämtlichen im Gebäude verlegten Leitungen und ermöglicht auch eine unkomplizierte Erweiterung, Montage & Wartung."
               textCellTitle2="Wie transportierbar?"
               textCell2="Für den Transport des Gebäudes müssen die HKLS-Leitungen an den Schnittstellen zwischen den Modulen so ausgeführt werden, dass sie mit Muffen bzw. Verbindungsdosen von einander getrennt werden können. In unserem Planungspaket für HKLS-Technik erhältst du, die von uns vorgeschlagenen individuellen Lösungen der einzelnen Verbindungstechniken."
               textCellTitle3="Der Technikbereich"
@@ -436,7 +439,24 @@ Nach Abschluss dieser Arbeiten können die Interior-Platten wieder montiert werd
                 backgroundColor="black"
                 maxWidth={false}
                 textWrapperClassName="mt-12"
+                hideImage2OnMobile={true}
               />
+            </div>
+
+            {/* CTA buttons - both mobile and desktop */}
+            <div className="w-full md:pt-6">
+              <div className="flex flex-row gap-2 items-center justify-center w-full px-4">
+                <Link href="/konzept-check">
+                  <Button variant="primary" size="xs">
+                    Konzept-Check
+                  </Button>
+                </Link>
+                <Link href="/konfigurator">
+                  <Button variant="secondary-narrow-white" size="xs">
+                    Konfigurieren
+                  </Button>
+                </Link>
+              </div>
             </div>
           </section>
 
@@ -460,4 +480,3 @@ Nach Abschluss dieser Arbeiten können die Interior-Platten wieder montiert werd
     </div>
   );
 }
-

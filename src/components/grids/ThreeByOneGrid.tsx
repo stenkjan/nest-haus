@@ -28,6 +28,7 @@ interface ThreeByOneGridProps {
   textClassName?: string;
   textWrapperClassName?: string;
   image1ClassName?: string;
+  hideImage2OnMobile?: boolean;
 }
 
 export default function ThreeByOneGrid({
@@ -52,6 +53,7 @@ export default function ThreeByOneGrid({
   textClassName = "",
   textWrapperClassName = "",
   image1ClassName = "",
+  hideImage2OnMobile = false,
 }: ThreeByOneGridProps) {
   const [isClient, setIsClient] = useState(false);
   const [screenWidth, setScreenWidth] = useState(0);
@@ -201,27 +203,29 @@ export default function ThreeByOneGrid({
             </div>
 
             {/* Second Image (First Image on Mobile) */}
-            <motion.div
-              className="relative overflow-hidden px-4 md:px-12"
-              style={{ aspectRatio: "4/3" }}
-              initial={{ y: 20, opacity: 0 }}
-              animate={{ y: 0, opacity: 1 }}
-              transition={{ delay: 0.4, duration: 0.6 }}
-            >
-              <HybridBlobImage
-                path={image2}
-                alt={image2Description}
-                fill
-                className="object-contain object-center"
-                sizes="100vw"
-                quality={85}
-                strategy="client"
-                enableCache={true}
-                isInteractive={false}
-                isAboveFold={false}
-                isCritical={false}
-              />
-            </motion.div>
+            {!hideImage2OnMobile && (
+              <motion.div
+                className="relative overflow-hidden px-4 md:px-12"
+                style={{ aspectRatio: "4/3" }}
+                initial={{ y: 20, opacity: 0 }}
+                animate={{ y: 0, opacity: 1 }}
+                transition={{ delay: 0.4, duration: 0.6 }}
+              >
+                <HybridBlobImage
+                  path={image2}
+                  alt={image2Description}
+                  fill
+                  className="object-contain object-center"
+                  sizes="100vw"
+                  quality={85}
+                  strategy="client"
+                  enableCache={true}
+                  isInteractive={false}
+                  isAboveFold={false}
+                  isCritical={false}
+                />
+              </motion.div>
+            )}
           </div>
         ) : (
           /* Desktop Layout: 3 columns with 2 rows (main text only in first row) */
@@ -326,14 +330,6 @@ export default function ThreeByOneGrid({
                       />
                     </div>
                   </motion.div>
-                  {/* Horizontal line spanning all 3 columns */}
-                  <div
-                    className={`col-span-3 h-px w-full ${
-                      backgroundColor === "black"
-                        ? "bg-gray-700"
-                        : "bg-gray-300"
-                    } my-2`}
-                  ></div>
                 </>
               ) : (
                 <>
@@ -433,14 +429,6 @@ export default function ThreeByOneGrid({
                       </div>
                     )}
                   </motion.div>
-                  {/* Horizontal line spanning all 3 columns */}
-                  <div
-                    className={`col-span-3 h-px w-full ${
-                      backgroundColor === "black"
-                        ? "bg-gray-700"
-                        : "bg-gray-300"
-                    } my-2`}
-                  ></div>
                 </>
               )}
             </div>

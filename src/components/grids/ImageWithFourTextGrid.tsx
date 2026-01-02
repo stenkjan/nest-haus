@@ -184,7 +184,6 @@ export default function ImageWithFourTextGrid({
                 <div className="space-y-6">
                   <motion.div
                     className="flex flex-col items-start justify-start space-y-3"
-                    style={{ minHeight: "150px" }}
                     initial={{ y: 20, opacity: 0 }}
                     animate={{
                       y: showMoreInfo ? 0 : 20,
@@ -206,7 +205,6 @@ export default function ImageWithFourTextGrid({
 
                   <motion.div
                     className="flex flex-col items-start justify-start space-y-3"
-                    style={{ minHeight: "150px" }}
                     initial={{ y: 20, opacity: 0 }}
                     animate={{
                       y: showMoreInfo ? 0 : 20,
@@ -228,7 +226,6 @@ export default function ImageWithFourTextGrid({
 
                   <motion.div
                     className="flex flex-col items-start justify-start space-y-3"
-                    style={{ minHeight: "150px" }}
                     initial={{ y: 20, opacity: 0 }}
                     animate={{
                       y: showMoreInfo ? 0 : 20,
@@ -250,7 +247,6 @@ export default function ImageWithFourTextGrid({
 
                   <motion.div
                     className="flex flex-col items-start justify-start space-y-3"
-                    style={{ minHeight: "150px" }}
                     initial={{ y: 20, opacity: 0 }}
                     animate={{
                       y: showMoreInfo ? 0 : 20,
