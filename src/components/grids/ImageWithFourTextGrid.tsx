@@ -82,8 +82,9 @@ export default function ImageWithFourTextGrid({
       <div className={`${containerClasses} ${backgroundClasses}`}>
         <div className="flex justify-center items-center py-8">
           <div
-            className={`animate-pulse ${backgroundColor === "black" ? "bg-gray-700" : "bg-gray-200"
-              } rounded-3xl`}
+            className={`animate-pulse ${
+              backgroundColor === "black" ? "bg-gray-700" : "bg-gray-200"
+            } rounded-3xl`}
             style={{ width: "100%", height: 400 }}
           />
         </div>
@@ -124,8 +125,9 @@ export default function ImageWithFourTextGrid({
         {!isMobile && (
           <div className={`${containerClasses}`}>
             <div
-              className={`h-px w-full ${backgroundColor === "black" ? "bg-gray-700" : "bg-gray-300"
-                } mb-8`}
+              className={`h-px w-full ${
+                backgroundColor === "black" ? "bg-gray-700" : "bg-gray-300"
+              } mb-8`}
             ></div>
           </div>
         )}
@@ -142,10 +144,11 @@ export default function ImageWithFourTextGrid({
             >
               <button
                 onClick={() => setShowMoreInfo(!showMoreInfo)}
-                className={`text-sm ${textColorClasses} opacity-80 hover:opacity-100 transition-opacity duration-200 flex items-center justify-center gap-2 mx-auto focus:outline-none focus:ring-2 focus:ring-offset-2 ${backgroundColor === "black"
+                className={`text-sm ${textColorClasses} opacity-80 hover:opacity-100 transition-opacity duration-200 flex items-center justify-center gap-2 mx-auto focus:outline-none focus:ring-2 focus:ring-offset-2 ${
+                  backgroundColor === "black"
                     ? "focus:ring-white"
                     : "focus:ring-gray-500"
-                  } rounded-lg px-4 py-2`}
+                } rounded-lg px-4 py-2`}
               >
                 Mehr Informationen
                 <motion.span
@@ -177,12 +180,6 @@ export default function ImageWithFourTextGrid({
                 transition={{ duration: 0.4, ease: "easeInOut" }}
                 className="pt-6"
               >
-                {/* Horizontal divider */}
-                <div
-                  className={`h-px w-full ${backgroundColor === "black" ? "bg-gray-700" : "bg-gray-300"
-                    } mb-6`}
-                ></div>
-
                 {/* All text cells for mobile */}
                 <div className="space-y-6">
                   <motion.div
