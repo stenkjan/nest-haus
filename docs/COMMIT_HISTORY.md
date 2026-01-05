@@ -4,6 +4,20 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [c1902962b75230d8244ccfe76672c9f4fea5cb7c] - Mon Jan 5 14:16:39 2026 +0100
+
+**Author**: stenkjan
+**Message**: `✨ Update navbar background styling and card content for improved aesthetics.  - Changed navbar background from white to frosted glass effect in HoamSystemClient and WarumWirClient. - Updated subtitle text color to white with transparency for better contrast in team cards. - Adjusted description text opacity for consistency across various card components.  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/hoam-system/HoamSystemClient.tsx
+- src/app/warum-wir/WarumWirClient.tsx
+
+
+---
+
 ## [7c9e67542aff86db2a39cb6f8897c09c58dfedc5] - Mon Jan 5 12:01:15 2026 +0100
 
 **Author**: stenkjan
