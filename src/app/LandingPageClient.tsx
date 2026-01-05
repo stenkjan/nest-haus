@@ -42,7 +42,11 @@ const sections = [
   },
   {
     id: "hoam-entdecken",
-    title: <><Hoam /> Entdecken</>,
+    title: (
+      <>
+        <Hoam /> Entdecken
+      </>
+    ),
     slug: "hoam-entdecken",
   },
 ];
@@ -130,7 +134,11 @@ const sectionsContent = [
     sectionId: "keine-lebensentscheidung",
     imagePath: IMAGES.hero.nestHaus5,
     h1: "Keine Lebensentscheidung",
-    h3: <>Mit <Hoam variant="title" /> bleibt kein Ort unerreichbar</>,
+    h3: (
+      <>
+        Mit <Hoam variant="title" /> bleibt kein Ort unerreichbar
+      </>
+    ),
     modelName: "Hoam 80",
     configuration: "Trapezblech",
     button1: "Konzept-Check",
@@ -283,26 +291,28 @@ export default function LandingPageClient() {
                       section.id === 3 || section.id === 4 || section.id === 5
                         ? "justify-start pt-[5vh] md:justify-start md:pt-[5vh] max-md:justify-between max-md:pt-[5vh] max-md:pb-[5vh]" // Sections 3,4,5: bottom on mobile only
                         : "justify-start pt-[5vh]" // Other sections: always top
-                      } ${section.id === 2 ? "px-0" : "px-8"}`}
+                    } ${section.id === 2 ? "px-0" : "px-8"}`}
                   >
                     <div className="text-center">
                       <h1
-                        className={`h1-primary ${getSectionTextColor(section.id, isMobile)} ${section.id === 3 ||
+                        className={`h1-primary ${getSectionTextColor(section.id, isMobile)} ${
+                          section.id === 3 ||
                           section.id === 4 ||
                           section.id === 5
-                          ? "drop-shadow-lg"
-                          : ""
-                          }`}
+                            ? "drop-shadow-lg"
+                            : ""
+                        }`}
                       >
                         {section.h1}
                       </h1>
                       <h3
-                        className={`h3-primary ${getSectionTextColor(section.id, isMobile)} ${section.id === 3 ||
+                        className={`h3-primary ${getSectionTextColor(section.id, isMobile)} ${
+                          section.id === 3 ||
                           section.id === 4 ||
                           section.id === 5
-                          ? "drop-shadow-lg"
-                          : ""
-                          }`}
+                            ? "drop-shadow-lg"
+                            : ""
+                        }`}
                       >
                         {section.h3}
                       </h3>
@@ -346,21 +356,31 @@ export default function LandingPageClient() {
                     customData={[
                       {
                         id: 1,
-                        title: <>Die Vision <Hoam variant="title" /></>,
-                        subtitle: <><Hoam variant="subtitle" /> mit Verantwortung</>,
+                        // title: <>Die Vision <Hoam variant="title" /></>,
+                        title: "",
+                        subtitle: (
+                          <>
+                            <Hoam variant="subtitle" /> mit Verantwortung
+                          </>
+                        ),
                         description: "",
                         video: IMAGES.videos.hoamClipShort,
                         playbackRate: 0.5,
                         backgroundColor: "#F4F4F4",
                         textColor: "black",
-                        primaryAction: "Unsere Mission",
+                        primaryAction: "Unsere Vision",
                         primaryLink: "/warum-wir",
-                        primaryButtonVariant: "landing-secondary-blue",
+                        primaryButtonVariant: "landing-primary",
                       },
                       {
                         id: 2,
                         title: "Wir bauen Freiheit",
-                        subtitle: <>Finde heraus was <Hoam variant="subtitle" /> ausmacht</>,
+                        subtitle: (
+                          <>
+                            Finde heraus was <Hoam variant="subtitle" />{" "}
+                            ausmacht
+                          </>
+                        ),
                         description: "",
                         video: IMAGES.variantvideo.twelve,
                         playbackRate: 0.5,

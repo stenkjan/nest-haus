@@ -160,7 +160,7 @@ export default function TwoByTwoImageGrid({
 
             {/* Content Container */}
             <div className="relative h-full flex flex-col justify-between p-6">
-              {/* Top Section - Title, Subtitle, and Buttons */}
+              {/* Top Section - Title, Subtitle, and Buttons (except for id 1) */}
               <motion.div
                 className="flex-shrink-0"
                 initial={{ y: -20, opacity: 0 }}
@@ -184,7 +184,7 @@ export default function TwoByTwoImageGrid({
                     {item.title}
                   </h2>
                   <h3
-                    className={`hidden sm:block font-medium text-lg sm:text-base md:text-sm lg:text-lg md:lg:text-xl xl:text-2xl md:xl:text-2xl ${item.primaryAction || item.secondaryAction ? "mb-2" : ""} ${(item.textColor || textColor) === "white"
+                    className={`hidden sm:block font-medium text-lg sm:text-base md:text-sm lg:text-lg md:lg:text-xl xl:text-2xl md:xl:text-2xl ${item.id !== 1 && (item.primaryAction || item.secondaryAction) ? "mb-2" : ""} ${(item.textColor || textColor) === "white"
                         ? "!text-white"
                         : "!text-black"
                       }`}
@@ -192,8 +192,8 @@ export default function TwoByTwoImageGrid({
                     {item.subtitle}
                   </h3>
 
-                  {/* Button Group - Now under subtitle - Only render if at least one button exists */}
-                  {(item.primaryAction || item.secondaryAction) && (
+                  {/* Button Group - Top position (for all items except id 1) */}
+                  {item.id !== 1 && (item.primaryAction || item.secondaryAction) && (
                     <div className="flex gap-2 justify-center">
                       {/* Primary Button - Only render if primaryAction is provided */}
                       {item.primaryAction &&
@@ -252,7 +252,7 @@ export default function TwoByTwoImageGrid({
                 </div>
               </motion.div>
 
-              {/* Bottom Section - Description */}
+              {/* Bottom Section - Description and Buttons (only for id 1) */}
               <motion.div
                 className="flex-shrink-0"
                 initial={{ y: 20, opacity: 0 }}
@@ -268,14 +268,70 @@ export default function TwoByTwoImageGrid({
                     }`}
                 >
                   {/* Description Text */}
-                  <p
-                    className={`p-primary text-center ${(item.textColor || textColor) === "white"
-                        ? "!text-white"
-                        : "!text-black"
-                      }`}
-                  >
-                    {item.description}
-                  </p>
+                  {item.description && (
+                    <p
+                      className={`p-primary text-center ${item.id === 1 && (item.primaryAction || item.secondaryAction) ? "mb-4" : ""} ${(item.textColor || textColor) === "white"
+                          ? "!text-white"
+                          : "!text-black"
+                        }`}
+                    >
+                      {item.description}
+                    </p>
+                  )}
+
+                  {/* Button Group - Bottom position (only for id 1) */}
+                  {item.id === 1 && (item.primaryAction || item.secondaryAction) && (
+                    <div className="flex gap-2 justify-center mb-6">
+                      {/* Primary Button - Only render if primaryAction is provided */}
+                      {item.primaryAction &&
+                        (item.primaryLink ? (
+                          <Link href={item.primaryLink}>
+                            <Button
+                              variant="landing-primary"
+                              size={isUltraWide ? "xs" : "xxs"}
+                              className="w-full"
+                            >
+                              {item.primaryAction}
+                            </Button>
+                          </Link>
+                        ) : (
+                          <Button
+                            variant="landing-primary"
+                            size={isUltraWide ? "xs" : "xxs"}
+                            className="w-full"
+                          >
+                            {item.primaryAction}
+                          </Button>
+                        ))}
+
+                      {/* Secondary Button - Only render if secondaryAction is provided */}
+                      {item.secondaryAction &&
+                        (item.secondaryLink ? (
+                          <Link href={item.secondaryLink}>
+                            <Button
+                              variant={
+                                item.secondaryButtonVariant ||
+                                "landing-secondary"
+                              }
+                              size={isUltraWide ? "xs" : "xxs"}
+                              className="w-full"
+                            >
+                              {item.secondaryAction}
+                            </Button>
+                          </Link>
+                        ) : (
+                          <Button
+                            variant={
+                              item.secondaryButtonVariant || "landing-secondary"
+                            }
+                            size={isUltraWide ? "xs" : "xxs"}
+                            className="w-full"
+                          >
+                            {item.secondaryAction}
+                          </Button>
+                        ))}
+                    </div>
+                  )}
                 </div>
               </motion.div>
             </div>
