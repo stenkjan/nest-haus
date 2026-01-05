@@ -111,9 +111,9 @@ export default function HoamSystemClient() {
       className="min-h-screen bg-black text-white"
       style={{ paddingTop: "var(--navbar-height, 3.5rem)" }}
     >
-      {/* White background for navbar area */}
+      {/* Frosted glass background for navbar area */}
       <div
-        className="fixed top-0 left-0 right-0 bg-white z-[90]"
+        className="fixed top-0 left-0 right-0 bg-[#F4F4F4]/80 backdrop-blur-md z-[90]"
         style={{ height: "var(--navbar-height, 3.5rem)" }}
       ></div>
       <div>

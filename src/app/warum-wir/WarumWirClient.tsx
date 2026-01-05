@@ -55,7 +55,15 @@ export default function WarumWirClient() {
     useState<string>("wir-sind-nest");
 
   return (
-    <div className="min-h-screen pt-12 bg-white">
+    <div
+      className="min-h-screen bg-black"
+      style={{ paddingTop: "var(--navbar-height, 3.5rem)" }}
+    >
+      {/* Frosted glass background for navbar area */}
+      <div
+        className="fixed top-0 left-0 right-0 bg-[#F4F4F4]/80 backdrop-blur-md z-[90]"
+        style={{ height: "var(--navbar-height, 3.5rem)" }}
+      ></div>
       <SectionRouter sections={sections} onSectionChange={setCurrentSectionId}>
         {/* Section 1 - Wir sind Hoam (includes video) */}
         <section

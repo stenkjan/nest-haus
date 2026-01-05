@@ -1026,19 +1026,19 @@ export const WARUM_WIR_TEAM_CARDS_CONTENT: ContentCardData[] = [
     {
         id: 1,
         title: "Markus Schmoltner",
-        subtitle: "<span class='text-gray-400'>Architekt</span>",
+        subtitle: "<span class='text-white/70'>Architekt</span>",
         description: "Gründer und Inhaber",
         image: IMAGES.team.markusSchmoltner,
         backgroundColor: "#121212",
         textColor: "text-white",
         aspectRatio: "2x1", // Will be custom styled for 9:10 ratio
         bottomLabel: "",
-        bottomText: "Betreiber Schmolti's Chalet  \n WKO Top 30 unter 30 \n Tongji Const. Festival 1st Price \n „Verbund“ Top 100 Jungunternehmer",
+        bottomText: "Betreiber Schmolti's Chalet  \n WKO Top 30 unter 30 \n Tongji Const. Festival 1st Price \n \"Verbund\" Top 100 Jungunternehmer",
     },
     {
         id: 2,
         title: "Bernhard Grentner",
-        subtitle: "<span class='text-gray-400'>Unternehmer</span>",
+        subtitle: "<span class='text-white/70'>Unternehmer</span>",
         description: "Gründer und Inhaber",
         image: IMAGES.team.bernhardGrentner,
         backgroundColor: "#121212",
@@ -1110,7 +1110,7 @@ export const GLASS_QUOTE_CARDS_CONTENT: ContentCardData[] = [
         backgroundColor: "#121212",
         aspectRatio: "2x1", // Portrait format (tall)
         textColor: "text-white",
-        descriptionColor: "text-gray-400", // Same gray as subtitle on other cards
+        descriptionColor: "text-white/70", // White with transparency for consistency
         reverseTextOrder: false, // Description first (p-primary), then title (h2-title)
         headingLevel: "h3", // Use h2-title for bigger title
         buttons: [
@@ -1126,7 +1126,7 @@ export const GLASS_QUOTE_CARDS_CONTENT: ContentCardData[] = [
         id: 1,
         title: "Technische Universität Graz",
         subtitle: "Projektentwicklung",
-        description: "<span class='text-nest-gray'>Ein </span> zukunftsweisendes Projekt, <span class='text-nest-gray'>welches in den Bereichen</span> Nachhaltigkeit<span class='text-nest-gray'>, Ökologie und auch vom technischen Ansatz</span> herausragend <span class='text-nest-gray'>ist!</span>|||Assoc. Prof. Dipl-Ing. Dr. Techn.|||Milena Stravic",
+        description: "<span class='opacity-70'>Ein </span> zukunftsweisendes Projekt, <span class='opacity-70'>welches in den Bereichen</span> Nachhaltigkeit<span class='opacity-70'>, Ökologie und auch vom technischen Ansatz</span> herausragend <span class='opacity-70'>ist!</span>|||Assoc. Prof. Dipl-Ing. Dr. Techn.|||Milena Stravic",
         backgroundColor: "#121212",
         image: IMAGES.partners.tuGraz, // TU Graz logo
         externalLink: "https://www.tugraz.at", // Optional: link to TU Graz website
@@ -1135,7 +1135,7 @@ export const GLASS_QUOTE_CARDS_CONTENT: ContentCardData[] = [
         id: 2,
         title: "Zimmererei Sobitsch",
         subtitle: "Modulbau",
-        description: "Einfache Umsetzung <span class='text-nest-gray'>und gleichzeitig </span>hochwertige <span class='text-nest-gray'>und extrem belastbare</span> Ausführung.|||Holzbaumeister|||Franz Sobitsch",
+        description: "Einfache Umsetzung <span class='opacity-70'>und gleichzeitig </span>hochwertige <span class='opacity-70'>und extrem belastbare</span> Ausführung.|||Holzbaumeister|||Franz Sobitsch",
         backgroundColor: "#121212",
         image: IMAGES.partners.sobitschHolzbau,
         externalLink: "https://www.sobi.at", // Optional: link to Sobitsch website
@@ -1144,7 +1144,7 @@ export const GLASS_QUOTE_CARDS_CONTENT: ContentCardData[] = [
         id: 3,
         title: "Wirtschaftskammer Steiermark",
         subtitle: "Auszeichnung Top 30 unter 30",
-        description: "Wegweisend <span class='text-nest-gray'>in</span> Technologie <span class='text-nest-gray'>und</span> nachhaltigem Bauen. <span class='text-nest-gray'>Hoam setzt</span> neue Maßstäbe <span class='text-nest-gray'>für die</span> Zukunft.|||WKO Steiermark|||Von Jury gekürt",
+        description: "Wegweisend <span class='opacity-70'>in</span> Technologie <span class='opacity-70'>und</span> nachhaltigem Bauen. <span class='opacity-70'>Hoam setzt</span> neue Maßstäbe <span class='opacity-70'>für die</span> Zukunft.|||WKO Steiermark|||Von Jury gekürt",
         backgroundColor: "#121212",
         image: IMAGES.partners.wko, // TU-IAM logo
         externalLink: "https://www.wko.at", // Optional: link to WKO website
