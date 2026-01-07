@@ -4,6 +4,19 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [63c1f921d20251f85970af44f7374e69e25884da] - Wed Jan 7 13:14:51 2026 +0100
+
+**Author**: stenkjan
+**Message**: `✨ Update text opacity in WarumWirClient descriptions for improved readability and consistency across sections.  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/warum-wir/WarumWirClient.tsx
+
+
+---
+
 ## [5563b4de444e17b31d246e2d9d4475c25e2e91e9] - Wed Jan 7 12:54:57 2026 +0100
 
 **Author**: stenkjan
