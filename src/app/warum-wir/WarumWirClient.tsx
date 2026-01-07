@@ -214,7 +214,7 @@ export default function WarumWirClient() {
                   title: "Wohnen im Kreislauf ",
                   subtitle: "",
                   description:
-                    "<span class='text-nest-gray'>Wohnen bedeutet Verantwortung. Deshalb bildet </span><span class='text-black font-medium'>®Hoam</span><span class='text-nest-gray'> jedes Modul als </span><span class='text-black font-medium'>Teil eines Kreislaufes</span><span class='text-nest-gray'> aus. Wir denken Gebäude so, dass sie sich verändern, zerlegen und </span><span class='text-black font-medium'>wiederverwenden</span><span class='text-nest-gray'> lassen. So entsteht ein Zuhause, das nicht nur gebaut, sondern bewusst geschaffen wird. Stets </span><span class='text-black font-medium'>im Einklang mit Mensch und Umwelt.</span>",
+                    "<span class='text-black opacity-70'>Wohnen bedeutet Verantwortung. Deshalb bildet </span><span class='text-black font-medium'>®Hoam</span><span class='text-black opacity-70'> jedes Modul als </span><span class='text-black font-medium'>Teil eines Kreislaufes</span><span class='text-black opacity-70'> aus. Wir denken Gebäude so, dass sie sich verändern, zerlegen und </span><span class='text-black font-medium'>wiederverwenden</span><span class='text-black opacity-70'> lassen. So entsteht ein Zuhause, das nicht nur gebaut, sondern bewusst geschaffen wird. Stets </span><span class='text-black font-medium'>im Einklang mit Mensch und Umwelt.</span>",
                   video: IMAGES.videos.nestHausTransport,
                   backgroundColor: "#F4F4F4",
                   buttons: [
@@ -231,7 +231,7 @@ export default function WarumWirClient() {
                   title: "Wohnen, dass mit dir wächst",
                   subtitle: "",
                   description:
-                    "<span class='text-nest-gray'>Das Leben verändert sich, dein Zuhause sollte das auch können. Mit dem </span><span class='text-black font-medium'>modularen Aufbau</span><span class='text-nest-gray'> von Hoam wächst oder schrumpft dein Raum, zieht mit dir um oder bleibt dort, wo du Wurzeln schlägst. So wird </span><span class='text-black font-medium'>Wohnen flexibel</span><span class='text-nest-gray'>, frei und zukunftsfähig. Wir glauben an ein </span><span class='text-black font-medium'>Zuhause ohne Kompromisse.</span>",
+                    "<span class='text-black opacity-70'>Das Leben verändert sich, dein Zuhause sollte das auch können. Mit dem </span><span class='text-black font-medium'>modularen Aufbau</span><span class='text-black opacity-70'> von Hoam wächst oder schrumpft dein Raum, zieht mit dir um oder bleibt dort, wo du Wurzeln schlägst. So wird </span><span class='text-black font-medium'>Wohnen flexibel</span><span class='text-black opacity-70'>, frei und zukunftsfähig. Wir glauben an ein </span><span class='text-black font-medium'>Zuhause ohne Kompromisse.</span>",
                   video: IMAGES.variantvideo.ten,
                   backgroundColor: "#F4F4F4",
                   buttons: [
@@ -254,7 +254,7 @@ export default function WarumWirClient() {
                   title: "Wohnen im Kreislauf",
                   subtitle: "",
                   description:
-                    "<span class='text-nest-gray'>Holz ist </span><span class='text-black font-medium'>mehr als ein Baustoff</span><span class='text-nest-gray'>, es ist ein Versprechen an die </span><span class='text-black font-medium'>Zukunft.</span><span class='text-nest-gray'> Als nachwachsender Rohstoff </span><span class='text-black font-medium'>speichert</span><span class='text-nest-gray'> es CO₂, </span><span class='text-black font-medium'>reguliert</span><span class='text-nest-gray'> das Raumklima und schafft eine </span><span class='text-black font-medium'>Atmosphäre</span><span class='text-nest-gray'>, die natürlich wirkt und sich echt anfühlt. Mit moderner Fertigungstechnik macht Hoam aus einem natürlichen Material eine </span><span class='text-black font-medium'>zukunftsfähige Bauweise.</span>",
+                    "<span class='text-black opacity-70'>Holz ist </span><span class='text-black font-medium'>mehr als ein Baustoff</span><span class='text-black opacity-70'>, es ist ein Versprechen an die </span><span class='text-black font-medium'>Zukunft.</span><span class='text-black opacity-70'> Als nachwachsender Rohstoff </span><span class='text-black font-medium'>speichert</span><span class='text-black opacity-70'> es CO₂, </span><span class='text-black font-medium'>reguliert</span><span class='text-black opacity-70'> das Raumklima und schafft eine </span><span class='text-black font-medium'>Atmosphäre</span><span class='text-black opacity-70'>, die natürlich wirkt und sich echt anfühlt. Mit moderner Fertigungstechnik macht Hoam aus einem natürlichen Material eine </span><span class='text-black font-medium'>zukunftsfähige Bauweise.</span>",
                   image: IMAGES.flooring.eicheParkett,
                   backgroundColor: "#F4F4F4",
                   buttons: [
