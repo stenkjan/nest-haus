@@ -275,8 +275,10 @@ export default function WarumWirClient() {
         <section id="faq" className="w-full">
           <FAQSection />
         </section>
-        <div className="h-8 md:h-16"></div>
       </SectionRouter>
+
+      {/* White spacing section */}
+      <div className="w-full bg-white h-8 md:h-16"></div>
 
       {/* Footer */}
       <Footer />
