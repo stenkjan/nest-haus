@@ -797,7 +797,7 @@ const AppointmentBooking = ({
                     />
                     <span className="text-nest-gray">Email:</span>
                     <span className="text-black font-medium">
-                      mail@nest-haus.at
+                      mail@hoam-house.at
                     </span>
                   </div>
                 </div>

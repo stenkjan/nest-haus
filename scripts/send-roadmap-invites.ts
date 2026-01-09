@@ -76,7 +76,7 @@ async function sendRoadmapInvites() {
       durationMinutes: 60,
       location: 'Remote / NEST-Haus HQ',
       description: `NEST-Haus Roadmap Phase: ${phase.title}\n\n${phase.description}`,
-      organizerEmail: 'mail@nest-haus.at',
+      organizerEmail: 'mail@hoam-house.at',
       organizerName: 'NEST-Haus Team'
     });
 

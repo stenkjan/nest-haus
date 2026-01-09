@@ -76,7 +76,7 @@ export const TerminVereinbarenContent: React.FC<
                 enableTelLink={true}
               />
               <span className="text-nest-gray">Email:</span>
-              <span className="text-black font-medium">mail@nest-haus.at</span>
+              <span className="text-black font-medium">mail@hoam-house.at</span>
             </div>
           </div>
           <div className="bg-[#f4f4f4] border border-gray-200 rounded-lg p-2 md:p-4">
@@ -197,7 +197,7 @@ export const TerminVereinbarenContent: React.FC<
                 enableTelLink={true}
               />
               <span className="text-nest-gray">Email:</span>
-              <span className="text-black font-medium">mail@nest-haus.at</span>
+              <span className="text-black font-medium">mail@hoam-house.at</span>
             </div>
           </div>
         </div>
@@ -279,7 +279,7 @@ export const TerminVereinbarenContent: React.FC<
                 enableTelLink={true}
               />
               <span className="text-nest-gray">Email:</span>
-              <span className="text-black font-medium">mail@nest-haus.at</span>
+              <span className="text-black font-medium">mail@hoam-house.at</span>
             </div>
           </div>
           <div className="bg-[#f4f4f4] border border-gray-200 rounded-lg p-2 md:p-4">

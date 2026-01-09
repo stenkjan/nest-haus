@@ -228,7 +228,7 @@ Based on `docs/FINAL_EMAIL_FUNCTIONALITY_SUMMARY.md`:
 
 **Receiving:**
 - Domain: `nest-haus.com` (alias to `nest-haus.at`)
-- Inbox: `mail@nest-haus.at` (Google Workspace)
+- Inbox: `mail@hoam-house.at` (Google Workspace)
 - Admin notifications: `mail@nest-haus.com`
 
 ### Email Templates Used

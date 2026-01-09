@@ -111,10 +111,10 @@ function PaymentSuccess({
         <p>
           Noch Fragen? Mail:{" "}
           <a
-            href="mailto:mail@nest-haus.at"
+            href="mailto:mail@hoam-house.at"
             className="text-blue-600 hover:text-blue-800"
           >
-            mail@nest-haus.at
+            mail@hoam-house.at
           </a>{" "}
           | Tel:{" "}
           <a
@@ -279,7 +279,7 @@ function PaymentError({ error, onRetry, onClose }: PaymentErrorProps) {
           <p>
             {" "}
             <a
-              href="mailto:mail@nest-haus.at"
+              href="mailto:mail@hoam-house.at"
               className="text-blue-600 hover:text-blue-800"
             >
               support@nest-haus.at

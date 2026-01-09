@@ -7923,7 +7923,7 @@ _Auto-generated documentation of project changes_
 ## [52a516675d29f68ab3323434a84b5f7120d40232] - Wed Nov 12 15:41:21 2025 +0100
 
 **Author**: stenkjan
-**Message**: `Update email configuration and references across the project  - Added email configuration for Resend service in  and . - Updated email addresses in , , and  components to reflect the new contact email: mail@nest-haus.at.  `
+**Message**: `Update email configuration and references across the project  - Added email configuration for Resend service in  and . - Updated email addresses in , , and  components to reflect the new contact email: mail@hoam-house.at.  `
 
 ### Changes Analysis
 

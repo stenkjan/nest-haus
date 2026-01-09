@@ -77,7 +77,7 @@ export interface GenericEmailData {
 export class EmailService {
   private static readonly FROM_EMAIL = process.env.RESEND_FROM_EMAIL || 'mail@hoam.at';
   private static readonly REPLY_TO_EMAIL = process.env.REPLY_TO_EMAIL || 'mail@hoam.at';
-  private static readonly ADMIN_EMAIL = process.env.ADMIN_EMAIL || 'mail@nest-haus.at';
+  private static readonly ADMIN_EMAIL = process.env.ADMIN_EMAIL || 'mail@hoam-house.at';
   private static readonly SALES_EMAIL = process.env.SALES_EMAIL || 'mail@hoam.at';
 
   // From name for better email presentation
@@ -489,7 +489,7 @@ export class EmailService {
     
       <div class="contact-info">
         <p class="p-primary">Bei Fragen können Sie uns jederzeit kontaktieren:</p>
-        <p><strong>📧 E-Mail:</strong> mail@nest-haus.at<br>
+        <p><strong>📧 E-Mail:</strong> mail@hoam-house.at<br>
         <strong>📞 Telefon:</strong> +43 664 3949605</p>
       </div>
       
@@ -536,7 +536,7 @@ Nächste Schritte:
 - Planungsservice und Baubegleitung
 
 Kontakt:
-E-Mail: mail@nest-haus.at
+E-Mail: mail@hoam-house.at
 Telefon: +43 384 775 090
 
 Besuchen Sie uns: https://nest-haus.at

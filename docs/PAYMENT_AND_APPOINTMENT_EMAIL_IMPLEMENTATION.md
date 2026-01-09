@@ -205,7 +205,7 @@ http://localhost:3000/warenkorb#abschluss
 
 #### Test 2: Verify Email Content
 
-Check your inbox (mail@nest-haus.at) for:
+Check your inbox (mail@hoam-house.at) for:
 
 **Customer Email**:
 - Subject: "✅ Zahlung erfolgreich - NEST-Haus"
@@ -258,7 +258,7 @@ http://localhost:3000/warenkorb#terminvereinbarung
 
 #### Test 4: Verify Appointment Admin Email
 
-Check admin inbox (mail@nest-haus.at):
+Check admin inbox (mail@hoam-house.at):
 
 **Subject**: "🔔 NEUE TERMINANFRAGE - [Date] um [Time]"
 
@@ -316,7 +316,7 @@ Check admin inbox (mail@nest-haus.at):
 #### Test 7: Verify Google Calendar Event
 
 1. Open Google Calendar: https://calendar.google.com
-2. Find the calendar: mail@nest-haus.at
+2. Find the calendar: mail@hoam-house.at
 3. Locate the appointment
 
 **Expected**:

@@ -144,7 +144,7 @@ export default function FAQSection({
 
   return (
     <section className="w-full py-8 md:py-16 bg-[#f4f4f4]">
-      <div className="w-full max-w-[1536px] mx-auto px-4 sm:px-12 lg:px-12">
+      <div className="w-full max-w-[1536px] mx-auto px-4 sm:px-12 lg:px-12 2xl:px-8">
         {/* Mobile/Tablet Layout (< 1024px) - Stacked */}
         <div className="lg:hidden">
           {/* Header Section */}
@@ -173,9 +173,9 @@ export default function FAQSection({
         </div>
 
         {/* Desktop Layout (>= 1024px) - Side by Side */}
-        <div className="hidden lg:flex lg:gap-12 xl:gap-16">
+        <div className="hidden lg:flex lg:gap-12 xl:gap-16 2xl:gap-12">
           {/* Left Column - Title and Button */}
-          <div className="lg:w-1/3 xl:w-1/4 flex flex-col justify-between">
+          <div className="lg:w-1/3 xl:w-1/4 2xl:w-[340px] flex flex-col justify-between flex-shrink-0">
             {/* Title and Description at top */}
             <div className="max-w-[300px] pr-8">
               <h2 className="h2-title text-black mb-3 md:mb-4 whitespace-pre-line">
@@ -197,7 +197,7 @@ export default function FAQSection({
           </div>
 
           {/* Right Column - FAQ Items */}
-          <div className="lg:flex-1 space-y-3">
+          <div className="lg:flex-1 2xl:max-w-[1040px] space-y-3">
             {faqItems.map(renderFAQItem)}
           </div>
         </div>

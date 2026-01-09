@@ -76,7 +76,7 @@ export async function GET(request: NextRequest) {
 
                 // Send reminder to customer
                 const result = await resend.emails.send({
-                    from: `NEST-Haus Team <${process.env.RESEND_FROM_EMAIL || 'mail@nest-haus.at'}>`,
+                    from: `NEST-Haus Team <${process.env.RESEND_FROM_EMAIL || 'mail@hoam-house.at'}>`,
                     to: appointment.email,
                     subject,
                     html,

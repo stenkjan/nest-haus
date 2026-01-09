@@ -97,10 +97,10 @@ export async function GET(request: NextRequest) {
         if (issues.length > 0) {
             console.error(`[Webhook Health Check] ⚠️ Found ${issues.length} issues`);
             
-            // Send admin alert to mail@nest-haus.at
+            // Send admin alert to mail@hoam-house.at
             try {
                 await EmailService.sendEmail({
-                    to: process.env.ADMIN_EMAIL || 'mail@nest-haus.at',
+                    to: process.env.ADMIN_EMAIL || 'mail@hoam-house.at',
                     subject: `⚠️ Stripe Webhook Sync Issues Detected (${issues.length} issues)`,
                     html: `
                         <h2>Stripe Webhook Health Check - Issues Detected</h2>
@@ -174,10 +174,10 @@ export async function GET(request: NextRequest) {
     } catch (error) {
         console.error('[Webhook Health Check] ❌ Health check failed:', error);
         
-        // Send critical error alert to mail@nest-haus.at
+        // Send critical error alert to mail@hoam-house.at
         try {
             await EmailService.sendEmail({
-                to: process.env.ADMIN_EMAIL || 'mail@nest-haus.at',
+                to: process.env.ADMIN_EMAIL || 'mail@hoam-house.at',
                 subject: '🚨 Critical: Stripe Webhook Health Check Failed',
                 html: `
                     <h2>Critical Error: Webhook Health Check Failed</h2>
