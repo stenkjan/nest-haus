@@ -102,3 +102,4 @@ Vercel DNS-Zone: WIRD VERWENDET ✅
 4. ✅ Prüfe mit `nslookup -type=TXT nest-haus.at`
 5. ✅ Verifiziere in Google Workspace
 
+

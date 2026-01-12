@@ -95,7 +95,7 @@ export function generateICS(data: ICSEventData): string {
     durationMinutes = 60,
     location = 'Hoam Office, Zösenberg 51, 8045 Weinitzen, Austria',
     description,
-    organizerEmail = 'mail@hoam-house.at',
+    organizerEmail = 'mail@hoam-house.com',
     organizerName = 'Hoam Team',
   } = data;
 

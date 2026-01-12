@@ -35,13 +35,13 @@
 **Sending Domain**: `mail@nest-haus.com` (via Resend)  
 **Receiving Domain**: `mail@nest-haus.com` (via Google Workspace domain alias)  
 **Reply-To Address**: `mail@nest-haus.com`  
-**Calendar**: `mail@hoam-house.at` (Google Calendar shared calendar)
+**Calendar**: `mail@hoam-house.com` (Google Calendar shared calendar)
 
 ### Why This Setup?
 
 1. **nest-haus.com** is managed via Vercel DNS → **Easy, instant DNS control**
 2. **nest-haus.at** had DNS issues with Austria WebHosting → **Slow, unreliable**
-3. **Google Workspace Domain Alias** → `mail@nest-haus.com` emails go to same inbox as `mail@hoam-house.at`
+3. **Google Workspace Domain Alias** → `mail@nest-haus.com` emails go to same inbox as `mail@hoam-house.com`
 4. **Root Domain Approach** → Simpler DNS setup, single domain verification
 
 ### Email Flow Architecture
@@ -74,7 +74,7 @@
 │                CALENDAR (Google Calendar)                   │
 ├────────────────────────────────────────────────────────────┤
 │ Calendar ID: c_0143623...@group.calendar.google.com       │
-│ Associated Email: mail@hoam-house.at                        │
+│ Associated Email: mail@hoam-house.com                        │
 │ Time Zone: Europe/Vienna                                   │
 │ Business Hours: 8-12, 13-19 (Mon-Fri)                      │
 └────────────────────────────────────────────────────────────┘
@@ -119,7 +119,7 @@ All outgoing emails use:
 ```typescript
 export class EmailService {
   private static readonly FROM_EMAIL =
-    process.env.RESEND_FROM_EMAIL || "mail@hoam-house.at";
+    process.env.RESEND_FROM_EMAIL || "mail@hoam-house.com";
   private static readonly REPLY_TO_EMAIL =
     process.env.REPLY_TO_EMAIL || "mail@nest-haus.com";
   private static readonly ADMIN_EMAIL =
@@ -152,7 +152,7 @@ export class EmailService {
 - **Primary Domain**: `sustain-nest.com`
 - **Domain Alias**: `nest-haus.at`
 - **New Domain Alias**: `nest-haus.com` (to be added)
-- **Shared Email**: `mail@hoam-house.at` (Google Group)
+- **Shared Email**: `mail@hoam-house.com` (Google Group)
 - **Calendar**: `c_0143623b3c51294d60b53cb259d8c76b8b8ecf51a84a2913afb053dc6540261b@group.calendar.google.com`
 
 ### How Domain Alias Works
@@ -160,7 +160,7 @@ export class EmailService {
 When you add `nest-haus.com` as a domain alias in Google Workspace:
 
 1. **All users automatically get `@nest-haus.com` addresses**
-2. **Emails sent to `mail@nest-haus.com`** → arrive at `mail@hoam-house.at` inbox
+2. **Emails sent to `mail@nest-haus.com`** → arrive at `mail@hoam-house.com` inbox
 3. **No additional Google Workspace license needed**
 4. **Same inbox, multiple addresses**
 
@@ -174,7 +174,7 @@ When you add `nest-haus.com` as a domain alias in Google Workspace:
 
 Once verified:
 
-- ✅ `mail@nest-haus.com` = same inbox as `mail@hoam-house.at`
+- ✅ `mail@nest-haus.com` = same inbox as `mail@hoam-house.com`
 - ✅ Replies go to correct inbox automatically
 - ✅ No email forwarding rules needed
 
@@ -268,7 +268,7 @@ User fills contact form → Next.js API (/api/contact)
      REPLY-TO: mail@nest-haus.com     REPLY-TO: mail@nest-haus.com
                   ↓                             ↓
          Customer's Inbox              Google Workspace Inbox
-                                       (mail@hoam-house.at)
+                                       (mail@hoam-house.com)
 ```
 
 ### Appointment Booking Flow
@@ -318,7 +318,7 @@ Email client auto-fills TO: mail@nest-haus.com
                     ↓
 Google Workspace receives at mail@nest-haus.com
                     ↓
-Domain alias routes to mail@hoam-house.at inbox
+Domain alias routes to mail@hoam-house.com inbox
                     ↓
          Admin team sees reply
          ✅ Conversation thread intact
@@ -677,7 +677,7 @@ The appointment system uses ICS (iCalendar) file attachments for seamless calend
 ```
 METHOD:REQUEST          - Calendar invitation request
 STATUS:TENTATIVE        - Appointment is pending confirmation
-ORGANIZER:mail@hoam-house.at  - Admin calendar email
+ORGANIZER:mail@hoam-house.com  - Admin calendar email
 ATTENDEE:customer@email.com   - Customer email with RSVP=TRUE
 DTSTART:20251127T140000Z      - Start time (UTC)
 DTEND:20251127T150000Z        - End time (UTC, 60min duration)
@@ -729,7 +729,7 @@ UID:inquiry-{inquiryId}@nest-haus.at  - Unique event identifier
    
 5. GOOGLE CALENDAR EVENT CREATED
    ↓
-   Event added to mail@hoam-house.at calendar
+   Event added to mail@hoam-house.com calendar
    Calendar invitation sent to customer
    Admin can see event in calendar view
    
@@ -898,7 +898,7 @@ Customer does NOT receive expiration notice
 2. Auto-fills `TO: mail@nest-haus.com`
 3. Customer sends reply
 4. DNS MX records route to Google Workspace
-5. Domain alias routes to `mail@hoam-house.at` inbox
+5. Domain alias routes to `mail@hoam-house.com` inbox
 6. Reply appears in Gmail with **original thread intact**
 
 ### Email Thread Preservation
@@ -918,7 +918,7 @@ Customer does NOT receive expiration notice
 
 **Received Emails (Replies)**:
 
-- ✅ Google Workspace Inbox: `mail@hoam-house.at`
+- ✅ Google Workspace Inbox: `mail@hoam-house.com`
 - ✅ Organized by conversation threads
 - ✅ Can be labeled/filtered in Gmail
 
@@ -1055,7 +1055,7 @@ curl -X POST http://localhost:3000/api/contact \
 2. Click "Reply" in email client
 3. Verify `TO:` field shows `mail@nest-haus.com`
 4. Send test reply
-5. Check Google Workspace inbox at `mail@hoam-house.at`
+5. Check Google Workspace inbox at `mail@hoam-house.com`
 
 **Expected**:
 
@@ -1251,7 +1251,7 @@ curl "http://localhost:3000/api/calendar/availability?date=2025-11-15"
 - ✅ Verify Google site verification TXT record in Vercel DNS
 - ✅ Check MX records added in Vercel DNS (Google's MX servers)
 - ✅ Contact Google Workspace support if verification fails
-- ✅ Temporarily use fallback: `mail@hoam-house.at`
+- ✅ Temporarily use fallback: `mail@hoam-house.com`
 
 ---
 
@@ -1261,15 +1261,15 @@ curl "http://localhost:3000/api/calendar/availability?date=2025-11-15"
 
 #### November 12, 2025: Initial Setup
 
-- ✅ Configured `mail@hoam-house.at` as primary email
-- ✅ Set up Resend account with intent to send from `mail@hoam-house.at`
+- ✅ Configured `mail@hoam-house.com` as primary email
+- ✅ Set up Resend account with intent to send from `mail@hoam-house.com`
 - ❌ DNS verification pending with Austria WebHosting
 
 #### November 13, 2025: Plan B Fallback (Temporary)
 
 - ✅ DNS issues with Austria WebHosting (slow response, verification failing)
 - ✅ Switched to `RESEND_FROM_EMAIL=onboarding@resend.dev` (Resend default)
-- ✅ Kept `REPLY_TO_EMAIL=mail@hoam-house.at`
+- ✅ Kept `REPLY_TO_EMAIL=mail@hoam-house.com`
 - ✅ All emails sending successfully via Plan B
 
 #### November 14, 2025: Migration to nest-haus.com (Current)
@@ -1457,8 +1457,8 @@ Both payment templates use `parseConfigurationForEmail()` helper function to ext
 **✅ Email System Status**: Fully configured and operational with nest-haus.com sending setup
 
 **📧 Sending**: mail@send.nest-haus.com (via Resend)  
-**📬 Receiving**: mail@nest-haus.com → mail@hoam-house.at inbox  
-**📅 Calendar**: mail@hoam-house.at (Google Calendar)  
+**📬 Receiving**: mail@nest-haus.com → mail@hoam-house.com inbox  
+**📅 Calendar**: mail@hoam-house.com (Google Calendar)  
 **🔄 Reply Tracking**: Automated via Reply-To headers  
 **💾 Database Storage**: All inquiries saved to CustomerInquiry table  
 **⏰ Appointment System**: 24-hour time slot reservation with auto-expiration  

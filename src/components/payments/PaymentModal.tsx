@@ -111,10 +111,10 @@ function PaymentSuccess({
         <p>
           Noch Fragen? Mail:{" "}
           <a
-            href="mailto:mail@hoam-house.at"
+            href="mailto:mail@hoam-house.com"
             className="text-blue-600 hover:text-blue-800"
           >
-            mail@hoam-house.at
+            mail@hoam-house.com
           </a>{" "}
           | Tel:{" "}
           <a
@@ -279,7 +279,7 @@ function PaymentError({ error, onRetry, onClose }: PaymentErrorProps) {
           <p>
             {" "}
             <a
-              href="mailto:mail@hoam-house.at"
+              href="mailto:mail@hoam-house.com"
               className="text-blue-600 hover:text-blue-800"
             >
               support@nest-haus.at
@@ -305,7 +305,12 @@ function PaymentError({ error, onRetry, onClose }: PaymentErrorProps) {
 
 // Main payment modal component
 type PaymentMethod = "card" | "eps" | "klarna";
-type PaymentStep = "method-selection" | "payment-details" | "verifying" | "success" | "error";
+type PaymentStep =
+  | "method-selection"
+  | "payment-details"
+  | "verifying"
+  | "success"
+  | "error";
 
 export default function PaymentModal({
   isOpen,
@@ -322,11 +327,11 @@ export default function PaymentModal({
 }: PaymentModalProps) {
   // Payment step state (3-step flow + verifying)
   const [paymentStep, setPaymentStep] = useState<PaymentStep>(
-    initialPaymentState === "success" 
-      ? "success" 
+    initialPaymentState === "success"
+      ? "success"
       : initialPaymentState === "verifying"
-      ? "verifying"
-      : "method-selection"
+        ? "verifying"
+        : "method-selection"
   );
   const [selectedMethod, setSelectedMethod] = useState<PaymentMethod>("card");
   const [paymentState, setPaymentState] = useState<
@@ -353,11 +358,11 @@ export default function PaymentModal({
       setWasOpen(true);
       setPaymentState(initialPaymentState || "form");
       setPaymentStep(
-        initialPaymentState === "success" 
-          ? "success" 
+        initialPaymentState === "success"
+          ? "success"
           : initialPaymentState === "verifying"
-          ? "verifying"
-          : "method-selection"
+            ? "verifying"
+            : "method-selection"
       );
       setPaymentIntentId(initialPaymentIntentId || "");
       setErrorMessage("");
