@@ -4,6 +4,39 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [7a1738ae91c862d93fe6ca4380ebe03e5169a1d5] - Mon Jan 12 09:57:43 2026 +0100
+
+**Author**: stenkjan
+**Message**: `🔄 Update email references from hoam-house.at to hoam-house.com across documentation and codebase for consistency.  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/api/cron/check-stripe-webhook/route.ts
+- src/app/api/cron/expire-appointments/route.ts
+- src/components/payments/PaymentModal.tsx
+- src/components/sections/AppointmentBooking.tsx
+- src/components/sections/TerminVereinbarenContent.tsx
+
+
+#### ⚙️ Backend Changes
+- scripts/send-roadmap-invites.ts
+
+
+#### 📚 Documentation Changes
+- IMPLEMENTATION_SUMMARY_begin_checkout.md
+- TESTING_INSTRUCTIONS_begin_checkout.md
+- docs/COMMIT_HISTORY.md
+- docs/DNS_TXT_RECORDS_SETUP.md
+- docs/GRUNDSTUECK_VALIDATION_EMAIL_IMPLEMENTATION.md
+- docs/PAYMENT_AND_APPOINTMENT_EMAIL_IMPLEMENTATION.md
+- docs/STRIPE_PRODUCTION_SETUP.md
+- docs/VERCEL_BLOB_TROUBLESHOOTING.md
+- docs/final_EMAIL_FUNCTIONALITY_SUMMARY.md
+
+
+---
+
 ## [1671ef09b7ad775f93d9f1e65e62890cbb40d69b] - Fri Jan 9 15:42:01 2026 +0100
 
 **Author**: stenkjan
