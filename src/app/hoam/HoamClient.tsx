@@ -239,41 +239,29 @@ export default function HoamClient() {
             />
           </div>
 
-          {/* Video-only Card Section */}
+          {/* YouTube Video Embed - Full Width */}
           <div className="w-full py-8 md:py-16">
-            {/* Mobile: Video card with padding */}
-            {isMobile ? (
-              <div className="w-full px-4">
-                <div className="bg-[#F4F4F4] rounded-3xl p-[15px]">
-                  <div className="relative w-full overflow-hidden rounded-2xl">
-                    <ClientBlobVideo
-                      path={IMAGES.variantvideo.mobile.ten}
-                      className="w-full h-auto"
-                      autoPlay
-                      loop
-                      muted
-                      playsInline
-                    />
-                  </div>
+            <div className="w-full">
+              <div className="max-w-[2000px] mx-auto">
+                <div
+                  className="relative w-full overflow-hidden"
+                  style={{ paddingBottom: "56.25%" }}
+                >
+                  <iframe
+                    className="absolute top-0 left-0 w-full h-full"
+                    src="https://www.youtube-nocookie.com/embed/JSKypVlikrU?autoplay=1&mute=1&loop=1&playlist=JSKypVlikrU&modestbranding=1&rel=0&showinfo=0&playsinline=1&enablejsapi=1"
+                    title="YouTube video player"
+                    frameBorder="0"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                    referrerPolicy="strict-origin-when-cross-origin"
+                    allowFullScreen
+                    aria-label="YouTube video player"
+                    aria-live="off"
+                    data-captions="false"
+                  />
                 </div>
               </div>
-            ) : (
-              /* Desktop: Video card with padding */
-              <div className="w-full max-w-[1536px] mx-auto px-12 sm:px-12 lg:px-12">
-                <div className="bg-[#F4F4F4] rounded-3xl p-[15px]">
-                  <div className="relative w-full overflow-hidden rounded-2xl">
-                    <ClientBlobVideo
-                      path={IMAGES.variantvideo.ten}
-                      className="w-full h-auto"
-                      autoPlay
-                      loop
-                      muted
-                      playsInline
-                    />
-                  </div>
-                </div>
-              </div>
-            )}
+            </div>
 
             {/* Text Grid and Buttons Container */}
             <div className="pt-8 pb-16">
