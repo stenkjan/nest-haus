@@ -776,26 +776,26 @@ const AppointmentBooking = ({
           {showLeftSide && (
             <div className="grid grid-cols-1 gap-4">
               <div className="rounded-3xl shadow-lg overflow-hidden bg-[#f4f4f4]">
-                <div className="p-6">
-                  <h2 className="h2-title text-black mb-4 text-left">
+                <div className="p-6 pt-7">
+                  <h3 className="h3-secondary text-black mb-4 text-left">
                     Kontakt <span className="text-nest-gray">Melde dich!</span>
-                  </h2>
+                  </h3>
                   <div className="grid grid-cols-[auto_1fr] gap-x-4 gap-y-1 p-primary-small leading-relaxed">
-                    <span className="text-nest-gray">Telefon1:</span>
+                    <span className="text-black opacity-70">Telefon1:</span>
                     <ProtectedPhoneNumber
                       number="+43 664 3949605"
                       displayFormat="+43 (0) 664 3949605"
                       className="text-black font-medium"
                       enableTelLink={true}
                     />
-                    <span className="text-nest-gray">Telefon2:</span>
+                    <span className="text-black opacity-70">Telefon2:</span>
                     <ProtectedPhoneNumber
                       number="+43 660 5649683"
                       displayFormat="+43 (0) 660 5649683"
                       className="text-black font-medium"
                       enableTelLink={true}
                     />
-                    <span className="text-nest-gray">Email:</span>
+                    <span className="text-black opacity-70">Email:</span>
                     <span className="text-black font-medium">
                       mail@hoam-house.com
                     </span>
@@ -804,20 +804,20 @@ const AppointmentBooking = ({
               </div>
 
               <div className="rounded-3xl shadow-lg overflow-hidden bg-[#f4f4f4]">
-                <div className="p-6">
-                  <h2 className="h2-title text-black mb-4 text-left">
+                <div className="p-6 pt-7">
+                  <h3 className="h3-secondary text-black mb-4 text-left">
                     Adresse <span className="text-nest-gray">Komm vorbei!</span>
-                  </h2>
+                  </h3>
                   <div className="grid grid-cols-[auto_1fr] gap-x-4 gap-y-1 p-primary-small leading-relaxed">
-                    <span className="text-nest-gray">Straße:</span>
+                    <span className="text-black opacity-70">Straße:</span>
                     <span className="text-black font-medium">
                       Karmeliterplatz 8
                     </span>
-                    <span className="text-nest-gray">Stadt:</span>
+                    <span className="text-black opacity-70">Stadt:</span>
                     <span className="text-black font-medium">
                       8010, Graz, Steiermark
                     </span>
-                    <span className="text-nest-gray">Land:</span>
+                    <span className="text-black opacity-70">Land:</span>
                     <span className="text-black font-medium">Österreich</span>
                   </div>
                 </div>

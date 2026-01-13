@@ -76,7 +76,9 @@ export const TerminVereinbarenContent: React.FC<
                 enableTelLink={true}
               />
               <span className="text-nest-gray">Email:</span>
-              <span className="text-black font-medium">mail@hoam-house.com</span>
+              <span className="text-black font-medium">
+                mail@hoam-house.com
+              </span>
             </div>
           </div>
           <div className="bg-[#f4f4f4] border border-gray-200 rounded-lg p-2 md:p-4">
@@ -105,7 +107,7 @@ export const TerminVereinbarenContent: React.FC<
     return (
       <div className={`space-y-6 ${className}`}>
         {/* Descriptive Text for Mobile - NO BOX */}
-        <div className="text-center">
+        <div className="text-left-align pt-2">
           <p className="p-primary leading-relaxed">
             <span className="text-nest-gray">
               Der Kauf deines Hauses ist ein großer Schritt – und{" "}
@@ -142,10 +144,10 @@ export const TerminVereinbarenContent: React.FC<
         className={`space-y-8 max-w-[500px] justify-self-center ${className}`}
       >
         {/* Spacer to align text with calendar border start */}
-        <div className="h-16"></div>
+        <div className="h-20"></div>
 
         {/* Descriptive Text - INCREASED LINE SPACING */}
-        <div className="text-center">
+        <div className="text-left-align pt-2">
           <p className="p-primary leading-relaxed">
             <span className="text-nest-gray">
               Der Kauf deines Hauses ist ein großer Schritt – und{" "}
@@ -177,45 +179,47 @@ export const TerminVereinbarenContent: React.FC<
 
         {/* Contact Box */}
         <div className="rounded-3xl shadow-lg overflow-hidden bg-[#f4f4f4]">
-          <div className="p-6">
-            <h2 className="h2-title text-black mb-3">
-              Kontakt <span className="text-nest-gray ">Melde dich!</span>
-            </h2>
+          <div className="p-6 pt-7">
+            <h3 className="h3-secondary text-black mb-3">
+              Kontakt <span className="text-nest-gray">Melde dich!</span>
+            </h3>
             <div className="grid grid-cols-[auto_1fr] gap-x-4 gap-y-1 p-primary-small leading-relaxed">
-              <span className="text-nest-gray">Telefon 1:</span>
+              <span className="text-black opacity-70">Telefon 1:</span>
               <ProtectedPhoneNumber
                 number="+43 664 3949605"
                 displayFormat="+43 (0) 664 3949605"
                 className="text-black font-medium"
                 enableTelLink={true}
               />
-              <span className="text-nest-gray">Telefon 2:</span>
+              <span className="text-black opacity-70">Telefon 2:</span>
               <ProtectedPhoneNumber
                 number="+43 660 5649683"
                 displayFormat="+43 (0) 660 5649683"
                 className="text-black font-medium"
                 enableTelLink={true}
               />
-              <span className="text-nest-gray">Email:</span>
-              <span className="text-black font-medium">mail@hoam-house.com</span>
+              <span className="text-black opacity-70">Email:</span>
+              <span className="text-black font-medium">
+                mail@hoam-house.com
+              </span>
             </div>
           </div>
         </div>
 
         {/* Address Box */}
         <div className="rounded-3xl shadow-lg overflow-hidden bg-[#f4f4f4]">
-          <div className="p-6">
-            <h2 className="h2-title text-black mb-3">
+          <div className="p-6 pt-7">
+            <h3 className="h3-secondary text-black mb-3">
               Adresse <span className="text-nest-gray">Komm vorbei!</span>
-            </h2>
+            </h3>
             <div className="grid grid-cols-[auto_1fr] gap-x-4 gap-y-1 p-primary-small leading-relaxed">
-              <span className="text-nest-gray">Straße:</span>
+              <span className="text-black opacity-70">Straße:</span>
               <span className="text-black font-medium">Karmeliterplatz 8</span>
-              <span className="text-nest-gray">Stadt:</span>
+              <span className="text-black opacity-70">Stadt:</span>
               <span className="text-black font-medium">
                 8010, Graz, Steiermark
               </span>
-              <span className="text-nest-gray">Land:</span>
+              <span className="text-black opacity-70">Land:</span>
               <span className="text-black font-medium">Österreich</span>
             </div>
           </div>
@@ -279,7 +283,9 @@ export const TerminVereinbarenContent: React.FC<
                 enableTelLink={true}
               />
               <span className="text-nest-gray">Email:</span>
-              <span className="text-black font-medium">mail@hoam-house.com</span>
+              <span className="text-black font-medium">
+                mail@hoam-house.com
+              </span>
             </div>
           </div>
           <div className="bg-[#f4f4f4] border border-gray-200 rounded-lg p-2 md:p-4">
