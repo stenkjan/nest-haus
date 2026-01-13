@@ -19,41 +19,41 @@ interface GridItem {
   secondaryAction?: string; // Optional - if omitted, no secondary button
   textColor?: "white" | "black"; // Optional text color per item
   primaryButtonVariant?:
-  | "primary"
-  | "secondary"
-  | "primary-narrow"
-  | "secondary-narrow"
-  | "secondary-narrow-white"
-  | "secondary-narrow-blue"
-  | "tertiary"
-  | "outline"
-  | "ghost"
-  | "danger"
-  | "success"
-  | "info"
-  | "landing-primary"
-  | "landing-secondary"
-  | "landing-secondary-blue"
-  | "landing-secondary-blue-white"
-  | "configurator"; // Optional primary button variant (defaults to "landing-primary")
+    | "primary"
+    | "secondary"
+    | "primary-narrow"
+    | "secondary-narrow"
+    | "secondary-narrow-white"
+    | "secondary-narrow-blue"
+    | "tertiary"
+    | "outline"
+    | "ghost"
+    | "danger"
+    | "success"
+    | "info"
+    | "landing-primary"
+    | "landing-secondary"
+    | "landing-secondary-blue"
+    | "landing-secondary-blue-white"
+    | "configurator"; // Optional primary button variant (defaults to "landing-primary")
   secondaryButtonVariant?:
-  | "primary"
-  | "secondary"
-  | "primary-narrow"
-  | "secondary-narrow"
-  | "secondary-narrow-white"
-  | "secondary-narrow-blue"
-  | "tertiary"
-  | "outline"
-  | "ghost"
-  | "danger"
-  | "success"
-  | "info"
-  | "landing-primary"
-  | "landing-secondary"
-  | "landing-secondary-blue"
-  | "landing-secondary-blue-white"
-  | "configurator"; // Optional secondary button variant (defaults to "landing-secondary")
+    | "primary"
+    | "secondary"
+    | "primary-narrow"
+    | "secondary-narrow"
+    | "secondary-narrow-white"
+    | "secondary-narrow-blue"
+    | "tertiary"
+    | "outline"
+    | "ghost"
+    | "danger"
+    | "success"
+    | "info"
+    | "landing-primary"
+    | "landing-secondary"
+    | "landing-secondary-blue"
+    | "landing-secondary-blue-white"
+    | "configurator"; // Optional secondary button variant (defaults to "landing-secondary")
   primaryLink?: string; // Optional link for primary action
   secondaryLink?: string; // Optional link for secondary action
 }
@@ -146,7 +146,9 @@ export default function TwoByTwoImageGrid({
               ) : (
                 <HybridBlobImage
                   path={item.image || ""}
-                  alt={typeof item.title === 'string' ? item.title : 'Grid Image'}
+                  alt={
+                    typeof item.title === "string" ? item.title : "Grid Image"
+                  }
                   fill
                   className="object-cover object-center"
                   strategy="client"
@@ -159,7 +161,7 @@ export default function TwoByTwoImageGrid({
             </div>
 
             {/* Content Container */}
-            <div className="relative h-full flex flex-col justify-between p-6">
+            <div className="relative h-full flex flex-col justify-between p-6 max-md:pb-[5vh]">
               {/* Top Section - Title, Subtitle, and Buttons (except for id 1) */}
               <motion.div
                 className="flex-shrink-0"
@@ -168,37 +170,52 @@ export default function TwoByTwoImageGrid({
                 transition={{ delay: index * 0.1, duration: 0.6 }}
               >
                 <div
-                  className={`${isUltraWide
+                  className={`${
+                    isUltraWide
                       ? "p-6"
                       : screenWidth < 1024
                         ? "p-0 -mt-2"
                         : "p-4"
-                    } text-center`}
+                  } text-center`}
                 >
                   <h2
-                    className={`mb-2 sm:mb-1 font-bold text-2xl sm:text-2xl md:font-medium md:text-xl lg:text-5xl md:lg:text-3xl xl:text-6xl md:xl:text-4xl md:2xl:text-5xl ${(item.textColor || textColor) === "white"
+                    className={`mb-2 sm:mb-1 font-bold text-2xl sm:text-2xl md:font-medium md:text-xl lg:text-5xl md:lg:text-3xl xl:text-6xl md:xl:text-4xl md:2xl:text-5xl ${
+                      (item.textColor || textColor) === "white"
                         ? "!text-white"
                         : "!text-black"
-                      }`}
+                    }`}
                   >
                     {item.title}
                   </h2>
                   <h3
-                    className={`hidden sm:block font-medium text-lg sm:text-base md:text-sm lg:text-lg md:lg:text-xl xl:text-2xl md:xl:text-2xl ${item.id !== 1 && (item.primaryAction || item.secondaryAction) ? "mb-2" : ""} ${(item.textColor || textColor) === "white"
+                    className={`hidden sm:block font-medium text-lg sm:text-base md:text-sm lg:text-lg md:lg:text-xl xl:text-2xl md:xl:text-2xl ${item.id !== 1 && (item.primaryAction || item.secondaryAction) ? "mb-2" : ""} ${
+                      (item.textColor || textColor) === "white"
                         ? "!text-white"
                         : "!text-black"
-                      }`}
+                    }`}
                   >
                     {item.subtitle}
                   </h3>
 
                   {/* Button Group - Top position (for all items except id 1) */}
-                  {item.id !== 1 && (item.primaryAction || item.secondaryAction) && (
-                    <div className="flex gap-2 justify-center">
-                      {/* Primary Button - Only render if primaryAction is provided */}
-                      {item.primaryAction &&
-                        (item.primaryLink ? (
-                          <Link href={item.primaryLink}>
+                  {item.id !== 1 &&
+                    (item.primaryAction || item.secondaryAction) && (
+                      <div className="flex gap-2 justify-center">
+                        {/* Primary Button - Only render if primaryAction is provided */}
+                        {item.primaryAction &&
+                          (item.primaryLink ? (
+                            <Link href={item.primaryLink}>
+                              <Button
+                                variant={
+                                  item.primaryButtonVariant || "landing-primary"
+                                }
+                                size="xs"
+                                className="w-full"
+                              >
+                                {item.primaryAction}
+                              </Button>
+                            </Link>
+                          ) : (
                             <Button
                               variant={
                                 item.primaryButtonVariant || "landing-primary"
@@ -208,23 +225,24 @@ export default function TwoByTwoImageGrid({
                             >
                               {item.primaryAction}
                             </Button>
-                          </Link>
-                        ) : (
-                          <Button
-                            variant={
-                              item.primaryButtonVariant || "landing-primary"
-                            }
-                            size="xs"
-                            className="w-full"
-                          >
-                            {item.primaryAction}
-                          </Button>
-                        ))}
+                          ))}
 
-                      {/* Secondary Button - Only render if secondaryAction is provided */}
-                      {item.secondaryAction &&
-                        (item.secondaryLink ? (
-                          <Link href={item.secondaryLink}>
+                        {/* Secondary Button - Only render if secondaryAction is provided */}
+                        {item.secondaryAction &&
+                          (item.secondaryLink ? (
+                            <Link href={item.secondaryLink}>
+                              <Button
+                                variant={
+                                  item.secondaryButtonVariant ||
+                                  "landing-secondary"
+                                }
+                                size="xs"
+                                className="w-full"
+                              >
+                                {item.secondaryAction}
+                              </Button>
+                            </Link>
+                          ) : (
                             <Button
                               variant={
                                 item.secondaryButtonVariant ||
@@ -235,57 +253,54 @@ export default function TwoByTwoImageGrid({
                             >
                               {item.secondaryAction}
                             </Button>
-                          </Link>
-                        ) : (
-                          <Button
-                            variant={
-                              item.secondaryButtonVariant || "landing-secondary"
-                            }
-                            size="xs"
-                            className="w-full"
-                          >
-                            {item.secondaryAction}
-                          </Button>
-                        ))}
-                    </div>
-                  )}
+                          ))}
+                      </div>
+                    )}
                 </div>
               </motion.div>
 
               {/* Bottom Section - Description and Buttons (only for id 1) */}
               <motion.div
-                className="flex-shrink-0"
+                className={`flex-shrink-0 ${item.id === 1 ? "pt-[120px] sm:pt-[150px]" : ""}`}
                 initial={{ y: 20, opacity: 0 }}
                 animate={{ y: 0, opacity: 1 }}
                 transition={{ delay: index * 0.1 + 0.2, duration: 0.6 }}
               >
                 <div
-                  className={`${isUltraWide
-                      ? "p-6"
-                      : screenWidth < 1024
-                        ? "p-0 -mb-2"
-                        : "p-4"
-                    }`}
+                  className={`${
+                    isUltraWide ? "p-6" : screenWidth < 1024 ? "p-0" : "p-4"
+                  }`}
                 >
                   {/* Description Text */}
                   {item.description && (
                     <p
-                      className={`p-primary text-center ${item.id === 1 && (item.primaryAction || item.secondaryAction) ? "mb-4" : ""} ${(item.textColor || textColor) === "white"
+                      className={`p-primary text-center ${item.id === 1 && (item.primaryAction || item.secondaryAction) ? "mb-4" : ""} ${
+                        (item.textColor || textColor) === "white"
                           ? "!text-white"
                           : "!text-black"
-                        }`}
+                      }`}
                     >
                       {item.description}
                     </p>
                   )}
 
                   {/* Button Group - Bottom position (only for id 1) */}
-                  {item.id === 1 && (item.primaryAction || item.secondaryAction) && (
-                    <div className="flex gap-2 justify-center mb-6">
-                      {/* Primary Button - Only render if primaryAction is provided */}
-                      {item.primaryAction &&
-                        (item.primaryLink ? (
-                          <Link href={item.primaryLink}>
+                  {item.id === 1 &&
+                    (item.primaryAction || item.secondaryAction) && (
+                      <div className="flex gap-2 justify-center">
+                        {/* Primary Button - Only render if primaryAction is provided */}
+                        {item.primaryAction &&
+                          (item.primaryLink ? (
+                            <Link href={item.primaryLink}>
+                              <Button
+                                variant="landing-primary"
+                                size="xs"
+                                className="w-full"
+                              >
+                                {item.primaryAction}
+                              </Button>
+                            </Link>
+                          ) : (
                             <Button
                               variant="landing-primary"
                               size="xs"
@@ -293,21 +308,24 @@ export default function TwoByTwoImageGrid({
                             >
                               {item.primaryAction}
                             </Button>
-                          </Link>
-                        ) : (
-                          <Button
-                            variant="landing-primary"
-                            size="xs"
-                            className="w-full"
-                          >
-                            {item.primaryAction}
-                          </Button>
-                        ))}
+                          ))}
 
-                      {/* Secondary Button - Only render if secondaryAction is provided */}
-                      {item.secondaryAction &&
-                        (item.secondaryLink ? (
-                          <Link href={item.secondaryLink}>
+                        {/* Secondary Button - Only render if secondaryAction is provided */}
+                        {item.secondaryAction &&
+                          (item.secondaryLink ? (
+                            <Link href={item.secondaryLink}>
+                              <Button
+                                variant={
+                                  item.secondaryButtonVariant ||
+                                  "landing-secondary"
+                                }
+                                size="xs"
+                                className="w-full"
+                              >
+                                {item.secondaryAction}
+                              </Button>
+                            </Link>
+                          ) : (
                             <Button
                               variant={
                                 item.secondaryButtonVariant ||
@@ -318,20 +336,9 @@ export default function TwoByTwoImageGrid({
                             >
                               {item.secondaryAction}
                             </Button>
-                          </Link>
-                        ) : (
-                          <Button
-                            variant={
-                              item.secondaryButtonVariant || "landing-secondary"
-                            }
-                            size="xs"
-                            className="w-full"
-                          >
-                            {item.secondaryAction}
-                          </Button>
-                        ))}
-                    </div>
-                  )}
+                          ))}
+                      </div>
+                    )}
                 </div>
               </motion.div>
             </div>

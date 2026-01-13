@@ -103,8 +103,12 @@ const sectionsContent = [
     h3: "Dein Zuhause für Ideen",
     modelName: "Belichtungspaket Bright",
     configuration: "Innenverkleidung Fichte, Steinbelag hell",
-    button1: <Hoam variant="button" />,
-    button1Link: "/hoam-system#",
+    button1: (
+      <>
+        <Hoam variant="button" /> system
+      </>
+    ),
+    button1Link: "/hoam-system",
     button2: <Hoam variant="button" />,
     secondaryButtonVariant: "landing-secondary" as const,
   },
@@ -146,8 +150,12 @@ const sectionsContent = [
     ),
     modelName: "Hoam 80",
     configuration: "Trapezblech",
-    button1: <Hoam variant="button" />,
-    button1Link: "/hoam-system#",
+    button1: (
+      <>
+        <Hoam variant="button" /> system
+      </>
+    ),
+    button1Link: "/hoam-system",
     button2: <Hoam variant="button" />,
     secondaryButtonVariant: "landing-secondary" as const,
   },
@@ -363,8 +371,16 @@ export default function LandingPageClient() {
                       {
                         id: 1,
                         // title: <>Die Vision <Hoam variant="title" /></>,
-                        title: "",
-                        subtitle: "",
+                        title: (
+                          <span style={{ visibility: "hidden" }}>
+                            Placeholder Title
+                          </span>
+                        ),
+                        subtitle: (
+                          <span style={{ visibility: "hidden" }}>
+                            Placeholder Subtitle Text
+                          </span>
+                        ),
                         description: "",
                         video: IMAGES.videos.hoamClipShort,
                         playbackRate: 0.5,
