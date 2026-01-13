@@ -4,6 +4,67 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [1df0c0ad8af3be64ef06a3f29ef95c81fef72acb] - Tue Jan 13 13:01:09 2026 +0100
+
+**Author**: stenkjan
+**Message**: `🔄 Update domain references from nest-haus.at to hoam-house.com across the codebase, including environment variables, metadata, and email templates for consistency and improved tracking.  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/admin/campaigns/page.tsx
+- src/app/admin/configuration-analytics/page.tsx
+- src/app/admin/conversion/Client.tsx
+- src/app/admin/conversion/page.tsx
+- src/app/admin/experiments/page.tsx
+- src/app/admin/page.tsx
+- src/app/admin/usability-audit/page.tsx
+- src/app/admin/usage/Client.tsx
+- src/app/admin/usage/page.tsx
+- src/app/admin/user-tracking/components/UserJourneyFunnel.tsx
+- src/app/agb/AgbClient.tsx
+- src/app/api/admin/analytics/configuration-success/route.ts
+- src/app/api/admin/campaigns/performance/route.ts
+- src/app/api/admin/experiments/results/route.ts
+- src/app/api/admin/usability-audit/route.ts
+- src/app/hoam/HoamClient.tsx
+- src/app/hoam/page.tsx
+- src/app/impressum/ImpressumClient.tsx
+- src/app/konfigurator/page.tsx
+- src/app/kontakt/page.tsx
+- src/app/konzept-check/page.tsx
+- src/app/layout.tsx
+- src/app/page.tsx
+- src/app/robots.ts
+- src/app/warenkorb/page.tsx
+- src/app/warum-wir/page.tsx
+- src/components/analytics/GoogleAnalyticsProvider.tsx
+- src/components/grids/TwoByTwoImageGrid.tsx
+- src/components/payments/PaymentErrorBoundary.tsx
+- src/components/payments/PaymentModal.tsx
+- src/components/sections/FAQSection.tsx
+- src/components/seo/ContextualLink.tsx
+- src/components/ui/Button.tsx
+- src/hooks/useFormTracking.ts
+- src/hooks/useScrollTracking.ts
+
+
+#### 🔧 Configuration Changes
+- .env.local.example
+
+
+#### 📚 Documentation Changes
+- DOMAIN_MIGRATION_QUICK_CHECKLIST.md
+- DOMAIN_MIGRATION_SUMMARY.md
+- docs/COMPLETE_TASKS_FOR_PRODUCTION.md
+- docs/FINAL_QUALITY_MAINTENANCE_PLAN.md
+- docs/IMPLEMENTATION_TESTING_GUIDE.md
+- docs/REMAINING_TASKS_CHECKLIST.md
+- docs/WEBSITE_OPTIMIZATION_IMPLEMENTATION_SUMMARY.md
+
+
+---
+
 ## [7a1738ae91c862d93fe6ca4380ebe03e5169a1d5] - Mon Jan 12 09:57:43 2026 +0100
 
 **Author**: stenkjan
