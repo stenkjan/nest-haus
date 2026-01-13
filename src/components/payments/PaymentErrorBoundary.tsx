@@ -119,10 +119,10 @@ export default class PaymentErrorBoundary extends Component<
             <p className="mt-1">
               Bei anhaltenden Problemen kontaktieren Sie uns unter{" "}
               <a
-                href="mailto:support@nest-haus.at"
+                href="mailto:mail@hoam-house.com"
                 className="text-red-600 hover:text-red-800"
               >
-                support@nest-haus.at
+                mail@hoam-house.com
               </a>
             </p>
           </div>

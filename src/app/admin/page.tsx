@@ -65,6 +65,29 @@ export default async function AdminDashboard() {
         {/* Navigation Cards */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
           <Link
+            href="/admin/campaigns"
+            className="bg-white rounded-lg shadow p-6 hover:shadow-lg transition-shadow cursor-pointer group border-2 border-blue-500"
+          >
+            <div className="flex items-center justify-between">
+              <div>
+                <h3 className="text-lg font-semibold text-gray-900 group-hover:text-blue-600">
+                  Campaign Performance 🔥
+                </h3>
+                <p className="text-gray-600 mt-2">
+                  Track social media campaign ROI, conversion rates by source, and UTM parameter performance.
+                </p>
+                <div className="mt-4 text-sm text-gray-500">
+                  • Facebook/Instagram metrics
+                  <br />
+                  • Conversion by source
+                  <br />• Campaign ROI tracking
+                </div>
+              </div>
+              <div className="text-4xl">📱</div>
+            </div>
+          </Link>
+
+          <Link
             href="/admin/user-tracking"
             className="bg-white rounded-lg shadow p-6 hover:shadow-lg transition-shadow cursor-pointer group"
           >

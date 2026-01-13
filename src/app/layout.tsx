@@ -26,6 +26,8 @@ const inter = Inter({
 
 // Get Google Analytics ID from environment
 const GA_MEASUREMENT_ID = process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID || "";
+// Get Google Ads ID from environment (format: AW-XXXXXXXXX)
+const GOOGLE_ADS_ID = process.env.NEXT_PUBLIC_GOOGLE_ADS_ID || "";
 
 export const metadata: Metadata = {
   title: "®Hoam | Weil nur du weißt, wie du wohnen willst",
@@ -41,9 +43,9 @@ export const metadata: Metadata = {
     address: false,
     telephone: false,
   },
-  metadataBase: new URL("https://www.nest-haus.at"),
+  metadataBase: new URL("https://hoam-house.com"),
   alternates: {
-    canonical: "https://www.nest-haus.at",
+    canonical: "https://hoam-house.com",
   },
   icons: {
     icon: [
@@ -60,15 +62,15 @@ export const metadata: Metadata = {
     title: "®Hoam | Weil nur du weißt, wie du wohnen willst",
     description:
       "Entdecken Sie ®Hoam modulare Bausysteme. Nachhaltig, energieeffizient und individuell konfigurierbar.",
-    url: "https://www.nest-haus.at",
+    url: "https://hoam-house.com",
     siteName: "®Hoam",
     locale: "de_DE",
     type: "website",
     images: [
       {
-        url: "https://www.nest-haus.at/api/images/6-NEST-Haus-4-Module-Ansicht-Meer-Mediteran-Stirnseite-Holzlattung-Laerche.jpg",
+        url: "https://hoam-house.com/api/images/6-NEST-Haus-4-Module-Ansicht-Meer-Mediteran-Stirnseite-Holzlattung-Laerche.jpg",
         secureUrl:
-          "https://www.nest-haus.at/api/images/6-NEST-Haus-4-Module-Ansicht-Meer-Mediteran-Stirnseite-Holzlattung-Laerche.jpg",
+          "https://hoam-house.com/api/images/6-NEST-Haus-4-Module-Ansicht-Meer-Mediteran-Stirnseite-Holzlattung-Laerche.jpg",
         width: 1200,
         height: 630,
         alt: "®Hoam | Weil nur du weißt, wie du wohnen willst",
@@ -82,7 +84,7 @@ export const metadata: Metadata = {
     description:
       "Entdecken Sie ®Hoam modulare Bausysteme. Nachhaltig, energieeffizient und individuell konfigurierbar.",
     images: [
-      "https://www.nest-haus.at/api/images/6-NEST-Haus-4-Module-Ansicht-Meer-Mediteran-Stirnseite-Holzlattung-Laerche.jpg",
+      "https://hoam-house.com/api/images/6-NEST-Haus-4-Module-Ansicht-Meer-Mediteran-Stirnseite-Holzlattung-Laerche.jpg",
     ],
   },
   robots: {
@@ -196,7 +198,10 @@ export default function RootLayout({
           {/* Analytics & Performance Monitoring */}
           <SpeedInsights />
           {GA_MEASUREMENT_ID && (
-            <GoogleAnalyticsProvider gaId={GA_MEASUREMENT_ID} />
+            <GoogleAnalyticsProvider 
+              gaId={GA_MEASUREMENT_ID} 
+              googleAdsId={GOOGLE_ADS_ID || undefined}
+            />
           )}
           {process.env.NEXT_PUBLIC_ADSENSE_PUBLISHER_ID && (
             <GoogleAdSense publisherId={process.env.NEXT_PUBLIC_ADSENSE_PUBLISHER_ID} />

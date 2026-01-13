@@ -203,7 +203,7 @@ export default function TwoByTwoImageGrid({
                               variant={
                                 item.primaryButtonVariant || "landing-primary"
                               }
-                              size={isUltraWide ? "xs" : "xxs"}
+                              size="xs"
                               className="w-full"
                             >
                               {item.primaryAction}
@@ -214,7 +214,7 @@ export default function TwoByTwoImageGrid({
                             variant={
                               item.primaryButtonVariant || "landing-primary"
                             }
-                            size={isUltraWide ? "xs" : "xxs"}
+                            size="xs"
                             className="w-full"
                           >
                             {item.primaryAction}
@@ -230,7 +230,7 @@ export default function TwoByTwoImageGrid({
                                 item.secondaryButtonVariant ||
                                 "landing-secondary"
                               }
-                              size={isUltraWide ? "xs" : "xxs"}
+                              size="xs"
                               className="w-full"
                             >
                               {item.secondaryAction}
@@ -241,7 +241,7 @@ export default function TwoByTwoImageGrid({
                             variant={
                               item.secondaryButtonVariant || "landing-secondary"
                             }
-                            size={isUltraWide ? "xs" : "xxs"}
+                            size="xs"
                             className="w-full"
                           >
                             {item.secondaryAction}
@@ -288,7 +288,7 @@ export default function TwoByTwoImageGrid({
                           <Link href={item.primaryLink}>
                             <Button
                               variant="landing-primary"
-                              size={isUltraWide ? "xs" : "xxs"}
+                              size="xs"
                               className="w-full"
                             >
                               {item.primaryAction}
@@ -297,7 +297,7 @@ export default function TwoByTwoImageGrid({
                         ) : (
                           <Button
                             variant="landing-primary"
-                            size={isUltraWide ? "xs" : "xxs"}
+                            size="xs"
                             className="w-full"
                           >
                             {item.primaryAction}
@@ -313,7 +313,7 @@ export default function TwoByTwoImageGrid({
                                 item.secondaryButtonVariant ||
                                 "landing-secondary"
                               }
-                              size={isUltraWide ? "xs" : "xxs"}
+                              size="xs"
                               className="w-full"
                             >
                               {item.secondaryAction}
@@ -324,7 +324,7 @@ export default function TwoByTwoImageGrid({
                             variant={
                               item.secondaryButtonVariant || "landing-secondary"
                             }
-                            size={isUltraWide ? "xs" : "xxs"}
+                            size="xs"
                             className="w-full"
                           >
                             {item.secondaryAction}

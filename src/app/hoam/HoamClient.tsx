@@ -4,7 +4,7 @@ import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import { SectionRouter } from "@/components/SectionRouter";
 import { Button } from "@/components/ui";
-import { HybridBlobImage, ClientBlobVideo } from "@/components/images";
+import { HybridBlobImage } from "@/components/images";
 import {
   PlanungspaketeCards as _PlanungspaketeCards,
   UnifiedContentCard,

@@ -106,7 +106,7 @@ export function generateICS(data: ICSEventData): string {
   const now = new Date();
 
   // Generate unique UID
-  const uid = `inquiry-${inquiryId}@nest-haus.at`;
+  const uid = `inquiry-${inquiryId}@hoam-house.com`;
 
   // Format dates
   const dtStart = formatLocalDate(appointmentDateTime);

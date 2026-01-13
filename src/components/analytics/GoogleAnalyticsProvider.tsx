@@ -11,7 +11,7 @@
  * - Enhanced ecommerce tracking
  * - User demographics collection
  * - Cross-device tracking with Google Signals
- * - Cross-domain tracking for nest-haus.at and da-hoam.at
+ * - Cross-domain tracking for hoam-house.com
  *
  * IMPORTANT: Consent mode is configured BEFORE gtag script loads to ensure
  * proper consent initialization (Google's best practice)
@@ -30,10 +30,12 @@ import { useCookieConsent } from "@/contexts/CookieConsentContext";
 
 interface GoogleAnalyticsProviderProps {
   gaId: string;
+  googleAdsId?: string; // Optional Google Ads conversion ID (format: AW-XXXXXXXXX)
 }
 
 export default function GoogleAnalyticsProvider({
   gaId,
+  googleAdsId,
 }: GoogleAnalyticsProviderProps) {
   const { preferences, hasConsented } = useCookieConsent();
 
@@ -136,11 +138,32 @@ export default function GoogleAnalyticsProvider({
               cookie_expires: 63072000,
               // Enable cookieless pings when consent is denied
               send_page_view: true,
-              // Cross-domain tracking for nest-haus.at and da-hoam.at
+              // Cross-domain tracking disabled (single domain: hoam-house.com)
               linker: {
-                domains: ['nest-haus.at', 'da-hoam.at']
+                domains: []
               }
             });
+
+            ${
+              googleAdsId
+                ? `
+            // Configure Google Ads conversion tracking
+            gtag('config', '${googleAdsId}', {
+              allow_enhanced_conversions: ${hasConsented && preferences.marketing ? "true" : "false"},
+              phone_conversion_number: '+43 664 3949605',
+              phone_conversion_callback: function() {
+                // Track phone number clicks as conversions
+                gtag('event', 'conversion', {
+                  'send_to': '${googleAdsId}/phone_call_conversion',
+                  'value': 1.0,
+                  'currency': 'EUR'
+                });
+              }
+            });
+            console.log('✅ Google Ads conversion tracking configured');
+            `
+                : ""
+            }
           `,
         }}
       />

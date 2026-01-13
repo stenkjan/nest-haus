@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 
 // Base configuration for SEO
 export const SEO_CONFIG = {
-    baseUrl: "https://da-hoam.at",
+    baseUrl: "https://hoam-house.com",
     siteName: "®Hoam",
     defaultTitle: "®Hoam | Wohne wie du willst",
     defaultDescription: "Entdecken Sie ®Hoam modulare Bausysteme. Nachhaltig, energieeffizient und individuell konfigurierbar.",
@@ -12,7 +12,7 @@ export const SEO_CONFIG = {
     organization: {
         name: "®Hoam",
         description: "Weil nur du weißt, wie du richtig wohnst.",
-        logo: "https://da-hoam.at/logo.png",
+        logo: "https://hoam-house.com/logo.png",
         contactPoint: {
             contactType: "customer service",
             availableLanguage: "German",

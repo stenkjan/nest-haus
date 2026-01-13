@@ -75,10 +75,10 @@ export interface GenericEmailData {
 }
 
 export class EmailService {
-  private static readonly FROM_EMAIL = process.env.RESEND_FROM_EMAIL || 'mail@hoam.at';
-  private static readonly REPLY_TO_EMAIL = process.env.REPLY_TO_EMAIL || 'mail@hoam.at';
+  private static readonly FROM_EMAIL = process.env.RESEND_FROM_EMAIL || 'mail@hoam-house.com';
+  private static readonly REPLY_TO_EMAIL = process.env.REPLY_TO_EMAIL || 'mail@hoam-house.com';
   private static readonly ADMIN_EMAIL = process.env.ADMIN_EMAIL || 'mail@hoam-house.com';
-  private static readonly SALES_EMAIL = process.env.SALES_EMAIL || 'mail@hoam.at';
+  private static readonly SALES_EMAIL = process.env.SALES_EMAIL || 'mail@hoam-house.com';
 
   // From name for better email presentation
   private static readonly FROM_NAME = '®Hoam Team';
@@ -494,7 +494,7 @@ export class EmailService {
       </div>
       
       <div class="button-container">
-    <a href="https://nest-haus.at/konfigurator" class="button">Konfiguration fortsetzen</a>
+    <a href="https://hoam-house.com/konfigurator" class="button">Konfiguration fortsetzen</a>
       </div>
   </div>
   
@@ -539,7 +539,7 @@ Kontakt:
 E-Mail: mail@hoam-house.com
 Telefon: +43 384 775 090
 
-Besuchen Sie uns: https://nest-haus.at
+Besuchen Sie uns: https://hoam-house.com
 
 © 2025 Hoam-House | eco Chalets GmbH
 Zösenberg 51, 8045 Weinitzen, Österreich
@@ -849,8 +849,8 @@ Zösenberg 51, 8045 Weinitzen, Österreich
     </div>
     
       <div class="button-container">
-      <a href="https://nest-haus.at/admin/customer-inquiries/${data.inquiryId}" class="button">Anfrage bearbeiten</a>
-        <a href="mailto:${data.email}?subject=Re: Ihre Anfrage bei NEST-Haus" class="button button-secondary">E-Mail antworten</a>
+      <a href="https://hoam-house.com/admin/customer-inquiries/${data.inquiryId}" class="button">Anfrage bearbeiten</a>
+        <a href="mailto:${data.email}?subject=Re: Ihre Anfrage bei Hoam-House" class="button button-secondary">E-Mail antworten</a>
         ${data.phone ? `<a href="tel:${data.phone}" class="button button-secondary">Anrufen</a>` : ''}
       </div>
     </div>
@@ -882,8 +882,8 @@ Technische Informationen:
 - Anfrage-ID: ${data.inquiryId}
 ${data.sessionId ? `- Session-ID: ${data.sessionId}\n` : ''}- Zeitstempel: ${new Date().toLocaleString('de-DE')}
 
-Admin-Panel: https://nest-haus.at/admin/customer-inquiries/${data.inquiryId}
-E-Mail antworten: mailto:${data.email}?subject=Re: Ihre Anfrage bei NEST-Haus
+Admin-Panel: https://hoam-house.com/admin/customer-inquiries/${data.inquiryId}
+E-Mail antworten: mailto:${data.email}?subject=Re: Ihre Anfrage bei Hoam-House
 `;
   }
 

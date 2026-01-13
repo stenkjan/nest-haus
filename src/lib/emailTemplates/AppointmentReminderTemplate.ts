@@ -265,8 +265,8 @@ export function generateAppointmentReminderEmail(data: AppointmentReminderData):
     <div class="footer">
       <p><strong>®Hoam</strong><br>Modulares Wohnen. Nachhaltig. Österreichisch.</p>
       <p style="margin-top: 12px;">
-        <a href="https://hoam.at">Website</a> ·
-        <a href="mailto:mail@hoam.at">E-Mail</a> ·
+        <a href="https://hoam-house.com">Website</a> ·
+        <a href="mailto:mail@hoam-house.com">E-Mail</a> ·
         <a href="tel:+436643949605">Telefon</a>
       </p>
     </div>
@@ -304,8 +304,8 @@ Hinweis: Wenn Sie die Kalendereinladung nicht finden, überprüfen Sie bitte Ihr
 ®Hoam
 Modulares Wohnen. Nachhaltig. Österreichisch.
 
-Website: https://hoam.at
-E-Mail: mail@hoam.at
+Website: https://hoam-house.com
+E-Mail: mail@hoam-house.com
 Telefon: +43 664 3949605
   `;
 

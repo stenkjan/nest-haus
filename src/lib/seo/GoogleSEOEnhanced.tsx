@@ -90,8 +90,8 @@ export function generateEnhancedOrganizationSchema(): OrganizationSchema {
     "@type": "Organization",
     "name": "®Hoam",
     "alternateName": "Hoam Modulhaus",
-    "url": "https://www.nest-haus.at",
-    "logo": "https://www.nest-haus.at/api/images/0-homebutton-nest-haus.svg",
+    "url": "https://hoam-house.com",
+    "logo": "https://hoam-house.com/api/images/0-homebutton-nest-haus.svg",
     "description": "Nachhaltige, energieeffiziente Modulhäuser aus Österreich. Individuell konfigurierbar mit modernem Design.",
     "foundingDate": "2024",
     "address": {
@@ -105,7 +105,7 @@ export function generateEnhancedOrganizationSchema(): OrganizationSchema {
       "@type": "ContactPoint",
       "telephone": "+43", // Add actual phone
       "contactType": "Kundenservice",
-      "email": "mail@hoam.at",
+      "email": "mail@hoam-house.com",
       "availableLanguage": ["de", "en"]
     },
     "sameAs": [
@@ -126,10 +126,10 @@ export function generateWebSiteSchema() {
     "@context": "https://schema.org",
     "@type": "WebSite",
     "name": "®Hoam",
-    "url": "https://www.nest-haus.at",
+    "url": "https://hoam-house.com",
     "potentialAction": {
       "@type": "SearchAction",
-      "target": "https://www.nest-haus.at/search?q={search_term_string}",
+      "target": "https://hoam-house.com/search?q={search_term_string}",
       "query-input": "required name=search_term_string"
     }
   }
@@ -170,7 +170,7 @@ export function generateModulhausProductSchema(config: {
     },
     "offers": {
       "@type": "Offer",
-      "url": "https://www.nest-haus.at/konfigurator",
+      "url": "https://hoam-house.com/konfigurator",
       "priceCurrency": "EUR",
       "price": config.price / 100,
       "priceValidUntil": new Date(Date.now() + 90 * 24 * 60 * 60 * 1000).toISOString().split('T')[0],

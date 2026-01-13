@@ -23,7 +23,7 @@ const defaultConfig: AlertConfig = {
         warning: 70,
         critical: 90,
     },
-    emailRecipients: ['admin@nest-haus.at'], // Configure in production
+    emailRecipients: ['admin@hoam-house.com'], // Configure in production
     checkInterval: 60, // Check every hour
 };
 

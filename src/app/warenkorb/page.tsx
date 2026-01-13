@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import WarenkorbWrapper from "./WarenkorbWrapper";
 import { generateShoppingCartSchema as _generateShoppingCartSchema } from "@/lib/seo/priceSchema";
+import { generateBreadcrumbSchema } from "@/lib/seo/generateMetadata";
 
 // Enhanced SEO metadata for the shopping cart page
 export const metadata: Metadata = {
@@ -10,13 +11,13 @@ export const metadata: Metadata = {
   keywords:
     "warenkorb, hoam konfiguration, modulhaus anfrage, hausbau warenkorb, fertighaus bestellen",
   alternates: {
-    canonical: "https://da-hoam.at/warenkorb",
+    canonical: "https://hoam-house.com/warenkorb",
   },
   openGraph: {
     title: "®Hoam Warenkorb | Ihre Konfiguration",
     description:
       "Überprüfen Sie Ihre ®Hoam Konfiguration und stellen Sie Ihre unverbindliche Anfrage.",
-    url: "https://da-hoam.at/warenkorb",
+    url: "https://hoam-house.com/warenkorb",
     images: [
       {
         url: "/images/warenkorb-preview.jpg",
@@ -45,8 +46,11 @@ const shoppingCartSchema = {
   "@type": "ShoppingCart",
   name: "®Hoam Warenkorb",
   description: "Modulhaus Konfiguration Warenkorb",
-  url: "https://da-hoam.at/warenkorb",
+  url: "https://hoam-house.com/warenkorb",
 };
+
+// Breadcrumb schema for SEO
+const breadcrumbSchema = generateBreadcrumbSchema("warenkorb");
 
 // Product schema for modular houses
 const productSchema = {
@@ -73,6 +77,12 @@ const productSchema = {
 export default function WarenkorbPage() {
   return (
     <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(breadcrumbSchema),
+        }}
+      />
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{

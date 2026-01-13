@@ -579,7 +579,7 @@ export function generatePaymentConfirmationEmail(data: PaymentConfirmationEmailD
         </p>
         
         <div class="button-center">
-          <a href="https://da-hoam.at/konfigurator" class="btn-primary">
+          <a href="https://hoam-house.com/konfigurator" class="btn-primary">
             Jetzt konfigurieren
           </a>
         </div>
@@ -597,7 +597,7 @@ export function generatePaymentConfirmationEmail(data: PaymentConfirmationEmailD
               <span class="contact-label">Telefon 2:</span>
               <span class="contact-value">+43 (0) 660 5649683</span>
               <span class="contact-label">Email:</span>
-              <span class="contact-value">mail@hoam.at</span>
+              <span class="contact-value">mail@hoam-house.com</span>
             </div>
           </div>
           
@@ -626,9 +626,9 @@ export function generatePaymentConfirmationEmail(data: PaymentConfirmationEmailD
         Dein Stil. Dein Zuhause.
       </p>
       <p style="margin-top: 16px;">
-        <a href="https://da-hoam.at">Website</a> ·
-        <a href="https://da-hoam.at/impressum">Impressum</a> ·
-        <a href="https://da-hoam.at/datenschutz">Datenschutz</a>
+        <a href="https://hoam-house.com">Website</a> ·
+        <a href="https://hoam-house.com/impressum">Impressum</a> ·
+        <a href="https://hoam-house.com/datenschutz">Datenschutz</a>
       </p>
     </div>
     
@@ -663,8 +663,8 @@ DIE NÄCHSTEN SCHRITTE:
 KONTAKT:
 Telefon 1: +43 (0) 664 3949605
 Telefon 2: +43 (0) 660 5649683
-E-Mail: mail@hoam.at
-Website: da-hoam.at
+E-Mail: mail@hoam-house.com
+Website: hoam-house.com
 
 Anfrage-ID: ${data.inquiryId}
 
@@ -672,9 +672,9 @@ Anfrage-ID: ${data.inquiryId}
 ®Hoam
 Modulares Wohnen. Nachhaltig. Österreichisch.
 
-Website: https://da-hoam.at
-Impressum: https://da-hoam.at/impressum
-Datenschutz: https://da-hoam.at/datenschutz
+Website: https://hoam-house.com
+Impressum: https://hoam-house.com/impressum
+Datenschutz: https://hoam-house.com/datenschutz
   `;
 
   return { subject, html, text };

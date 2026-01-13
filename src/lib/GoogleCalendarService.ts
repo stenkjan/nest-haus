@@ -389,7 +389,7 @@ export class GoogleCalendarService {
 
             // Generate event UID consistent with ICS file if inquiryId provided
             const iCalUID = appointmentData.inquiryId 
-                ? `inquiry-${appointmentData.inquiryId}@nest-haus.at`
+                ? `inquiry-${appointmentData.inquiryId}@hoam-house.com`
                 : undefined;
 
             const event = {
@@ -515,7 +515,7 @@ export class GoogleCalendarService {
     <div style="margin-top: 30px; padding: 15px; background: #f0f0f0; border-radius: 5px;">
       <p><strong>Anfrage-ID:</strong> ${inquiry.id}</p>
       <p><strong>Erstellt:</strong> ${new Date().toLocaleString('de-DE')}</p>
-      <p><strong>Admin-Panel:</strong> <a href="https://nest-haus.at/admin/customer-inquiries/${inquiry.id}">Anfrage bearbeiten</a></p>
+      <p><strong>Admin-Panel:</strong> <a href="https://hoam-house.com/admin/customer-inquiries/${inquiry.id}">Anfrage bearbeiten</a></p>
     </div>
   </div>
 </body>
@@ -539,7 +539,7 @@ Nächste Schritte:
 4. Kalendereinladung wird gesendet an ${inquiry.email}
 
 Anfrage-ID: ${inquiry.id}
-Admin-Panel: https://nest-haus.at/admin/customer-inquiries/${inquiry.id}
+Admin-Panel: https://hoam-house.com/admin/customer-inquiries/${inquiry.id}
 `;
 
         return { subject, html, text };

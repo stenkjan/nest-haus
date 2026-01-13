@@ -17,7 +17,7 @@ const warumWirSchema = {
   name: "Warum Wir - ®Hoam",
   description:
     "Die Vision und Motivation hinter ®Hoam modularen Bausystemen",
-  url: "https://da-hoam.at/warum-wir",
+  url: "https://hoam-house.com/warum-wir",
   mainEntity: {
     "@type": "Organization",
     name: "®Hoam",

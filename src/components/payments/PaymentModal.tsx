@@ -282,7 +282,7 @@ function PaymentError({ error, onRetry, onClose }: PaymentErrorProps) {
               href="mailto:mail@hoam-house.com"
               className="text-blue-600 hover:text-blue-800"
             >
-              support@nest-haus.at
+              mail@hoam-house.com
             </a>
           </p>
           <p>

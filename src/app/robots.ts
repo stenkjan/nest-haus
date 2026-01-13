@@ -1,7 +1,7 @@
 import { MetadataRoute } from 'next'
 
 export default function robots(): MetadataRoute.Robots {
-  const baseUrl = 'https://www.nest-haus.at' // Keep domain for now until DNS migration
+  const baseUrl = 'https://hoam-house.com'
 
   return {
     rules: {

@@ -144,7 +144,7 @@ export default function FAQSection({
 
   return (
     <section className="w-full py-8 md:py-16 bg-[#f4f4f4]">
-      <div className="w-full max-w-[1536px] mx-auto px-4 sm:px-12 lg:px-12 2xl:px-8">
+      <div className="w-full max-w-[1536px] 2xl:max-w-[1700px] mx-auto px-4 sm:px-12 lg:px-12 2xl:px-8">
         {/* Mobile/Tablet Layout (< 1024px) - Stacked */}
         <div className="lg:hidden">
           {/* Header Section */}
@@ -197,7 +197,7 @@ export default function FAQSection({
           </div>
 
           {/* Right Column - FAQ Items */}
-          <div className="lg:flex-1 2xl:max-w-[1040px] space-y-3">
+          <div className="lg:flex-1 space-y-3">
             {faqItems.map(renderFAQItem)}
           </div>
         </div>

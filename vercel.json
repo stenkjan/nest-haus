@@ -13,19 +13,7 @@
       "schedule": "0 */6 * * *"
     }
   ],
-  "redirects": [
-    {
-      "source": "/:path((?!api/webhooks/).*)",
-      "has": [
-        {
-          "type": "host",
-          "value": "nest-haus.at"
-        }
-      ],
-      "destination": "https://www.nest-haus.at/:path*",
-      "permanent": true
-    }
-  ],
+  "redirects": [],
   "rewrites": [
     {
       "source": "/api/webhooks/stripe",

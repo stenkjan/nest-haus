@@ -11,10 +11,10 @@ const websiteSchema = {
   "@type": "WebSite",
   name: "®Hoam",
   description: "Modulare Häuser und nachhaltiges Bauen",
-  url: "https://da-hoam.at",
+  url: "https://hoam-house.com",
   potentialAction: {
     "@type": "SearchAction",
-    target: "https://da-hoam.at/konfigurator?query={search_term_string}",
+    target: "https://hoam-house.com/konfigurator?query={search_term_string}",
     "query-input": "required name=search_term_string",
   },
 };
@@ -35,7 +35,7 @@ const productSchema = {
     "@type": "AggregateOffer",
     priceCurrency: "EUR",
     availability: "https://schema.org/InStock",
-    url: "https://da-hoam.at/konfigurator",
+    url: "https://hoam-house.com/konfigurator",
   },
   manufacturer: {
     "@type": "Organization",

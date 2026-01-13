@@ -1,5 +1,6 @@
 import React from "react";
 import Link from "next/link";
+import { trackCTAClick } from "@/lib/analytics/enhanced-tracking";
 
 export type ButtonVariant =
   | "primary"
@@ -28,6 +29,10 @@ export interface ButtonProps
   size?: ButtonSize;
   children: React.ReactNode;
   href?: string;
+  // Analytics tracking (optional)
+  trackingId?: string; // Unique ID for this button
+  trackingLocation?: string; // Where the button appears (e.g., 'hero', 'footer', 'checkout-step-1')
+  trackAsConversion?: boolean; // Whether to track this as a high-priority CTA
 }
 
 const Button: React.FC<ButtonProps> = ({
@@ -36,6 +41,10 @@ const Button: React.FC<ButtonProps> = ({
   className = "",
   children,
   href,
+  trackingId,
+  trackingLocation,
+  trackAsConversion = false,
+  onClick,
   ...props
 }) => {
   // Allow content-based sizing with appropriate padding for text fitting
@@ -93,10 +102,44 @@ const Button: React.FC<ButtonProps> = ({
 
   const buttonClasses = `${baseStyles} ${variants[variant]} ${sizes[size]} ${className}`;
 
-  // If href is provided, render as a Link
+  // Extract button text for tracking
+  const buttonText = typeof children === 'string' ? children : 'Button';
+
+  // Handle click with analytics tracking
+  const handleClick = (e: React.MouseEvent<HTMLButtonElement>) => {
+    // Track CTA click if tracking parameters provided
+    if (trackingId || trackingLocation || trackAsConversion) {
+      trackCTAClick({
+        buttonText,
+        buttonId: trackingId,
+        location: trackingLocation || 'unknown',
+        destination: href || '#',
+        variant: trackAsConversion ? 'conversion-cta' : 'standard',
+      });
+    }
+
+    // Call original onClick handler if provided
+    if (onClick) {
+      onClick(e);
+    }
+  };
+
+  // If href is provided, render as a Link with tracking
   if (href) {
+    const handleLinkClick = () => {
+      if (trackingId || trackingLocation || trackAsConversion) {
+        trackCTAClick({
+          buttonText,
+          buttonId: trackingId,
+          location: trackingLocation || 'unknown',
+          destination: href,
+          variant: trackAsConversion ? 'conversion-cta' : 'standard',
+        });
+      }
+    };
+
     return (
-      <Link href={href} className={buttonClasses}>
+      <Link href={href} className={buttonClasses} onClick={handleLinkClick}>
         {children}
       </Link>
     );
@@ -104,7 +147,7 @@ const Button: React.FC<ButtonProps> = ({
 
   // Otherwise render as a button
   return (
-    <button className={buttonClasses} {...props}>
+    <button className={buttonClasses} onClick={handleClick} {...props}>
       {children}
     </button>
   );

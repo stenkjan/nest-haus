@@ -33,7 +33,7 @@ export function generateProductPriceSchema(
         manufacturer: {
             "@type": "Organization",
             name: "®Hoam",
-            url: "https://nest-haus.at",
+            url: "https://hoam-house.com",
         },
         category: "Modular Housing",
     };
@@ -59,7 +59,7 @@ export function generateProductPriceSchema(
             seller: {
                 "@type": "Organization",
                 name: "®Hoam",
-                url: "https://nest-haus.at",
+                url: "https://hoam-house.com",
             },
             additionalProperty: [
                 {
@@ -119,8 +119,8 @@ export function generateProductPriceSchema(
                 offerCount: "5",
                 seller: {
                     "@type": "Organization",
-                    name: "NEST-Haus",
-                    url: "https://nest-haus.at",
+                    name: "®Hoam",
+                    url: "https://hoam-house.com",
                 },
             },
         };
@@ -159,7 +159,7 @@ export function generateShoppingCartSchema(
         "@type": "ShoppingCart",
         name: "®Hoam Warenkorb",
         description: "Modulhaus Konfiguration Warenkorb",
-        url: "https://nest-haus.at/warenkorb",
+        url: "https://hoam-house.com/warenkorb",
         totalPrice: totalPrice.toString(),
         priceCurrency: "EUR",
         numberOfItems: items.length,
@@ -178,7 +178,7 @@ export function generateConfiguratorSchema(currentPrice?: number): object {
         description: "Interaktiver Konfigurator für modulare Häuser",
         applicationCategory: "DesignApplication",
         operatingSystem: "Web Browser",
-        url: "https://nest-haus.at/konfigurator",
+        url: "https://hoam-house.com/konfigurator",
         offers: currentPrice ? {
             "@type": "Offer",
             price: "0",

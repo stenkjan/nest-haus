@@ -260,7 +260,7 @@ export function generateCustomerConfirmationEmail(data: CustomerConfirmationData
           </div>
           <div class="info-item" style="border-radius:0 !important">
             <div class="info-label">Email</div>
-            <div class="info-value">mail@hoam.at</div>
+            <div class="info-value">mail@hoam-house.com</div>
           </div>
         </div>
       </div>
@@ -351,7 +351,7 @@ KONTAKT - Melde dich!
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 Telefon: +43 (0) 660 5649683
 Mobil: +43 (0) 664 3949605
-Email: mail@hoam.at
+Email: mail@hoam-house.com
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 ADRESSE - Komm vorbei!

@@ -425,7 +425,7 @@ export default function AgbClient() {
                     <p>Zösenberg 51</p>
                     <p>8045 Weinitzen</p>
                     <p>Österreich</p>
-                    <p>E-Mail: mail@hoam.at</p>
+                    <p>E-Mail: mail@hoam-house.com</p>
                   </div>
                 </div>
               </div>
