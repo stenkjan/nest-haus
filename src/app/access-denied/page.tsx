@@ -1,5 +1,4 @@
 import type { Metadata } from "next";
-import Link from "next/link";
 import { Button } from "@/components/ui";
 
 export const metadata: Metadata = {
@@ -41,11 +40,14 @@ export default function AccessDeniedPage() {
         </div>
 
         <div className="space-y-4">
-          <Link href="/">
-            <Button variant="primary" size="md" className="w-full">
-              Return to Homepage
-            </Button>
-          </Link>
+          <Button 
+            variant="primary" 
+            size="md" 
+            className="w-full"
+            href="/"
+          >
+            Return to Homepage
+          </Button>
 
           <p className="text-sm text-gray-500">
             If you believe this is an error, please contact our support team.
