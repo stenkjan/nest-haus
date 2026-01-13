@@ -107,7 +107,7 @@ export const TerminVereinbarenContent: React.FC<
     return (
       <div className={`space-y-6 ${className}`}>
         {/* Descriptive Text for Mobile - NO BOX */}
-        <div className="text-left-align pt-2">
+        <div className="text-left pt-2 px-4">
           <p className="p-primary leading-relaxed">
             <span className="text-nest-gray">
               Der Kauf deines Hauses ist ein großer Schritt – und{" "}
@@ -147,7 +147,7 @@ export const TerminVereinbarenContent: React.FC<
         <div className="h-20"></div>
 
         {/* Descriptive Text - INCREASED LINE SPACING */}
-        <div className="text-left-align pt-2">
+        <div className="text-left pt-2 px-4">
           <p className="p-primary leading-relaxed">
             <span className="text-nest-gray">
               Der Kauf deines Hauses ist ein großer Schritt – und{" "}

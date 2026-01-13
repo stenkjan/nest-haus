@@ -562,7 +562,7 @@ const AppointmentBooking = ({
           <div className="flex justify-between items-center">
             <button
               type="button"
-              className="w-10 h-10 rounded-full border border-black hover:border-2 flex items-center justify-center text-lg transition-all"
+              className="w-8 h-8 rounded-full border border-black hover:border-2 flex items-center justify-center text-sm transition-all"
               onClick={prevMonth}
             >
               &#10094;
@@ -575,7 +575,7 @@ const AppointmentBooking = ({
             </span>
             <button
               type="button"
-              className="w-10 h-10 rounded-full border border-black hover:border-2 flex items-center justify-center text-lg transition-all"
+              className="w-8 h-8 rounded-full border border-black hover:border-2 flex items-center justify-center text-sm transition-all"
               onClick={nextMonth}
             >
               &#10095;
@@ -852,7 +852,7 @@ const AppointmentBooking = ({
               <div className="flex justify-between items-center mb-4">
                 <button
                   type="button"
-                  className="w-10 h-10 rounded-full border border-black hover:border-2 flex items-center justify-center text-lg transition-all"
+                  className="w-8 h-8 rounded-full border border-black hover:border-2 flex items-center justify-center text-sm transition-all"
                   onClick={prevMonth}
                 >
                   &#10094;
@@ -865,7 +865,7 @@ const AppointmentBooking = ({
                 </span>
                 <button
                   type="button"
-                  className="w-10 h-10 rounded-full border border-black hover:border-2 flex items-center justify-center text-lg transition-all"
+                  className="w-8 h-8 rounded-full border border-black hover:border-2 flex items-center justify-center text-sm transition-all"
                   onClick={nextMonth}
                 >
                   &#10095;
