@@ -26,7 +26,7 @@ export async function GET(request: NextRequest) {
       },
       select: {
         eventType: true,
-        metadata: true,
+        additionalData: true,
       },
     });
 
@@ -38,7 +38,7 @@ export async function GET(request: NextRequest) {
       },
       select: {
         eventType: true,
-        metadata: true,
+        additionalData: true,
       },
     });
 
@@ -56,7 +56,7 @@ export async function GET(request: NextRequest) {
 
     // Process assignments
     assignments.forEach(event => {
-      const metadata = event.metadata as Record<string, unknown>;
+      const metadata = event.additionalData as Record<string, unknown>;
       const experimentId = (metadata.experiment_id || 'unknown') as string;
       const experimentName = (metadata.experiment_name || 'Unknown Experiment') as string;
       const variantId = (metadata.variant_id || 'control') as string;
@@ -85,7 +85,7 @@ export async function GET(request: NextRequest) {
 
     // Process goals
     goals.forEach(event => {
-      const metadata = event.metadata as Record<string, unknown>;
+      const metadata = event.additionalData as Record<string, unknown>;
       const experimentId = (metadata.experiment_id || 'unknown') as string;
       const variantId = (metadata.variant_id || 'control') as string;
 
