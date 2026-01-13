@@ -4,6 +4,19 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [1998fa1528ba18563f3e7857928f802579fac35d] - Tue Jan 13 15:17:11 2026 +0100
+
+**Author**: stenkjan
+**Message**: `🔄 Update KontaktClient component: change border radius from rounded-[60px] to rounded-3xl for improved design consistency.  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/kontakt/KontaktClient.tsx
+
+
+---
+
 ## [7c9be12c3197866016934bb32d029f19800957ec] - Tue Jan 13 15:08:21 2026 +0100
 
 **Author**: stenkjan
