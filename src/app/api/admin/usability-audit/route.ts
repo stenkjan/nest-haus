@@ -42,7 +42,7 @@ export async function GET() {
       select: {
         eventType: true,
         category: true,
-        metadata: true,
+        additionalData: true,
       },
     });
 
