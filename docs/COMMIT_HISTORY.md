@@ -4,6 +4,20 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [869837aab74c479f3750d70673c842d2f0d64728] - Tue Jan 13 16:26:10 2026 +0100
+
+**Author**: stenkjan
+**Message**: `🔄 Update LandingPageClient and TwoByTwoImageGrid components: modify button labels for clarity, enhance accessibility with hidden placeholders for titles and subtitles, and improve layout responsiveness.  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/LandingPageClient.tsx
+- src/components/grids/TwoByTwoImageGrid.tsx
+
+
+---
+
 ## [1998fa1528ba18563f3e7857928f802579fac35d] - Tue Jan 13 15:17:11 2026 +0100
 
 **Author**: stenkjan
