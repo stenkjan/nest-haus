@@ -4,6 +4,19 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [80c2cab7d34a69a69655acdbb4707b264824dbd5] - Tue Jan 13 14:06:25 2026 +0100
+
+**Author**: stenkjan
+**Message**: `🔄 Refactor AccessDeniedPage to use Link component for navigation instead of Button, enhancing accessibility and user experience.  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/access-denied/page.tsx
+
+
+---
+
 ## [a521f196ad54a1e7c3f45c6ff6dc76f873cdba77] - Tue Jan 13 13:58:58 2026 +0100
 
 **Author**: stenkjan
