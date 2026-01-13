@@ -72,7 +72,7 @@ export default function KontaktClient() {
           />
           <div className="w-full max-w-[1536px] mx-auto px-4 md:px-12">
             <div
-              className="relative h-[600px] w-full bg-white rounded-[60px] overflow-hidden shadow-xl"
+              className="relative h-[600px] w-full bg-white rounded-3xl overflow-hidden shadow-xl"
               style={{ border: "15px solid #F4F4F4" }}
             >
               <iframe
