@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Button } from "@/components/ui";
+import Link from "next/link";
 
 export const metadata: Metadata = {
   title: "Access Denied | Hoam-House",
@@ -40,14 +40,12 @@ export default function AccessDeniedPage() {
         </div>
 
         <div className="space-y-4">
-          <Button 
-            variant="primary" 
-            size="md" 
-            className="w-full"
+          <Link 
             href="/"
+            className="w-full inline-flex items-center justify-center rounded-full px-6 py-1 sm:py-1.5 md:py-2 text-xs sm:text-sm md:text-base lg:text-lg xl:text-lg bg-[#3D6CE1] border border-[#3D6CE1] text-white hover:bg-[#3D6CE1] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#3D6CE1] shadow-sm transition-all duration-300"
           >
             Return to Homepage
-          </Button>
+          </Link>
 
           <p className="text-sm text-gray-500">
             If you believe this is an error, please contact our support team.
