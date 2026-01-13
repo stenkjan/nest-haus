@@ -4,6 +4,20 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [7c9be12c3197866016934bb32d029f19800957ec] - Tue Jan 13 15:08:21 2026 +0100
+
+**Author**: stenkjan
+**Message**: `🔄 Update AppointmentBooking and TerminVereinbarenContent components: adjust button sizes for consistency and improve text alignment for better readability.  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/components/sections/AppointmentBooking.tsx
+- src/components/sections/TerminVereinbarenContent.tsx
+
+
+---
+
 ## [47e999782f8caf9f8a61d404071dde55e46058cb] - Tue Jan 13 14:55:39 2026 +0100
 
 **Author**: stenkjan
