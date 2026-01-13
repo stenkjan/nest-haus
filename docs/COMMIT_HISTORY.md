@@ -4,6 +4,19 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [7727d0156eb4310b27e2759e8738b404a92c5c30] - Tue Jan 13 13:52:45 2026 +0100
+
+**Author**: stenkjan
+**Message**: `🔄 Update API response to replace 'metadata' with 'additionalData' in usability audit for improved data accuracy.  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/api/admin/usability-audit/route.ts
+
+
+---
+
 ## [c75368267b52971661102d3e443dbf5cf2beda06] - Tue Jan 13 13:45:38 2026 +0100
 
 **Author**: stenkjan
