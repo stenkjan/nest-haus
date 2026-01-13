@@ -78,6 +78,7 @@ const sectionsContent = [
     modelName: "Hoam 140",
     configuration: "Fassadenplatten Weiß",
     button1: "Konzept-Check",
+    button1Link: "/konzept-check",
     button2: <Hoam variant="button" />,
     secondaryButtonVariant: "landing-secondary-blue" as const, // Will be overridden by getSecondaryButtonVariant
   },
@@ -89,7 +90,8 @@ const sectionsContent = [
     h3: "So individuell wie du",
     modelName: "Hoam 100",
     configuration: "Holzlattung Lärche Natur",
-    button1: "Konzept-Check",
+    button1: "Konfigurator",
+    button1Link: "/konfigurator",
     button2: <Hoam variant="button" />,
     secondaryButtonVariant: "landing-secondary" as const,
   },
@@ -101,7 +103,8 @@ const sectionsContent = [
     h3: "Dein Zuhause für Ideen",
     modelName: "Belichtungspaket Bright",
     configuration: "Innenverkleidung Fichte, Steinbelag hell",
-    button1: "Konzept-Check",
+    button1: <Hoam variant="button" />,
+    button1Link: "/hoam-system#",
     button2: <Hoam variant="button" />,
     secondaryButtonVariant: "landing-secondary" as const,
   },
@@ -114,6 +117,7 @@ const sectionsContent = [
     modelName: "Hoam 140",
     configuration: "Fassadenplatten Schwarz",
     button1: "Konzept-Check",
+    button1Link: "/konzept-check",
     button2: <Hoam variant="button" />,
     secondaryButtonVariant: "landing-secondary" as const,
   },
@@ -125,7 +129,8 @@ const sectionsContent = [
     h3: "Individualität. Design. Flexibilität.",
     modelName: "Belichtungspaket Medium",
     configuration: "Innenverkleidung Fichte, Parkett Eiche",
-    button1: "Konzept-Check",
+    button1: "Konfigurator",
+    button1Link: "/konfigurator",
     button2: <Hoam variant="button" />,
     secondaryButtonVariant: "landing-secondary" as const,
   },
@@ -141,7 +146,8 @@ const sectionsContent = [
     ),
     modelName: "Hoam 80",
     configuration: "Trapezblech",
-    button1: "Konzept-Check",
+    button1: <Hoam variant="button" />,
+    button1Link: "/hoam-system#",
     button2: <Hoam variant="button" />,
     secondaryButtonVariant: "landing-secondary" as const,
   },
@@ -319,7 +325,7 @@ export default function LandingPageClient() {
                     </div>
 
                     <div className="grid grid-cols-2 gap-4">
-                      <Link href="/konzept-check">
+                      <Link href={section.button1Link || "/konzept-check"}>
                         <Button
                           variant="landing-primary"
                           size="xs"
@@ -358,11 +364,7 @@ export default function LandingPageClient() {
                         id: 1,
                         // title: <>Die Vision <Hoam variant="title" /></>,
                         title: "",
-                        subtitle: (
-                          <>
-                            <Hoam variant="subtitle" /> mit Verantwortung
-                          </>
-                        ),
+                        subtitle: "",
                         description: "",
                         video: IMAGES.videos.hoamClipShort,
                         playbackRate: 0.5,
@@ -410,7 +412,7 @@ export default function LandingPageClient() {
                           IMAGES.function
                             .nestHausTerminVereinbarungBuchenGespraechAnrufenEmail,
                         backgroundColor: "#F4F4F4",
-                        primaryAction: "Termin sichern",
+                        primaryAction: "Kontakt",
                         primaryLink: "/kontakt",
                       },
                     ]}

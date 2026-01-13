@@ -15,6 +15,9 @@ model UserSession {
   userAgent         String?
   referrer          String?
   utmSource         String?
+  utmMedium         String?
+  utmCampaign       String?
+  utmContent        String?
   startTime         DateTime           @default(now())
   endTime           DateTime?
   lastActivity      DateTime           @default(now())
