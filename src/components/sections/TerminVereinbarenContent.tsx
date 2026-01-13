@@ -145,7 +145,7 @@ export const TerminVereinbarenContent: React.FC<
         <div className="h-16"></div>
 
         {/* Descriptive Text - INCREASED LINE SPACING */}
-        <div>
+        <div className="text-center">
           <p className="p-primary leading-relaxed">
             <span className="text-nest-gray">
               Der Kauf deines Hauses ist ein großer Schritt – und{" "}

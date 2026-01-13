@@ -843,7 +843,7 @@ const AppointmentBooking = ({
           <div
             className={`space-y-6 ${
               showLeftSide
-                ? "max-w-[500px] justify-self-end"
+                ? "max-w-[500px] justify-self-center"
                 : "w-full max-w-none"
             }`}
           >
