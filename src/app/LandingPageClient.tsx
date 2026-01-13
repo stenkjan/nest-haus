@@ -105,7 +105,7 @@ const sectionsContent = [
     configuration: "Innenverkleidung Fichte, Steinbelag hell",
     button1: (
       <>
-        <Hoam variant="button" /> system
+        <Hoam variant="button" />{"\u00A0"}system
       </>
     ),
     button1Link: "/hoam-system",
@@ -152,7 +152,7 @@ const sectionsContent = [
     configuration: "Trapezblech",
     button1: (
       <>
-        <Hoam variant="button" /> system
+        <Hoam variant="button" />{"\u00A0"}system
       </>
     ),
     button1Link: "/hoam-system",
