@@ -457,6 +457,14 @@ export const IMAGES = {
     // Contact icons
     contactIcons: {
         appointment: '300-nest-haus-icon-kontakt-termin'
+    },
+
+    // Brand logos
+    logos: {
+        hoamWhite: 'hoam-logo-weiss',
+        hoamBlack: 'hoam-logo-schwarz',
+        // hoamBlue: 'hoam-logo-blau',  // Not needed currently
+        // hoamYellow: 'hoam-logo-gelb', // Not needed currently
     }
 } as const;
 

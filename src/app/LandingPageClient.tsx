@@ -79,7 +79,7 @@ const sectionsContent = [
     configuration: "Fassadenplatten Weiß",
     button1: "Konzept-Check",
     button1Link: "/konzept-check",
-    button2: <Hoam variant="button" />,
+    button2: "Hoam",
     secondaryButtonVariant: "landing-secondary-blue" as const, // Will be overridden by getSecondaryButtonVariant
   },
   {
@@ -92,7 +92,7 @@ const sectionsContent = [
     configuration: "Holzlattung Lärche Natur",
     button1: "Konfigurator",
     button1Link: "/konfigurator",
-    button2: <Hoam variant="button" />,
+    button2: "Hoam",
     secondaryButtonVariant: "landing-secondary" as const,
   },
   {
@@ -103,13 +103,9 @@ const sectionsContent = [
     h3: "Dein Zuhause für Ideen",
     modelName: "Belichtungspaket Bright",
     configuration: "Innenverkleidung Fichte, Steinbelag hell",
-    button1: (
-      <>
-        <Hoam variant="button" />{"\u00A0"}system
-      </>
-    ),
+    button1: "Hoam System",
     button1Link: "/hoam-system",
-    button2: <Hoam variant="button" />,
+    button2: "Hoam",
     secondaryButtonVariant: "landing-secondary" as const,
   },
   {
@@ -122,7 +118,7 @@ const sectionsContent = [
     configuration: "Fassadenplatten Schwarz",
     button1: "Konzept-Check",
     button1Link: "/konzept-check",
-    button2: <Hoam variant="button" />,
+    button2: "Hoam",
     secondaryButtonVariant: "landing-secondary" as const,
   },
   {
@@ -135,7 +131,7 @@ const sectionsContent = [
     configuration: "Innenverkleidung Fichte, Parkett Eiche",
     button1: "Konfigurator",
     button1Link: "/konfigurator",
-    button2: <Hoam variant="button" />,
+    button2: "Hoam",
     secondaryButtonVariant: "landing-secondary" as const,
   },
   {
@@ -150,13 +146,9 @@ const sectionsContent = [
     ),
     modelName: "Hoam 80",
     configuration: "Trapezblech",
-    button1: (
-      <>
-        <Hoam variant="button" />{"\u00A0"}system
-      </>
-    ),
+    button1: "Hoam System",
     button1Link: "/hoam-system",
-    button2: <Hoam variant="button" />,
+    button2: "Hoam",
     secondaryButtonVariant: "landing-secondary" as const,
   },
 ];
@@ -195,21 +187,10 @@ export default function LandingPageClient() {
     objectFit: "contain" as const,
   };
 
-  // Get responsive button variant for sections 1, 3, and 5
+  // Get responsive button variant for all sections
   const getSecondaryButtonVariant = (sectionId: number) => {
-    if (sectionId === 1) {
-      return "landing-secondary-blue"; // Always blue for section 1
-    }
-    if (sectionId === 3) {
-      return isMobile ? "landing-secondary" : "landing-secondary";
-    }
-    if (sectionId === 5) {
-      return isMobile ? "landing-secondary" : "landing-secondary-blue";
-    }
-    if (sectionId === 6) {
-      return "landing-secondary"; // Always white for section 6
-    }
-    return sectionsContent[sectionId - 1].secondaryButtonVariant;
+    // All sections: blue on desktop, white on mobile
+    return isMobile ? "landing-secondary" : "landing-secondary-blue";
   };
 
   // Utility: Text color logic for sections
@@ -332,12 +313,12 @@ export default function LandingPageClient() {
                       </h3>
                     </div>
 
-                    <div className="grid grid-cols-2 gap-4">
+                    <div className="flex gap-4 justify-center">
                       <Link href={section.button1Link || "/konzept-check"}>
                         <Button
                           variant="landing-primary"
                           size="xs"
-                          className="w-full"
+                          style={{ width: "152px" }}
                         >
                           {section.button1}
                         </Button>
@@ -346,7 +327,7 @@ export default function LandingPageClient() {
                         <Button
                           variant={getSecondaryButtonVariant(section.id)}
                           size="xs"
-                          className="w-full"
+                          style={{ width: "152px" }}
                         >
                           {section.button2}
                         </Button>
@@ -383,7 +364,7 @@ export default function LandingPageClient() {
                         ),
                         description: "",
                         video: IMAGES.videos.hoamClipShort,
-                        playbackRate: 0.5,
+                        playbackRate: 1,
                         backgroundColor: "#F4F4F4",
                         textColor: "black",
                         primaryAction: "Unsere Vision",

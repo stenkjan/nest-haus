@@ -269,17 +269,12 @@ export default function HoamClient() {
               <div className="flex flex-wrap gap-4 justify-center">
                 <Link href="/hoam-system">
                   <Button variant="primary" size="xs">
-                    <Hoam variant="button" />
-                    <span className="ml-1.5 sm:ml-1"> system</span>
+                    Hoam System
                   </Button>
                 </Link>
                 <Link href="/warum-wir">
                   <Button variant="landing-secondary-blue" size="xs">
-                    Warum mit
-                    <span className="ml-1.5 sm:ml-1">
-                      <Hoam variant="button" />
-                    </span>
-                    ?
+                    Warum mit Hoam?
                   </Button>
                 </Link>
               </div>
