@@ -4,6 +4,21 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [152c778a7051dd737b830d4047112355d56e4db8] - Thu Jan 15 16:22:42 2026 +0100
+
+**Author**: stenkjan
+**Message**: `🔄 Update typography in Hoam components: standardize capitalization of "System" in button labels for consistency across LandingPageClient and HoamSystemClient components.  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/LandingPageClient.tsx
+- src/app/hoam/HoamClient.tsx
+- src/components/typography/Hoam.tsx
+
+
+---
+
 ## [a8c46e83c736b82be287c66dd1b7b125f6306ecd] - Tue Jan 13 16:30:30 2026 +0100
 
 **Author**: stenkjan
