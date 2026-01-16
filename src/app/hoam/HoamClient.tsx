@@ -143,7 +143,7 @@ export default function HoamClient() {
           <div className="relative w-full aspect-[4/5] sm:aspect-auto sm:h-[500px] md:h-[600px] lg:h-[700px] xl:h-[800px] 2xl:h-[900px]">
             {/* Background Image */}
             <HybridBlobImage
-              path={IMAGES.hero.nestHaus3}
+              path={IMAGES.hero.nestHaus9}
               mobilePath={IMAGES.hero.mobile.nestHaus3}
               alt="®Hoam Design - Dein Design im Freistil"
               className="absolute inset-0 w-full h-full object-cover"
