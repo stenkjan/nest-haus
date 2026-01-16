@@ -1154,7 +1154,7 @@ export default function UnifiedContentCard({
               </h3>
             )}
             <p
-              className={`p-primary ${textColors.description}`}
+              className={`p-primary ${textColors.description} max-w-md mx-auto`}
               dangerouslySetInnerHTML={{
                 __html: getCardText(card, "description").replace(
                   /\n/g,
@@ -2254,26 +2254,29 @@ export default function UnifiedContentCard({
                   </div>
                 </div>
 
-                {/* Mobile: Compact Dots */}
+                {/* Mobile: Numbered Circles (no text labels) */}
                 <div className="md:hidden">
-                  <div className="flex justify-center items-center space-x-2">
+                  <div className="flex justify-center items-center gap-2">
                     {displayCards.map((card, idx) => {
                       const isActive = idx === currentIndex;
                       const isPassed = idx < currentIndex;
+                      const circleClass = isPassed
+                        ? "bg-blue-500 border-blue-500 text-white"
+                        : isActive
+                          ? "bg-white border-blue-500 text-blue-500"
+                          : "bg-white border-gray-300 text-gray-400";
 
                       return (
                         <button
                           key={card.id}
                           onClick={() => navigateCard(idx - currentIndex)}
-                          className={`w-3 h-3 rounded-full transition-all duration-200 ${
-                            isActive
-                              ? "bg-gray-900 scale-125"
-                              : isPassed
-                                ? "bg-gray-600"
-                                : "bg-gray-300"
-                          }`}
+                          className={`w-6 h-6 rounded-full border-2 flex items-center justify-center transition-all duration-200 ${circleClass}`}
                           aria-label={`Zu Schritt ${idx + 1}: ${card.title}`}
-                        />
+                        >
+                          <span className="text-[10px] font-medium">
+                            {idx + 1}
+                          </span>
+                        </button>
                       );
                     })}
                   </div>

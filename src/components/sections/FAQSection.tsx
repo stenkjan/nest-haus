@@ -94,7 +94,7 @@ export default function FAQSection({
           className="w-full px-3 sm:px-6 py-4 sm:py-2 flex items-center justify-between bg-white transition-colors duration-200"
           aria-expanded={isOpen}
         >
-          <span className="text-left p-primary font-medium text-black pr-4">
+          <span className="text-left p-primary font-medium text-black pr-12 sm:pr-16">
             {item.question}
           </span>
 
@@ -135,7 +135,7 @@ export default function FAQSection({
             }}
             className="px-4 sm:px-6 pb-4 sm:pb-5"
           >
-            <p className="p-primary-small text-gray-700">{item.answer}</p>
+            <p className="p-primary-small text-gray-700 pr-12 sm:pr-16">{item.answer}</p>
           </div>
         </div>
       </div>

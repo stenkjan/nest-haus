@@ -342,7 +342,7 @@ export default function ImpressumClient() {
           </div>
         </section>
       </SectionRouter>
-      <div className="h-8 md:h-16"></div>
+      <div className="h-8"></div>
       <Footer />
     </div>
   );

@@ -264,7 +264,7 @@ export default function HoamClient() {
             </div>
 
             {/* Text Grid and Buttons Container */}
-            <div className="pt-8 pb-16">
+            <div className="py-16">
               {/* Button combination */}
               <div className="flex flex-wrap gap-4 justify-center">
                 <Link href="/hoam-system">
@@ -403,7 +403,7 @@ export default function HoamClient() {
                 title: "Architektur für ein bewegtes Leben",
                 subtitle: "",
                 description:
-                  "<span class='text-black'>Aufbauen. Mitnehmen. Weitergeben.</span><br/><span style='display: block; margin-bottom: 0.5rem;'></span><span class='text-nest-gray'>Das einzige Haus der Welt, dass sich an die Lebenszyklen seiner Bewohner anpasst.</span><br/><span style='display: block; margin-bottom: 0.5rem;'></span><span class='text-nest-gray'>Nicht umgekehrt.</span>",
+                  "<span class='text-black'>Aufbauen. Mitnehmen. Weitergeben.</span><br/><span style='display: block; margin-bottom: 0.5rem;'></span><span class='text-nest-gray'>Das einzige Haus der Welt, dass sich an die Lebenszyklen seiner Bewohner anpasst.</span> <span class='text-black'>Nicht umgekehrt.</span>",
                 video: IMAGES.videos.nestHausTransport,
                 backgroundColor: "#F4F4F4",
                 buttons: [
