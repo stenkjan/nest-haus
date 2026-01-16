@@ -100,8 +100,9 @@ export default function FAQSection({
 
           {/* Arrow Icon with Circle Background */}
           <div
-            className={`flex-shrink-0 w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-[#f4f4f4] flex items-center justify-center transition-transform duration-300 ${isOpen ? "rotate-90" : ""
-              }`}
+            className={`flex-shrink-0 w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-[#f4f4f4] flex items-center justify-center transition-transform duration-300 ${
+              isOpen ? "rotate-90" : ""
+            }`}
           >
             <svg
               className="w-4 h-4 sm:w-5 sm:h-5 text-gray-700"
@@ -135,7 +136,9 @@ export default function FAQSection({
             }}
             className="px-4 sm:px-6 pb-4 sm:pb-5"
           >
-            <p className="p-primary-small text-gray-700 pr-12 sm:pr-16">{item.answer}</p>
+            <p className="p-primary-small text-gray-700 pr-12 sm:pr-16">
+              {item.answer}
+            </p>
           </div>
         </div>
       </div>

@@ -201,10 +201,15 @@ export function PartnersSection({
             </div>
 
             {/* Buttons at the bottom */}
-            <div className="flex flex-col gap-4 items-center">
-              <Link href={ctaHref}>
+            <div className="flex flex-row gap-4 justify-center">
+              <Link href="/warum-wir#unser-team">
                 <Button variant="primary" size="xs">
-                  {ctaLabel}
+                  Unser Team
+                </Button>
+              </Link>
+              <Link href="/kontakt">
+                <Button variant="secondary-narrow-blue" size="xs">
+                  Kontakt
                 </Button>
               </Link>
             </div>
@@ -225,10 +230,15 @@ export function PartnersSection({
               </div>
 
               {/* Buttons at bottom */}
-              <div className="mt-8 flex flex-col gap-4">
-                <Link href={ctaHref}>
+              <div className="mt-8 flex flex-row gap-4">
+                <Link href="/warum-wir#unser-team">
                   <Button variant="primary" size="xs">
-                    {ctaLabel}
+                    Unser Team
+                  </Button>
+                </Link>
+                <Link href="/kontakt">
+                  <Button variant="secondary-narrow-blue" size="xs">
+                    Kontakt
                   </Button>
                 </Link>
               </div>
