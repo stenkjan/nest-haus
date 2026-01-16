@@ -11,6 +11,7 @@ export const IMAGES = {
         nestHaus6: '8-NEST-Haus-Innenperspektive-Schwarze-Steinplatten',
         nestHaus7: '5-NEST-Haus-6-Module-Wald-Ansicht-Schwarze-Fassadenplatten',
         nestHaus8: '1-NEST-Haus-Berg-Vision-AUSTRIA-SWISS-Holzlattung-Laerche',
+        nestHaus9: '19-NEST-Haus-Innenperspektive-Kalkstein-Holz-Verglasung-Stirnseite-dein-nest-design-oder-bestpreis',
         // Mobile versions for landing page
         mobile: {
             nestHaus1: '2-NEST-Haus-7-Module-Ansicht-Weisse-Fassadenplatten-mobile',

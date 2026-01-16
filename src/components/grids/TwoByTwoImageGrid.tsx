@@ -179,19 +179,19 @@ export default function TwoByTwoImageGrid({
                   } text-center`}
                 >
                   <h2
-                    className={`mb-2 sm:mb-1 font-bold text-2xl sm:text-2xl md:font-medium md:text-xl lg:text-5xl md:lg:text-3xl xl:text-6xl md:xl:text-4xl md:2xl:text-5xl ${
+                    className={`h2-title mb-2 sm:mb-1 ${
                       (item.textColor || textColor) === "white"
-                        ? "!text-white"
-                        : "!text-black"
+                        ? "text-white"
+                        : "text-black"
                     }`}
                   >
                     {item.title}
                   </h2>
                   <h3
-                    className={`hidden sm:block font-medium text-lg sm:text-base md:text-sm lg:text-lg md:lg:text-xl xl:text-2xl md:xl:text-2xl ${item.id !== 1 && (item.primaryAction || item.secondaryAction) ? "mb-2" : ""} ${
+                    className={`p-primary hidden sm:block ${item.id !== 1 && (item.primaryAction || item.secondaryAction) ? "mb-2" : ""} ${
                       (item.textColor || textColor) === "white"
-                        ? "!text-white"
-                        : "!text-black"
+                        ? "text-white"
+                        : "text-black"
                     }`}
                   >
                     {item.subtitle}
@@ -210,7 +210,7 @@ export default function TwoByTwoImageGrid({
                                   item.primaryButtonVariant || "landing-primary"
                                 }
                                 size="xs"
-                                className="w-full"
+                                style={{ width: '152px' }}
                               >
                                 {item.primaryAction}
                               </Button>
@@ -221,7 +221,7 @@ export default function TwoByTwoImageGrid({
                                 item.primaryButtonVariant || "landing-primary"
                               }
                               size="xs"
-                              className="w-full"
+                              style={{ width: '152px' }}
                             >
                               {item.primaryAction}
                             </Button>
@@ -237,7 +237,7 @@ export default function TwoByTwoImageGrid({
                                   "landing-secondary"
                                 }
                                 size="xs"
-                                className="w-full"
+                                style={{ width: '152px' }}
                               >
                                 {item.secondaryAction}
                               </Button>
@@ -249,7 +249,7 @@ export default function TwoByTwoImageGrid({
                                 "landing-secondary"
                               }
                               size="xs"
-                              className="w-full"
+                              style={{ width: '152px' }}
                             >
                               {item.secondaryAction}
                             </Button>
@@ -295,7 +295,7 @@ export default function TwoByTwoImageGrid({
                               <Button
                                 variant="landing-primary"
                                 size="xs"
-                                className="w-full"
+                                style={{ width: '152px' }}
                               >
                                 {item.primaryAction}
                               </Button>
@@ -304,7 +304,7 @@ export default function TwoByTwoImageGrid({
                             <Button
                               variant="landing-primary"
                               size="xs"
-                              className="w-full"
+                              style={{ width: '152px' }}
                             >
                               {item.primaryAction}
                             </Button>
@@ -320,7 +320,7 @@ export default function TwoByTwoImageGrid({
                                   "landing-secondary"
                                 }
                                 size="xs"
-                                className="w-full"
+                                style={{ width: '152px' }}
                               >
                                 {item.secondaryAction}
                               </Button>
@@ -332,7 +332,7 @@ export default function TwoByTwoImageGrid({
                                 "landing-secondary"
                               }
                               size="xs"
-                              className="w-full"
+                              style={{ width: '152px' }}
                             >
                               {item.secondaryAction}
                             </Button>

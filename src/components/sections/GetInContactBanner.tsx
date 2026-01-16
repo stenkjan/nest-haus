@@ -30,6 +30,11 @@ interface GetInContactBannerProps {
    */
   subtitle?: string;
   /**
+   * Mobile-specific subtitle text
+   * @default "Vereinbare jetzt deinen Termin - Vor Ort oder telefonisch"
+   */
+  mobileSubtitle?: string;
+  /**
    * Button text
    * @default "Jetzt Termin sichern"
    */
@@ -56,6 +61,7 @@ export function GetInContactBanner({
   id,
   title = "Kein Plan? Kein Problem!",
   subtitle = "Vereinbare jetzt Dein Beratungsgespräch - vor Ort oder ganz bequem telefonisch",
+  mobileSubtitle = "Vereinbare jetzt deinen Termin - Vor Ort oder telefonisch",
   buttonText = "Jetzt Termin sichern",
   onButtonClick,
   backgroundColor = "white",
@@ -98,9 +104,14 @@ export function GetInContactBanner({
               {/* Title */}
               <h2 className="h2-title text-black mb-3">{title}</h2>
 
-              {/* Subtitle */}
-              <h3 className="h3-secondary text-black leading-relaxed">
+              {/* Desktop Subtitle */}
+              <h3 className="h3-secondary text-black leading-relaxed hidden md:block">
                 {subtitle}
+              </h3>
+
+              {/* Mobile Subtitle */}
+              <h3 className="h3-secondary text-black leading-relaxed md:hidden">
+                {mobileSubtitle}
               </h3>
 
               {/* Button */}

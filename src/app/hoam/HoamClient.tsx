@@ -229,18 +229,18 @@ export default function HoamClient() {
         {/* Section 2 - Text Content Below Hero */}
         <section id="intro-hoam" className="w-full relative bg-white">
           {/* Text Content Below Video */}
-          <div className="max-w-[1536px] 2xl:max-w-[1600px] px-4 sm:px-8 md:px-16 lg:px-24 xl:px-32 2xl:px-32 mx-auto pt-8 md:pt-16 md:pb-8">
+          <div className="max-w-[1536px] 2xl:max-w-[1600px] px-4 sm:px-8 md:px-16 lg:px-24 xl:px-32 2xl:px-32 mx-auto pt-4 md:pt-8">
             <h2
               className="h2-title text-center leading-tight md:leading-normal"
               dangerouslySetInnerHTML={{
                 __html:
-                  "<span class='text-nest-gray'>Das </span><span class='text-black font-medium'>erste Haus</span><span class='text-nest-gray'> der </span><span class='text-black font-medium'>Welt</span><span class='text-nest-gray'>, welches sich an </span><span class='text-black font-medium'>dein Leben anpasst</span><span class='text-nest-gray'>, nicht&nbsp;umgekehrt.</span><br/><br/><span class='text-nest-gray'>Deine </span><span class='text-black font-medium'>Atmosphäre</span><span class='text-nest-gray'>, deine Vorstellungen. </span><span class='text-black font-medium'>Weil nur du weißt, wie&nbsp;du&nbsp;richtig&nbsp;wohnst.</span>",
+                  "<span class='text-nest-gray'>Das </span><span class='text-black font-medium'>erste Haus</span><span class='text-nest-gray'> der </span><span class='text-black font-medium'>Welt</span><span class='text-nest-gray'>,</span><br/><span class='text-nest-gray'>welches sich an </span><span class='text-black font-medium'>dein Leben anpasst</span><span class='text-nest-gray'>, nicht&nbsp;umgekehrt.</span><br/><span style='display: block; margin-bottom: 0.5rem;'></span><span class='text-nest-gray'>Deine </span><span class='text-black font-medium'>Atmosphäre</span><span class='text-nest-gray'>, deine Vorstellungen.</span><br/><span class='text-black font-medium'>Weil nur du weißt, wie&nbsp;du&nbsp;richtig&nbsp;wohnst.</span>",
               }}
             />
           </div>
 
           {/* YouTube Video Embed - Full Width */}
-          <div className="w-full py-8 md:py-16">
+          <div className="w-full py-12">
             <div className="w-full">
               <div className="max-w-[2000px] mx-auto">
                 <div
@@ -321,7 +321,7 @@ export default function HoamClient() {
                 title: "Dein Stil. Dein Zuhause.",
                 subtitle: "",
                 description:
-                  "<span class='text-nest-gray'>Im ®Hoam Konfigurator gestaltest du </span><strong class='text-black'>dein Zuhause Schritt für Schritt</strong><span class='text-nest-gray'> und behältst den Preis stets im Überblick.</span><br/><span style='display: block; margin-bottom: 0.5rem;'></span><span class='text-nest-gray'>Entdecke unsere </span><strong class='text-black'>vielfältigen Möglichkeiten</strong><span class='text-nest-gray'> und konfiguriere deine Basis für dein individuelles </span><strong class='text-black'>®Hoam</strong><span class='text-nest-gray'>.</span>",
+                  "<span class='text-nest-gray'>Im ®Hoam Konfigurator gestaltest du </span><span class='text-black'>dein Zuhause Schritt für Schritt</span><span class='text-nest-gray'> und behältst den Preis stets im Überblick.</span><br/><span style='display: block; margin-bottom: 0.5rem;'></span><span class='text-nest-gray'>Entdecke unsere </span><span class='text-black'>vielfältigen Möglichkeiten</span><span class='text-nest-gray'> und konfiguriere deine Basis für dein individuelles </span><span class='text-black'>®Hoam</span><span class='text-nest-gray'>.</span>",
                 video: IMAGES.variantvideo.twelve,
                 backgroundColor: "#F4F4F4",
                 playbackRate: 0.5,
@@ -403,7 +403,7 @@ export default function HoamClient() {
                 title: "Architektur für ein bewegtes Leben",
                 subtitle: "",
                 description:
-                  "<strong class='text-black'>Aufbauen. Mitnehmen. Weitergeben.</strong><br/><span style='display: block; margin-bottom: 0.5rem;'></span><span class='text-nest-gray'>Das einzige Haus der Welt, dass sich an die Lebenszyklen seiner Bewohner anpasst.</span><br/><span style='display: block; margin-bottom: 0.5rem;'></span><span class='text-nest-gray'>Nicht umgekehrt.</span>",
+                  "<span class='text-black'>Aufbauen. Mitnehmen. Weitergeben.</span><br/><span style='display: block; margin-bottom: 0.5rem;'></span><span class='text-nest-gray'>Das einzige Haus der Welt, dass sich an die Lebenszyklen seiner Bewohner anpasst.</span><br/><span style='display: block; margin-bottom: 0.5rem;'></span><span class='text-nest-gray'>Nicht umgekehrt.</span>",
                 video: IMAGES.videos.nestHausTransport,
                 backgroundColor: "#F4F4F4",
                 buttons: [

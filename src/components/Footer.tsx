@@ -75,14 +75,10 @@ export default function Footer() {
 
       {/* Image Carousel Section */}
       <div className="bg-white">
-        <h3 className="h3-secondary text-center text-black px-4 mb-0">
-          Lass dich inspirieren und entdecke die Vielfalt unserer zahlreichen
-          Konfigurationen
-        </h3>
-        <LandingImagesCarousel 
-          backgroundColor="white" 
-          maxWidth={false} 
-          forceDesktopImages={true} 
+        <LandingImagesCarousel
+          backgroundColor="white"
+          maxWidth={false}
+          forceDesktopImages={true}
         />
       </div>
 
@@ -90,7 +86,10 @@ export default function Footer() {
       <div className="w-full max-w-[1536px] mx-auto px-4 sm:px-12 lg:px-12 py-12">
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-8">
           {footerColumns.map((column, index) => (
-            <div key={index} className={`space-y-1 md:space-y-4 ${index === 0 ? 'hidden md:block' : ''}`}>
+            <div
+              key={index}
+              className={`space-y-1 md:space-y-4 ${index === 0 ? "hidden md:block" : ""}`}
+            >
               <h3 className="text-[clamp(14px,2.5vw,16px)] font-medium tracking-[-0.015em] text-black mb-1 md:mb-4">
                 {column.title}
               </h3>
@@ -120,7 +119,9 @@ export default function Footer() {
       <div className="w-full max-w-[1536px] mx-auto px-4 sm:px-6 lg:px-8 py-6">
         <div className="flex flex-col md:flex-row justify-between items-center text-[clamp(12px,2.2vw,14px)] text-gray-500 space-y-4 md:space-y-0">
           <div>
-            <p>Copyright © {currentYear} Hoam-House. Alle Rechte vorbehalten.</p>
+            <p>
+              Copyright © {currentYear} Hoam-House. Alle Rechte vorbehalten.
+            </p>
           </div>
 
           <div className="flex space-x-6">
