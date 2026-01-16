@@ -123,11 +123,8 @@ interface PartnersSectionProps {
 
 export function PartnersSection({
   className = "",
-  useKontaktCta = false,
+  useKontaktCta: _useKontaktCta = false,
 }: PartnersSectionProps) {
-  const ctaLabel = useKontaktCta ? "Melde dich!" : "Unser Team";
-  const ctaHref = useKontaktCta ? "/kontakt" : "/warum-wir#unser-team";
-
   return (
     <div className="w-screen relative left-1/2 right-1/2 -ml-[50vw] -mr-[50vw]">
       <section className={`w-full py-8 md:py-16 bg-[#f4f4f4] ${className}`}>
