@@ -4,6 +4,19 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [7217213d3c5dcb275e6349f2ccdc13c4d3b29950] - Fri Jan 16 12:54:53 2026 +0100
+
+**Author**: stenkjan
+**Message**: `🔄 Update HoamClient background image: change hero image path from nestHaus3 to nestHaus9 for enhanced visual presentation.  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/hoam/HoamClient.tsx
+
+
+---
+
 ## [4d7c050e45e976a8a3290764cbe42183231fe316] - Fri Jan 16 10:48:08 2026 +0100
 
 **Author**: stenkjan
