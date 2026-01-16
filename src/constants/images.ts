@@ -463,6 +463,7 @@ export const IMAGES = {
     logos: {
         hoamWhite: 'hoam-logo-weiss',
         hoamBlack: 'hoam-logo-schwarz',
+        hoamBrown: 'hoam-logo-braun',
         // hoamBlue: 'hoam-logo-blau',  // Not needed currently
         // hoamYellow: 'hoam-logo-gelb', // Not needed currently
     }

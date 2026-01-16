@@ -188,7 +188,7 @@ export default function LandingPageClient() {
   };
 
   // Get responsive button variant for all sections
-  const getSecondaryButtonVariant = (sectionId: number) => {
+  const getSecondaryButtonVariant = (_sectionId: number) => {
     // All sections: blue on desktop, white on mobile
     return isMobile ? "landing-secondary" : "landing-secondary-blue";
   };
